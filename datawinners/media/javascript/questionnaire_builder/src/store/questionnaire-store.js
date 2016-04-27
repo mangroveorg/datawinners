@@ -133,6 +133,38 @@ var computeCascadesGrouped = () => {
 		});
 	}
 }
+var findQuestionIndex = function (question) {
+		let index = _.findIndex(_questionnaire.survey, {temp_id: question.temp_id});
+	  if(index < 0){
+	    index = _.findIndex(_questionnaire.survey, {name: question.name});
+	  }
+	  return index;
+}
+
+var moveUp = function (question) {
+	let index = findQuestionIndex(question);
+	if(index > 0) {
+		let previousIndex = index - 1;
+		var previousQuestion = _questionnaire.survey[previousIndex];
+		console.log(AppConstants.GroupBoundaries);
+		if (AppConstants.GroupBoundaries.indexOf(previousQuestion.type) == -1) {
+			_questionnaire.survey[index] = previousQuestion;
+			_questionnaire.survey[previousIndex] = question;
+		}
+	}
+}
+
+var moveDown = function (question) {
+	let index = findQuestionIndex(question);
+	if(index < _questionnaire.survey.length - 1) {
+		let nextIndex = index + 1;
+		let nextQuestion = _questionnaire.survey[nextIndex];
+		if (AppConstants.GroupBoundaries.indexOf(nextQuestion.type) == -1) {
+			_questionnaire.survey[index] = nextQuestion;
+			_questionnaire.survey[nextIndex] = question;
+		}
+	}
+}
 
 var QuestionnaireStore = Object.assign({},EventEmitter.prototype, {
 
@@ -200,14 +232,6 @@ var QuestionnaireStore = Object.assign({},EventEmitter.prototype, {
 			}
 	},
 
-	findQuestionIndex: function (question) {
-		let index = _.findIndex(_questionnaire.survey, {temp_id: question.temp_id});
-	  if(index < 0){
-	    index = _.findIndex(_questionnaire.survey, {name: question.name});
-	  }
-	  return index;
-	},
-
 	findChoiceIndex: function(choice){
 		return _.findIndex(_questionnaire.choices, {base_index: choice.base_index});
 	},
@@ -248,13 +272,13 @@ var QuestionnaireStore = Object.assign({},EventEmitter.prototype, {
 	},
 
 	update: function (question) {
-		_questionnaire.survey[this.findQuestionIndex(question)] = question;
+		_questionnaire.survey[findQuestionIndex(question)] = question;
 		removeQuestionValidationErrorsIfExists(question);
 		_errors = _.concat(_errors, Validator.validateQuestion(question));
 	},
 
 	delete: function (question) {
-		_questionnaire.survey.splice(this.findQuestionIndex(question), 1);
+		_questionnaire.survey.splice(findQuestionIndex(question), 1);
 	},
 
 	updateChoice: function(choice) {
@@ -280,6 +304,14 @@ AppDispatcher.register(function (action) {
 		case AppConstants.ActionTypes.DELETE_QUESTION:
 		case AppConstants.ActionTypes.UPDATE_CHOICE:
 		case AppConstants.ActionTypes.DELETE_CHOICE:
+			QuestionnaireStore.emitChange();
+			break;
+		case AppConstants.ActionTypes.MOVE_UP:
+			moveUp(action.data.question);
+			QuestionnaireStore.emitChange();
+			break;
+		case AppConstants.ActionTypes.MOVE_DOWN:
+			moveDown(action.data.question);
 			QuestionnaireStore.emitChange();
 			break;
 		case AppConstants.ActionTypes.CREATE_CHOICE_GROUP:

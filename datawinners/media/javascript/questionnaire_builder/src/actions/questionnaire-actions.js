@@ -117,6 +117,20 @@ var QuestionnaireActions = {
 			});
 		},
 
+		moveUp: function(question) {
+			AppDispatcher.dispatch({
+				actionType: AppConstants.ActionTypes.MOVE_UP,
+				data: {question: question}
+			});
+		},
+
+		moveDown: function(question) {
+			AppDispatcher.dispatch({
+				actionType: AppConstants.ActionTypes.MOVE_DOWN,
+				data: {question: question}
+			});
+		},
+
 		createChoice: function(choiceGroupName, added_field, value) {
 			AppDispatcher.dispatch({
 				actionType: AppConstants.ActionTypes.CREATE_CHOICE,

@@ -40,6 +40,13 @@ export default class SurveyTab extends React.Component {
 		QuestionnaireActions.createQuestion();
   }
 
+  onMoveUp = (question) => {
+    QuestionnaireActions.moveUp(question);
+  }
+
+  onMoveDown = (question) => {
+    QuestionnaireActions.moveDown(question);
+  }
 
   getListOfQuestionViews(){
 		var questions = this.props.survey;
@@ -62,10 +69,12 @@ export default class SurveyTab extends React.Component {
 
 				questionViews.push(
 					<Question
-							key={'question_'+key}
+							key={key}
 							question={questions[key]}
 							onChange={this.onChange}
 							onDelete={this.onDelete}
+              onMoveUp={this.onMoveUp}
+              onMoveDown={this.onMoveDown}
 							errors={questionErrors}
 							/>
 				);

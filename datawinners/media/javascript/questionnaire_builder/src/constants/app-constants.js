@@ -9,7 +9,9 @@ module.exports = {
 		CREATE_CHOICE: 'CREATE_CHOICE',
 		UPDATE_CHOICE: 'UPDATE_CHOICE',
 		CREATE_CHOICE_GROUP: 'CREATE_CHOICE_GROUP',
-		ERROR_ON_SAVE: 'ERROR_ON_SAVE'
+		ERROR_ON_SAVE: 'ERROR_ON_SAVE',
+		MOVE_UP: 'MOVE_UP',
+		MOVE_DOWN: 'MOVE_DOWN'
 	},
 	CommonErrorMessages : {
 		REQUIRED_ERROR_MESSAGE : 'This field is required',
@@ -22,6 +24,7 @@ module.exports = {
 		TITLE_MESSAGE: "Please Wait...",
 		SAVE_DRAFT_MESSAGE: "Questionnaire draft being saved"
 	},
+	GroupBoundaries : ['begin_group', 'begin_repeat', 'end_group', 'end_repeat'],
 	MANDATORY_ASTERISK: '*',
 	REQUIRED_QUESTION_FIELDS : ['label', 'name', 'type'],
 	REQUIRED_CHOICE_FIELDS : ['list_name', 'name', 'label'],

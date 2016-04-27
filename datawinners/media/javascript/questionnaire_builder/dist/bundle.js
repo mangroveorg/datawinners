@@ -149,6 +149,20 @@ var QuestionnaireActions = {
 		});
 	},
 
+	moveUp: function moveUp(question) {
+		_appDispatcher2.default.dispatch({
+			actionType: _appConstants2.default.ActionTypes.MOVE_UP,
+			data: { question: question }
+		});
+	},
+
+	moveDown: function moveDown(question) {
+		_appDispatcher2.default.dispatch({
+			actionType: _appConstants2.default.ActionTypes.MOVE_DOWN,
+			data: { question: question }
+		});
+	},
+
 	createChoice: function createChoice(choiceGroupName, added_field, value) {
 		_appDispatcher2.default.dispatch({
 			actionType: _appConstants2.default.ActionTypes.CREATE_CHOICE,
@@ -182,7 +196,7 @@ var QuestionnaireActions = {
 
 module.exports = QuestionnaireActions;
 
-},{"../constants/app-constants":15,"../dispatcher/app-dispatcher":16,"../store/questionnaire-store":21,"toastr":705}],2:[function(require,module,exports){
+},{"../constants/app-constants":15,"../dispatcher/app-dispatcher":16,"../store/questionnaire-store":21,"toastr":709}],2:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
@@ -389,7 +403,7 @@ module.exports = {
   }
 };
 
-},{"../actions/questionnaire-actions":1,"../constants/app-constants":15,"./dialog-okay-cancel":6,"lodash":392,"material-ui/Checkbox":405,"material-ui/FontIcon":416,"material-ui/IconButton":418,"material-ui/MenuItem":428,"material-ui/RaisedButton":435,"material-ui/SelectField":439,"material-ui/TextField":461,"material-ui/Toggle":463,"react":693,"react-select":519}],3:[function(require,module,exports){
+},{"../actions/questionnaire-actions":1,"../constants/app-constants":15,"./dialog-okay-cancel":6,"lodash":395,"material-ui/Checkbox":409,"material-ui/FontIcon":420,"material-ui/IconButton":422,"material-ui/MenuItem":432,"material-ui/RaisedButton":439,"material-ui/SelectField":443,"material-ui/TextField":465,"material-ui/Toggle":467,"react":707,"react-select":532}],3:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -593,7 +607,7 @@ var BuilderToolbar = function (_React$Component) {
 
 exports.default = BuilderToolbar;
 
-},{"../actions/questionnaire-actions":1,"../constants/app-constants":15,"../store/questionnaire-store":21,"./loader-dialog":9,"material-ui/DropDownMenu":409,"material-ui/FlatButton":412,"material-ui/FontIcon":416,"material-ui/IconButton":418,"material-ui/IconMenu":420,"material-ui/MenuItem":428,"material-ui/RaisedButton":435,"material-ui/Toolbar/Toolbar":464,"material-ui/Toolbar/ToolbarGroup":465,"material-ui/Toolbar/ToolbarSeparator":466,"material-ui/Toolbar/ToolbarTitle":467,"react":693,"toastr":705}],4:[function(require,module,exports){
+},{"../actions/questionnaire-actions":1,"../constants/app-constants":15,"../store/questionnaire-store":21,"./loader-dialog":9,"material-ui/DropDownMenu":413,"material-ui/FlatButton":416,"material-ui/FontIcon":420,"material-ui/IconButton":422,"material-ui/IconMenu":424,"material-ui/MenuItem":432,"material-ui/RaisedButton":439,"material-ui/Toolbar/Toolbar":468,"material-ui/Toolbar/ToolbarGroup":469,"material-ui/Toolbar/ToolbarSeparator":470,"material-ui/Toolbar/ToolbarTitle":471,"react":707,"toastr":709}],4:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -882,7 +896,7 @@ var ChoiceGroup = function (_React$Component) {
 
 exports.default = ChoiceGroup;
 
-},{"lodash":392,"material-ui/Card/Card":400,"material-ui/Card/CardHeader":402,"material-ui/Card/CardText":403,"material-ui/FlatButton":412,"material-ui/FontIcon":416,"material-ui/Table":451,"material-ui/TextField":461,"react":693}],5:[function(require,module,exports){
+},{"lodash":395,"material-ui/Card/Card":403,"material-ui/Card/CardHeader":406,"material-ui/Card/CardText":407,"material-ui/FlatButton":416,"material-ui/FontIcon":420,"material-ui/Table":455,"material-ui/TextField":465,"react":707}],5:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1014,7 +1028,7 @@ var ChoicesTab = function (_React$Component) {
 
 exports.default = ChoicesTab;
 
-},{"../actions/questionnaire-actions":1,"../store/questionnaire-store":21,"./choice-group":4,"material-ui/FloatingActionButton":414,"material-ui/svg-icons/content/add":490,"react":693}],6:[function(require,module,exports){
+},{"../actions/questionnaire-actions":1,"../store/questionnaire-store":21,"./choice-group":4,"material-ui/FloatingActionButton":418,"material-ui/svg-icons/content/add":507,"react":707}],6:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1120,7 +1134,7 @@ var DialogOkayCancel = function (_React$Component) {
 
 exports.default = DialogOkayCancel;
 
-},{"material-ui/Dialog":407,"material-ui/FlatButton":412,"material-ui/RaisedButton":435,"react":693}],7:[function(require,module,exports){
+},{"material-ui/Dialog":411,"material-ui/FlatButton":416,"material-ui/RaisedButton":439,"react":707}],7:[function(require,module,exports){
 'use strict';
 
 var _genericQuestionForm = require('../components/generic-question-form');
@@ -1172,7 +1186,7 @@ module.exports = {
   }
 };
 
-},{"../components/generic-question-form":8,"../components/select-question-form":12,"../components/unique-id-question-form":14,"lodash":392}],8:[function(require,module,exports){
+},{"../components/generic-question-form":8,"../components/select-question-form":12,"../components/unique-id-question-form":14,"lodash":395}],8:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1231,7 +1245,7 @@ var GenericQuestionForm = function (_React$Component) {
 exports.default = GenericQuestionForm;
 ;
 
-},{"./base-question-form":2,"react":693}],9:[function(require,module,exports){
+},{"./base-question-form":2,"react":707}],9:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1344,7 +1358,7 @@ var LoaderDialog = function (_React$Component) {
 
 exports.default = LoaderDialog;
 
-},{"material-ui/Dialog":407,"material-ui/FlatButton":412,"material-ui/RaisedButton":435,"material-ui/RefreshIndicator":437,"react":693}],10:[function(require,module,exports){
+},{"material-ui/Dialog":411,"material-ui/FlatButton":416,"material-ui/RaisedButton":439,"material-ui/RefreshIndicator":441,"react":707}],10:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1373,6 +1387,14 @@ var _CardHeader = require('material-ui/Card/CardHeader');
 
 var _CardHeader2 = _interopRequireDefault(_CardHeader);
 
+var _CardActions = require('material-ui/Card/CardActions');
+
+var _CardActions2 = _interopRequireDefault(_CardActions);
+
+var _FlatButton = require('material-ui/FlatButton');
+
+var _FlatButton2 = _interopRequireDefault(_FlatButton);
+
 var _CardText = require('material-ui/Card/CardText');
 
 var _CardText2 = _interopRequireDefault(_CardText);
@@ -1397,10 +1419,6 @@ var _Paper = require('material-ui/Paper');
 
 var _Paper2 = _interopRequireDefault(_Paper);
 
-var _FlatButton = require('material-ui/FlatButton');
-
-var _FlatButton2 = _interopRequireDefault(_FlatButton);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -1410,8 +1428,17 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var style = {
-  question_row: {
+  questionRow: {
     background: "#e8eff6",
+    borderTopStyle: "solid",
+    borderTopColor: "grey",
+    borderWidth: "2px",
+    float: "left",
+    clear: "both",
+    width: "75.3%"
+  },
+  questionAction: {
+    float: "right",
     borderTopStyle: "solid",
     borderTopColor: "grey",
     borderWidth: "2px"
@@ -1461,6 +1488,14 @@ var Question = function (_React$Component) {
       _this.props.onDelete(_this.props.question);
     };
 
+    _this.onMoveUp = function (event) {
+      _this.props.onMoveUp(_this.props.question);
+    };
+
+    _this.onMoveDown = function (event) {
+      _this.props.onMoveDown(_this.props.question);
+    };
+
     _this.formType = _formFactory2.default.getFormForQuestionType(_this.props.question.type);
     return _this;
   }
@@ -1486,8 +1521,26 @@ var Question = function (_React$Component) {
           subtitle: this.props.question.type,
           actAsExpander: true,
           showExpandableButton: true,
-          style: style.question_row
+          style: style.questionRow
         }),
+        _react2.default.createElement(
+          _CardActions2.default,
+          { style: style.questionAction },
+          _react2.default.createElement(_FlatButton2.default, { label: 'Up',
+            onMouseDown: this.onMoveUp,
+            icon: _react2.default.createElement(
+              _FontIcon2.default,
+              { className: 'material-icons' },
+              'arrow_upward'
+            ) }),
+          _react2.default.createElement(_FlatButton2.default, { label: 'Down',
+            onMouseDown: this.onMoveDown,
+            icon: _react2.default.createElement(
+              _FontIcon2.default,
+              { className: 'material-icons' },
+              'arrow_downward'
+            ) })
+        ),
         _react2.default.createElement(
           _CardText2.default,
           { expandable: true },
@@ -1512,7 +1565,7 @@ var Question = function (_React$Component) {
 
 exports.default = Question;
 
-},{"../actions/questionnaire-actions":1,"../constants/app-constants":15,"./form-factory":7,"lodash":392,"material-ui/Card/Card":400,"material-ui/Card/CardHeader":402,"material-ui/Card/CardText":403,"material-ui/FlatButton":412,"material-ui/FontIcon":416,"material-ui/Paper":430,"react":693,"toastr":705}],11:[function(require,module,exports){
+},{"../actions/questionnaire-actions":1,"../constants/app-constants":15,"./form-factory":7,"lodash":395,"material-ui/Card/Card":403,"material-ui/Card/CardActions":404,"material-ui/Card/CardHeader":406,"material-ui/Card/CardText":407,"material-ui/FlatButton":416,"material-ui/FontIcon":420,"material-ui/Paper":434,"react":707,"toastr":709}],11:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1743,7 +1796,7 @@ var QuestionnaireList = function (_React$Component) {
 
 exports.default = QuestionnaireList;
 
-},{"../actions/questionnaire-actions":1,"../constants/app-constants":15,"../store/questionnaire-store":21,"./builder-toolbar":3,"./choices-tab":5,"./form-factory":7,"./survey-tab":13,"lodash":392,"material-ui/Card/Card":400,"material-ui/Card/CardText":403,"material-ui/FloatingActionButton":414,"material-ui/FontIcon":416,"material-ui/IconButton":418,"material-ui/LinearProgress":422,"material-ui/Paper":430,"material-ui/Tabs/Tab":453,"material-ui/Tabs/Tabs":455,"material-ui/svg-icons/content/add":490,"react":693}],12:[function(require,module,exports){
+},{"../actions/questionnaire-actions":1,"../constants/app-constants":15,"../store/questionnaire-store":21,"./builder-toolbar":3,"./choices-tab":5,"./form-factory":7,"./survey-tab":13,"lodash":395,"material-ui/Card/Card":403,"material-ui/Card/CardText":407,"material-ui/FloatingActionButton":418,"material-ui/FontIcon":420,"material-ui/IconButton":422,"material-ui/LinearProgress":426,"material-ui/Paper":434,"material-ui/Tabs/Tab":457,"material-ui/Tabs/Tabs":459,"material-ui/svg-icons/content/add":507,"react":707}],12:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1847,7 +1900,7 @@ var SelectQuestionForm = function (_React$Component) {
 
 exports.default = SelectQuestionForm;
 
-},{"../constants/app-constants":15,"../store/questionnaire-store":21,"./base-question-form":2,"lodash":392,"material-ui/MenuItem":428,"material-ui/SelectField":439,"react":693}],13:[function(require,module,exports){
+},{"../constants/app-constants":15,"../store/questionnaire-store":21,"./base-question-form":2,"lodash":395,"material-ui/MenuItem":432,"material-ui/SelectField":443,"react":707}],13:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1933,6 +1986,14 @@ var SurveyTab = function (_React$Component) {
       _questionnaireActions2.default.createQuestion();
     };
 
+    _this.onMoveUp = function (question) {
+      _questionnaireActions2.default.moveUp(question);
+    };
+
+    _this.onMoveDown = function (question) {
+      _questionnaireActions2.default.moveDown(question);
+    };
+
     return _this;
   }
 
@@ -1981,10 +2042,12 @@ var SurveyTab = function (_React$Component) {
           }
 
           questionViews.push(_react2.default.createElement(_question2.default, {
-            key: 'question_' + key,
+            key: key,
             question: questions[key],
             onChange: this.onChange,
             onDelete: this.onDelete,
+            onMoveUp: this.onMoveUp,
+            onMoveDown: this.onMoveDown,
             errors: questionErrors
           }));
         }
@@ -2024,7 +2087,7 @@ var SurveyTab = function (_React$Component) {
 
 exports.default = SurveyTab;
 
-},{"../actions/questionnaire-actions":1,"./choice-group":4,"./form-factory":7,"./question":10,"lodash":392,"material-ui/FloatingActionButton":414,"material-ui/svg-icons/content/add":490,"react":693}],14:[function(require,module,exports){
+},{"../actions/questionnaire-actions":1,"./choice-group":4,"./form-factory":7,"./question":10,"lodash":395,"material-ui/FloatingActionButton":418,"material-ui/svg-icons/content/add":507,"react":707}],14:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -2123,7 +2186,7 @@ var UniqueIdQuestionForm = function (_React$Component) {
 
 exports.default = UniqueIdQuestionForm;
 
-},{"../constants/app-constants":15,"../store/questionnaire-store":21,"./base-question-form":2,"lodash":392,"material-ui/MenuItem":428,"material-ui/SelectField":439,"react":693}],15:[function(require,module,exports){
+},{"../constants/app-constants":15,"../store/questionnaire-store":21,"./base-question-form":2,"lodash":395,"material-ui/MenuItem":432,"material-ui/SelectField":443,"react":707}],15:[function(require,module,exports){
 "use strict";
 
 module.exports = {
@@ -2135,7 +2198,9 @@ module.exports = {
 		CREATE_CHOICE: 'CREATE_CHOICE',
 		UPDATE_CHOICE: 'UPDATE_CHOICE',
 		CREATE_CHOICE_GROUP: 'CREATE_CHOICE_GROUP',
-		ERROR_ON_SAVE: 'ERROR_ON_SAVE'
+		ERROR_ON_SAVE: 'ERROR_ON_SAVE',
+		MOVE_UP: 'MOVE_UP',
+		MOVE_DOWN: 'MOVE_DOWN'
 	},
 	CommonErrorMessages: {
 		REQUIRED_ERROR_MESSAGE: 'This field is required',
@@ -2148,6 +2213,7 @@ module.exports = {
 		TITLE_MESSAGE: "Please Wait...",
 		SAVE_DRAFT_MESSAGE: "Questionnaire draft being saved"
 	},
+	GroupBoundaries: ['begin_group', 'begin_repeat', 'end_group', 'end_repeat'],
 	MANDATORY_ASTERISK: '*',
 	REQUIRED_QUESTION_FIELDS: ['label', 'name', 'type'],
 	REQUIRED_CHOICE_FIELDS: ['list_name', 'name', 'label'],
@@ -2163,7 +2229,7 @@ var _flux = require('flux');
 
 module.exports = new _flux.Dispatcher();
 
-},{"flux":316}],17:[function(require,module,exports){
+},{"flux":317}],17:[function(require,module,exports){
 "use strict";
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -2233,7 +2299,7 @@ var Main = function (_React$Component) {
 
 _reactDom2.default.render(_react2.default.createElement(Main, null), document.getElementById('questionnaire_builder'));
 
-},{"./components/questionnaire-list":11,"babel-polyfill":23,"material-ui/styles/MuiThemeProvider":482,"material-ui/styles/getMuiTheme":485,"react":693,"react-dom":514,"react-tap-event-plugin":527}],18:[function(require,module,exports){
+},{"./components/questionnaire-list":11,"babel-polyfill":23,"material-ui/styles/MuiThemeProvider":499,"material-ui/styles/getMuiTheme":502,"react":707,"react-dom":527,"react-tap-event-plugin":540}],18:[function(require,module,exports){
 'use strict';
 
 var _appConstants = require('../constants/app-constants');
@@ -2262,7 +2328,7 @@ var requiredChoiceRule = function requiredChoiceRule(choice) {
 
 module.exports = requiredChoiceRule;
 
-},{"../constants/app-constants":15,"lodash":392}],19:[function(require,module,exports){
+},{"../constants/app-constants":15,"lodash":395}],19:[function(require,module,exports){
 'use strict';
 
 var _appConstants = require('../constants/app-constants');
@@ -2296,7 +2362,7 @@ var requiredFieldRule = function requiredFieldRule(question) {
 
 module.exports = requiredFieldRule;
 
-},{"../constants/app-constants":15,"lodash":392}],20:[function(require,module,exports){
+},{"../constants/app-constants":15,"lodash":395}],20:[function(require,module,exports){
 'use strict';
 
 var _requiredFieldRule = require('./required-field-rule');
@@ -2507,6 +2573,38 @@ var computeCascadesGrouped = function computeCascadesGrouped() {
 		}
 	}
 };
+var findQuestionIndex = function findQuestionIndex(question) {
+	var index = _lodash2.default.findIndex(_questionnaire.survey, { temp_id: question.temp_id });
+	if (index < 0) {
+		index = _lodash2.default.findIndex(_questionnaire.survey, { name: question.name });
+	}
+	return index;
+};
+
+var moveUp = function moveUp(question) {
+	var index = findQuestionIndex(question);
+	if (index > 0) {
+		var previousIndex = index - 1;
+		var previousQuestion = _questionnaire.survey[previousIndex];
+		console.log(_appConstants2.default.GroupBoundaries);
+		if (_appConstants2.default.GroupBoundaries.indexOf(previousQuestion.type) == -1) {
+			_questionnaire.survey[index] = previousQuestion;
+			_questionnaire.survey[previousIndex] = question;
+		}
+	}
+};
+
+var moveDown = function moveDown(question) {
+	var index = findQuestionIndex(question);
+	if (index < _questionnaire.survey.length - 1) {
+		var nextIndex = index + 1;
+		var nextQuestion = _questionnaire.survey[nextIndex];
+		if (_appConstants2.default.GroupBoundaries.indexOf(nextQuestion.type) == -1) {
+			_questionnaire.survey[index] = nextQuestion;
+			_questionnaire.survey[nextIndex] = question;
+		}
+	}
+};
 
 var QuestionnaireStore = Object.assign({}, _events.EventEmitter.prototype, {
 
@@ -2574,14 +2672,6 @@ var QuestionnaireStore = Object.assign({}, _events.EventEmitter.prototype, {
 		}
 	},
 
-	findQuestionIndex: function findQuestionIndex(question) {
-		var index = _lodash2.default.findIndex(_questionnaire.survey, { temp_id: question.temp_id });
-		if (index < 0) {
-			index = _lodash2.default.findIndex(_questionnaire.survey, { name: question.name });
-		}
-		return index;
-	},
-
 	findChoiceIndex: function findChoiceIndex(choice) {
 		return _lodash2.default.findIndex(_questionnaire.choices, { base_index: choice.base_index });
 	},
@@ -2622,13 +2712,13 @@ var QuestionnaireStore = Object.assign({}, _events.EventEmitter.prototype, {
 	},
 
 	update: function update(question) {
-		_questionnaire.survey[this.findQuestionIndex(question)] = question;
+		_questionnaire.survey[findQuestionIndex(question)] = question;
 		removeQuestionValidationErrorsIfExists(question);
 		_errors = _lodash2.default.concat(_errors, _validator2.default.validateQuestion(question));
 	},
 
 	delete: function _delete(question) {
-		_questionnaire.survey.splice(this.findQuestionIndex(question), 1);
+		_questionnaire.survey.splice(findQuestionIndex(question), 1);
 	},
 
 	updateChoice: function updateChoice(choice) {
@@ -2656,6 +2746,14 @@ _appDispatcher2.default.register(function (action) {
 		case _appConstants2.default.ActionTypes.DELETE_CHOICE:
 			QuestionnaireStore.emitChange();
 			break;
+		case _appConstants2.default.ActionTypes.MOVE_UP:
+			moveUp(action.data.question);
+			QuestionnaireStore.emitChange();
+			break;
+		case _appConstants2.default.ActionTypes.MOVE_DOWN:
+			moveDown(action.data.question);
+			QuestionnaireStore.emitChange();
+			break;
 		case _appConstants2.default.ActionTypes.CREATE_CHOICE_GROUP:
 			createChoiceGroup();
 			QuestionnaireStore.emitChange();
@@ -2675,7 +2773,7 @@ _appDispatcher2.default.register(function (action) {
 
 module.exports = QuestionnaireStore;
 
-},{"../constants/app-constants":15,"../dispatcher/app-dispatcher":16,"./validator":22,"events":315,"lodash":392}],22:[function(require,module,exports){
+},{"../constants/app-constants":15,"../dispatcher/app-dispatcher":16,"./validator":22,"events":315,"lodash":395}],22:[function(require,module,exports){
 'use strict';
 
 var _appConstants = require('../constants/app-constants');
@@ -2745,7 +2843,7 @@ module.exports = {
   validateChoices: validateChoices
 };
 
-},{"../constants/app-constants":15,"../rules/rules":20,"lodash":392}],23:[function(require,module,exports){
+},{"../constants/app-constants":15,"../rules/rules":20,"lodash":395}],23:[function(require,module,exports){
 (function (global){
 /* eslint max-len: 0 */
 
@@ -9232,7 +9330,7 @@ module.exports = require('./modules/_core');
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 
-},{"_process":510}],313:[function(require,module,exports){
+},{"_process":526}],313:[function(require,module,exports){
 /*!
   * Bowser - a browser detector
   * https://github.com/ded/bowser
@@ -9876,6 +9974,59 @@ function isUndefined(arg) {
 }
 
 },{}],316:[function(require,module,exports){
+(function (process){
+/**
+ * Copyright 2013-2015, Facebook, Inc.
+ * All rights reserved.
+ *
+ * This source code is licensed under the BSD-style license found in the
+ * LICENSE file in the root directory of this source tree. An additional grant
+ * of patent rights can be found in the PATENTS file in the same directory.
+ *
+ * @providesModule invariant
+ */
+
+"use strict";
+
+/**
+ * Use invariant() to assert state which your program assumes to be true.
+ *
+ * Provide sprintf-style format (only %s is supported) and arguments
+ * to provide information about what broke and what you were
+ * expecting.
+ *
+ * The invariant message will be stripped in production, but the invariant
+ * will remain to ensure logic does not differ in production.
+ */
+
+var invariant = function (condition, format, a, b, c, d, e, f) {
+  if (process.env.NODE_ENV !== 'production') {
+    if (format === undefined) {
+      throw new Error('invariant requires an error message argument');
+    }
+  }
+
+  if (!condition) {
+    var error;
+    if (format === undefined) {
+      error = new Error('Minified exception occurred; use the non-minified dev environment ' + 'for the full error message and additional helpful warnings.');
+    } else {
+      var args = [a, b, c, d, e, f];
+      var argIndex = 0;
+      error = new Error('Invariant Violation: ' + format.replace(/%s/g, function () {
+        return args[argIndex++];
+      }));
+    }
+
+    error.framesToPop = 1; // we don't care about invariant's own frame
+    throw error;
+  }
+};
+
+module.exports = invariant;
+}).call(this,require('_process'))
+
+},{"_process":526}],317:[function(require,module,exports){
 /**
  * Copyright (c) 2014-2015, Facebook, Inc.
  * All rights reserved.
@@ -9887,7 +10038,7 @@ function isUndefined(arg) {
 
 module.exports.Dispatcher = require('./lib/Dispatcher');
 
-},{"./lib/Dispatcher":317}],317:[function(require,module,exports){
+},{"./lib/Dispatcher":318}],318:[function(require,module,exports){
 (function (process){
 /**
  * Copyright (c) 2014-2015, Facebook, Inc.
@@ -10122,60 +10273,7 @@ var Dispatcher = (function () {
 module.exports = Dispatcher;
 }).call(this,require('_process'))
 
-},{"_process":510,"fbjs/lib/invariant":318}],318:[function(require,module,exports){
-(function (process){
-/**
- * Copyright 2013-2015, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
- *
- * @providesModule invariant
- */
-
-"use strict";
-
-/**
- * Use invariant() to assert state which your program assumes to be true.
- *
- * Provide sprintf-style format (only %s is supported) and arguments
- * to provide information about what broke and what you were
- * expecting.
- *
- * The invariant message will be stripped in production, but the invariant
- * will remain to ensure logic does not differ in production.
- */
-
-var invariant = function (condition, format, a, b, c, d, e, f) {
-  if (process.env.NODE_ENV !== 'production') {
-    if (format === undefined) {
-      throw new Error('invariant requires an error message argument');
-    }
-  }
-
-  if (!condition) {
-    var error;
-    if (format === undefined) {
-      error = new Error('Minified exception occurred; use the non-minified dev environment ' + 'for the full error message and additional helpful warnings.');
-    } else {
-      var args = [a, b, c, d, e, f];
-      var argIndex = 0;
-      error = new Error('Invariant Violation: ' + format.replace(/%s/g, function () {
-        return args[argIndex++];
-      }));
-    }
-
-    error.framesToPop = 1; // we don't care about invariant's own frame
-    throw error;
-  }
-};
-
-module.exports = invariant;
-}).call(this,require('_process'))
-
-},{"_process":510}],319:[function(require,module,exports){
+},{"_process":526,"fbjs/lib/invariant":316}],319:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -10421,13 +10519,16 @@ var _prefixProps = require('../prefixProps');
 
 var _prefixProps2 = _interopRequireDefault(_prefixProps);
 
-var properties = { transition: true, transitionProperty: true };
+var properties = {
+  'transition': true,
+  'transitionProperty': true
+};
 
 function transition(property, value) {
   // also check for already prefixed transitions
   var unprefixedProperty = (0, _utilsUnprefixProperty2['default'])(property);
   if (typeof value === 'string' && properties[unprefixedProperty]) {
-    var _ref2;
+    var _ref;
 
     var _ret = (function () {
       // only split multi values, not cubic beziers
@@ -10451,17 +10552,10 @@ function transition(property, value) {
       });
 
       var outputValue = multipleValues.join(',');
-
-      if (unprefixedProperty !== property) {
-        return {
-          v: _defineProperty({}, property, outputValue)
-        };
-      }
-
       return {
-        v: (_ref2 = {}, _defineProperty(_ref2, 'Webkit' + (0, _utilsCapitalizeString2['default'])(property), outputValue.split(',').filter(function (value) {
+        v: (_ref = {}, _defineProperty(_ref, 'Webkit' + (0, _utilsCapitalizeString2['default'])(property), outputValue.split(',').filter(function (value) {
           return value.match(/-moz-|-ms-/) === null;
-        }).join(',')), _defineProperty(_ref2, property, outputValue), _ref2)
+        }).join(',')), _defineProperty(_ref, property, outputValue), _ref)
       };
     })();
 
@@ -10543,6 +10637,7 @@ function prefixAll(styles) {
     } else {
       Object.keys(_prefixProps2['default']).forEach(function (prefix) {
         var properties = _prefixProps2['default'][prefix];
+
         // add prefixes if needed
         if (properties[property]) {
           prefixedStyles[prefix + (0, _utilsCapitalizeString2['default'])(property)] = value;
@@ -21386,7 +21481,7 @@ for (var alias in aliases) {
 },{}],352:[function(require,module,exports){
 (function (global){
 /**
- * lodash 4.5.6 (Custom Build) <https://lodash.com/>
+ * lodash 4.5.5 (Custom Build) <https://lodash.com/>
  * Build: `lodash modularize exports="npm" -o ./`
  * Copyright jQuery Foundation and other contributors <https://jquery.org/>
  * Released under MIT license <https://lodash.com/license>
@@ -22434,10 +22529,24 @@ function copyArray(source, array) {
  * @param {Object} source The object to copy properties from.
  * @param {Array} props The property identifiers to copy.
  * @param {Object} [object={}] The object to copy properties to.
+ * @returns {Object} Returns `object`.
+ */
+function copyObject(source, props, object) {
+  return copyObjectWith(source, props, object);
+}
+
+/**
+ * This function is like `copyObject` except that it accepts a function to
+ * customize copied values.
+ *
+ * @private
+ * @param {Object} source The object to copy properties from.
+ * @param {Array} props The property identifiers to copy.
+ * @param {Object} [object={}] The object to copy properties to.
  * @param {Function} [customizer] The function to customize copied values.
  * @returns {Object} Returns `object`.
  */
-function copyObject(source, props, object, customizer) {
+function copyObjectWith(source, props, object, customizer) {
   object || (object = {});
 
   var index = -1,
@@ -23790,7 +23899,7 @@ module.exports = Stack;
 
 },{}],354:[function(require,module,exports){
 /**
- * lodash 4.0.6 (Custom Build) <https://lodash.com/>
+ * lodash 4.0.5 (Custom Build) <https://lodash.com/>
  * Build: `lodash modularize exports="npm" -o ./`
  * Copyright jQuery Foundation and other contributors <https://jquery.org/>
  * Released under MIT license <https://lodash.com/license>
@@ -23910,13 +24019,12 @@ var now = Date.now;
 function debounce(func, wait, options) {
   var lastArgs,
       lastThis,
-      maxWait,
       result,
       timerId,
       lastCallTime = 0,
       lastInvokeTime = 0,
       leading = false,
-      maxing = false,
+      maxWait = false,
       trailing = true;
 
   if (typeof func != 'function') {
@@ -23925,8 +24033,7 @@ function debounce(func, wait, options) {
   wait = toNumber(wait) || 0;
   if (isObject(options)) {
     leading = !!options.leading;
-    maxing = 'maxWait' in options;
-    maxWait = maxing ? nativeMax(toNumber(options.maxWait) || 0, wait) : maxWait;
+    maxWait = 'maxWait' in options && nativeMax(toNumber(options.maxWait) || 0, wait);
     trailing = 'trailing' in options ? !!options.trailing : trailing;
   }
 
@@ -23954,7 +24061,7 @@ function debounce(func, wait, options) {
         timeSinceLastInvoke = time - lastInvokeTime,
         result = wait - timeSinceLastCall;
 
-    return maxing ? nativeMin(result, maxWait - timeSinceLastInvoke) : result;
+    return maxWait === false ? result : nativeMin(result, maxWait - timeSinceLastInvoke);
   }
 
   function shouldInvoke(time) {
@@ -23965,7 +24072,7 @@ function debounce(func, wait, options) {
     // trailing edge, the system time has gone backwards and we're treating
     // it as the trailing edge, or we've hit the `maxWait` limit.
     return (!lastCallTime || (timeSinceLastCall >= wait) ||
-      (timeSinceLastCall < 0) || (maxing && timeSinceLastInvoke >= maxWait));
+      (timeSinceLastCall < 0) || (maxWait !== false && timeSinceLastInvoke >= maxWait));
   }
 
   function timerExpired() {
@@ -24014,12 +24121,10 @@ function debounce(func, wait, options) {
       if (timerId === undefined) {
         return leadingEdge(lastCallTime);
       }
-      if (maxing) {
-        // Handle invocations in a tight loop.
-        clearTimeout(timerId);
-        timerId = setTimeout(timerExpired, wait);
-        return invokeFunc(lastCallTime);
-      }
+      // Handle invocations in a tight loop.
+      clearTimeout(timerId);
+      timerId = setTimeout(timerExpired, wait);
+      return invokeFunc(lastCallTime);
     }
     if (timerId === undefined) {
       timerId = setTimeout(timerExpired, wait);
@@ -24820,7 +24925,7 @@ module.exports = keysIn;
 
 },{}],357:[function(require,module,exports){
 /**
- * lodash 4.3.5 (Custom Build) <https://lodash.com/>
+ * lodash 4.3.4 (Custom Build) <https://lodash.com/>
  * Build: `lodash modularize exports="npm" -o ./`
  * Copyright jQuery Foundation and other contributors <https://jquery.org/>
  * Released under MIT license <https://lodash.com/license>
@@ -24925,8 +25030,7 @@ var objectProto = Object.prototype;
 var hasOwnProperty = objectProto.hasOwnProperty;
 
 /**
- * Used to resolve the
- * [`toStringTag`](http://ecma-international.org/ecma-262/6.0/#sec-object.prototype.tostring)
+ * Used to resolve the [`toStringTag`](http://ecma-international.org/ecma-262/6.0/#sec-object.prototype.tostring)
  * of values.
  */
 var objectToString = objectProto.toString;
@@ -25117,10 +25221,24 @@ function copyArray(source, array) {
  * @param {Object} source The object to copy properties from.
  * @param {Array} props The property identifiers to copy.
  * @param {Object} [object={}] The object to copy properties to.
+ * @returns {Object} Returns `object`.
+ */
+function copyObject(source, props, object) {
+  return copyObjectWith(source, props, object);
+}
+
+/**
+ * This function is like `copyObject` except that it accepts a function to
+ * customize copied values.
+ *
+ * @private
+ * @param {Object} source The object to copy properties from.
+ * @param {Array} props The property identifiers to copy.
+ * @param {Object} [object={}] The object to copy properties to.
  * @param {Function} [customizer] The function to customize copied values.
  * @returns {Object} Returns `object`.
  */
-function copyObject(source, props, object, customizer) {
+function copyObjectWith(source, props, object, customizer) {
   object || (object = {});
 
   var index = -1,
@@ -25412,9 +25530,8 @@ function isLength(value) {
 }
 
 /**
- * Checks if `value` is the
- * [language type](http://www.ecma-international.org/ecma-262/6.0/#sec-ecmascript-language-types)
- * of `Object`. (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
+ * Checks if `value` is the [language type](https://es5.github.io/#x8) of `Object`.
+ * (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
  *
  * @static
  * @memberOf _
@@ -25999,6 +26116,7 @@ function LazyWrapper(value) {
   this.__views__ = [];
 }
 
+// Ensure `LazyWrapper` is an instance of `baseLodash`.
 LazyWrapper.prototype = baseCreate(baseLodash.prototype);
 LazyWrapper.prototype.constructor = LazyWrapper;
 
@@ -26013,7 +26131,7 @@ var baseCreate = require('./_baseCreate'),
  *
  * @private
  * @param {*} value The value to wrap.
- * @param {boolean} [chainAll] Enable chaining for all wrapper methods.
+ * @param {boolean} [chainAll] Enable explicit method chain sequences.
  */
 function LodashWrapper(value, chainAll) {
   this.__wrapped__ = value;
@@ -26037,7 +26155,7 @@ var WeakMap = getNative(root, 'WeakMap');
 
 module.exports = WeakMap;
 
-},{"./_getNative":375,"./_root":380}],363:[function(require,module,exports){
+},{"./_getNative":375,"./_root":381}],363:[function(require,module,exports){
 /**
  * A faster alternative to `Function#apply`, this function invokes `func`
  * with the `this` binding of `thisArg` and the arguments of `args`.
@@ -26045,7 +26163,7 @@ module.exports = WeakMap;
  * @private
  * @param {Function} func The function to invoke.
  * @param {*} thisArg The `this` binding of `func`.
- * @param {...*} args The arguments to invoke `func` with.
+ * @param {Array} args The arguments to invoke `func` with.
  * @returns {*} Returns the result of `func`.
  */
 function apply(func, thisArg, args) {
@@ -26103,11 +26221,9 @@ function baseCreate(proto) {
 
 module.exports = baseCreate;
 
-},{"./isObject":390}],366:[function(require,module,exports){
+},{"./isObject":392}],366:[function(require,module,exports){
 var arrayPush = require('./_arrayPush'),
-    isArguments = require('./isArguments'),
-    isArray = require('./isArray'),
-    isArrayLikeObject = require('./isArrayLikeObject');
+    isFlattenable = require('./_isFlattenable');
 
 /**
  * The base implementation of `_.flatten` with support for restricting flattening.
@@ -26115,23 +26231,24 @@ var arrayPush = require('./_arrayPush'),
  * @private
  * @param {Array} array The array to flatten.
  * @param {number} depth The maximum recursion depth.
- * @param {boolean} [isStrict] Restrict flattening to arrays-like objects.
+ * @param {boolean} [predicate=isFlattenable] The function invoked per iteration.
+ * @param {boolean} [isStrict] Restrict to values that pass `predicate` checks.
  * @param {Array} [result=[]] The initial result value.
  * @returns {Array} Returns the new flattened array.
  */
-function baseFlatten(array, depth, isStrict, result) {
-  result || (result = []);
-
+function baseFlatten(array, depth, predicate, isStrict, result) {
   var index = -1,
       length = array.length;
 
+  predicate || (predicate = isFlattenable);
+  result || (result = []);
+
   while (++index < length) {
     var value = array[index];
-    if (depth > 0 && isArrayLikeObject(value) &&
-        (isStrict || isArray(value) || isArguments(value))) {
+    if (depth > 0 && predicate(value)) {
       if (depth > 1) {
         // Recursively flatten arrays (susceptible to call stack limits).
-        baseFlatten(value, depth - 1, isStrict, result);
+        baseFlatten(value, depth - 1, predicate, isStrict, result);
       } else {
         arrayPush(result, value);
       }
@@ -26144,9 +26261,9 @@ function baseFlatten(array, depth, isStrict, result) {
 
 module.exports = baseFlatten;
 
-},{"./_arrayPush":364,"./isArguments":383,"./isArray":384,"./isArrayLikeObject":386}],367:[function(require,module,exports){
+},{"./_arrayPush":364,"./_isFlattenable":376}],367:[function(require,module,exports){
 /**
- * The function whose prototype all chaining wrappers inherit from.
+ * The function whose prototype chain sequence wrappers inherit from.
  *
  * @private
  */
@@ -26269,7 +26386,9 @@ function createFlow(fromRight) {
           ) {
         wrapper = wrapper[getFuncName(data[0])].apply(wrapper, data[3]);
       } else {
-        wrapper = (func.length == 1 && isLaziable(func)) ? wrapper[funcName]() : wrapper.thru(func);
+        wrapper = (func.length == 1 && isLaziable(func))
+          ? wrapper[funcName]()
+          : wrapper.thru(func);
       }
     }
     return function() {
@@ -26293,7 +26412,7 @@ function createFlow(fromRight) {
 
 module.exports = createFlow;
 
-},{"./_LodashWrapper":361,"./_baseFlatten":366,"./_getData":372,"./_getFuncName":373,"./_isLaziable":377,"./isArray":384,"./rest":394}],372:[function(require,module,exports){
+},{"./_LodashWrapper":361,"./_baseFlatten":366,"./_getData":372,"./_getFuncName":373,"./_isLaziable":378,"./isArray":386,"./rest":397}],372:[function(require,module,exports){
 var metaMap = require('./_metaMap'),
     noop = require('./noop');
 
@@ -26310,7 +26429,7 @@ var getData = !metaMap ? noop : function(func) {
 
 module.exports = getData;
 
-},{"./_metaMap":378,"./noop":393}],373:[function(require,module,exports){
+},{"./_metaMap":379,"./noop":396}],373:[function(require,module,exports){
 var realNames = require('./_realNames');
 
 /** Used for built-in method references. */
@@ -26343,14 +26462,15 @@ function getFuncName(func) {
 
 module.exports = getFuncName;
 
-},{"./_realNames":379}],374:[function(require,module,exports){
+},{"./_realNames":380}],374:[function(require,module,exports){
 var baseProperty = require('./_baseProperty');
 
 /**
  * Gets the "length" property value of `object`.
  *
- * **Note:** This function is used to avoid a [JIT bug](https://bugs.webkit.org/show_bug.cgi?id=142792)
- * that affects Safari on at least iOS 8.1-8.3 ARM64.
+ * **Note:** This function is used to avoid a
+ * [JIT bug](https://bugs.webkit.org/show_bug.cgi?id=142792) that affects
+ * Safari on at least iOS 8.1-8.3 ARM64.
  *
  * @private
  * @param {Object} object The object to query.
@@ -26378,7 +26498,25 @@ function getNative(object, key) {
 
 module.exports = getNative;
 
-},{"./isNative":389}],376:[function(require,module,exports){
+},{"./isNative":391}],376:[function(require,module,exports){
+var isArguments = require('./isArguments'),
+    isArray = require('./isArray'),
+    isArrayLikeObject = require('./isArrayLikeObject');
+
+/**
+ * Checks if `value` is a flattenable `arguments` object or array.
+ *
+ * @private
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is flattenable, else `false`.
+ */
+function isFlattenable(value) {
+  return isArrayLikeObject(value) && (isArray(value) || isArguments(value));
+}
+
+module.exports = isFlattenable;
+
+},{"./isArguments":385,"./isArray":386,"./isArrayLikeObject":388}],377:[function(require,module,exports){
 /**
  * Checks if `value` is a host object in IE < 9.
  *
@@ -26400,7 +26538,7 @@ function isHostObject(value) {
 
 module.exports = isHostObject;
 
-},{}],377:[function(require,module,exports){
+},{}],378:[function(require,module,exports){
 var LazyWrapper = require('./_LazyWrapper'),
     getData = require('./_getData'),
     getFuncName = require('./_getFuncName'),
@@ -26411,7 +26549,8 @@ var LazyWrapper = require('./_LazyWrapper'),
  *
  * @private
  * @param {Function} func The function to check.
- * @returns {boolean} Returns `true` if `func` has a lazy counterpart, else `false`.
+ * @returns {boolean} Returns `true` if `func` has a lazy counterpart,
+ *  else `false`.
  */
 function isLaziable(func) {
   var funcName = getFuncName(func),
@@ -26429,7 +26568,7 @@ function isLaziable(func) {
 
 module.exports = isLaziable;
 
-},{"./_LazyWrapper":360,"./_getData":372,"./_getFuncName":373,"./wrapperLodash":397}],378:[function(require,module,exports){
+},{"./_LazyWrapper":360,"./_getData":372,"./_getFuncName":373,"./wrapperLodash":400}],379:[function(require,module,exports){
 var WeakMap = require('./_WeakMap');
 
 /** Used to store function metadata. */
@@ -26437,13 +26576,13 @@ var metaMap = WeakMap && new WeakMap;
 
 module.exports = metaMap;
 
-},{"./_WeakMap":362}],379:[function(require,module,exports){
+},{"./_WeakMap":362}],380:[function(require,module,exports){
 /** Used to lookup unminified function names. */
 var realNames = {};
 
 module.exports = realNames;
 
-},{}],380:[function(require,module,exports){
+},{}],381:[function(require,module,exports){
 (function (global){
 var checkGlobal = require('./_checkGlobal');
 
@@ -26489,7 +26628,32 @@ module.exports = root;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 
-},{"./_checkGlobal":369}],381:[function(require,module,exports){
+},{"./_checkGlobal":369}],382:[function(require,module,exports){
+/** Used to resolve the decompiled source of functions. */
+var funcToString = Function.prototype.toString;
+
+/**
+ * Converts `func` to its source code.
+ *
+ * @private
+ * @param {Function} func The function to process.
+ * @returns {string} Returns the source code.
+ */
+function toSource(func) {
+  if (func != null) {
+    try {
+      return funcToString.call(func);
+    } catch (e) {}
+    try {
+      return (func + '');
+    } catch (e) {}
+  }
+  return '';
+}
+
+module.exports = toSource;
+
+},{}],383:[function(require,module,exports){
 var LazyWrapper = require('./_LazyWrapper'),
     LodashWrapper = require('./_LodashWrapper'),
     copyArray = require('./_copyArray');
@@ -26514,7 +26678,7 @@ function wrapperClone(wrapper) {
 
 module.exports = wrapperClone;
 
-},{"./_LazyWrapper":360,"./_LodashWrapper":361,"./_copyArray":370}],382:[function(require,module,exports){
+},{"./_LazyWrapper":360,"./_LodashWrapper":361,"./_copyArray":370}],384:[function(require,module,exports){
 var createFlow = require('./_createFlow');
 
 /**
@@ -26522,6 +26686,7 @@ var createFlow = require('./_createFlow');
  * invokes the given functions from right to left.
  *
  * @static
+ * @since 0.1.0
  * @memberOf _
  * @category Util
  * @param {...(Function|Function[])} [funcs] Functions to invoke.
@@ -26540,7 +26705,7 @@ var flowRight = createFlow(true);
 
 module.exports = flowRight;
 
-},{"./_createFlow":371}],383:[function(require,module,exports){
+},{"./_createFlow":371}],385:[function(require,module,exports){
 var isArrayLikeObject = require('./isArrayLikeObject');
 
 /** `Object#toString` result references. */
@@ -26553,7 +26718,8 @@ var objectProto = Object.prototype;
 var hasOwnProperty = objectProto.hasOwnProperty;
 
 /**
- * Used to resolve the [`toStringTag`](http://ecma-international.org/ecma-262/6.0/#sec-object.prototype.tostring)
+ * Used to resolve the
+ * [`toStringTag`](http://ecma-international.org/ecma-262/6.0/#sec-object.prototype.tostring)
  * of values.
  */
 var objectToString = objectProto.toString;
@@ -26566,9 +26732,11 @@ var propertyIsEnumerable = objectProto.propertyIsEnumerable;
  *
  * @static
  * @memberOf _
+ * @since 0.1.0
  * @category Lang
  * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is correctly classified, else `false`.
+ * @returns {boolean} Returns `true` if `value` is correctly classified,
+ *  else `false`.
  * @example
  *
  * _.isArguments(function() { return arguments; }());
@@ -26585,16 +26753,18 @@ function isArguments(value) {
 
 module.exports = isArguments;
 
-},{"./isArrayLikeObject":386}],384:[function(require,module,exports){
+},{"./isArrayLikeObject":388}],386:[function(require,module,exports){
 /**
  * Checks if `value` is classified as an `Array` object.
  *
  * @static
  * @memberOf _
+ * @since 0.1.0
  * @type {Function}
  * @category Lang
  * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is correctly classified, else `false`.
+ * @returns {boolean} Returns `true` if `value` is correctly classified,
+ *  else `false`.
  * @example
  *
  * _.isArray([1, 2, 3]);
@@ -26613,7 +26783,7 @@ var isArray = Array.isArray;
 
 module.exports = isArray;
 
-},{}],385:[function(require,module,exports){
+},{}],387:[function(require,module,exports){
 var getLength = require('./_getLength'),
     isFunction = require('./isFunction'),
     isLength = require('./isLength');
@@ -26625,6 +26795,7 @@ var getLength = require('./_getLength'),
  *
  * @static
  * @memberOf _
+ * @since 4.0.0
  * @category Lang
  * @param {*} value The value to check.
  * @returns {boolean} Returns `true` if `value` is array-like, else `false`.
@@ -26648,7 +26819,7 @@ function isArrayLike(value) {
 
 module.exports = isArrayLike;
 
-},{"./_getLength":374,"./isFunction":387,"./isLength":388}],386:[function(require,module,exports){
+},{"./_getLength":374,"./isFunction":389,"./isLength":390}],388:[function(require,module,exports){
 var isArrayLike = require('./isArrayLike'),
     isObjectLike = require('./isObjectLike');
 
@@ -26658,9 +26829,11 @@ var isArrayLike = require('./isArrayLike'),
  *
  * @static
  * @memberOf _
+ * @since 4.0.0
  * @category Lang
  * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is an array-like object, else `false`.
+ * @returns {boolean} Returns `true` if `value` is an array-like object,
+ *  else `false`.
  * @example
  *
  * _.isArrayLikeObject([1, 2, 3]);
@@ -26681,7 +26854,7 @@ function isArrayLikeObject(value) {
 
 module.exports = isArrayLikeObject;
 
-},{"./isArrayLike":385,"./isObjectLike":391}],387:[function(require,module,exports){
+},{"./isArrayLike":387,"./isObjectLike":393}],389:[function(require,module,exports){
 var isObject = require('./isObject');
 
 /** `Object#toString` result references. */
@@ -26692,7 +26865,8 @@ var funcTag = '[object Function]',
 var objectProto = Object.prototype;
 
 /**
- * Used to resolve the [`toStringTag`](http://ecma-international.org/ecma-262/6.0/#sec-object.prototype.tostring)
+ * Used to resolve the
+ * [`toStringTag`](http://ecma-international.org/ecma-262/6.0/#sec-object.prototype.tostring)
  * of values.
  */
 var objectToString = objectProto.toString;
@@ -26702,9 +26876,11 @@ var objectToString = objectProto.toString;
  *
  * @static
  * @memberOf _
+ * @since 0.1.0
  * @category Lang
  * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is correctly classified, else `false`.
+ * @returns {boolean} Returns `true` if `value` is correctly classified,
+ *  else `false`.
  * @example
  *
  * _.isFunction(_);
@@ -26723,20 +26899,23 @@ function isFunction(value) {
 
 module.exports = isFunction;
 
-},{"./isObject":390}],388:[function(require,module,exports){
+},{"./isObject":392}],390:[function(require,module,exports){
 /** Used as references for various `Number` constants. */
 var MAX_SAFE_INTEGER = 9007199254740991;
 
 /**
  * Checks if `value` is a valid array-like length.
  *
- * **Note:** This function is loosely based on [`ToLength`](http://ecma-international.org/ecma-262/6.0/#sec-tolength).
+ * **Note:** This function is loosely based on
+ * [`ToLength`](http://ecma-international.org/ecma-262/6.0/#sec-tolength).
  *
  * @static
  * @memberOf _
+ * @since 4.0.0
  * @category Lang
  * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is a valid length, else `false`.
+ * @returns {boolean} Returns `true` if `value` is a valid length,
+ *  else `false`.
  * @example
  *
  * _.isLength(3);
@@ -26758,15 +26937,19 @@ function isLength(value) {
 
 module.exports = isLength;
 
-},{}],389:[function(require,module,exports){
+},{}],391:[function(require,module,exports){
 var isFunction = require('./isFunction'),
     isHostObject = require('./_isHostObject'),
-    isObjectLike = require('./isObjectLike');
+    isObject = require('./isObject'),
+    toSource = require('./_toSource');
 
-/** Used to match `RegExp` [syntax characters](http://ecma-international.org/ecma-262/6.0/#sec-patterns). */
+/**
+ * Used to match `RegExp`
+ * [syntax characters](http://ecma-international.org/ecma-262/6.0/#sec-patterns).
+ */
 var reRegExpChar = /[\\^$.*+?()[\]{}|]/g;
 
-/** Used to detect host constructors (Safari > 5). */
+/** Used to detect host constructors (Safari). */
 var reIsHostCtor = /^\[object .+?Constructor\]$/;
 
 /** Used for built-in method references. */
@@ -26789,9 +26972,11 @@ var reIsNative = RegExp('^' +
  *
  * @static
  * @memberOf _
+ * @since 3.0.0
  * @category Lang
  * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is a native function, else `false`.
+ * @returns {boolean} Returns `true` if `value` is a native function,
+ *  else `false`.
  * @example
  *
  * _.isNative(Array.prototype.push);
@@ -26801,25 +26986,24 @@ var reIsNative = RegExp('^' +
  * // => false
  */
 function isNative(value) {
-  if (value == null) {
+  if (!isObject(value)) {
     return false;
   }
-  if (isFunction(value)) {
-    return reIsNative.test(funcToString.call(value));
-  }
-  return isObjectLike(value) &&
-    (isHostObject(value) ? reIsNative : reIsHostCtor).test(value);
+  var pattern = (isFunction(value) || isHostObject(value)) ? reIsNative : reIsHostCtor;
+  return pattern.test(toSource(value));
 }
 
 module.exports = isNative;
 
-},{"./_isHostObject":376,"./isFunction":387,"./isObjectLike":391}],390:[function(require,module,exports){
+},{"./_isHostObject":377,"./_toSource":382,"./isFunction":389,"./isObject":392}],392:[function(require,module,exports){
 /**
- * Checks if `value` is the [language type](https://es5.github.io/#x8) of `Object`.
- * (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
+ * Checks if `value` is the
+ * [language type](http://www.ecma-international.org/ecma-262/6.0/#sec-ecmascript-language-types)
+ * of `Object`. (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
  *
  * @static
  * @memberOf _
+ * @since 0.1.0
  * @category Lang
  * @param {*} value The value to check.
  * @returns {boolean} Returns `true` if `value` is an object, else `false`.
@@ -26844,13 +27028,14 @@ function isObject(value) {
 
 module.exports = isObject;
 
-},{}],391:[function(require,module,exports){
+},{}],393:[function(require,module,exports){
 /**
  * Checks if `value` is object-like. A value is object-like if it's not `null`
  * and has a `typeof` result of "object".
  *
  * @static
  * @memberOf _
+ * @since 4.0.0
  * @category Lang
  * @param {*} value The value to check.
  * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
@@ -26874,16 +27059,57 @@ function isObjectLike(value) {
 
 module.exports = isObjectLike;
 
-},{}],392:[function(require,module,exports){
+},{}],394:[function(require,module,exports){
+var isObjectLike = require('./isObjectLike');
+
+/** `Object#toString` result references. */
+var symbolTag = '[object Symbol]';
+
+/** Used for built-in method references. */
+var objectProto = Object.prototype;
+
+/**
+ * Used to resolve the
+ * [`toStringTag`](http://ecma-international.org/ecma-262/6.0/#sec-object.prototype.tostring)
+ * of values.
+ */
+var objectToString = objectProto.toString;
+
+/**
+ * Checks if `value` is classified as a `Symbol` primitive or object.
+ *
+ * @static
+ * @memberOf _
+ * @since 4.0.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is correctly classified,
+ *  else `false`.
+ * @example
+ *
+ * _.isSymbol(Symbol.iterator);
+ * // => true
+ *
+ * _.isSymbol('abc');
+ * // => false
+ */
+function isSymbol(value) {
+  return typeof value == 'symbol' ||
+    (isObjectLike(value) && objectToString.call(value) == symbolTag);
+}
+
+module.exports = isSymbol;
+
+},{"./isObjectLike":393}],395:[function(require,module,exports){
 (function (global){
 /**
  * @license
- * lodash 4.6.1 (Custom Build) <https://lodash.com/>
+ * lodash 4.10.0 (Custom Build) <https://lodash.com/>
  * Build: `lodash -d -o ./foo/lodash.js`
- * Copyright 2012-2016 The Dojo Foundation <http://dojofoundation.org/>
+ * Copyright jQuery Foundation and other contributors <https://jquery.org/>
+ * Released under MIT license <https://lodash.com/license>
  * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
- * Copyright 2009-2016 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
- * Available under MIT license <https://lodash.com/license>
+ * Copyright Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
  */
 ;(function() {
 
@@ -26891,7 +27117,7 @@ module.exports = isObjectLike;
   var undefined;
 
   /** Used as the semantic version number. */
-  var VERSION = '4.6.1';
+  var VERSION = '4.10.0';
 
   /** Used as the size to enable large array optimizations. */
   var LARGE_ARRAY_SIZE = 200;
@@ -26956,6 +27182,7 @@ module.exports = isObjectLike;
       mapTag = '[object Map]',
       numberTag = '[object Number]',
       objectTag = '[object Object]',
+      promiseTag = '[object Promise]',
       regexpTag = '[object RegExp]',
       setTag = '[object Set]',
       stringTag = '[object String]',
@@ -26964,6 +27191,7 @@ module.exports = isObjectLike;
       weakSetTag = '[object WeakSet]';
 
   var arrayBufferTag = '[object ArrayBuffer]',
+      dataViewTag = '[object DataView]',
       float32Tag = '[object Float32Array]',
       float64Tag = '[object Float64Array]',
       int8Tag = '[object Int8Array]',
@@ -26995,7 +27223,10 @@ module.exports = isObjectLike;
       reIsPlainProp = /^\w*$/,
       rePropName = /[^.[\]]+|\[(?:(-?\d+(?:\.\d+)?)|(["'])((?:(?!\2)[^\\]|\\.)*?)\2)\]/g;
 
-  /** Used to match `RegExp` [syntax characters](http://ecma-international.org/ecma-262/6.0/#sec-patterns). */
+  /**
+   * Used to match `RegExp`
+   * [syntax characters](http://ecma-international.org/ecma-262/6.0/#sec-patterns).
+   */
   var reRegExpChar = /[\\^$.*+?()[\]{}|]/g,
       reHasRegExpChar = RegExp(reRegExpChar.source);
 
@@ -27004,10 +27235,16 @@ module.exports = isObjectLike;
       reTrimStart = /^\s+/,
       reTrimEnd = /\s+$/;
 
+  /** Used to match non-compound words composed of alphanumeric characters. */
+  var reBasicWord = /[a-zA-Z0-9]+/g;
+
   /** Used to match backslashes in property paths. */
   var reEscapeChar = /\\(\\)?/g;
 
-  /** Used to match [ES template delimiters](http://ecma-international.org/ecma-262/6.0/#sec-template-literal-lexical-components). */
+  /**
+   * Used to match
+   * [ES template delimiters](http://ecma-international.org/ecma-262/6.0/#sec-template-literal-lexical-components).
+   */
   var reEsTemplate = /\$\{([^\\}]*(?:\\.[^\\}]*)*)\}/g;
 
   /** Used to match `RegExp` flags from their coerced string values. */
@@ -27022,7 +27259,7 @@ module.exports = isObjectLike;
   /** Used to detect binary string values. */
   var reIsBinary = /^0b[01]+$/i;
 
-  /** Used to detect host constructors (Safari > 5). */
+  /** Used to detect host constructors (Safari). */
   var reIsHostCtor = /^\[object .+?Constructor\]$/;
 
   /** Used to detect octal string values. */
@@ -27089,12 +27326,6 @@ module.exports = isObjectLike;
   /** Used to match [string symbols](https://mathiasbynens.be/notes/javascript-unicode). */
   var reComplexSymbol = RegExp(rsFitz + '(?=' + rsFitz + ')|' + rsSymbol + rsSeq, 'g');
 
-  /** Used to detect strings with [zero-width joiners or code points from the astral planes](http://eev.ee/blog/2015/09/12/dark-corners-of-unicode/). */
-  var reHasComplexSymbol = RegExp('[' + rsZWJ + rsAstralRange  + rsComboMarksRange + rsComboSymbolsRange + rsVarRange + ']');
-
-  /** Used to match non-compound words composed of alphanumeric characters. */
-  var reBasicWord = /[a-zA-Z0-9]+/g;
-
   /** Used to match complex or compound words. */
   var reComplexWord = RegExp([
     rsUpper + '?' + rsLower + '+(?=' + [rsBreak, rsUpper, '$'].join('|') + ')',
@@ -27105,16 +27336,19 @@ module.exports = isObjectLike;
     rsEmoji
   ].join('|'), 'g');
 
+  /** Used to detect strings with [zero-width joiners or code points from the astral planes](http://eev.ee/blog/2015/09/12/dark-corners-of-unicode/). */
+  var reHasComplexSymbol = RegExp('[' + rsZWJ + rsAstralRange  + rsComboMarksRange + rsComboSymbolsRange + rsVarRange + ']');
+
   /** Used to detect strings that need a more robust regexp to match words. */
-  var reHasComplexWord = /[a-z][A-Z]|[0-9][a-zA-Z]|[a-zA-Z][0-9]|[^a-zA-Z0-9 ]/;
+  var reHasComplexWord = /[a-z][A-Z]|[A-Z]{2,}[a-z]|[0-9][a-zA-Z]|[a-zA-Z][0-9]|[^a-zA-Z0-9 ]/;
 
   /** Used to assign default `context` object properties. */
   var contextProps = [
-    'Array', 'Buffer', 'Date', 'Error', 'Float32Array', 'Float64Array',
+    'Array', 'Buffer', 'DataView', 'Date', 'Error', 'Float32Array', 'Float64Array',
     'Function', 'Int8Array', 'Int16Array', 'Int32Array', 'Map', 'Math', 'Object',
-    'Reflect', 'RegExp', 'Set', 'String', 'Symbol', 'TypeError', 'Uint8Array',
-    'Uint8ClampedArray', 'Uint16Array', 'Uint32Array', 'WeakMap', '_',
-    'clearTimeout', 'isFinite', 'parseInt', 'setTimeout'
+    'Promise', 'Reflect', 'RegExp', 'Set', 'String', 'Symbol', 'TypeError',
+    'Uint8Array', 'Uint8ClampedArray', 'Uint16Array', 'Uint32Array', 'WeakMap',
+    '_', 'clearTimeout', 'isFinite', 'parseInt', 'setTimeout'
   ];
 
   /** Used to make template sourceURLs easier to identify. */
@@ -27129,25 +27363,26 @@ module.exports = isObjectLike;
   typedArrayTags[uint32Tag] = true;
   typedArrayTags[argsTag] = typedArrayTags[arrayTag] =
   typedArrayTags[arrayBufferTag] = typedArrayTags[boolTag] =
-  typedArrayTags[dateTag] = typedArrayTags[errorTag] =
-  typedArrayTags[funcTag] = typedArrayTags[mapTag] =
-  typedArrayTags[numberTag] = typedArrayTags[objectTag] =
-  typedArrayTags[regexpTag] = typedArrayTags[setTag] =
-  typedArrayTags[stringTag] = typedArrayTags[weakMapTag] = false;
+  typedArrayTags[dataViewTag] = typedArrayTags[dateTag] =
+  typedArrayTags[errorTag] = typedArrayTags[funcTag] =
+  typedArrayTags[mapTag] = typedArrayTags[numberTag] =
+  typedArrayTags[objectTag] = typedArrayTags[regexpTag] =
+  typedArrayTags[setTag] = typedArrayTags[stringTag] =
+  typedArrayTags[weakMapTag] = false;
 
   /** Used to identify `toStringTag` values supported by `_.clone`. */
   var cloneableTags = {};
   cloneableTags[argsTag] = cloneableTags[arrayTag] =
-  cloneableTags[arrayBufferTag] = cloneableTags[boolTag] =
-  cloneableTags[dateTag] = cloneableTags[float32Tag] =
-  cloneableTags[float64Tag] = cloneableTags[int8Tag] =
-  cloneableTags[int16Tag] = cloneableTags[int32Tag] =
-  cloneableTags[mapTag] = cloneableTags[numberTag] =
-  cloneableTags[objectTag] = cloneableTags[regexpTag] =
-  cloneableTags[setTag] = cloneableTags[stringTag] =
-  cloneableTags[symbolTag] = cloneableTags[uint8Tag] =
-  cloneableTags[uint8ClampedTag] = cloneableTags[uint16Tag] =
-  cloneableTags[uint32Tag] = true;
+  cloneableTags[arrayBufferTag] = cloneableTags[dataViewTag] =
+  cloneableTags[boolTag] = cloneableTags[dateTag] =
+  cloneableTags[float32Tag] = cloneableTags[float64Tag] =
+  cloneableTags[int8Tag] = cloneableTags[int16Tag] =
+  cloneableTags[int32Tag] = cloneableTags[mapTag] =
+  cloneableTags[numberTag] = cloneableTags[objectTag] =
+  cloneableTags[regexpTag] = cloneableTags[setTag] =
+  cloneableTags[stringTag] = cloneableTags[symbolTag] =
+  cloneableTags[uint8Tag] = cloneableTags[uint8ClampedTag] =
+  cloneableTags[uint16Tag] = cloneableTags[uint32Tag] = true;
   cloneableTags[errorTag] = cloneableTags[funcTag] =
   cloneableTags[weakMapTag] = false;
 
@@ -27285,7 +27520,7 @@ module.exports = isObjectLike;
    * @private
    * @param {Function} func The function to invoke.
    * @param {*} thisArg The `this` binding of `func`.
-   * @param {...*} args The arguments to invoke `func` with.
+   * @param {Array} args The arguments to invoke `func` with.
    * @returns {*} Returns the result of `func`.
    */
   function apply(func, thisArg, args) {
@@ -27392,7 +27627,8 @@ module.exports = isObjectLike;
    * @private
    * @param {Array} array The array to iterate over.
    * @param {Function} predicate The function invoked per iteration.
-   * @returns {boolean} Returns `true` if all elements pass the predicate check, else `false`.
+   * @returns {boolean} Returns `true` if all elements pass the predicate check,
+   *  else `false`.
    */
   function arrayEvery(array, predicate) {
     var index = -1,
@@ -27511,7 +27747,8 @@ module.exports = isObjectLike;
    * @param {Array} array The array to iterate over.
    * @param {Function} iteratee The function invoked per iteration.
    * @param {*} [accumulator] The initial value.
-   * @param {boolean} [initAccum] Specify using the first element of `array` as the initial value.
+   * @param {boolean} [initAccum] Specify using the first element of `array` as
+   *  the initial value.
    * @returns {*} Returns the accumulated value.
    */
   function arrayReduce(array, iteratee, accumulator, initAccum) {
@@ -27535,7 +27772,8 @@ module.exports = isObjectLike;
    * @param {Array} array The array to iterate over.
    * @param {Function} iteratee The function invoked per iteration.
    * @param {*} [accumulator] The initial value.
-   * @param {boolean} [initAccum] Specify using the last element of `array` as the initial value.
+   * @param {boolean} [initAccum] Specify using the last element of `array` as
+   *  the initial value.
    * @returns {*} Returns the accumulated value.
    */
   function arrayReduceRight(array, iteratee, accumulator, initAccum) {
@@ -27556,7 +27794,8 @@ module.exports = isObjectLike;
    * @private
    * @param {Array} array The array to iterate over.
    * @param {Function} predicate The function invoked per iteration.
-   * @returns {boolean} Returns `true` if any element passes the predicate check, else `false`.
+   * @returns {boolean} Returns `true` if any element passes the predicate check,
+   *  else `false`.
    */
   function arraySome(array, predicate) {
     var index = -1,
@@ -27608,7 +27847,8 @@ module.exports = isObjectLike;
    * @param {Array|Object} collection The collection to search.
    * @param {Function} predicate The function invoked per iteration.
    * @param {Function} eachFunc The function to iterate over `collection`.
-   * @param {boolean} [retKey] Specify returning the key of the found element instead of the element itself.
+   * @param {boolean} [retKey] Specify returning the key of the found element
+   *  instead of the element itself.
    * @returns {*} Returns the found element or its key, else `undefined`.
    */
   function baseFind(collection, predicate, eachFunc, retKey) {
@@ -27691,6 +27931,20 @@ module.exports = isObjectLike;
   }
 
   /**
+   * The base implementation of `_.mean` and `_.meanBy` without support for
+   * iteratee shorthands.
+   *
+   * @private
+   * @param {Array} array The array to iterate over.
+   * @param {Function} iteratee The function invoked per iteration.
+   * @returns {number} Returns the mean.
+   */
+  function baseMean(array, iteratee) {
+    var length = array ? array.length : 0;
+    return length ? (baseSum(array, iteratee) / length) : NAN;
+  }
+
+  /**
    * The base implementation of `_.reduce` and `_.reduceRight`, without support
    * for iteratee shorthands, which iterates over `collection` using `eachFunc`.
    *
@@ -27698,7 +27952,8 @@ module.exports = isObjectLike;
    * @param {Array|Object} collection The collection to iterate over.
    * @param {Function} iteratee The function invoked per iteration.
    * @param {*} accumulator The initial value.
-   * @param {boolean} initAccum Specify using the first or last element of `collection` as the initial value.
+   * @param {boolean} initAccum Specify using the first or last element of
+   *  `collection` as the initial value.
    * @param {Function} eachFunc The function to iterate over `collection`.
    * @returns {*} Returns the accumulated value.
    */
@@ -27732,7 +27987,8 @@ module.exports = isObjectLike;
   }
 
   /**
-   * The base implementation of `_.sum` without support for iteratee shorthands.
+   * The base implementation of `_.sum` and `_.sumBy` without support for
+   * iteratee shorthands.
    *
    * @private
    * @param {Array} array The array to iterate over.
@@ -27929,7 +28185,7 @@ module.exports = isObjectLike;
     // for more details.
     //
     // This also ensures a stable sort in V8 and other engines.
-    // See https://code.google.com/p/v8/issues/detail?id=90 for more details.
+    // See https://bugs.chromium.org/p/v8/issues/detail?id=90 for more details.
     return object.index - other.index;
   }
 
@@ -27951,6 +28207,29 @@ module.exports = isObjectLike;
       }
     }
     return result;
+  }
+
+  /**
+   * Creates a function that performs a mathematical operation on two values.
+   *
+   * @private
+   * @param {Function} operator The function to perform the operation.
+   * @returns {Function} Returns the new mathematical operation function.
+   */
+  function createMathOperation(operator) {
+    return function(value, other) {
+      var result;
+      if (value === undefined && other === undefined) {
+        return 0;
+      }
+      if (value !== undefined) {
+        result = value;
+      }
+      if (other !== undefined) {
+        result = result === undefined ? other : operator(result, other);
+      }
+      return result;
+    };
   }
 
   /**
@@ -28164,6 +28443,7 @@ module.exports = isObjectLike;
    *
    * @static
    * @memberOf _
+   * @since 1.1.0
    * @category Util
    * @param {Object} [context=root] The context object.
    * @returns {Function} Returns a new `lodash` function.
@@ -28221,7 +28501,8 @@ module.exports = isObjectLike;
     var objectCtorString = funcToString.call(Object);
 
     /**
-     * Used to resolve the [`toStringTag`](http://ecma-international.org/ecma-262/6.0/#sec-object.prototype.tostring)
+     * Used to resolve the
+     * [`toStringTag`](http://ecma-international.org/ecma-262/6.0/#sec-object.prototype.tostring)
      * of values.
      */
     var objectToString = objectProto.toString;
@@ -28242,7 +28523,6 @@ module.exports = isObjectLike;
         Uint8Array = context.Uint8Array,
         clearTimeout = context.clearTimeout,
         enumerate = Reflect ? Reflect.enumerate : undefined,
-        getPrototypeOf = Object.getPrototypeOf,
         getOwnPropertySymbols = Object.getOwnPropertySymbols,
         iteratorSymbol = typeof (iteratorSymbol = Symbol && Symbol.iterator) == 'symbol' ? iteratorSymbol : undefined,
         objectCreate = Object.create,
@@ -28253,6 +28533,7 @@ module.exports = isObjectLike;
     /* Built-in method references for those with the same name as other `lodash` methods. */
     var nativeCeil = Math.ceil,
         nativeFloor = Math.floor,
+        nativeGetPrototype = Object.getPrototypeOf,
         nativeIsFinite = context.isFinite,
         nativeJoin = arrayProto.join,
         nativeKeys = Object.keys,
@@ -28263,7 +28544,9 @@ module.exports = isObjectLike;
         nativeReverse = arrayProto.reverse;
 
     /* Built-in method references that are verified to be native. */
-    var Map = getNative(context, 'Map'),
+    var DataView = getNative(context, 'DataView'),
+        Map = getNative(context, 'Map'),
+        Promise = getNative(context, 'Promise'),
         Set = getNative(context, 'Set'),
         WeakMap = getNative(context, 'WeakMap'),
         nativeCreate = getNative(Object, 'create');
@@ -28278,9 +28561,11 @@ module.exports = isObjectLike;
     var realNames = {};
 
     /** Used to detect maps, sets, and weakmaps. */
-    var mapCtorString = Map ? funcToString.call(Map) : '',
-        setCtorString = Set ? funcToString.call(Set) : '',
-        weakMapCtorString = WeakMap ? funcToString.call(WeakMap) : '';
+    var dataViewCtorString = toSource(DataView),
+        mapCtorString = toSource(Map),
+        promiseCtorString = toSource(Promise),
+        setCtorString = toSource(Set),
+        weakMapCtorString = toSource(WeakMap);
 
     /** Used to convert symbols to primitives and strings. */
     var symbolProto = Symbol ? Symbol.prototype : undefined,
@@ -28291,25 +28576,25 @@ module.exports = isObjectLike;
 
     /**
      * Creates a `lodash` object which wraps `value` to enable implicit method
-     * chaining. Methods that operate on and return arrays, collections, and
-     * functions can be chained together. Methods that retrieve a single value or
-     * may return a primitive value will automatically end the chain sequence and
-     * return the unwrapped value. Otherwise, the value must be unwrapped with
-     * `_#value`.
+     * chain sequences. Methods that operate on and return arrays, collections,
+     * and functions can be chained together. Methods that retrieve a single value
+     * or may return a primitive value will automatically end the chain sequence
+     * and return the unwrapped value. Otherwise, the value must be unwrapped
+     * with `_#value`.
      *
-     * Explicit chaining, which must be unwrapped with `_#value` in all cases,
-     * may be enabled using `_.chain`.
+     * Explicit chain sequences, which must be unwrapped with `_#value`, may be
+     * enabled using `_.chain`.
      *
      * The execution of chained methods is lazy, that is, it's deferred until
      * `_#value` is implicitly or explicitly called.
      *
-     * Lazy evaluation allows several methods to support shortcut fusion. Shortcut
-     * fusion is an optimization to merge iteratee calls; this avoids the creation
-     * of intermediate arrays and can greatly reduce the number of iteratee executions.
-     * Sections of a chain sequence qualify for shortcut fusion if the section is
-     * applied to an array of at least two hundred elements and any iteratees
-     * accept only one argument. The heuristic for whether a section qualifies
-     * for shortcut fusion is subject to change.
+     * Lazy evaluation allows several methods to support shortcut fusion.
+     * Shortcut fusion is an optimization to merge iteratee calls; this avoids
+     * the creation of intermediate arrays and can greatly reduce the number of
+     * iteratee executions. Sections of a chain sequence qualify for shortcut
+     * fusion if the section is applied to an array of at least `200` elements
+     * and any iteratees accept only one argument. The heuristic for whether a
+     * section qualifies for shortcut fusion is subject to change.
      *
      * Chaining is supported in custom builds as long as the `_#value` method is
      * directly or indirectly included in the build.
@@ -28334,48 +28619,49 @@ module.exports = isObjectLike;
      * `curry`, `debounce`, `defaults`, `defaultsDeep`, `defer`, `delay`,
      * `difference`, `differenceBy`, `differenceWith`, `drop`, `dropRight`,
      * `dropRightWhile`, `dropWhile`, `extend`, `extendWith`, `fill`, `filter`,
-     * `flatten`, `flattenDeep`, `flattenDepth`, `flip`, `flow`, `flowRight`,
-     * `fromPairs`, `functions`, `functionsIn`, `groupBy`, `initial`, `intersection`,
-     * `intersectionBy`, `intersectionWith`, `invert`, `invertBy`, `invokeMap`,
-     * `iteratee`, `keyBy`, `keys`, `keysIn`, `map`, `mapKeys`, `mapValues`,
-     * `matches`, `matchesProperty`, `memoize`, `merge`, `mergeWith`, `method`,
-     * `methodOf`, `mixin`, `negate`, `nthArg`, `omit`, `omitBy`, `once`, `orderBy`,
-     * `over`, `overArgs`, `overEvery`, `overSome`, `partial`, `partialRight`,
-     * `partition`, `pick`, `pickBy`, `plant`, `property`, `propertyOf`, `pull`,
-     * `pullAll`, `pullAllBy`, `pullAllWith`, `pullAt`, `push`, `range`,
-     * `rangeRight`, `rearg`, `reject`, `remove`, `rest`, `reverse`, `sampleSize`,
-     * `set`, `setWith`, `shuffle`, `slice`, `sort`, `sortBy`, `splice`, `spread`,
-     * `tail`, `take`, `takeRight`, `takeRightWhile`, `takeWhile`, `tap`, `throttle`,
-     * `thru`, `toArray`, `toPairs`, `toPairsIn`, `toPath`, `toPlainObject`,
-     * `transform`, `unary`, `union`, `unionBy`, `unionWith`, `uniq`, `uniqBy`,
-     * `uniqWith`, `unset`, `unshift`, `unzip`, `unzipWith`, `update`, `values`,
-     * `valuesIn`, `without`, `wrap`, `xor`, `xorBy`, `xorWith`, `zip`, `zipObject`,
-     * `zipObjectDeep`, and `zipWith`
+     * `flatMap`, `flatMapDeep`, `flatMapDepth`, `flatten`, `flattenDeep`,
+     * `flattenDepth`, `flip`, `flow`, `flowRight`, `fromPairs`, `functions`,
+     * `functionsIn`, `groupBy`, `initial`, `intersection`, `intersectionBy`,
+     * `intersectionWith`, `invert`, `invertBy`, `invokeMap`, `iteratee`, `keyBy`,
+     * `keys`, `keysIn`, `map`, `mapKeys`, `mapValues`, `matches`, `matchesProperty`,
+     * `memoize`, `merge`, `mergeWith`, `method`, `methodOf`, `mixin`, `negate`,
+     * `nthArg`, `omit`, `omitBy`, `once`, `orderBy`, `over`, `overArgs`,
+     * `overEvery`, `overSome`, `partial`, `partialRight`, `partition`, `pick`,
+     * `pickBy`, `plant`, `property`, `propertyOf`, `pull`, `pullAll`, `pullAllBy`,
+     * `pullAllWith`, `pullAt`, `push`, `range`, `rangeRight`, `rearg`, `reject`,
+     * `remove`, `rest`, `reverse`, `sampleSize`, `set`, `setWith`, `shuffle`,
+     * `slice`, `sort`, `sortBy`, `splice`, `spread`, `tail`, `take`, `takeRight`,
+     * `takeRightWhile`, `takeWhile`, `tap`, `throttle`, `thru`, `toArray`,
+     * `toPairs`, `toPairsIn`, `toPath`, `toPlainObject`, `transform`, `unary`,
+     * `union`, `unionBy`, `unionWith`, `uniq`, `uniqBy`, `uniqWith`, `unset`,
+     * `unshift`, `unzip`, `unzipWith`, `update`, `updateWith`, `values`,
+     * `valuesIn`, `without`, `wrap`, `xor`, `xorBy`, `xorWith`, `zip`,
+     * `zipObject`, `zipObjectDeep`, and `zipWith`
      *
      * The wrapper methods that are **not** chainable by default are:
      * `add`, `attempt`, `camelCase`, `capitalize`, `ceil`, `clamp`, `clone`,
-     * `cloneDeep`, `cloneDeepWith`, `cloneWith`, `deburr`, `each`, `eachRight`,
-     * `endsWith`, `eq`, `escape`, `escapeRegExp`, `every`, `find`, `findIndex`,
-     * `findKey`, `findLast`, `findLastIndex`, `findLastKey`, `first`, `floor`,
-     * `forEach`, `forEachRight`, `forIn`, `forInRight`, `forOwn`, `forOwnRight`,
-     * `get`, `gt`, `gte`, `has`, `hasIn`, `head`, `identity`, `includes`,
-     * `indexOf`, `inRange`, `invoke`, `isArguments`, `isArray`, `isArrayBuffer`,
-     * `isArrayLike`, `isArrayLikeObject`, `isBoolean`, `isBuffer`, `isDate`,
-     * `isElement`, `isEmpty`, `isEqual`, `isEqualWith`, `isError`, `isFinite`,
-     * `isFunction`, `isInteger`, `isLength`, `isMap`, `isMatch`, `isMatchWith`,
-     * `isNaN`, `isNative`, `isNil`, `isNull`, `isNumber`, `isObject`, `isObjectLike`,
-     * `isPlainObject`, `isRegExp`, `isSafeInteger`, `isSet`, `isString`,
-     * `isUndefined`, `isTypedArray`, `isWeakMap`, `isWeakSet`, `join`, `kebabCase`,
-     * `last`, `lastIndexOf`, `lowerCase`, `lowerFirst`, `lt`, `lte`, `max`,
-     * `maxBy`, `mean`, `min`, `minBy`, `noConflict`, `noop`, `now`, `pad`,
-     * `padEnd`, `padStart`, `parseInt`, `pop`, `random`, `reduce`, `reduceRight`,
-     * `repeat`, `result`, `round`, `runInContext`, `sample`, `shift`, `size`,
-     * `snakeCase`, `some`, `sortedIndex`, `sortedIndexBy`, `sortedLastIndex`,
-     * `sortedLastIndexBy`, `startCase`, `startsWith`, `subtract`, `sum`, `sumBy`,
-     * `template`, `times`, `toInteger`, `toJSON`, `toLength`, `toLower`,
-     * `toNumber`, `toSafeInteger`, `toString`, `toUpper`, `trim`, `trimEnd`,
-     * `trimStart`, `truncate`, `unescape`, `uniqueId`, `upperCase`, `upperFirst`,
-     * `value`, and `words`
+     * `cloneDeep`, `cloneDeepWith`, `cloneWith`, `deburr`, `divide`, `each`,
+     * `eachRight`, `endsWith`, `eq`, `escape`, `escapeRegExp`, `every`, `find`,
+     * `findIndex`, `findKey`, `findLast`, `findLastIndex`, `findLastKey`, `first`,
+     * `floor`, `forEach`, `forEachRight`, `forIn`, `forInRight`, `forOwn`,
+     * `forOwnRight`, `get`, `gt`, `gte`, `has`, `hasIn`, `head`, `identity`,
+     * `includes`, `indexOf`, `inRange`, `invoke`, `isArguments`, `isArray`,
+     * `isArrayBuffer`, `isArrayLike`, `isArrayLikeObject`, `isBoolean`, `isBuffer`,
+     * `isDate`, `isElement`, `isEmpty`, `isEqual`, `isEqualWith`, `isError`,
+     * `isFinite`, `isFunction`, `isInteger`, `isLength`, `isMap`, `isMatch`,
+     * `isMatchWith`, `isNaN`, `isNative`, `isNil`, `isNull`, `isNumber`,
+     * `isObject`, `isObjectLike`, `isPlainObject`, `isRegExp`, `isSafeInteger`,
+     * `isSet`, `isString`, `isUndefined`, `isTypedArray`, `isWeakMap`, `isWeakSet`,
+     * `join`, `kebabCase`, `last`, `lastIndexOf`, `lowerCase`, `lowerFirst`,
+     * `lt`, `lte`, `max`, `maxBy`, `mean`, `meanBy`, `min`, `minBy`, `multiply`,
+     * `noConflict`, `noop`, `now`, `pad`, `padEnd`, `padStart`, `parseInt`,
+     * `pop`, `random`, `reduce`, `reduceRight`, `repeat`, `result`, `round`,
+     * `runInContext`, `sample`, `shift`, `size`, `snakeCase`, `some`, `sortedIndex`,
+     * `sortedIndexBy`, `sortedLastIndex`, `sortedLastIndexBy`, `startCase`,
+     * `startsWith`, `subtract`, `sum`, `sumBy`, `template`, `times`, `toInteger`,
+     * `toJSON`, `toLength`, `toLower`, `toNumber`, `toSafeInteger`, `toString`,
+     * `toUpper`, `trim`, `trimEnd`, `trimStart`, `truncate`, `unescape`,
+     * `uniqueId`, `upperCase`, `upperFirst`, `value`, and `words`
      *
      * @name _
      * @constructor
@@ -28416,7 +28702,7 @@ module.exports = isObjectLike;
     }
 
     /**
-     * The function whose prototype all chaining wrappers inherit from.
+     * The function whose prototype chain sequence wrappers inherit from.
      *
      * @private
      */
@@ -28429,7 +28715,7 @@ module.exports = isObjectLike;
      *
      * @private
      * @param {*} value The value to wrap.
-     * @param {boolean} [chainAll] Enable chaining for all wrapper methods.
+     * @param {boolean} [chainAll] Enable explicit method chain sequences.
      */
     function LodashWrapper(value, chainAll) {
       this.__wrapped__ = value;
@@ -28499,6 +28785,13 @@ module.exports = isObjectLike;
         '_': lodash
       }
     };
+
+    // Ensure wrappers are instances of `baseLodash`.
+    lodash.prototype = baseLodash.prototype;
+    lodash.prototype.constructor = lodash;
+
+    LodashWrapper.prototype = baseCreate(baseLodash.prototype);
+    LodashWrapper.prototype.constructor = LodashWrapper;
 
     /*------------------------------------------------------------------------*/
 
@@ -28616,10 +28909,14 @@ module.exports = isObjectLike;
       return result;
     }
 
+    // Ensure `LazyWrapper` is an instance of `baseLodash`.
+    LazyWrapper.prototype = baseCreate(baseLodash.prototype);
+    LazyWrapper.prototype.constructor = LazyWrapper;
+
     /*------------------------------------------------------------------------*/
 
     /**
-     * Creates an hash object.
+     * Creates a hash object.
      *
      * @private
      * @constructor
@@ -28678,6 +28975,9 @@ module.exports = isObjectLike;
     function hashSet(hash, key, value) {
       hash[key] = (nativeCreate && value === undefined) ? HASH_UNDEFINED : value;
     }
+
+    // Avoid inheriting from `Object.prototype` when possible.
+    Hash.prototype = nativeCreate ? nativeCreate(null) : objectProto;
 
     /*------------------------------------------------------------------------*/
 
@@ -28773,7 +29073,7 @@ module.exports = isObjectLike;
      * @memberOf MapCache
      * @param {string} key The key of the value to set.
      * @param {*} value The value to set.
-     * @returns {Object} Returns the map cache object.
+     * @returns {Object} Returns the map cache instance.
      */
     function mapSet(key, value) {
       var data = this.__data__;
@@ -28786,6 +29086,13 @@ module.exports = isObjectLike;
       }
       return this;
     }
+
+    // Add methods to `MapCache`.
+    MapCache.prototype.clear = mapClear;
+    MapCache.prototype['delete'] = mapDelete;
+    MapCache.prototype.get = mapGet;
+    MapCache.prototype.has = mapHas;
+    MapCache.prototype.set = mapSet;
 
     /*------------------------------------------------------------------------*/
 
@@ -28846,6 +29153,9 @@ module.exports = isObjectLike;
         map.set(value, HASH_UNDEFINED);
       }
     }
+
+    // Add methods to `SetCache`.
+    SetCache.prototype.push = cachePush;
 
     /*------------------------------------------------------------------------*/
 
@@ -28934,7 +29244,7 @@ module.exports = isObjectLike;
      * @memberOf Stack
      * @param {string} key The key of the value to set.
      * @param {*} value The value to set.
-     * @returns {Object} Returns the stack cache object.
+     * @returns {Object} Returns the stack cache instance.
      */
     function stackSet(key, value) {
       var data = this.__data__,
@@ -28955,13 +29265,20 @@ module.exports = isObjectLike;
       return this;
     }
 
+    // Add methods to `Stack`.
+    Stack.prototype.clear = stackClear;
+    Stack.prototype['delete'] = stackDelete;
+    Stack.prototype.get = stackGet;
+    Stack.prototype.has = stackHas;
+    Stack.prototype.set = stackSet;
+
     /*------------------------------------------------------------------------*/
 
     /**
      * Removes `key` and its value from the associative array.
      *
      * @private
-     * @param {Array} array The array to query.
+     * @param {Array} array The array to modify.
      * @param {string} key The key of the value to remove.
      * @returns {boolean} Returns `true` if the entry was removed, else `false`.
      */
@@ -29005,8 +29322,7 @@ module.exports = isObjectLike;
     }
 
     /**
-     * Gets the index at which the first occurrence of `key` is found in `array`
-     * of key-value pairs.
+     * Gets the index at which the `key` is found in `array` of key-value pairs.
      *
      * @private
      * @param {Array} array The array to search.
@@ -29146,39 +29462,6 @@ module.exports = isObjectLike;
     }
 
     /**
-     * Casts `value` to an empty array if it's not an array like object.
-     *
-     * @private
-     * @param {*} value The value to inspect.
-     * @returns {Array} Returns the array-like object.
-     */
-    function baseCastArrayLikeObject(value) {
-      return isArrayLikeObject(value) ? value : [];
-    }
-
-    /**
-     * Casts `value` to `identity` if it's not a function.
-     *
-     * @private
-     * @param {*} value The value to inspect.
-     * @returns {Array} Returns the array-like object.
-     */
-    function baseCastFunction(value) {
-      return typeof value == 'function' ? value : identity;
-    }
-
-    /**
-     * Casts `value` to a path array if it's not one.
-     *
-     * @private
-     * @param {*} value The value to inspect.
-     * @returns {Array} Returns the cast property path array.
-     */
-    function baseCastPath(value) {
-      return isArray(value) ? value : stringToPath(value);
-    }
-
-    /**
      * The base implementation of `_.clamp` which doesn't coerce arguments to numbers.
      *
      * @private
@@ -29243,14 +29526,13 @@ module.exports = isObjectLike;
           }
           result = initCloneObject(isFunc ? {} : value);
           if (!isDeep) {
-            result = baseAssign(result, value);
-            return isFull ? copySymbols(value, result) : result;
+            return copySymbols(value, baseAssign(result, value));
           }
         } else {
           if (!cloneableTags[tag]) {
             return object ? value : {};
           }
-          result = initCloneByTag(value, tag, isDeep);
+          result = initCloneByTag(value, tag, baseClone, isDeep);
         }
       }
       // Check for circular references and return its corresponding clone.
@@ -29261,11 +29543,18 @@ module.exports = isObjectLike;
       }
       stack.set(value, result);
 
+      if (!isArr) {
+        var props = isFull ? getAllKeys(value) : keys(value);
+      }
       // Recursively populate clone (susceptible to call stack limits).
-      (isArr ? arrayEach : baseForOwn)(value, function(subValue, key) {
+      arrayEach(props || value, function(subValue, key) {
+        if (props) {
+          key = subValue;
+          subValue = value[key];
+        }
         assignValue(result, key, baseClone(subValue, isDeep, isFull, customizer, key, value, stack));
       });
-      return (isFull && !isArr) ? copySymbols(value, result) : result;
+      return result;
     }
 
     /**
@@ -29289,7 +29578,8 @@ module.exports = isObjectLike;
               predicate = source[key],
               value = object[key];
 
-          if ((value === undefined && !(key in Object(object))) || !predicate(value)) {
+          if ((value === undefined &&
+              !(key in Object(object))) || !predicate(value)) {
             return false;
           }
         }
@@ -29327,8 +29617,8 @@ module.exports = isObjectLike;
     }
 
     /**
-     * The base implementation of methods like `_.difference` without support for
-     * excluding multiple arrays or iteratee shorthands.
+     * The base implementation of methods like `_.difference` without support
+     * for excluding multiple arrays or iteratee shorthands.
      *
      * @private
      * @param {Array} array The array to inspect.
@@ -29407,7 +29697,8 @@ module.exports = isObjectLike;
      * @private
      * @param {Array|Object} collection The collection to iterate over.
      * @param {Function} predicate The function invoked per iteration.
-     * @returns {boolean} Returns `true` if all elements pass the predicate check, else `false`
+     * @returns {boolean} Returns `true` if all elements pass the predicate check,
+     *  else `false`
      */
     function baseEvery(collection, predicate) {
       var result = true;
@@ -29470,23 +29761,24 @@ module.exports = isObjectLike;
      * @private
      * @param {Array} array The array to flatten.
      * @param {number} depth The maximum recursion depth.
-     * @param {boolean} [isStrict] Restrict flattening to arrays-like objects.
+     * @param {boolean} [predicate=isFlattenable] The function invoked per iteration.
+     * @param {boolean} [isStrict] Restrict to values that pass `predicate` checks.
      * @param {Array} [result=[]] The initial result value.
      * @returns {Array} Returns the new flattened array.
      */
-    function baseFlatten(array, depth, isStrict, result) {
-      result || (result = []);
-
+    function baseFlatten(array, depth, predicate, isStrict, result) {
       var index = -1,
           length = array.length;
 
+      predicate || (predicate = isFlattenable);
+      result || (result = []);
+
       while (++index < length) {
         var value = array[index];
-        if (depth > 0 && isArrayLikeObject(value) &&
-            (isStrict || isArray(value) || isArguments(value))) {
+        if (depth > 0 && predicate(value)) {
           if (depth > 1) {
             // Recursively flatten arrays (susceptible to call stack limits).
-            baseFlatten(value, depth - 1, isStrict, result);
+            baseFlatten(value, depth - 1, predicate, isStrict, result);
           } else {
             arrayPush(result, value);
           }
@@ -29498,10 +29790,9 @@ module.exports = isObjectLike;
     }
 
     /**
-     * The base implementation of `baseForIn` and `baseForOwn` which iterates
-     * over `object` properties returned by `keysFunc` invoking `iteratee` for
-     * each property. Iteratee functions may exit iteration early by explicitly
-     * returning `false`.
+     * The base implementation of `baseForOwn` which iterates over `object`
+     * properties returned by `keysFunc` and invokes `iteratee` for each property.
+     * Iteratee functions may exit iteration early by explicitly returning `false`.
      *
      * @private
      * @param {Object} object The object to iterate over.
@@ -29522,18 +29813,6 @@ module.exports = isObjectLike;
      * @returns {Object} Returns `object`.
      */
     var baseForRight = createBaseFor(true);
-
-    /**
-     * The base implementation of `_.forIn` without support for iteratee shorthands.
-     *
-     * @private
-     * @param {Object} object The object to iterate over.
-     * @param {Function} iteratee The function invoked per iteration.
-     * @returns {Object} Returns `object`.
-     */
-    function baseForIn(object, iteratee) {
-      return object == null ? object : baseFor(object, iteratee, keysIn);
-    }
 
     /**
      * The base implementation of `_.forOwn` without support for iteratee shorthands.
@@ -29583,7 +29862,7 @@ module.exports = isObjectLike;
      * @returns {*} Returns the resolved value.
      */
     function baseGet(object, path) {
-      path = isKey(path, object) ? [path + ''] : baseCastPath(path);
+      path = isKey(path, object) ? [path] : castPath(path);
 
       var index = 0,
           length = path.length;
@@ -29592,6 +29871,24 @@ module.exports = isObjectLike;
         object = object[path[index++]];
       }
       return (index && index == length) ? object : undefined;
+    }
+
+    /**
+     * The base implementation of `getAllKeys` and `getAllKeysIn` which uses
+     * `keysFunc` and `symbolsFunc` to get the enumerable property names and
+     * symbols of `object`.
+     *
+     * @private
+     * @param {Object} object The object to query.
+     * @param {Function} keysFunc The function to get the keys of `object`.
+     * @param {Function} symbolsFunc The function to get the symbols of `object`.
+     * @returns {Array} Returns the array of property names and symbols.
+     */
+    function baseGetAllKeys(object, keysFunc, symbolsFunc) {
+      var result = keysFunc(object);
+      return isArray(object)
+        ? result
+        : arrayPush(result, symbolsFunc(object));
     }
 
     /**
@@ -29607,7 +29904,7 @@ module.exports = isObjectLike;
       // that are composed entirely of index properties, return `false` for
       // `hasOwnProperty` checks of them.
       return hasOwnProperty.call(object, key) ||
-        (typeof object == 'object' && key in object && getPrototypeOf(object) === null);
+        (typeof object == 'object' && key in object && getPrototype(object) === null);
     }
 
     /**
@@ -29727,7 +30024,7 @@ module.exports = isObjectLike;
      */
     function baseInvoke(object, path, args) {
       if (!isKey(path, object)) {
-        path = baseCastPath(path);
+        path = castPath(path);
         object = parent(object, path);
         path = last(path);
       }
@@ -29770,7 +30067,8 @@ module.exports = isObjectLike;
      * @param {Object} other The other object to compare.
      * @param {Function} equalFunc The function to determine equivalents of values.
      * @param {Function} [customizer] The function to customize comparisons.
-     * @param {number} [bitmask] The bitmask of comparison flags. See `baseIsEqual` for more details.
+     * @param {number} [bitmask] The bitmask of comparison flags. See `baseIsEqual`
+     *  for more details.
      * @param {Object} [stack] Tracks traversed `object` and `other` objects.
      * @returns {boolean} Returns `true` if the objects are equivalent, else `false`.
      */
@@ -29803,8 +30101,11 @@ module.exports = isObjectLike;
             othIsWrapped = othIsObj && hasOwnProperty.call(other, '__wrapped__');
 
         if (objIsWrapped || othIsWrapped) {
+          var objUnwrapped = objIsWrapped ? object.value() : object,
+              othUnwrapped = othIsWrapped ? other.value() : other;
+
           stack || (stack = new Stack);
-          return equalFunc(objIsWrapped ? object.value() : object, othIsWrapped ? other.value() : other, customizer, bitmask, stack);
+          return equalFunc(objUnwrapped, othUnwrapped, customizer, bitmask, stack);
         }
       }
       if (!isSameTag) {
@@ -29853,9 +30154,10 @@ module.exports = isObjectLike;
             return false;
           }
         } else {
-          var stack = new Stack,
-              result = customizer ? customizer(objValue, srcValue, key, object, source, stack) : undefined;
-
+          var stack = new Stack;
+          if (customizer) {
+            var result = customizer(objValue, srcValue, key, object, source, stack);
+          }
           if (!(result === undefined
                 ? baseIsEqual(srcValue, objValue, customizer, UNORDERED_COMPARE_FLAG | PARTIAL_COMPARE_FLAG, stack)
                 : result
@@ -29875,14 +30177,15 @@ module.exports = isObjectLike;
      * @returns {Function} Returns the iteratee.
      */
     function baseIteratee(value) {
-      var type = typeof value;
-      if (type == 'function') {
+      // Don't store the `typeof` result in a variable to avoid a JIT bug in Safari 9.
+      // See https://bugs.webkit.org/show_bug.cgi?id=156034 for more details.
+      if (typeof value == 'function') {
         return value;
       }
       if (value == null) {
         return identity;
       }
-      if (type == 'object') {
+      if (typeof value == 'object') {
         return isArray(value)
           ? baseMatchesProperty(value[0], value[1])
           : baseMatches(value);
@@ -29955,16 +30258,7 @@ module.exports = isObjectLike;
     function baseMatches(source) {
       var matchData = getMatchData(source);
       if (matchData.length == 1 && matchData[0][2]) {
-        var key = matchData[0][0],
-            value = matchData[0][1];
-
-        return function(object) {
-          if (object == null) {
-            return false;
-          }
-          return object[key] === value &&
-            (value !== undefined || (key in Object(object)));
-        };
+        return matchesStrictComparable(matchData[0][0], matchData[0][1]);
       }
       return function(object) {
         return object === source || baseIsMatch(object, source, matchData);
@@ -29980,6 +30274,9 @@ module.exports = isObjectLike;
      * @returns {Function} Returns the new function.
      */
     function baseMatchesProperty(path, srcValue) {
+      if (isKey(path) && isStrictComparable(srcValue)) {
+        return matchesStrictComparable(path, srcValue);
+      }
       return function(object) {
         var objValue = get(object, path);
         return (objValue === undefined && objValue === srcValue)
@@ -29996,16 +30293,16 @@ module.exports = isObjectLike;
      * @param {Object} source The source object.
      * @param {number} srcIndex The index of `source`.
      * @param {Function} [customizer] The function to customize merged values.
-     * @param {Object} [stack] Tracks traversed source values and their merged counterparts.
+     * @param {Object} [stack] Tracks traversed source values and their merged
+     *  counterparts.
      */
     function baseMerge(object, source, srcIndex, customizer, stack) {
       if (object === source) {
         return;
       }
-      var props = (isArray(source) || isTypedArray(source))
-        ? undefined
-        : keysIn(source);
-
+      if (!(isArray(source) || isTypedArray(source))) {
+        var props = keysIn(source);
+      }
       arrayEach(props || source, function(srcValue, key) {
         if (props) {
           key = srcValue;
@@ -30040,7 +30337,8 @@ module.exports = isObjectLike;
      * @param {number} srcIndex The index of `source`.
      * @param {Function} mergeFunc The function to merge values.
      * @param {Function} [customizer] The function to customize assigned values.
-     * @param {Object} [stack] Tracks traversed source values and their merged counterparts.
+     * @param {Object} [stack] Tracks traversed source values and their merged
+     *  counterparts.
      */
     function baseMergeDeep(object, source, key, srcIndex, mergeFunc, customizer, stack) {
       var objValue = object[key],
@@ -30068,7 +30366,7 @@ module.exports = isObjectLike;
           }
           else {
             isCommon = false;
-            newValue = baseClone(srcValue, !customizer);
+            newValue = baseClone(srcValue, true);
           }
         }
         else if (isPlainObject(srcValue) || isArguments(srcValue)) {
@@ -30077,7 +30375,7 @@ module.exports = isObjectLike;
           }
           else if (!isObject(objValue) || (srcIndex && isFunction(objValue))) {
             isCommon = false;
-            newValue = baseClone(srcValue, !customizer);
+            newValue = baseClone(srcValue, true);
           }
           else {
             newValue = objValue;
@@ -30108,7 +30406,7 @@ module.exports = isObjectLike;
      */
     function baseOrderBy(collection, iteratees, orders) {
       var index = -1;
-      iteratees = arrayMap(iteratees.length ? iteratees : Array(1), getIteratee());
+      iteratees = arrayMap(iteratees.length ? iteratees : [identity], getIteratee());
 
       var result = baseMap(collection, function(value, key, collection) {
         var criteria = arrayMap(iteratees, function(iteratee) {
@@ -30124,11 +30422,11 @@ module.exports = isObjectLike;
 
     /**
      * The base implementation of `_.pick` without support for individual
-     * property names.
+     * property identifiers.
      *
      * @private
      * @param {Object} object The source object.
-     * @param {string[]} props The property names to pick.
+     * @param {string[]} props The property identifiers to pick.
      * @returns {Object} Returns the new object.
      */
     function basePick(object, props) {
@@ -30150,12 +30448,19 @@ module.exports = isObjectLike;
      * @returns {Object} Returns the new object.
      */
     function basePickBy(object, predicate) {
-      var result = {};
-      baseForIn(object, function(value, key) {
+      var index = -1,
+          props = getAllKeysIn(object),
+          length = props.length,
+          result = {};
+
+      while (++index < length) {
+        var key = props[index],
+            value = object[key];
+
         if (predicate(value, key)) {
           result[key] = value;
         }
-      });
+      }
       return result;
     }
 
@@ -30241,7 +30546,7 @@ module.exports = isObjectLike;
             splice.call(array, index, 1);
           }
           else if (!isKey(index, array)) {
-            var path = baseCastPath(index),
+            var path = castPath(index),
                 object = parent(array, path);
 
             if (object != null) {
@@ -30293,6 +30598,34 @@ module.exports = isObjectLike;
     }
 
     /**
+     * The base implementation of `_.repeat` which doesn't coerce arguments.
+     *
+     * @private
+     * @param {string} string The string to repeat.
+     * @param {number} n The number of times to repeat the string.
+     * @returns {string} Returns the repeated string.
+     */
+    function baseRepeat(string, n) {
+      var result = '';
+      if (!string || n < 1 || n > MAX_SAFE_INTEGER) {
+        return result;
+      }
+      // Leverage the exponentiation by squaring algorithm for a faster repeat.
+      // See https://en.wikipedia.org/wiki/Exponentiation_by_squaring for more details.
+      do {
+        if (n % 2) {
+          result += string;
+        }
+        n = nativeFloor(n / 2);
+        if (n) {
+          string += string;
+        }
+      } while (n);
+
+      return result;
+    }
+
+    /**
      * The base implementation of `_.set`.
      *
      * @private
@@ -30303,7 +30636,7 @@ module.exports = isObjectLike;
      * @returns {Object} Returns `object`.
      */
     function baseSet(object, path, value, customizer) {
-      path = isKey(path, object) ? [path + ''] : baseCastPath(path);
+      path = isKey(path, object) ? [path] : castPath(path);
 
       var index = -1,
           length = path.length,
@@ -30379,7 +30712,8 @@ module.exports = isObjectLike;
      * @private
      * @param {Array|Object} collection The collection to iterate over.
      * @param {Function} predicate The function invoked per iteration.
-     * @returns {boolean} Returns `true` if any element passes the predicate check, else `false`.
+     * @returns {boolean} Returns `true` if any element passes the predicate check,
+     *  else `false`.
      */
     function baseSome(collection, predicate) {
       var result;
@@ -30433,7 +30767,8 @@ module.exports = isObjectLike;
      * @param {*} value The value to evaluate.
      * @param {Function} iteratee The iteratee invoked per element.
      * @param {boolean} [retHighest] Specify returning the highest qualified index.
-     * @returns {number} Returns the index at which `value` should be inserted into `array`.
+     * @returns {number} Returns the index at which `value` should be inserted
+     *  into `array`.
      */
     function baseSortedIndexBy(array, value, iteratee, retHighest) {
       value = iteratee(value);
@@ -30580,7 +30915,7 @@ module.exports = isObjectLike;
      * @returns {boolean} Returns `true` if the property is deleted, else `false`.
      */
     function baseUnset(object, path) {
-      path = isKey(path, object) ? [path + ''] : baseCastPath(path);
+      path = isKey(path, object) ? [path] : castPath(path);
       object = parent(object, path);
       var key = last(path);
       return (object != null && has(object, key)) ? delete object[key] : true;
@@ -30672,7 +31007,7 @@ module.exports = isObjectLike;
      * This base implementation of `_.zipObject` which assigns values using `assignFunc`.
      *
      * @private
-     * @param {Array} props The property names.
+     * @param {Array} props The property identifiers.
      * @param {Array} values The property values.
      * @param {Function} assignFunc The function to assign values.
      * @returns {Object} Returns the new object.
@@ -30684,9 +31019,58 @@ module.exports = isObjectLike;
           result = {};
 
       while (++index < length) {
-        assignFunc(result, props[index], index < valsLength ? values[index] : undefined);
+        var value = index < valsLength ? values[index] : undefined;
+        assignFunc(result, props[index], value);
       }
       return result;
+    }
+
+    /**
+     * Casts `value` to an empty array if it's not an array like object.
+     *
+     * @private
+     * @param {*} value The value to inspect.
+     * @returns {Array|Object} Returns the cast array-like object.
+     */
+    function castArrayLikeObject(value) {
+      return isArrayLikeObject(value) ? value : [];
+    }
+
+    /**
+     * Casts `value` to `identity` if it's not a function.
+     *
+     * @private
+     * @param {*} value The value to inspect.
+     * @returns {Function} Returns cast function.
+     */
+    function castFunction(value) {
+      return typeof value == 'function' ? value : identity;
+    }
+
+    /**
+     * Casts `value` to a path array if it's not one.
+     *
+     * @private
+     * @param {*} value The value to inspect.
+     * @returns {Array} Returns the cast property path array.
+     */
+    function castPath(value) {
+      return isArray(value) ? value : stringToPath(value);
+    }
+
+    /**
+     * Casts `array` to a slice if it's needed.
+     *
+     * @private
+     * @param {Array} array The array to inspect.
+     * @param {number} start The start position.
+     * @param {number} [end=array.length] The end position.
+     * @returns {Array} Returns the cast slice.
+     */
+    function castSlice(array, start, end) {
+      var length = array.length;
+      end = end === undefined ? length : end;
+      return (!start && end >= length) ? array : baseSlice(array, start, end);
     }
 
     /**
@@ -30720,14 +31104,30 @@ module.exports = isObjectLike;
     }
 
     /**
+     * Creates a clone of `dataView`.
+     *
+     * @private
+     * @param {Object} dataView The data view to clone.
+     * @param {boolean} [isDeep] Specify a deep clone.
+     * @returns {Object} Returns the cloned data view.
+     */
+    function cloneDataView(dataView, isDeep) {
+      var buffer = isDeep ? cloneArrayBuffer(dataView.buffer) : dataView.buffer;
+      return new dataView.constructor(buffer, dataView.byteOffset, dataView.byteLength);
+    }
+
+    /**
      * Creates a clone of `map`.
      *
      * @private
      * @param {Object} map The map to clone.
+     * @param {Function} cloneFunc The function to clone values.
+     * @param {boolean} [isDeep] Specify a deep clone.
      * @returns {Object} Returns the cloned map.
      */
-    function cloneMap(map) {
-      return arrayReduce(mapToArray(map), addMapEntry, new map.constructor);
+    function cloneMap(map, isDeep, cloneFunc) {
+      var array = isDeep ? cloneFunc(mapToArray(map), true) : mapToArray(map);
+      return arrayReduce(array, addMapEntry, new map.constructor);
     }
 
     /**
@@ -30748,10 +31148,13 @@ module.exports = isObjectLike;
      *
      * @private
      * @param {Object} set The set to clone.
+     * @param {Function} cloneFunc The function to clone values.
+     * @param {boolean} [isDeep] Specify a deep clone.
      * @returns {Object} Returns the cloned set.
      */
-    function cloneSet(set) {
-      return arrayReduce(setToArray(set), addSetEntry, new set.constructor);
+    function cloneSet(set, isDeep, cloneFunc) {
+      var array = isDeep ? cloneFunc(setToArray(set), true) : setToArray(set);
+      return arrayReduce(array, addSetEntry, new set.constructor);
     }
 
     /**
@@ -30874,7 +31277,7 @@ module.exports = isObjectLike;
      *
      * @private
      * @param {Object} source The object to copy properties from.
-     * @param {Array} props The property names to copy.
+     * @param {Array} props The property identifiers to copy.
      * @param {Object} [object={}] The object to copy properties to.
      * @returns {Object} Returns `object`.
      */
@@ -30888,7 +31291,7 @@ module.exports = isObjectLike;
      *
      * @private
      * @param {Object} source The object to copy properties from.
-     * @param {Array} props The property names to copy.
+     * @param {Array} props The property identifiers to copy.
      * @param {Object} [object={}] The object to copy properties to.
      * @param {Function} [customizer] The function to customize copied values.
      * @returns {Object} Returns `object`.
@@ -31003,7 +31406,7 @@ module.exports = isObjectLike;
     }
 
     /**
-     * Creates a base function for methods like `_.forIn`.
+     * Creates a base function for methods like `_.forIn` and `_.forOwn`.
      *
      * @private
      * @param {boolean} [fromRight] Specify iterating from right to left.
@@ -31032,7 +31435,8 @@ module.exports = isObjectLike;
      *
      * @private
      * @param {Function} func The function to wrap.
-     * @param {number} bitmask The bitmask of wrapper flags. See `createWrapper` for more details.
+     * @param {number} bitmask The bitmask of wrapper flags. See `createWrapper`
+     *  for more details.
      * @param {*} [thisArg] The `this` binding of `func`.
      * @returns {Function} Returns the new wrapped function.
      */
@@ -31062,8 +31466,13 @@ module.exports = isObjectLike;
           ? stringToArray(string)
           : undefined;
 
-        var chr = strSymbols ? strSymbols[0] : string.charAt(0),
-            trailing = strSymbols ? strSymbols.slice(1).join('') : string.slice(1);
+        var chr = strSymbols
+          ? strSymbols[0]
+          : string.charAt(0);
+
+        var trailing = strSymbols
+          ? castSlice(strSymbols, 1).join('')
+          : string.slice(1);
 
         return chr[methodName]() + trailing;
       };
@@ -31092,8 +31501,8 @@ module.exports = isObjectLike;
      */
     function createCtorWrapper(Ctor) {
       return function() {
-        // Use a `switch` statement to work with class constructors.
-        // See http://ecma-international.org/ecma-262/6.0/#sec-ecmascript-function-objects-call-thisargument-argumentslist
+        // Use a `switch` statement to work with class constructors. See
+        // http://ecma-international.org/ecma-262/6.0/#sec-ecmascript-function-objects-call-thisargument-argumentslist
         // for more details.
         var args = arguments;
         switch (args.length) {
@@ -31120,7 +31529,8 @@ module.exports = isObjectLike;
      *
      * @private
      * @param {Function} func The function to wrap.
-     * @param {number} bitmask The bitmask of wrapper flags. See `createWrapper` for more details.
+     * @param {number} bitmask The bitmask of wrapper flags. See `createWrapper`
+     *  for more details.
      * @param {number} arity The arity of `func`.
      * @returns {Function} Returns the new wrapped function.
      */
@@ -31192,7 +31602,9 @@ module.exports = isObjectLike;
               ) {
             wrapper = wrapper[getFuncName(data[0])].apply(wrapper, data[3]);
           } else {
-            wrapper = (func.length == 1 && isLaziable(func)) ? wrapper[funcName]() : wrapper.thru(func);
+            wrapper = (func.length == 1 && isLaziable(func))
+              ? wrapper[funcName]()
+              : wrapper.thru(func);
           }
         }
         return function() {
@@ -31220,11 +31632,14 @@ module.exports = isObjectLike;
      *
      * @private
      * @param {Function|string} func The function or method name to wrap.
-     * @param {number} bitmask The bitmask of wrapper flags. See `createWrapper` for more details.
+     * @param {number} bitmask The bitmask of wrapper flags. See `createWrapper`
+     *  for more details.
      * @param {*} [thisArg] The `this` binding of `func`.
-     * @param {Array} [partials] The arguments to prepend to those provided to the new function.
+     * @param {Array} [partials] The arguments to prepend to those provided to
+     *  the new function.
      * @param {Array} [holders] The `partials` placeholder indexes.
-     * @param {Array} [partialsRight] The arguments to append to those provided to the new function.
+     * @param {Array} [partialsRight] The arguments to append to those provided
+     *  to the new function.
      * @param {Array} [holdersRight] The `partialsRight` placeholder indexes.
      * @param {Array} [argPos] The argument positions of the new function.
      * @param {number} [ary] The arity cap of `func`.
@@ -31308,7 +31723,7 @@ module.exports = isObjectLike;
      */
     function createOver(arrayFunc) {
       return rest(function(iteratees) {
-        iteratees = arrayMap(baseFlatten(iteratees, 1), getIteratee());
+        iteratees = arrayMap(baseFlatten(iteratees, 1, isFlattenableIteratee), getIteratee());
         return rest(function(args) {
           var thisArg = this;
           return arrayFunc(iteratees, function(iteratee) {
@@ -31323,37 +31738,34 @@ module.exports = isObjectLike;
      * is truncated if the number of characters exceeds `length`.
      *
      * @private
-     * @param {string} string The string to create padding for.
-     * @param {number} [length=0] The padding length.
+     * @param {number} length The padding length.
      * @param {string} [chars=' '] The string used as padding.
      * @returns {string} Returns the padding for `string`.
      */
-    function createPadding(string, length, chars) {
-      length = toInteger(length);
-
-      var strLength = stringSize(string);
-      if (!length || strLength >= length) {
-        return '';
-      }
-      var padLength = length - strLength;
+    function createPadding(length, chars) {
       chars = chars === undefined ? ' ' : (chars + '');
 
-      var result = repeat(chars, nativeCeil(padLength / stringSize(chars)));
+      var charsLength = chars.length;
+      if (charsLength < 2) {
+        return charsLength ? baseRepeat(chars, length) : chars;
+      }
+      var result = baseRepeat(chars, nativeCeil(length / stringSize(chars)));
       return reHasComplexSymbol.test(chars)
-        ? stringToArray(result).slice(0, padLength).join('')
-        : result.slice(0, padLength);
+        ? castSlice(stringToArray(result), 0, length).join('')
+        : result.slice(0, length);
     }
 
     /**
-     * Creates a function that wraps `func` to invoke it with the optional `this`
-     * binding of `thisArg` and the `partials` prepended to those provided to
-     * the wrapper.
+     * Creates a function that wraps `func` to invoke it with the `this` binding
+     * of `thisArg` and `partials` prepended to the arguments it receives.
      *
      * @private
      * @param {Function} func The function to wrap.
-     * @param {number} bitmask The bitmask of wrapper flags. See `createWrapper` for more details.
+     * @param {number} bitmask The bitmask of wrapper flags. See `createWrapper`
+     *  for more details.
      * @param {*} thisArg The `this` binding of `func`.
-     * @param {Array} partials The arguments to prepend to those provided to the new function.
+     * @param {Array} partials The arguments to prepend to those provided to
+     *  the new function.
      * @returns {Function} Returns the new wrapped function.
      */
     function createPartialWrapper(func, bitmask, thisArg, partials) {
@@ -31410,11 +31822,13 @@ module.exports = isObjectLike;
      *
      * @private
      * @param {Function} func The function to wrap.
-     * @param {number} bitmask The bitmask of wrapper flags. See `createWrapper` for more details.
+     * @param {number} bitmask The bitmask of wrapper flags. See `createWrapper`
+     *  for more details.
      * @param {Function} wrapFunc The function to create the `func` wrapper.
      * @param {*} placeholder The placeholder value.
      * @param {*} [thisArg] The `this` binding of `func`.
-     * @param {Array} [partials] The arguments to prepend to those provided to the new function.
+     * @param {Array} [partials] The arguments to prepend to those provided to
+     *  the new function.
      * @param {Array} [holders] The `partials` placeholder indexes.
      * @param {Array} [argPos] The argument positions of the new function.
      * @param {number} [ary] The arity cap of `func`.
@@ -31573,7 +31987,8 @@ module.exports = isObjectLike;
      * @param {Array} other The other array to compare.
      * @param {Function} equalFunc The function to determine equivalents of values.
      * @param {Function} customizer The function to customize comparisons.
-     * @param {number} bitmask The bitmask of comparison flags. See `baseIsEqual` for more details.
+     * @param {number} bitmask The bitmask of comparison flags. See `baseIsEqual`
+     *  for more details.
      * @param {Object} stack Tracks traversed `array` and `other` objects.
      * @returns {boolean} Returns `true` if the arrays are equivalent, else `false`.
      */
@@ -31615,12 +32030,16 @@ module.exports = isObjectLike;
         // Recursively compare arrays (susceptible to call stack limits).
         if (isUnordered) {
           if (!arraySome(other, function(othValue) {
-                return arrValue === othValue || equalFunc(arrValue, othValue, customizer, bitmask, stack);
+                return arrValue === othValue ||
+                  equalFunc(arrValue, othValue, customizer, bitmask, stack);
               })) {
             result = false;
             break;
           }
-        } else if (!(arrValue === othValue || equalFunc(arrValue, othValue, customizer, bitmask, stack))) {
+        } else if (!(
+              arrValue === othValue ||
+                equalFunc(arrValue, othValue, customizer, bitmask, stack)
+            )) {
           result = false;
           break;
         }
@@ -31642,12 +32061,21 @@ module.exports = isObjectLike;
      * @param {string} tag The `toStringTag` of the objects to compare.
      * @param {Function} equalFunc The function to determine equivalents of values.
      * @param {Function} customizer The function to customize comparisons.
-     * @param {number} bitmask The bitmask of comparison flags. See `baseIsEqual` for more details.
+     * @param {number} bitmask The bitmask of comparison flags. See `baseIsEqual`
+     *  for more details.
      * @param {Object} stack Tracks traversed `object` and `other` objects.
      * @returns {boolean} Returns `true` if the objects are equivalent, else `false`.
      */
     function equalByTag(object, other, tag, equalFunc, customizer, bitmask, stack) {
       switch (tag) {
+        case dataViewTag:
+          if ((object.byteLength != other.byteLength) ||
+              (object.byteOffset != other.byteOffset)) {
+            return false;
+          }
+          object = object.buffer;
+          other = other.buffer;
+
         case arrayBufferTag:
           if ((object.byteLength != other.byteLength) ||
               !equalFunc(new Uint8Array(object), new Uint8Array(other))) {
@@ -31657,8 +32085,9 @@ module.exports = isObjectLike;
 
         case boolTag:
         case dateTag:
-          // Coerce dates and booleans to numbers, dates to milliseconds and booleans
-          // to `1` or `0` treating invalid dates coerced to `NaN` as not equal.
+          // Coerce dates and booleans to numbers, dates to milliseconds and
+          // booleans to `1` or `0` treating invalid dates coerced to `NaN` as
+          // not equal.
           return +object == +other;
 
         case errorTag:
@@ -31670,8 +32099,9 @@ module.exports = isObjectLike;
 
         case regexpTag:
         case stringTag:
-          // Coerce regexes to strings and treat strings primitives and string
-          // objects as equal. See https://es5.github.io/#x15.10.6.4 for more details.
+          // Coerce regexes to strings and treat strings, primitives and objects,
+          // as equal. See http://www.ecma-international.org/ecma-262/6.0/#sec-regexp.prototype.tostring
+          // for more details.
           return object == (other + '');
 
         case mapTag:
@@ -31689,8 +32119,11 @@ module.exports = isObjectLike;
           if (stacked) {
             return stacked == other;
           }
+          bitmask |= UNORDERED_COMPARE_FLAG;
+          stack.set(object, other);
+
           // Recursively compare objects (susceptible to call stack limits).
-          return equalArrays(convert(object), convert(other), equalFunc, customizer, bitmask | UNORDERED_COMPARE_FLAG, stack.set(object, other));
+          return equalArrays(convert(object), convert(other), equalFunc, customizer, bitmask, stack);
 
         case symbolTag:
           if (symbolValueOf) {
@@ -31709,7 +32142,8 @@ module.exports = isObjectLike;
      * @param {Object} other The other object to compare.
      * @param {Function} equalFunc The function to determine equivalents of values.
      * @param {Function} customizer The function to customize comparisons.
-     * @param {number} bitmask The bitmask of comparison flags. See `baseIsEqual` for more details.
+     * @param {number} bitmask The bitmask of comparison flags. See `baseIsEqual`
+     *  for more details.
      * @param {Object} stack Tracks traversed `object` and `other` objects.
      * @returns {boolean} Returns `true` if the objects are equivalent, else `false`.
      */
@@ -31776,6 +32210,29 @@ module.exports = isObjectLike;
     }
 
     /**
+     * Creates an array of own enumerable property names and symbols of `object`.
+     *
+     * @private
+     * @param {Object} object The object to query.
+     * @returns {Array} Returns the array of property names and symbols.
+     */
+    function getAllKeys(object) {
+      return baseGetAllKeys(object, keys, getSymbols);
+    }
+
+    /**
+     * Creates an array of own and inherited enumerable property names and
+     * symbols of `object`.
+     *
+     * @private
+     * @param {Object} object The object to query.
+     * @returns {Array} Returns the array of property names and symbols.
+     */
+    function getAllKeysIn(object) {
+      return baseGetAllKeys(object, keysIn, getSymbolsIn);
+    }
+
+    /**
      * Gets metadata for `func`.
      *
      * @private
@@ -31809,10 +32266,10 @@ module.exports = isObjectLike;
     }
 
     /**
-     * Gets the appropriate "iteratee" function. If the `_.iteratee` method is
-     * customized this function returns the custom method, otherwise it returns
-     * `baseIteratee`. If arguments are provided the chosen function is invoked
-     * with them and its result is returned.
+     * Gets the appropriate "iteratee" function. If `_.iteratee` is customized,
+     * this function returns the custom method, otherwise it returns `baseIteratee`.
+     * If arguments are provided, the chosen function is invoked with them and
+     * its result is returned.
      *
      * @private
      * @param {*} [value] The value to convert to an iteratee.
@@ -31828,8 +32285,9 @@ module.exports = isObjectLike;
     /**
      * Gets the "length" property value of `object`.
      *
-     * **Note:** This function is used to avoid a [JIT bug](https://bugs.webkit.org/show_bug.cgi?id=142792)
-     * that affects Safari on at least iOS 8.1-8.3 ARM64.
+     * **Note:** This function is used to avoid a
+     * [JIT bug](https://bugs.webkit.org/show_bug.cgi?id=142792) that affects
+     * Safari on at least iOS 8.1-8.3 ARM64.
      *
      * @private
      * @param {Object} object The object to query.
@@ -31880,14 +32338,51 @@ module.exports = isObjectLike;
     }
 
     /**
-     * Creates an array of the own symbol properties of `object`.
+     * Gets the `[[Prototype]]` of `value`.
+     *
+     * @private
+     * @param {*} value The value to query.
+     * @returns {null|Object} Returns the `[[Prototype]]`.
+     */
+    function getPrototype(value) {
+      return nativeGetPrototype(Object(value));
+    }
+
+    /**
+     * Creates an array of the own enumerable symbol properties of `object`.
      *
      * @private
      * @param {Object} object The object to query.
      * @returns {Array} Returns the array of symbols.
      */
-    var getSymbols = getOwnPropertySymbols || function() {
-      return [];
+    function getSymbols(object) {
+      // Coerce `object` to an object to avoid non-object errors in V8.
+      // See https://bugs.chromium.org/p/v8/issues/detail?id=3443 for more details.
+      return getOwnPropertySymbols(Object(object));
+    }
+
+    // Fallback for IE < 11.
+    if (!getOwnPropertySymbols) {
+      getSymbols = function() {
+        return [];
+      };
+    }
+
+    /**
+     * Creates an array of the own and inherited enumerable symbol properties
+     * of `object`.
+     *
+     * @private
+     * @param {Object} object The object to query.
+     * @returns {Array} Returns the array of symbols.
+     */
+    var getSymbolsIn = !getOwnPropertySymbols ? getSymbols : function(object) {
+      var result = [];
+      while (object) {
+        arrayPush(result, getSymbols(object));
+        object = getPrototype(object);
+      }
+      return result;
     };
 
     /**
@@ -31901,18 +32396,23 @@ module.exports = isObjectLike;
       return objectToString.call(value);
     }
 
-    // Fallback for IE 11 providing `toStringTag` values for maps, sets, and weakmaps.
-    if ((Map && getTag(new Map) != mapTag) ||
+    // Fallback for data views, maps, sets, and weak maps in IE 11,
+    // for data views in Edge, and promises in Node.js.
+    if ((DataView && getTag(new DataView(new ArrayBuffer(1))) != dataViewTag) ||
+        (Map && getTag(new Map) != mapTag) ||
+        (Promise && getTag(Promise.resolve()) != promiseTag) ||
         (Set && getTag(new Set) != setTag) ||
         (WeakMap && getTag(new WeakMap) != weakMapTag)) {
       getTag = function(value) {
         var result = objectToString.call(value),
-            Ctor = result == objectTag ? value.constructor : null,
-            ctorString = typeof Ctor == 'function' ? funcToString.call(Ctor) : '';
+            Ctor = result == objectTag ? value.constructor : undefined,
+            ctorString = Ctor ? toSource(Ctor) : undefined;
 
         if (ctorString) {
           switch (ctorString) {
+            case dataViewCtorString: return dataViewTag;
             case mapCtorString: return mapTag;
+            case promiseCtorString: return promiseTag;
             case setCtorString: return setTag;
             case weakMapCtorString: return weakMapTag;
           }
@@ -31959,23 +32459,25 @@ module.exports = isObjectLike;
      * @returns {boolean} Returns `true` if `path` exists, else `false`.
      */
     function hasPath(object, path, hasFunc) {
-      if (object == null) {
-        return false;
-      }
-      var result = hasFunc(object, path);
-      if (!result && !isKey(path)) {
-        path = baseCastPath(path);
-        object = parent(object, path);
-        if (object != null) {
-          path = last(path);
-          result = hasFunc(object, path);
+      path = isKey(path, object) ? [path] : castPath(path);
+
+      var result,
+          index = -1,
+          length = path.length;
+
+      while (++index < length) {
+        var key = path[index];
+        if (!(result = object != null && hasFunc(object, key))) {
+          break;
         }
+        object = object[key];
       }
-      var length = object ? object.length : undefined;
-      return result || (
-        !!length && isLength(length) && isIndex(path, length) &&
-        (isArray(object) || isString(object) || isArguments(object))
-      );
+      if (result) {
+        return result;
+      }
+      var length = object ? object.length : 0;
+      return !!length && isLength(length) && isIndex(key, length) &&
+        (isArray(object) || isString(object) || isArguments(object));
     }
 
     /**
@@ -32006,7 +32508,7 @@ module.exports = isObjectLike;
      */
     function initCloneObject(object) {
       return (typeof object.constructor == 'function' && !isPrototype(object))
-        ? baseCreate(getPrototypeOf(object))
+        ? baseCreate(getPrototype(object))
         : {};
     }
 
@@ -32019,10 +32521,11 @@ module.exports = isObjectLike;
      * @private
      * @param {Object} object The object to clone.
      * @param {string} tag The `toStringTag` of the object to clone.
+     * @param {Function} cloneFunc The function to clone values.
      * @param {boolean} [isDeep] Specify a deep clone.
      * @returns {Object} Returns the initialized clone.
      */
-    function initCloneByTag(object, tag, isDeep) {
+    function initCloneByTag(object, tag, cloneFunc, isDeep) {
       var Ctor = object.constructor;
       switch (tag) {
         case arrayBufferTag:
@@ -32032,13 +32535,16 @@ module.exports = isObjectLike;
         case dateTag:
           return new Ctor(+object);
 
+        case dataViewTag:
+          return cloneDataView(object, isDeep);
+
         case float32Tag: case float64Tag:
         case int8Tag: case int16Tag: case int32Tag:
         case uint8Tag: case uint8ClampedTag: case uint16Tag: case uint32Tag:
           return cloneTypedArray(object, isDeep);
 
         case mapTag:
-          return cloneMap(object);
+          return cloneMap(object, isDeep, cloneFunc);
 
         case numberTag:
         case stringTag:
@@ -32048,7 +32554,7 @@ module.exports = isObjectLike;
           return cloneRegExp(object);
 
         case setTag:
-          return cloneSet(object);
+          return cloneSet(object, isDeep, cloneFunc);
 
         case symbolTag:
           return cloneSymbol(object);
@@ -32073,13 +32579,37 @@ module.exports = isObjectLike;
     }
 
     /**
+     * Checks if `value` is a flattenable `arguments` object or array.
+     *
+     * @private
+     * @param {*} value The value to check.
+     * @returns {boolean} Returns `true` if `value` is flattenable, else `false`.
+     */
+    function isFlattenable(value) {
+      return isArrayLikeObject(value) && (isArray(value) || isArguments(value));
+    }
+
+    /**
+     * Checks if `value` is a flattenable array and not a `_.matchesProperty`
+     * iteratee shorthand.
+     *
+     * @private
+     * @param {*} value The value to check.
+     * @returns {boolean} Returns `true` if `value` is flattenable, else `false`.
+     */
+    function isFlattenableIteratee(value) {
+      return isArray(value) && !(value.length == 2 && !isFunction(value[0]));
+    }
+
+    /**
      * Checks if the given arguments are from an iteratee call.
      *
      * @private
      * @param {*} value The potential iteratee value argument.
      * @param {*} index The potential iteratee index or key argument.
      * @param {*} object The potential iteratee object argument.
-     * @returns {boolean} Returns `true` if the arguments are from an iteratee call, else `false`.
+     * @returns {boolean} Returns `true` if the arguments are from an iteratee call,
+     *  else `false`.
      */
     function isIterateeCall(value, index, object) {
       if (!isObject(object)) {
@@ -32087,8 +32617,9 @@ module.exports = isObjectLike;
       }
       var type = typeof index;
       if (type == 'number'
-          ? (isArrayLike(object) && isIndex(index, object.length))
-          : (type == 'string' && index in object)) {
+            ? (isArrayLike(object) && isIndex(index, object.length))
+            : (type == 'string' && index in object)
+          ) {
         return eq(object[index], value);
       }
       return false;
@@ -32103,11 +32634,12 @@ module.exports = isObjectLike;
      * @returns {boolean} Returns `true` if `value` is a property name, else `false`.
      */
     function isKey(value, object) {
-      if (typeof value == 'number') {
+      var type = typeof value;
+      if (type == 'number' || type == 'symbol') {
         return true;
       }
       return !isArray(value) &&
-        (reIsPlainProp.test(value) || !reIsDeepProp.test(value) ||
+        (isSymbol(value) || reIsPlainProp.test(value) || !reIsDeepProp.test(value) ||
           (object != null && value in Object(object)));
     }
 
@@ -32129,7 +32661,8 @@ module.exports = isObjectLike;
      *
      * @private
      * @param {Function} func The function to check.
-     * @returns {boolean} Returns `true` if `func` has a lazy counterpart, else `false`.
+     * @returns {boolean} Returns `true` if `func` has a lazy counterpart,
+     *  else `false`.
      */
     function isLaziable(func) {
       var funcName = getFuncName(func),
@@ -32172,14 +32705,34 @@ module.exports = isObjectLike;
     }
 
     /**
+     * A specialized version of `matchesProperty` for source values suitable
+     * for strict equality comparisons, i.e. `===`.
+     *
+     * @private
+     * @param {string} key The key of the property to get.
+     * @param {*} srcValue The value to match.
+     * @returns {Function} Returns the new function.
+     */
+    function matchesStrictComparable(key, srcValue) {
+      return function(object) {
+        if (object == null) {
+          return false;
+        }
+        return object[key] === srcValue &&
+          (srcValue !== undefined || (key in Object(object)));
+      };
+    }
+
+    /**
      * Merges the function metadata of `source` into `data`.
      *
      * Merging metadata reduces the number of wrappers used to invoke a function.
      * This is possible because methods like `_.bind`, `_.curry`, and `_.partial`
-     * may be applied regardless of execution order. Methods like `_.ary` and `_.rearg`
-     * modify function arguments, making the order in which they are executed important,
-     * preventing the merging of metadata. However, we make an exception for a safe
-     * combined case where curried functions have `_.ary` and or `_.rearg` applied.
+     * may be applied regardless of execution order. Methods like `_.ary` and
+     * `_.rearg` modify function arguments, making the order in which they are
+     * executed important, preventing the merging of metadata. However, we make
+     * an exception for a safe combined case where curried functions have `_.ary`
+     * and or `_.rearg` applied.
      *
      * @private
      * @param {Array} data The destination metadata.
@@ -32250,7 +32803,8 @@ module.exports = isObjectLike;
      * @param {string} key The key of the property to merge.
      * @param {Object} object The parent object of `objValue`.
      * @param {Object} source The parent object of `srcValue`.
-     * @param {Object} [stack] Tracks traversed source values and their merged counterparts.
+     * @param {Object} [stack] Tracks traversed source values and their merged
+     *  counterparts.
      * @returns {*} Returns the value to assign.
      */
     function mergeDefaults(objValue, srcValue, key, object, source, stack) {
@@ -32269,7 +32823,7 @@ module.exports = isObjectLike;
      * @returns {*} Returns the parent value.
      */
     function parent(object, path) {
-      return path.length == 1 ? object : get(object, baseSlice(path, 0, -1));
+      return path.length == 1 ? object : baseGet(object, baseSlice(path, 0, -1));
     }
 
     /**
@@ -32298,8 +32852,9 @@ module.exports = isObjectLike;
      * Sets metadata for `func`.
      *
      * **Note:** If this function becomes hot, i.e. is invoked a lot in a short
-     * period of time, it will trip its breaker and transition to an identity function
-     * to avoid garbage collection pauses in V8. See [V8 issue 2070](https://code.google.com/p/v8/issues/detail?id=2070)
+     * period of time, it will trip its breaker and transition to an identity
+     * function to avoid garbage collection pauses in V8. See
+     * [V8 issue 2070](https://bugs.chromium.org/p/v8/issues/detail?id=2070)
      * for more details.
      *
      * @private
@@ -32334,12 +32889,42 @@ module.exports = isObjectLike;
      * @param {string} string The string to convert.
      * @returns {Array} Returns the property path array.
      */
-    function stringToPath(string) {
+    var stringToPath = memoize(function(string) {
       var result = [];
       toString(string).replace(rePropName, function(match, number, quote, string) {
         result.push(quote ? string.replace(reEscapeChar, '$1') : (number || match));
       });
       return result;
+    });
+
+    /**
+     * Converts `value` to a string key if it's not a string or symbol.
+     *
+     * @private
+     * @param {*} value The value to inspect.
+     * @returns {string|symbol} Returns the key.
+     */
+    function toKey(key) {
+      return (typeof key == 'string' || isSymbol(key)) ? key : (key + '');
+    }
+
+    /**
+     * Converts `func` to its source code.
+     *
+     * @private
+     * @param {Function} func The function to process.
+     * @returns {string} Returns the source code.
+     */
+    function toSource(func) {
+      if (func != null) {
+        try {
+          return funcToString.call(func);
+        } catch (e) {}
+        try {
+          return (func + '');
+        } catch (e) {}
+      }
+      return '';
     }
 
     /**
@@ -32369,9 +32954,11 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 3.0.0
      * @category Array
      * @param {Array} array The array to process.
-     * @param {number} [size=0] The length of each chunk.
+     * @param {number} [size=1] The length of each chunk
+     * @param- {Object} [guard] Enables use as an iteratee for methods like `_.map`.
      * @returns {Array} Returns the new array containing chunks.
      * @example
      *
@@ -32381,9 +32968,12 @@ module.exports = isObjectLike;
      * _.chunk(['a', 'b', 'c', 'd'], 3);
      * // => [['a', 'b', 'c'], ['d']]
      */
-    function chunk(array, size) {
-      size = nativeMax(toInteger(size), 0);
-
+    function chunk(array, size, guard) {
+      if ((guard ? isIterateeCall(array, size, guard) : size === undefined)) {
+        size = 1;
+      } else {
+        size = nativeMax(toInteger(size), 0);
+      }
       var length = array ? array.length : 0;
       if (!length || size < 1) {
         return [];
@@ -32404,6 +32994,7 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 0.1.0
      * @category Array
      * @param {Array} array The array to compact.
      * @returns {Array} Returns the new array of filtered values.
@@ -32433,6 +33024,7 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 4.0.0
      * @category Array
      * @param {Array} array The array to concatenate.
      * @param {...*} [values] The values to concatenate.
@@ -32448,22 +33040,29 @@ module.exports = isObjectLike;
      * console.log(array);
      * // => [1]
      */
-    var concat = rest(function(array, values) {
-      if (!isArray(array)) {
-        array = array == null ? [] : [Object(array)];
+    function concat() {
+      var length = arguments.length,
+          array = castArray(arguments[0]);
+
+      if (length < 2) {
+        return length ? copyArray(array) : [];
       }
-      values = baseFlatten(values, 1);
-      return arrayConcat(array, values);
-    });
+      var args = Array(length - 1);
+      while (length--) {
+        args[length - 1] = arguments[length];
+      }
+      return arrayConcat(array, baseFlatten(args, 1));
+    }
 
     /**
-     * Creates an array of unique `array` values not included in the other
-     * given arrays using [`SameValueZero`](http://ecma-international.org/ecma-262/6.0/#sec-samevaluezero)
+     * Creates an array of unique `array` values not included in the other given
+     * arrays using [`SameValueZero`](http://ecma-international.org/ecma-262/6.0/#sec-samevaluezero)
      * for equality comparisons. The order of result values is determined by the
      * order they occur in the first array.
      *
      * @static
      * @memberOf _
+     * @since 0.1.0
      * @category Array
      * @param {Array} array The array to inspect.
      * @param {...Array} [values] The values to exclude.
@@ -32475,7 +33074,7 @@ module.exports = isObjectLike;
      */
     var difference = rest(function(array, values) {
       return isArrayLikeObject(array)
-        ? baseDifference(array, baseFlatten(values, 1, true))
+        ? baseDifference(array, baseFlatten(values, 1, isArrayLikeObject, true))
         : [];
     });
 
@@ -32487,10 +33086,12 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 4.0.0
      * @category Array
      * @param {Array} array The array to inspect.
      * @param {...Array} [values] The values to exclude.
-     * @param {Function|Object|string} [iteratee=_.identity] The iteratee invoked per element.
+     * @param {Array|Function|Object|string} [iteratee=_.identity]
+     *  The iteratee invoked per element.
      * @returns {Array} Returns the new array of filtered values.
      * @example
      *
@@ -32507,7 +33108,7 @@ module.exports = isObjectLike;
         iteratee = undefined;
       }
       return isArrayLikeObject(array)
-        ? baseDifference(array, baseFlatten(values, 1, true), getIteratee(iteratee))
+        ? baseDifference(array, baseFlatten(values, 1, isArrayLikeObject, true), getIteratee(iteratee))
         : [];
     });
 
@@ -32519,6 +33120,7 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 4.0.0
      * @category Array
      * @param {Array} array The array to inspect.
      * @param {...Array} [values] The values to exclude.
@@ -32537,7 +33139,7 @@ module.exports = isObjectLike;
         comparator = undefined;
       }
       return isArrayLikeObject(array)
-        ? baseDifference(array, baseFlatten(values, 1, true), undefined, comparator)
+        ? baseDifference(array, baseFlatten(values, 1, isArrayLikeObject, true), undefined, comparator)
         : [];
     });
 
@@ -32546,10 +33148,11 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 0.5.0
      * @category Array
      * @param {Array} array The array to query.
      * @param {number} [n=1] The number of elements to drop.
-     * @param- {Object} [guard] Enables use as an iteratee for functions like `_.map`.
+     * @param- {Object} [guard] Enables use as an iteratee for methods like `_.map`.
      * @returns {Array} Returns the slice of `array`.
      * @example
      *
@@ -32579,10 +33182,11 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 3.0.0
      * @category Array
      * @param {Array} array The array to query.
      * @param {number} [n=1] The number of elements to drop.
-     * @param- {Object} [guard] Enables use as an iteratee for functions like `_.map`.
+     * @param- {Object} [guard] Enables use as an iteratee for methods like `_.map`.
      * @returns {Array} Returns the slice of `array`.
      * @example
      *
@@ -32615,9 +33219,11 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 3.0.0
      * @category Array
      * @param {Array} array The array to query.
-     * @param {Function|Object|string} [predicate=_.identity] The function invoked per iteration.
+     * @param {Array|Function|Object|string} [predicate=_.identity]
+     *  The function invoked per iteration.
      * @returns {Array} Returns the slice of `array`.
      * @example
      *
@@ -32655,9 +33261,11 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 3.0.0
      * @category Array
      * @param {Array} array The array to query.
-     * @param {Function|Object|string} [predicate=_.identity] The function invoked per iteration.
+     * @param {Array|Function|Object|string} [predicate=_.identity]
+     *  The function invoked per iteration.
      * @returns {Array} Returns the slice of `array`.
      * @example
      *
@@ -32696,6 +33304,7 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 3.2.0
      * @category Array
      * @param {Array} array The array to fill.
      * @param {*} value The value to fill `array` with.
@@ -32734,9 +33343,11 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 1.1.0
      * @category Array
      * @param {Array} array The array to search.
-     * @param {Function|Object|string} [predicate=_.identity] The function invoked per iteration.
+     * @param {Array|Function|Object|string} [predicate=_.identity]
+     *  The function invoked per iteration.
      * @returns {number} Returns the index of the found element, else `-1`.
      * @example
      *
@@ -32773,9 +33384,11 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 2.0.0
      * @category Array
      * @param {Array} array The array to search.
-     * @param {Function|Object|string} [predicate=_.identity] The function invoked per iteration.
+     * @param {Array|Function|Object|string} [predicate=_.identity]
+     *  The function invoked per iteration.
      * @returns {number} Returns the index of the found element, else `-1`.
      * @example
      *
@@ -32811,6 +33424,7 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 0.1.0
      * @category Array
      * @param {Array} array The array to flatten.
      * @returns {Array} Returns the new flattened array.
@@ -32829,6 +33443,7 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 3.0.0
      * @category Array
      * @param {Array} array The array to flatten.
      * @returns {Array} Returns the new flattened array.
@@ -32847,6 +33462,7 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 4.4.0
      * @category Array
      * @param {Array} array The array to flatten.
      * @param {number} [depth=1] The maximum recursion depth.
@@ -32876,6 +33492,7 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 4.0.0
      * @category Array
      * @param {Array} pairs The key-value pairs.
      * @returns {Object} Returns the new object.
@@ -32901,6 +33518,7 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 0.1.0
      * @alias first
      * @category Array
      * @param {Array} array The array to query.
@@ -32920,11 +33538,12 @@ module.exports = isObjectLike;
     /**
      * Gets the index at which the first occurrence of `value` is found in `array`
      * using [`SameValueZero`](http://ecma-international.org/ecma-262/6.0/#sec-samevaluezero)
-     * for equality comparisons. If `fromIndex` is negative, it's used as the offset
-     * from the end of `array`.
+     * for equality comparisons. If `fromIndex` is negative, it's used as the
+     * offset from the end of `array`.
      *
      * @static
      * @memberOf _
+     * @since 0.1.0
      * @category Array
      * @param {Array} array The array to search.
      * @param {*} value The value to search for.
@@ -32956,6 +33575,7 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 0.1.0
      * @category Array
      * @param {Array} array The array to query.
      * @returns {Array} Returns the slice of `array`.
@@ -32976,6 +33596,7 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 0.1.0
      * @category Array
      * @param {...Array} [arrays] The arrays to inspect.
      * @returns {Array} Returns the new array of intersecting values.
@@ -32985,7 +33606,7 @@ module.exports = isObjectLike;
      * // => [2]
      */
     var intersection = rest(function(arrays) {
-      var mapped = arrayMap(arrays, baseCastArrayLikeObject);
+      var mapped = arrayMap(arrays, castArrayLikeObject);
       return (mapped.length && mapped[0] === arrays[0])
         ? baseIntersection(mapped)
         : [];
@@ -32999,9 +33620,11 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 4.0.0
      * @category Array
      * @param {...Array} [arrays] The arrays to inspect.
-     * @param {Function|Object|string} [iteratee=_.identity] The iteratee invoked per element.
+     * @param {Array|Function|Object|string} [iteratee=_.identity]
+     *  The iteratee invoked per element.
      * @returns {Array} Returns the new array of intersecting values.
      * @example
      *
@@ -33014,7 +33637,7 @@ module.exports = isObjectLike;
      */
     var intersectionBy = rest(function(arrays) {
       var iteratee = last(arrays),
-          mapped = arrayMap(arrays, baseCastArrayLikeObject);
+          mapped = arrayMap(arrays, castArrayLikeObject);
 
       if (iteratee === last(mapped)) {
         iteratee = undefined;
@@ -33034,6 +33657,7 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 4.0.0
      * @category Array
      * @param {...Array} [arrays] The arrays to inspect.
      * @param {Function} [comparator] The comparator invoked per element.
@@ -33048,7 +33672,7 @@ module.exports = isObjectLike;
      */
     var intersectionWith = rest(function(arrays) {
       var comparator = last(arrays),
-          mapped = arrayMap(arrays, baseCastArrayLikeObject);
+          mapped = arrayMap(arrays, castArrayLikeObject);
 
       if (comparator === last(mapped)) {
         comparator = undefined;
@@ -33065,6 +33689,7 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 4.0.0
      * @category Array
      * @param {Array} array The array to convert.
      * @param {string} [separator=','] The element separator.
@@ -33083,6 +33708,7 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 0.1.0
      * @category Array
      * @param {Array} array The array to query.
      * @returns {*} Returns the last element of `array`.
@@ -33102,6 +33728,7 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 0.1.0
      * @category Array
      * @param {Array} array The array to search.
      * @param {*} value The value to search for.
@@ -33124,7 +33751,11 @@ module.exports = isObjectLike;
       var index = length;
       if (fromIndex !== undefined) {
         index = toInteger(fromIndex);
-        index = (index < 0 ? nativeMax(length + index, 0) : nativeMin(index, length - 1)) + 1;
+        index = (
+          index < 0
+            ? nativeMax(length + index, 0)
+            : nativeMin(index, length - 1)
+        ) + 1;
       }
       if (value !== value) {
         return indexOfNaN(array, index, true);
@@ -33147,6 +33778,7 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 2.0.0
      * @category Array
      * @param {Array} array The array to modify.
      * @param {...*} [values] The values to remove.
@@ -33168,6 +33800,7 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 4.0.0
      * @category Array
      * @param {Array} array The array to modify.
      * @param {Array} values The values to remove.
@@ -33195,10 +33828,12 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 4.0.0
      * @category Array
      * @param {Array} array The array to modify.
      * @param {Array} values The values to remove.
-     * @param {Function|Object|string} [iteratee=_.identity] The iteratee invoked per element.
+     * @param {Array|Function|Object|string} [iteratee=_.identity]
+     *  The iteratee invoked per element.
      * @returns {Array} Returns `array`.
      * @example
      *
@@ -33223,6 +33858,7 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 4.6.0
      * @category Array
      * @param {Array} array The array to modify.
      * @param {Array} values The values to remove.
@@ -33250,10 +33886,10 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 3.0.0
      * @category Array
      * @param {Array} array The array to modify.
-     * @param {...(number|number[])} [indexes] The indexes of elements to remove,
-     *  specified individually or in arrays.
+     * @param {...(number|number[])} [indexes] The indexes of elements to remove.
      * @returns {Array} Returns the new array of removed elements.
      * @example
      *
@@ -33284,9 +33920,11 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 2.0.0
      * @category Array
      * @param {Array} array The array to modify.
-     * @param {Function|Object|string} [predicate=_.identity] The function invoked per iteration.
+     * @param {Array|Function|Object|string} [predicate=_.identity]
+     *  The function invoked per iteration.
      * @returns {Array} Returns the new array of removed elements.
      * @example
      *
@@ -33331,7 +33969,9 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 4.0.0
      * @category Array
+     * @param {Array} array The array to modify.
      * @returns {Array} Returns `array`.
      * @example
      *
@@ -33350,11 +33990,13 @@ module.exports = isObjectLike;
     /**
      * Creates a slice of `array` from `start` up to, but not including, `end`.
      *
-     * **Note:** This method is used instead of [`Array#slice`](https://mdn.io/Array/slice)
-     * to ensure dense arrays are returned.
+     * **Note:** This method is used instead of
+     * [`Array#slice`](https://mdn.io/Array/slice) to ensure dense arrays are
+     * returned.
      *
      * @static
      * @memberOf _
+     * @since 3.0.0
      * @category Array
      * @param {Array} array The array to slice.
      * @param {number} [start=0] The start position.
@@ -33378,15 +34020,17 @@ module.exports = isObjectLike;
     }
 
     /**
-     * Uses a binary search to determine the lowest index at which `value` should
-     * be inserted into `array` in order to maintain its sort order.
+     * Uses a binary search to determine the lowest index at which `value`
+     * should be inserted into `array` in order to maintain its sort order.
      *
      * @static
      * @memberOf _
+     * @since 0.1.0
      * @category Array
      * @param {Array} array The sorted array to inspect.
      * @param {*} value The value to evaluate.
-     * @returns {number} Returns the index at which `value` should be inserted into `array`.
+     * @returns {number} Returns the index at which `value` should be inserted
+     *  into `array`.
      * @example
      *
      * _.sortedIndex([30, 50], 40);
@@ -33406,11 +34050,14 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 4.0.0
      * @category Array
      * @param {Array} array The sorted array to inspect.
      * @param {*} value The value to evaluate.
-     * @param {Function|Object|string} [iteratee=_.identity] The iteratee invoked per element.
-     * @returns {number} Returns the index at which `value` should be inserted into `array`.
+     * @param {Array|Function|Object|string} [iteratee=_.identity]
+     *  The iteratee invoked per element.
+     * @returns {number} Returns the index at which `value` should be inserted
+     *  into `array`.
      * @example
      *
      * var dict = { 'thirty': 30, 'forty': 40, 'fifty': 50 };
@@ -33432,6 +34079,7 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 4.0.0
      * @category Array
      * @param {Array} array The array to search.
      * @param {*} value The value to search for.
@@ -33459,10 +34107,12 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 3.0.0
      * @category Array
      * @param {Array} array The sorted array to inspect.
      * @param {*} value The value to evaluate.
-     * @returns {number} Returns the index at which `value` should be inserted into `array`.
+     * @returns {number} Returns the index at which `value` should be inserted
+     *  into `array`.
      * @example
      *
      * _.sortedLastIndex([4, 5], 4);
@@ -33479,11 +34129,14 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 4.0.0
      * @category Array
      * @param {Array} array The sorted array to inspect.
      * @param {*} value The value to evaluate.
-     * @param {Function|Object|string} [iteratee=_.identity] The iteratee invoked per element.
-     * @returns {number} Returns the index at which `value` should be inserted into `array`.
+     * @param {Array|Function|Object|string} [iteratee=_.identity]
+     *  The iteratee invoked per element.
+     * @returns {number} Returns the index at which `value` should be inserted
+     *  into `array`.
      * @example
      *
      * // The `_.property` iteratee shorthand.
@@ -33500,6 +34153,7 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 4.0.0
      * @category Array
      * @param {Array} array The array to search.
      * @param {*} value The value to search for.
@@ -33526,6 +34180,7 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 4.0.0
      * @category Array
      * @param {Array} array The array to inspect.
      * @returns {Array} Returns the new duplicate free array.
@@ -33546,6 +34201,7 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 4.0.0
      * @category Array
      * @param {Array} array The array to inspect.
      * @param {Function} [iteratee] The iteratee invoked per element.
@@ -33566,6 +34222,7 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 4.0.0
      * @category Array
      * @param {Array} array The array to query.
      * @returns {Array} Returns the slice of `array`.
@@ -33583,10 +34240,11 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 0.1.0
      * @category Array
      * @param {Array} array The array to query.
      * @param {number} [n=1] The number of elements to take.
-     * @param- {Object} [guard] Enables use as an iteratee for functions like `_.map`.
+     * @param- {Object} [guard] Enables use as an iteratee for methods like `_.map`.
      * @returns {Array} Returns the slice of `array`.
      * @example
      *
@@ -33615,10 +34273,11 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 3.0.0
      * @category Array
      * @param {Array} array The array to query.
      * @param {number} [n=1] The number of elements to take.
-     * @param- {Object} [guard] Enables use as an iteratee for functions like `_.map`.
+     * @param- {Object} [guard] Enables use as an iteratee for methods like `_.map`.
      * @returns {Array} Returns the slice of `array`.
      * @example
      *
@@ -33646,14 +34305,16 @@ module.exports = isObjectLike;
 
     /**
      * Creates a slice of `array` with elements taken from the end. Elements are
-     * taken until `predicate` returns falsey. The predicate is invoked with three
-     * arguments: (value, index, array).
+     * taken until `predicate` returns falsey. The predicate is invoked with
+     * three arguments: (value, index, array).
      *
      * @static
      * @memberOf _
+     * @since 3.0.0
      * @category Array
      * @param {Array} array The array to query.
-     * @param {Function|Object|string} [predicate=_.identity] The function invoked per iteration.
+     * @param {Array|Function|Object|string} [predicate=_.identity]
+     *  The function invoked per iteration.
      * @returns {Array} Returns the slice of `array`.
      * @example
      *
@@ -33691,9 +34352,11 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 3.0.0
      * @category Array
      * @param {Array} array The array to query.
-     * @param {Function|Object|string} [predicate=_.identity] The function invoked per iteration.
+     * @param {Array|Function|Object|string} [predicate=_.identity]
+     *  The function invoked per iteration.
      * @returns {Array} Returns the slice of `array`.
      * @example
      *
@@ -33731,6 +34394,7 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 0.1.0
      * @category Array
      * @param {...Array} [arrays] The arrays to inspect.
      * @returns {Array} Returns the new array of combined values.
@@ -33740,19 +34404,22 @@ module.exports = isObjectLike;
      * // => [2, 1, 4]
      */
     var union = rest(function(arrays) {
-      return baseUniq(baseFlatten(arrays, 1, true));
+      return baseUniq(baseFlatten(arrays, 1, isArrayLikeObject, true));
     });
 
     /**
      * This method is like `_.union` except that it accepts `iteratee` which is
-     * invoked for each element of each `arrays` to generate the criterion by which
-     * uniqueness is computed. The iteratee is invoked with one argument: (value).
+     * invoked for each element of each `arrays` to generate the criterion by
+     * which uniqueness is computed. The iteratee is invoked with one argument:
+     * (value).
      *
      * @static
      * @memberOf _
+     * @since 4.0.0
      * @category Array
      * @param {...Array} [arrays] The arrays to inspect.
-     * @param {Function|Object|string} [iteratee=_.identity] The iteratee invoked per element.
+     * @param {Array|Function|Object|string} [iteratee=_.identity]
+     *  The iteratee invoked per element.
      * @returns {Array} Returns the new array of combined values.
      * @example
      *
@@ -33768,7 +34435,7 @@ module.exports = isObjectLike;
       if (isArrayLikeObject(iteratee)) {
         iteratee = undefined;
       }
-      return baseUniq(baseFlatten(arrays, 1, true), getIteratee(iteratee));
+      return baseUniq(baseFlatten(arrays, 1, isArrayLikeObject, true), getIteratee(iteratee));
     });
 
     /**
@@ -33778,6 +34445,7 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 4.0.0
      * @category Array
      * @param {...Array} [arrays] The arrays to inspect.
      * @param {Function} [comparator] The comparator invoked per element.
@@ -33795,17 +34463,18 @@ module.exports = isObjectLike;
       if (isArrayLikeObject(comparator)) {
         comparator = undefined;
       }
-      return baseUniq(baseFlatten(arrays, 1, true), undefined, comparator);
+      return baseUniq(baseFlatten(arrays, 1, isArrayLikeObject, true), undefined, comparator);
     });
 
     /**
      * Creates a duplicate-free version of an array, using
      * [`SameValueZero`](http://ecma-international.org/ecma-262/6.0/#sec-samevaluezero)
-     * for equality comparisons, in which only the first occurrence of each element
-     * is kept.
+     * for equality comparisons, in which only the first occurrence of each
+     * element is kept.
      *
      * @static
      * @memberOf _
+     * @since 0.1.0
      * @category Array
      * @param {Array} array The array to inspect.
      * @returns {Array} Returns the new duplicate free array.
@@ -33827,9 +34496,11 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 4.0.0
      * @category Array
      * @param {Array} array The array to inspect.
-     * @param {Function|Object|string} [iteratee=_.identity] The iteratee invoked per element.
+     * @param {Array|Function|Object|string} [iteratee=_.identity]
+     *  The iteratee invoked per element.
      * @returns {Array} Returns the new duplicate free array.
      * @example
      *
@@ -33853,6 +34524,7 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 4.0.0
      * @category Array
      * @param {Array} array The array to inspect.
      * @param {Function} [comparator] The comparator invoked per element.
@@ -33877,6 +34549,7 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 1.2.0
      * @category Array
      * @param {Array} array The array of grouped elements to process.
      * @returns {Array} Returns the new array of regrouped elements.
@@ -33911,9 +34584,11 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 3.8.0
      * @category Array
      * @param {Array} array The array of grouped elements to process.
-     * @param {Function} [iteratee=_.identity] The function to combine regrouped values.
+     * @param {Function} [iteratee=_.identity] The function to combine
+     *  regrouped values.
      * @returns {Array} Returns the new array of regrouped elements.
      * @example
      *
@@ -33943,6 +34618,7 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 0.1.0
      * @category Array
      * @param {Array} array The array to filter.
      * @param {...*} [values] The values to exclude.
@@ -33959,12 +34635,14 @@ module.exports = isObjectLike;
     });
 
     /**
-     * Creates an array of unique values that is the [symmetric difference](https://en.wikipedia.org/wiki/Symmetric_difference)
+     * Creates an array of unique values that is the
+     * [symmetric difference](https://en.wikipedia.org/wiki/Symmetric_difference)
      * of the given arrays. The order of result values is determined by the order
      * they occur in the arrays.
      *
      * @static
      * @memberOf _
+     * @since 2.4.0
      * @category Array
      * @param {...Array} [arrays] The arrays to inspect.
      * @returns {Array} Returns the new array of values.
@@ -33979,14 +34657,17 @@ module.exports = isObjectLike;
 
     /**
      * This method is like `_.xor` except that it accepts `iteratee` which is
-     * invoked for each element of each `arrays` to generate the criterion by which
-     * by which they're compared. The iteratee is invoked with one argument: (value).
+     * invoked for each element of each `arrays` to generate the criterion by
+     * which by which they're compared. The iteratee is invoked with one argument:
+     * (value).
      *
      * @static
      * @memberOf _
+     * @since 4.0.0
      * @category Array
      * @param {...Array} [arrays] The arrays to inspect.
-     * @param {Function|Object|string} [iteratee=_.identity] The iteratee invoked per element.
+     * @param {Array|Function|Object|string} [iteratee=_.identity]
+     *  The iteratee invoked per element.
      * @returns {Array} Returns the new array of values.
      * @example
      *
@@ -34012,6 +34693,7 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 4.0.0
      * @category Array
      * @param {...Array} [arrays] The arrays to inspect.
      * @param {Function} [comparator] The comparator invoked per element.
@@ -34033,12 +34715,13 @@ module.exports = isObjectLike;
     });
 
     /**
-     * Creates an array of grouped elements, the first of which contains the first
-     * elements of the given arrays, the second of which contains the second elements
-     * of the given arrays, and so on.
+     * Creates an array of grouped elements, the first of which contains the
+     * first elements of the given arrays, the second of which contains the
+     * second elements of the given arrays, and so on.
      *
      * @static
      * @memberOf _
+     * @since 0.1.0
      * @category Array
      * @param {...Array} [arrays] The arrays to process.
      * @returns {Array} Returns the new array of grouped elements.
@@ -34051,12 +34734,13 @@ module.exports = isObjectLike;
 
     /**
      * This method is like `_.fromPairs` except that it accepts two arrays,
-     * one of property names and one of corresponding values.
+     * one of property identifiers and one of corresponding values.
      *
      * @static
      * @memberOf _
+     * @since 0.4.0
      * @category Array
-     * @param {Array} [props=[]] The property names.
+     * @param {Array} [props=[]] The property identifiers.
      * @param {Array} [values=[]] The property values.
      * @returns {Object} Returns the new object.
      * @example
@@ -34073,8 +34757,9 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 4.1.0
      * @category Array
-     * @param {Array} [props=[]] The property names.
+     * @param {Array} [props=[]] The property identifiers.
      * @param {Array} [values=[]] The property values.
      * @returns {Object} Returns the new object.
      * @example
@@ -34093,6 +34778,7 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 3.8.0
      * @category Array
      * @param {...Array} [arrays] The arrays to process.
      * @param {Function} [iteratee=_.identity] The function to combine grouped values.
@@ -34115,11 +34801,13 @@ module.exports = isObjectLike;
     /*------------------------------------------------------------------------*/
 
     /**
-     * Creates a `lodash` object that wraps `value` with explicit method chaining enabled.
-     * The result of such method chaining must be unwrapped with `_#value`.
+     * Creates a `lodash` wrapper instance that wraps `value` with explicit method
+     * chain sequences enabled. The result of such sequences must be unwrapped
+     * with `_#value`.
      *
      * @static
      * @memberOf _
+     * @since 1.3.0
      * @category Seq
      * @param {*} value The value to wrap.
      * @returns {Object} Returns the new `lodash` wrapper instance.
@@ -34150,10 +34838,11 @@ module.exports = isObjectLike;
     /**
      * This method invokes `interceptor` and returns `value`. The interceptor
      * is invoked with one argument; (value). The purpose of this method is to
-     * "tap into" a method chain in order to modify intermediate results.
+     * "tap into" a method chain sequence in order to modify intermediate results.
      *
      * @static
      * @memberOf _
+     * @since 0.1.0
      * @category Seq
      * @param {*} value The value to provide to `interceptor`.
      * @param {Function} interceptor The function to invoke.
@@ -34177,10 +34866,11 @@ module.exports = isObjectLike;
     /**
      * This method is like `_.tap` except that it returns the result of `interceptor`.
      * The purpose of this method is to "pass thru" values replacing intermediate
-     * results in a method chain.
+     * results in a method chain sequence.
      *
      * @static
      * @memberOf _
+     * @since 3.0.0
      * @category Seq
      * @param {*} value The value to provide to `interceptor`.
      * @param {Function} interceptor The function to invoke.
@@ -34205,9 +34895,9 @@ module.exports = isObjectLike;
      *
      * @name at
      * @memberOf _
+     * @since 1.0.0
      * @category Seq
-     * @param {...(string|string[])} [paths] The property paths of elements to pick,
-     *  specified individually or in arrays.
+     * @param {...(string|string[])} [paths] The property paths of elements to pick.
      * @returns {Object} Returns the new `lodash` wrapper instance.
      * @example
      *
@@ -34245,10 +34935,11 @@ module.exports = isObjectLike;
     });
 
     /**
-     * Enables explicit method chaining on the wrapper object.
+     * Creates a `lodash` wrapper instance with explicit method chain sequences enabled.
      *
      * @name chain
      * @memberOf _
+     * @since 0.1.0
      * @category Seq
      * @returns {Object} Returns the new `lodash` wrapper instance.
      * @example
@@ -34275,10 +34966,11 @@ module.exports = isObjectLike;
     }
 
     /**
-     * Executes the chained sequence and returns the wrapped result.
+     * Executes the chain sequence and returns the wrapped result.
      *
      * @name commit
      * @memberOf _
+     * @since 3.2.0
      * @category Seq
      * @returns {Object} Returns the new `lodash` wrapper instance.
      * @example
@@ -34304,32 +34996,12 @@ module.exports = isObjectLike;
     }
 
     /**
-     * This method is the wrapper version of `_.flatMap`.
-     *
-     * @name flatMap
-     * @memberOf _
-     * @category Seq
-     * @param {Function|Object|string} [iteratee=_.identity] The function invoked per iteration.
-     * @returns {Object} Returns the new `lodash` wrapper instance.
-     * @example
-     *
-     * function duplicate(n) {
-     *   return [n, n];
-     * }
-     *
-     * _([1, 2]).flatMap(duplicate).value();
-     * // => [1, 1, 2, 2]
-     */
-    function wrapperFlatMap(iteratee) {
-      return this.map(iteratee).flatten();
-    }
-
-    /**
      * Gets the next value on a wrapped object following the
      * [iterator protocol](https://mdn.io/iteration_protocols#iterator).
      *
      * @name next
      * @memberOf _
+     * @since 4.0.0
      * @category Seq
      * @returns {Object} Returns the next iterator value.
      * @example
@@ -34360,6 +35032,7 @@ module.exports = isObjectLike;
      *
      * @name Symbol.iterator
      * @memberOf _
+     * @since 4.0.0
      * @category Seq
      * @returns {Object} Returns the wrapper object.
      * @example
@@ -34377,10 +35050,11 @@ module.exports = isObjectLike;
     }
 
     /**
-     * Creates a clone of the chained sequence planting `value` as the wrapped value.
+     * Creates a clone of the chain sequence planting `value` as the wrapped value.
      *
      * @name plant
      * @memberOf _
+     * @since 3.2.0
      * @category Seq
      * @param {*} value The value to plant.
      * @returns {Object} Returns the new `lodash` wrapper instance.
@@ -34426,6 +35100,7 @@ module.exports = isObjectLike;
      *
      * @name reverse
      * @memberOf _
+     * @since 0.1.0
      * @category Seq
      * @returns {Object} Returns the new `lodash` wrapper instance.
      * @example
@@ -34457,10 +35132,11 @@ module.exports = isObjectLike;
     }
 
     /**
-     * Executes the chained sequence to extract the unwrapped value.
+     * Executes the chain sequence to resolve the unwrapped value.
      *
      * @name value
      * @memberOf _
+     * @since 0.1.0
      * @alias toJSON, valueOf
      * @category Seq
      * @returns {*} Returns the resolved unwrapped value.
@@ -34477,15 +35153,17 @@ module.exports = isObjectLike;
 
     /**
      * Creates an object composed of keys generated from the results of running
-     * each element of `collection` through `iteratee`. The corresponding value
-     * of each key is the number of times the key was returned by `iteratee`.
-     * The iteratee is invoked with one argument: (value).
+     * each element of `collection` thru `iteratee`. The corresponding value of
+     * each key is the number of times the key was returned by `iteratee`. The
+     * iteratee is invoked with one argument: (value).
      *
      * @static
      * @memberOf _
+     * @since 0.5.0
      * @category Collection
      * @param {Array|Object} collection The collection to iterate over.
-     * @param {Function|Object|string} [iteratee=_.identity] The iteratee to transform keys.
+     * @param {Array|Function|Object|string} [iteratee=_.identity]
+     *  The iteratee to transform keys.
      * @returns {Object} Returns the composed aggregate object.
      * @example
      *
@@ -34506,19 +35184,22 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 0.1.0
      * @category Collection
      * @param {Array|Object} collection The collection to iterate over.
-     * @param {Function|Object|string} [predicate=_.identity] The function invoked per iteration.
-     * @param- {Object} [guard] Enables use as an iteratee for functions like `_.map`.
-     * @returns {boolean} Returns `true` if all elements pass the predicate check, else `false`.
+     * @param {Array|Function|Object|string} [predicate=_.identity]
+     *  The function invoked per iteration.
+     * @param- {Object} [guard] Enables use as an iteratee for methods like `_.map`.
+     * @returns {boolean} Returns `true` if all elements pass the predicate check,
+     *  else `false`.
      * @example
      *
      * _.every([true, 1, null, 'yes'], Boolean);
      * // => false
      *
      * var users = [
-     *   { 'user': 'barney', 'active': false },
-     *   { 'user': 'fred',   'active': false }
+     *   { 'user': 'barney', 'age': 36, 'active': false },
+     *   { 'user': 'fred',   'age': 40, 'active': false }
      * ];
      *
      * // The `_.matches` iteratee shorthand.
@@ -34543,14 +35224,16 @@ module.exports = isObjectLike;
 
     /**
      * Iterates over elements of `collection`, returning an array of all elements
-     * `predicate` returns truthy for. The predicate is invoked with three arguments:
-     * (value, index|key, collection).
+     * `predicate` returns truthy for. The predicate is invoked with three
+     * arguments: (value, index|key, collection).
      *
      * @static
      * @memberOf _
+     * @since 0.1.0
      * @category Collection
      * @param {Array|Object} collection The collection to iterate over.
-     * @param {Function|Object|string} [predicate=_.identity] The function invoked per iteration.
+     * @param {Array|Function|Object|string} [predicate=_.identity]
+     *  The function invoked per iteration.
      * @returns {Array} Returns the new filtered array.
      * @example
      *
@@ -34581,14 +35264,16 @@ module.exports = isObjectLike;
 
     /**
      * Iterates over elements of `collection`, returning the first element
-     * `predicate` returns truthy for. The predicate is invoked with three arguments:
-     * (value, index|key, collection).
+     * `predicate` returns truthy for. The predicate is invoked with three
+     * arguments: (value, index|key, collection).
      *
      * @static
      * @memberOf _
+     * @since 0.1.0
      * @category Collection
      * @param {Array|Object} collection The collection to search.
-     * @param {Function|Object|string} [predicate=_.identity] The function invoked per iteration.
+     * @param {Array|Function|Object|string} [predicate=_.identity]
+     *  The function invoked per iteration.
      * @returns {*} Returns the matched element, else `undefined`.
      * @example
      *
@@ -34628,9 +35313,11 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 2.0.0
      * @category Collection
      * @param {Array|Object} collection The collection to search.
-     * @param {Function|Object|string} [predicate=_.identity] The function invoked per iteration.
+     * @param {Array|Function|Object|string} [predicate=_.identity]
+     *  The function invoked per iteration.
      * @returns {*} Returns the matched element, else `undefined`.
      * @example
      *
@@ -34649,15 +35336,17 @@ module.exports = isObjectLike;
     }
 
     /**
-     * Creates an array of flattened values by running each element in `collection`
-     * through `iteratee` and concating its result to the other mapped values.
-     * The iteratee is invoked with three arguments: (value, index|key, collection).
+     * Creates a flattened array of values by running each element in `collection`
+     * thru `iteratee` and flattening the mapped results. The iteratee is invoked
+     * with three arguments: (value, index|key, collection).
      *
      * @static
      * @memberOf _
+     * @since 4.0.0
      * @category Collection
      * @param {Array|Object} collection The collection to iterate over.
-     * @param {Function|Object|string} [iteratee=_.identity] The function invoked per iteration.
+     * @param {Array|Function|Object|string} [iteratee=_.identity]
+     *  The function invoked per iteration.
      * @returns {Array} Returns the new flattened array.
      * @example
      *
@@ -34673,16 +35362,69 @@ module.exports = isObjectLike;
     }
 
     /**
-     * Iterates over elements of `collection` invoking `iteratee` for each element.
-     * The iteratee is invoked with three arguments: (value, index|key, collection).
-     * Iteratee functions may exit iteration early by explicitly returning `false`.
-     *
-     * **Note:** As with other "Collections" methods, objects with a "length" property
-     * are iterated like arrays. To avoid this behavior use `_.forIn` or `_.forOwn`
-     * for object iteration.
+     * This method is like `_.flatMap` except that it recursively flattens the
+     * mapped results.
      *
      * @static
      * @memberOf _
+     * @since 4.7.0
+     * @category Collection
+     * @param {Array|Object} collection The collection to iterate over.
+     * @param {Array|Function|Object|string} [iteratee=_.identity]
+     *  The function invoked per iteration.
+     * @returns {Array} Returns the new flattened array.
+     * @example
+     *
+     * function duplicate(n) {
+     *   return [[[n, n]]];
+     * }
+     *
+     * _.flatMapDeep([1, 2], duplicate);
+     * // => [1, 1, 2, 2]
+     */
+    function flatMapDeep(collection, iteratee) {
+      return baseFlatten(map(collection, iteratee), INFINITY);
+    }
+
+    /**
+     * This method is like `_.flatMap` except that it recursively flattens the
+     * mapped results up to `depth` times.
+     *
+     * @static
+     * @memberOf _
+     * @since 4.7.0
+     * @category Collection
+     * @param {Array|Object} collection The collection to iterate over.
+     * @param {Array|Function|Object|string} [iteratee=_.identity]
+     *  The function invoked per iteration.
+     * @param {number} [depth=1] The maximum recursion depth.
+     * @returns {Array} Returns the new flattened array.
+     * @example
+     *
+     * function duplicate(n) {
+     *   return [[[n, n]]];
+     * }
+     *
+     * _.flatMapDepth([1, 2], duplicate, 2);
+     * // => [[1, 1], [2, 2]]
+     */
+    function flatMapDepth(collection, iteratee, depth) {
+      depth = depth === undefined ? 1 : toInteger(depth);
+      return baseFlatten(map(collection, iteratee), depth);
+    }
+
+    /**
+     * Iterates over elements of `collection` and invokes `iteratee` for each element.
+     * The iteratee is invoked with three arguments: (value, index|key, collection).
+     * Iteratee functions may exit iteration early by explicitly returning `false`.
+     *
+     * **Note:** As with other "Collections" methods, objects with a "length"
+     * property are iterated like arrays. To avoid this behavior use `_.forIn`
+     * or `_.forOwn` for object iteration.
+     *
+     * @static
+     * @memberOf _
+     * @since 0.1.0
      * @alias each
      * @category Collection
      * @param {Array|Object} collection The collection to iterate over.
@@ -34693,17 +35435,17 @@ module.exports = isObjectLike;
      * _([1, 2]).forEach(function(value) {
      *   console.log(value);
      * });
-     * // => logs `1` then `2`
+     * // => Logs `1` then `2`.
      *
      * _.forEach({ 'a': 1, 'b': 2 }, function(value, key) {
      *   console.log(key);
      * });
-     * // => logs 'a' then 'b' (iteration order is not guaranteed)
+     * // => Logs 'a' then 'b' (iteration order is not guaranteed).
      */
     function forEach(collection, iteratee) {
       return (typeof iteratee == 'function' && isArray(collection))
         ? arrayEach(collection, iteratee)
-        : baseEach(collection, baseCastFunction(iteratee));
+        : baseEach(collection, getIteratee(iteratee));
     }
 
     /**
@@ -34712,6 +35454,7 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 2.0.0
      * @alias eachRight
      * @category Collection
      * @param {Array|Object} collection The collection to iterate over.
@@ -34722,25 +35465,28 @@ module.exports = isObjectLike;
      * _.forEachRight([1, 2], function(value) {
      *   console.log(value);
      * });
-     * // => logs `2` then `1`
+     * // => Logs `2` then `1`.
      */
     function forEachRight(collection, iteratee) {
       return (typeof iteratee == 'function' && isArray(collection))
         ? arrayEachRight(collection, iteratee)
-        : baseEachRight(collection, baseCastFunction(iteratee));
+        : baseEachRight(collection, getIteratee(iteratee));
     }
 
     /**
      * Creates an object composed of keys generated from the results of running
-     * each element of `collection` through `iteratee`. The corresponding value
-     * of each key is an array of elements responsible for generating the key.
-     * The iteratee is invoked with one argument: (value).
+     * each element of `collection` thru `iteratee`. The order of grouped values
+     * is determined by the order they occur in `collection`. The corresponding
+     * value of each key is an array of elements responsible for generating the
+     * key. The iteratee is invoked with one argument: (value).
      *
      * @static
      * @memberOf _
+     * @since 0.1.0
      * @category Collection
      * @param {Array|Object} collection The collection to iterate over.
-     * @param {Function|Object|string} [iteratee=_.identity] The iteratee to transform keys.
+     * @param {Array|Function|Object|string} [iteratee=_.identity]
+     *  The iteratee to transform keys.
      * @returns {Object} Returns the composed aggregate object.
      * @example
      *
@@ -34760,18 +35506,20 @@ module.exports = isObjectLike;
     });
 
     /**
-     * Checks if `value` is in `collection`. If `collection` is a string it's checked
-     * for a substring of `value`, otherwise [`SameValueZero`](http://ecma-international.org/ecma-262/6.0/#sec-samevaluezero)
+     * Checks if `value` is in `collection`. If `collection` is a string, it's
+     * checked for a substring of `value`, otherwise
+     * [`SameValueZero`](http://ecma-international.org/ecma-262/6.0/#sec-samevaluezero)
      * is used for equality comparisons. If `fromIndex` is negative, it's used as
      * the offset from the end of `collection`.
      *
      * @static
      * @memberOf _
+     * @since 0.1.0
      * @category Collection
      * @param {Array|Object|string} collection The collection to search.
      * @param {*} value The value to search for.
      * @param {number} [fromIndex=0] The index to search from.
-     * @param- {Object} [guard] Enables use as an iteratee for functions like `_.reduce`.
+     * @param- {Object} [guard] Enables use as an iteratee for methods like `_.reduce`.
      * @returns {boolean} Returns `true` if `value` is found, else `false`.
      * @example
      *
@@ -34803,11 +35551,12 @@ module.exports = isObjectLike;
     /**
      * Invokes the method at `path` of each element in `collection`, returning
      * an array of the results of each invoked method. Any additional arguments
-     * are provided to each invoked method. If `methodName` is a function it's
-     * invoked for, and `this` bound to, each element in `collection`.
+     * are provided to each invoked method. If `methodName` is a function, it's
+     * invoked for and `this` bound to, each element in `collection`.
      *
      * @static
      * @memberOf _
+     * @since 4.0.0
      * @category Collection
      * @param {Array|Object} collection The collection to iterate over.
      * @param {Array|Function|string} path The path of the method to invoke or
@@ -34837,15 +35586,17 @@ module.exports = isObjectLike;
 
     /**
      * Creates an object composed of keys generated from the results of running
-     * each element of `collection` through `iteratee`. The corresponding value
-     * of each key is the last element responsible for generating the key. The
+     * each element of `collection` thru `iteratee`. The corresponding value of
+     * each key is the last element responsible for generating the key. The
      * iteratee is invoked with one argument: (value).
      *
      * @static
      * @memberOf _
+     * @since 4.0.0
      * @category Collection
      * @param {Array|Object} collection The collection to iterate over.
-     * @param {Function|Object|string} [iteratee=_.identity] The iteratee to transform keys.
+     * @param {Array|Function|Object|string} [iteratee=_.identity]
+     *  The iteratee to transform keys.
      * @returns {Object} Returns the composed aggregate object.
      * @example
      *
@@ -34867,7 +35618,7 @@ module.exports = isObjectLike;
     });
 
     /**
-     * Creates an array of values by running each element in `collection` through
+     * Creates an array of values by running each element in `collection` thru
      * `iteratee`. The iteratee is invoked with three arguments:
      * (value, index|key, collection).
      *
@@ -34875,16 +35626,18 @@ module.exports = isObjectLike;
      * `_.every`, `_.filter`, `_.map`, `_.mapValues`, `_.reject`, and `_.some`.
      *
      * The guarded methods are:
-     * `ary`, `curry`, `curryRight`, `drop`, `dropRight`, `every`, `fill`,
-     * `invert`, `parseInt`, `random`, `range`, `rangeRight`, `slice`, `some`,
-     * `sortBy`, `take`, `takeRight`, `template`, `trim`, `trimEnd`, `trimStart`,
-     * and `words`
+     * `ary`, `chunk`, `curry`, `curryRight`, `drop`, `dropRight`, `every`,
+     * `fill`, `invert`, `parseInt`, `random`, `range`, `rangeRight`, `repeat`,
+     * `sampleSize`, `slice`, `some`, `sortBy`, `split`, `take`, `takeRight`,
+     * `template`, `trim`, `trimEnd`, `trimStart`, and `words`
      *
      * @static
      * @memberOf _
+     * @since 0.1.0
      * @category Collection
      * @param {Array|Object} collection The collection to iterate over.
-     * @param {Function|Object|string} [iteratee=_.identity] The function invoked per iteration.
+     * @param {Array|Function|Object|string} [iteratee=_.identity]
+     *  The function invoked per iteration.
      * @returns {Array} Returns the new mapped array.
      * @example
      *
@@ -34920,24 +35673,26 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 4.0.0
      * @category Collection
      * @param {Array|Object} collection The collection to iterate over.
-     * @param {Function[]|Object[]|string[]} [iteratees=[_.identity]] The iteratees to sort by.
+     * @param {Array[]|Function[]|Object[]|string[]} [iteratees=[_.identity]]
+     *  The iteratees to sort by.
      * @param {string[]} [orders] The sort orders of `iteratees`.
-     * @param- {Object} [guard] Enables use as an iteratee for functions like `_.reduce`.
+     * @param- {Object} [guard] Enables use as an iteratee for methods like `_.reduce`.
      * @returns {Array} Returns the new sorted array.
      * @example
      *
      * var users = [
      *   { 'user': 'fred',   'age': 48 },
      *   { 'user': 'barney', 'age': 34 },
-     *   { 'user': 'fred',   'age': 42 },
+     *   { 'user': 'fred',   'age': 40 },
      *   { 'user': 'barney', 'age': 36 }
      * ];
      *
      * // Sort by `user` in ascending order and by `age` in descending order.
      * _.orderBy(users, ['user', 'age'], ['asc', 'desc']);
-     * // => objects for [['barney', 36], ['barney', 34], ['fred', 48], ['fred', 42]]
+     * // => objects for [['barney', 36], ['barney', 34], ['fred', 48], ['fred', 40]]
      */
     function orderBy(collection, iteratees, orders, guard) {
       if (collection == null) {
@@ -34961,9 +35716,11 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 3.0.0
      * @category Collection
      * @param {Array|Object} collection The collection to iterate over.
-     * @param {Function|Object|string} [predicate=_.identity] The function invoked per iteration.
+     * @param {Array|Function|Object|string} [predicate=_.identity]
+     *  The function invoked per iteration.
      * @returns {Array} Returns the array of grouped elements.
      * @example
      *
@@ -34994,9 +35751,9 @@ module.exports = isObjectLike;
 
     /**
      * Reduces `collection` to a value which is the accumulated result of running
-     * each element in `collection` through `iteratee`, where each successive
+     * each element in `collection` thru `iteratee`, where each successive
      * invocation is supplied the return value of the previous. If `accumulator`
-     * is not given the first element of `collection` is used as the initial
+     * is not given, the first element of `collection` is used as the initial
      * value. The iteratee is invoked with four arguments:
      * (accumulator, value, index|key, collection).
      *
@@ -35009,6 +35766,7 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 0.1.0
      * @category Collection
      * @param {Array|Object} collection The collection to iterate over.
      * @param {Function} [iteratee=_.identity] The function invoked per iteration.
@@ -35040,6 +35798,7 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 0.1.0
      * @category Collection
      * @param {Array|Object} collection The collection to iterate over.
      * @param {Function} [iteratee=_.identity] The function invoked per iteration.
@@ -35067,9 +35826,11 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 0.1.0
      * @category Collection
      * @param {Array|Object} collection The collection to iterate over.
-     * @param {Function|Object|string} [predicate=_.identity] The function invoked per iteration.
+     * @param {Array|Function|Object|string} [predicate=_.identity]
+     *  The function invoked per iteration.
      * @returns {Array} Returns the new filtered array.
      * @example
      *
@@ -35106,6 +35867,7 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 2.0.0
      * @category Collection
      * @param {Array|Object} collection The collection to sample.
      * @returns {*} Returns the random element.
@@ -35127,9 +35889,11 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 4.0.0
      * @category Collection
      * @param {Array|Object} collection The collection to sample.
-     * @param {number} [n=0] The number of elements to sample.
+     * @param {number} [n=1] The number of elements to sample.
+     * @param- {Object} [guard] Enables use as an iteratee for methods like `_.map`.
      * @returns {Array} Returns the random elements.
      * @example
      *
@@ -35139,13 +35903,17 @@ module.exports = isObjectLike;
      * _.sampleSize([1, 2, 3], 4);
      * // => [2, 3, 1]
      */
-    function sampleSize(collection, n) {
+    function sampleSize(collection, n, guard) {
       var index = -1,
           result = toArray(collection),
           length = result.length,
           lastIndex = length - 1;
 
-      n = baseClamp(toInteger(n), 0, length);
+      if ((guard ? isIterateeCall(collection, n, guard) : n === undefined)) {
+        n = 1;
+      } else {
+        n = baseClamp(toInteger(n), 0, length);
+      }
       while (++index < n) {
         var rand = baseRandom(index, lastIndex),
             value = result[rand];
@@ -35163,6 +35931,7 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 0.1.0
      * @category Collection
      * @param {Array|Object} collection The collection to shuffle.
      * @returns {Array} Returns the new shuffled array.
@@ -35177,10 +35946,11 @@ module.exports = isObjectLike;
 
     /**
      * Gets the size of `collection` by returning its length for array-like
-     * values or the number of own enumerable properties for objects.
+     * values or the number of own enumerable string keyed properties for objects.
      *
      * @static
      * @memberOf _
+     * @since 0.1.0
      * @category Collection
      * @param {Array|Object} collection The collection to inspect.
      * @returns {number} Returns the collection size.
@@ -35203,6 +35973,12 @@ module.exports = isObjectLike;
         var result = collection.length;
         return (result && isString(collection)) ? stringSize(collection) : result;
       }
+      if (isObjectLike(collection)) {
+        var tag = getTag(collection);
+        if (tag == mapTag || tag == setTag) {
+          return collection.size;
+        }
+      }
       return keys(collection).length;
     }
 
@@ -35213,11 +35989,14 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 0.1.0
      * @category Collection
      * @param {Array|Object} collection The collection to iterate over.
-     * @param {Function|Object|string} [predicate=_.identity] The function invoked per iteration.
-     * @param- {Object} [guard] Enables use as an iteratee for functions like `_.map`.
-     * @returns {boolean} Returns `true` if any element passes the predicate check, else `false`.
+     * @param {Array|Function|Object|string} [predicate=_.identity]
+     *  The function invoked per iteration.
+     * @param- {Object} [guard] Enables use as an iteratee for methods like `_.map`.
+     * @returns {boolean} Returns `true` if any element passes the predicate check,
+     *  else `false`.
      * @example
      *
      * _.some([null, 0, 'yes', false], Boolean);
@@ -35250,36 +36029,37 @@ module.exports = isObjectLike;
 
     /**
      * Creates an array of elements, sorted in ascending order by the results of
-     * running each element in a collection through each iteratee. This method
+     * running each element in a collection thru each iteratee. This method
      * performs a stable sort, that is, it preserves the original sort order of
      * equal elements. The iteratees are invoked with one argument: (value).
      *
      * @static
      * @memberOf _
+     * @since 0.1.0
      * @category Collection
      * @param {Array|Object} collection The collection to iterate over.
-     * @param {...(Function|Function[]|Object|Object[]|string|string[])} [iteratees=[_.identity]]
-     *  The iteratees to sort by, specified individually or in arrays.
+     * @param {...(Array|Array[]|Function|Function[]|Object|Object[]|string|string[])}
+     *  [iteratees=[_.identity]] The iteratees to sort by.
      * @returns {Array} Returns the new sorted array.
      * @example
      *
      * var users = [
      *   { 'user': 'fred',   'age': 48 },
      *   { 'user': 'barney', 'age': 36 },
-     *   { 'user': 'fred',   'age': 42 },
+     *   { 'user': 'fred',   'age': 40 },
      *   { 'user': 'barney', 'age': 34 }
      * ];
      *
      * _.sortBy(users, function(o) { return o.user; });
-     * // => objects for [['barney', 36], ['barney', 34], ['fred', 48], ['fred', 42]]
+     * // => objects for [['barney', 36], ['barney', 34], ['fred', 48], ['fred', 40]]
      *
      * _.sortBy(users, ['user', 'age']);
-     * // => objects for [['barney', 34], ['barney', 36], ['fred', 42], ['fred', 48]]
+     * // => objects for [['barney', 34], ['barney', 36], ['fred', 40], ['fred', 48]]
      *
      * _.sortBy(users, 'user', function(o) {
      *   return Math.floor(o.age / 10);
      * });
-     * // => objects for [['barney', 36], ['barney', 34], ['fred', 48], ['fred', 42]]
+     * // => objects for [['barney', 36], ['barney', 34], ['fred', 48], ['fred', 40]]
      */
     var sortBy = rest(function(collection, iteratees) {
       if (collection == null) {
@@ -35289,7 +36069,7 @@ module.exports = isObjectLike;
       if (length > 1 && isIterateeCall(collection, iteratees[0], iteratees[1])) {
         iteratees = [];
       } else if (length > 2 && isIterateeCall(iteratees[0], iteratees[1], iteratees[2])) {
-        iteratees.length = 1;
+        iteratees = [iteratees[0]];
       }
       return baseOrderBy(collection, baseFlatten(iteratees, 1), []);
     });
@@ -35302,6 +36082,7 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 2.4.0
      * @type {Function}
      * @category Date
      * @returns {number} Returns the timestamp.
@@ -35310,7 +36091,7 @@ module.exports = isObjectLike;
      * _.defer(function(stamp) {
      *   console.log(_.now() - stamp);
      * }, _.now());
-     * // => logs the number of milliseconds it took for the deferred function to be invoked
+     * // => Logs the number of milliseconds it took for the deferred function to be invoked.
      */
     var now = Date.now;
 
@@ -35322,6 +36103,7 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 0.1.0
      * @category Function
      * @param {number} n The number of calls before `func` is invoked.
      * @param {Function} func The function to restrict.
@@ -35337,7 +36119,7 @@ module.exports = isObjectLike;
      * _.forEach(saves, function(type) {
      *   asyncSave({ 'type': type, 'complete': done });
      * });
-     * // => logs 'done saving!' after the two async saves have completed
+     * // => Logs 'done saving!' after the two async saves have completed.
      */
     function after(n, func) {
       if (typeof func != 'function') {
@@ -35352,15 +36134,16 @@ module.exports = isObjectLike;
     }
 
     /**
-     * Creates a function that accepts up to `n` arguments, ignoring any
-     * additional arguments.
+     * Creates a function that invokes `func`, with up to `n` arguments,
+     * ignoring any additional arguments.
      *
      * @static
      * @memberOf _
+     * @since 3.0.0
      * @category Function
      * @param {Function} func The function to cap arguments for.
      * @param {number} [n=func.length] The arity cap.
-     * @param- {Object} [guard] Enables use as an iteratee for functions like `_.map`.
+     * @param- {Object} [guard] Enables use as an iteratee for methods like `_.map`.
      * @returns {Function} Returns the new function.
      * @example
      *
@@ -35380,6 +36163,7 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 3.0.0
      * @category Function
      * @param {number} n The number of calls at which `func` is no longer invoked.
      * @param {Function} func The function to restrict.
@@ -35408,8 +36192,7 @@ module.exports = isObjectLike;
 
     /**
      * Creates a function that invokes `func` with the `this` binding of `thisArg`
-     * and prepends any additional `_.bind` arguments to those provided to the
-     * bound function.
+     * and `partials` prepended to the arguments it receives.
      *
      * The `_.bind.placeholder` value, which defaults to `_` in monolithic builds,
      * may be used as a placeholder for partially applied arguments.
@@ -35419,6 +36202,7 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 0.1.0
      * @category Function
      * @param {Function} func The function to bind.
      * @param {*} thisArg The `this` binding of `func`.
@@ -35451,12 +36235,12 @@ module.exports = isObjectLike;
     });
 
     /**
-     * Creates a function that invokes the method at `object[key]` and prepends
-     * any additional `_.bindKey` arguments to those provided to the bound function.
+     * Creates a function that invokes the method at `object[key]` with `partials`
+     * prepended to the arguments it receives.
      *
      * This method differs from `_.bind` by allowing bound functions to reference
-     * methods that may be redefined or don't yet exist.
-     * See [Peter Michaux's article](http://peter.michaux.ca/articles/lazy-function-definition-pattern)
+     * methods that may be redefined or don't yet exist. See
+     * [Peter Michaux's article](http://peter.michaux.ca/articles/lazy-function-definition-pattern)
      * for more details.
      *
      * The `_.bindKey.placeholder` value, which defaults to `_` in monolithic
@@ -35464,6 +36248,7 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 0.10.0
      * @category Function
      * @param {Object} object The object to invoke the method on.
      * @param {string} key The key of the method.
@@ -35517,10 +36302,11 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 2.0.0
      * @category Function
      * @param {Function} func The function to curry.
      * @param {number} [arity=func.length] The arity of `func`.
-     * @param- {Object} [guard] Enables use as an iteratee for functions like `_.map`.
+     * @param- {Object} [guard] Enables use as an iteratee for methods like `_.map`.
      * @returns {Function} Returns the new curried function.
      * @example
      *
@@ -35561,10 +36347,11 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 3.0.0
      * @category Function
      * @param {Function} func The function to curry.
      * @param {number} [arity=func.length] The arity of `func`.
-     * @param- {Object} [guard] Enables use as an iteratee for functions like `_.map`.
+     * @param- {Object} [guard] Enables use as an iteratee for methods like `_.map`.
      * @returns {Function} Returns the new curried function.
      * @example
      *
@@ -35608,21 +36395,22 @@ module.exports = isObjectLike;
      * on the trailing edge of the timeout only if the debounced function is
      * invoked more than once during the `wait` timeout.
      *
-     * See [David Corbacho's article](http://drupalmotion.com/article/debounce-and-throttle-visual-explanation)
+     * See [David Corbacho's article](https://css-tricks.com/debouncing-throttling-explained-examples/)
      * for details over the differences between `_.debounce` and `_.throttle`.
      *
      * @static
      * @memberOf _
+     * @since 0.1.0
      * @category Function
      * @param {Function} func The function to debounce.
      * @param {number} [wait=0] The number of milliseconds to delay.
-     * @param {Object} [options] The options object.
-     * @param {boolean} [options.leading=false] Specify invoking on the leading
-     *  edge of the timeout.
-     * @param {number} [options.maxWait] The maximum time `func` is allowed to be
-     *  delayed before it's invoked.
-     * @param {boolean} [options.trailing=true] Specify invoking on the trailing
-     *  edge of the timeout.
+     * @param {Object} [options={}] The options object.
+     * @param {boolean} [options.leading=false]
+     *  Specify invoking on the leading edge of the timeout.
+     * @param {number} [options.maxWait]
+     *  The maximum time `func` is allowed to be delayed before it's invoked.
+     * @param {boolean} [options.trailing=true]
+     *  Specify invoking on the trailing edge of the timeout.
      * @returns {Function} Returns the new debounced function.
      * @example
      *
@@ -35644,14 +36432,12 @@ module.exports = isObjectLike;
      * jQuery(window).on('popstate', debounced.cancel);
      */
     function debounce(func, wait, options) {
-      var args,
-          maxTimeoutId,
+      var lastArgs,
+          lastThis,
           result,
-          stamp,
-          thisArg,
-          timeoutId,
-          trailingCall,
-          lastCalled = 0,
+          timerId,
+          lastCallTime = 0,
+          lastInvokeTime = 0,
           leading = false,
           maxWait = false,
           trailing = true;
@@ -35666,92 +36452,97 @@ module.exports = isObjectLike;
         trailing = 'trailing' in options ? !!options.trailing : trailing;
       }
 
-      function cancel() {
-        if (timeoutId) {
-          clearTimeout(timeoutId);
-        }
-        if (maxTimeoutId) {
-          clearTimeout(maxTimeoutId);
-        }
-        lastCalled = 0;
-        args = maxTimeoutId = thisArg = timeoutId = trailingCall = undefined;
-      }
+      function invokeFunc(time) {
+        var args = lastArgs,
+            thisArg = lastThis;
 
-      function complete(isCalled, id) {
-        if (id) {
-          clearTimeout(id);
-        }
-        maxTimeoutId = timeoutId = trailingCall = undefined;
-        if (isCalled) {
-          lastCalled = now();
-          result = func.apply(thisArg, args);
-          if (!timeoutId && !maxTimeoutId) {
-            args = thisArg = undefined;
-          }
-        }
-      }
-
-      function delayed() {
-        var remaining = wait - (now() - stamp);
-        if (remaining <= 0 || remaining > wait) {
-          complete(trailingCall, maxTimeoutId);
-        } else {
-          timeoutId = setTimeout(delayed, remaining);
-        }
-      }
-
-      function flush() {
-        if ((timeoutId && trailingCall) || (maxTimeoutId && trailing)) {
-          result = func.apply(thisArg, args);
-        }
-        cancel();
+        lastArgs = lastThis = undefined;
+        lastInvokeTime = time;
+        result = func.apply(thisArg, args);
         return result;
       }
 
-      function maxDelayed() {
-        complete(trailing, timeoutId);
+      function leadingEdge(time) {
+        // Reset any `maxWait` timer.
+        lastInvokeTime = time;
+        // Start the timer for the trailing edge.
+        timerId = setTimeout(timerExpired, wait);
+        // Invoke the leading edge.
+        return leading ? invokeFunc(time) : result;
+      }
+
+      function remainingWait(time) {
+        var timeSinceLastCall = time - lastCallTime,
+            timeSinceLastInvoke = time - lastInvokeTime,
+            result = wait - timeSinceLastCall;
+
+        return maxWait === false ? result : nativeMin(result, maxWait - timeSinceLastInvoke);
+      }
+
+      function shouldInvoke(time) {
+        var timeSinceLastCall = time - lastCallTime,
+            timeSinceLastInvoke = time - lastInvokeTime;
+
+        // Either this is the first call, activity has stopped and we're at the
+        // trailing edge, the system time has gone backwards and we're treating
+        // it as the trailing edge, or we've hit the `maxWait` limit.
+        return (!lastCallTime || (timeSinceLastCall >= wait) ||
+          (timeSinceLastCall < 0) || (maxWait !== false && timeSinceLastInvoke >= maxWait));
+      }
+
+      function timerExpired() {
+        var time = now();
+        if (shouldInvoke(time)) {
+          return trailingEdge(time);
+        }
+        // Restart the timer.
+        timerId = setTimeout(timerExpired, remainingWait(time));
+      }
+
+      function trailingEdge(time) {
+        clearTimeout(timerId);
+        timerId = undefined;
+
+        // Only invoke if we have `lastArgs` which means `func` has been
+        // debounced at least once.
+        if (trailing && lastArgs) {
+          return invokeFunc(time);
+        }
+        lastArgs = lastThis = undefined;
+        return result;
+      }
+
+      function cancel() {
+        if (timerId !== undefined) {
+          clearTimeout(timerId);
+        }
+        lastCallTime = lastInvokeTime = 0;
+        lastArgs = lastThis = timerId = undefined;
+      }
+
+      function flush() {
+        return timerId === undefined ? result : trailingEdge(now());
       }
 
       function debounced() {
-        args = arguments;
-        stamp = now();
-        thisArg = this;
-        trailingCall = trailing && (timeoutId || !leading);
+        var time = now(),
+            isInvoking = shouldInvoke(time);
 
-        if (maxWait === false) {
-          var leadingCall = leading && !timeoutId;
-        } else {
-          if (!lastCalled && !maxTimeoutId && !leading) {
-            lastCalled = stamp;
-          }
-          var remaining = maxWait - (stamp - lastCalled);
+        lastArgs = arguments;
+        lastThis = this;
+        lastCallTime = time;
 
-          var isCalled = (remaining <= 0 || remaining > maxWait) &&
-            (leading || maxTimeoutId);
-
-          if (isCalled) {
-            if (maxTimeoutId) {
-              maxTimeoutId = clearTimeout(maxTimeoutId);
-            }
-            lastCalled = stamp;
-            result = func.apply(thisArg, args);
+        if (isInvoking) {
+          if (timerId === undefined) {
+            return leadingEdge(lastCallTime);
           }
-          else if (!maxTimeoutId) {
-            maxTimeoutId = setTimeout(maxDelayed, remaining);
-          }
+          // Handle invocations in a tight loop.
+          clearTimeout(timerId);
+          timerId = setTimeout(timerExpired, wait);
+          return invokeFunc(lastCallTime);
         }
-        if (isCalled && timeoutId) {
-          timeoutId = clearTimeout(timeoutId);
-        }
-        else if (!timeoutId && wait !== maxWait) {
-          timeoutId = setTimeout(delayed, wait);
-        }
-        if (leadingCall) {
-          isCalled = true;
-          result = func.apply(thisArg, args);
-        }
-        if (isCalled && !timeoutId && !maxTimeoutId) {
-          args = thisArg = undefined;
+        if (timerId === undefined) {
+          timerId = setTimeout(timerExpired, wait);
         }
         return result;
       }
@@ -35766,6 +36557,7 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 0.1.0
      * @category Function
      * @param {Function} func The function to defer.
      * @param {...*} [args] The arguments to invoke `func` with.
@@ -35775,7 +36567,7 @@ module.exports = isObjectLike;
      * _.defer(function(text) {
      *   console.log(text);
      * }, 'deferred');
-     * // => logs 'deferred' after one or more milliseconds
+     * // => Logs 'deferred' after one or more milliseconds.
      */
     var defer = rest(function(func, args) {
       return baseDelay(func, 1, args);
@@ -35787,6 +36579,7 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 0.1.0
      * @category Function
      * @param {Function} func The function to delay.
      * @param {number} wait The number of milliseconds to delay invocation.
@@ -35797,7 +36590,7 @@ module.exports = isObjectLike;
      * _.delay(function(text) {
      *   console.log(text);
      * }, 1000, 'later');
-     * // => logs 'later' after one second
+     * // => Logs 'later' after one second.
      */
     var delay = rest(function(func, wait, args) {
       return baseDelay(func, toNumber(wait) || 0, args);
@@ -35808,6 +36601,7 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 4.0.0
      * @category Function
      * @param {Function} func The function to flip arguments for.
      * @returns {Function} Returns the new function.
@@ -35826,18 +36620,20 @@ module.exports = isObjectLike;
 
     /**
      * Creates a function that memoizes the result of `func`. If `resolver` is
-     * provided it determines the cache key for storing the result based on the
+     * provided, it determines the cache key for storing the result based on the
      * arguments provided to the memoized function. By default, the first argument
      * provided to the memoized function is used as the map cache key. The `func`
      * is invoked with the `this` binding of the memoized function.
      *
      * **Note:** The cache is exposed as the `cache` property on the memoized
      * function. Its creation may be customized by replacing the `_.memoize.Cache`
-     * constructor with one whose instances implement the [`Map`](http://ecma-international.org/ecma-262/6.0/#sec-properties-of-the-map-prototype-object)
+     * constructor with one whose instances implement the
+     * [`Map`](http://ecma-international.org/ecma-262/6.0/#sec-properties-of-the-map-prototype-object)
      * method interface of `delete`, `get`, `has`, and `set`.
      *
      * @static
      * @memberOf _
+     * @since 0.1.0
      * @category Function
      * @param {Function} func The function to have its output memoized.
      * @param {Function} [resolver] The function to resolve the cache key.
@@ -35882,9 +36678,12 @@ module.exports = isObjectLike;
         memoized.cache = cache.set(key, result);
         return result;
       };
-      memoized.cache = new memoize.Cache;
+      memoized.cache = new (memoize.Cache || MapCache);
       return memoized;
     }
+
+    // Assign cache to `_.memoize`.
+    memoize.Cache = MapCache;
 
     /**
      * Creates a function that negates the result of the predicate `func`. The
@@ -35893,6 +36692,7 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 3.0.0
      * @category Function
      * @param {Function} predicate The predicate to negate.
      * @returns {Function} Returns the new function.
@@ -35921,6 +36721,7 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 0.1.0
      * @category Function
      * @param {Function} func The function to restrict.
      * @returns {Function} Returns the new restricted function.
@@ -35940,11 +36741,12 @@ module.exports = isObjectLike;
      * corresponding `transforms`.
      *
      * @static
+     * @since 4.0.0
      * @memberOf _
      * @category Function
      * @param {Function} func The function to wrap.
-     * @param {...(Function|Function[])} [transforms] The functions to transform
-     * arguments, specified individually or in arrays.
+     * @param {...(Array|Array[]|Function|Function[]|Object|Object[]|string|string[])}
+     *  [transforms[_.identity]] The functions to transform.
      * @returns {Function} Returns the new function.
      * @example
      *
@@ -35967,8 +36769,7 @@ module.exports = isObjectLike;
      * // => [100, 10]
      */
     var overArgs = rest(function(func, transforms) {
-      transforms = arrayMap(baseFlatten(transforms, 1), getIteratee());
-
+      transforms = arrayMap(baseFlatten(transforms, 1, isFlattenableIteratee), getIteratee());
       var funcsLength = transforms.length;
       return rest(function(args) {
         var index = -1,
@@ -35982,9 +36783,9 @@ module.exports = isObjectLike;
     });
 
     /**
-     * Creates a function that invokes `func` with `partial` arguments prepended
-     * to those provided to the new function. This method is like `_.bind` except
-     * it does **not** alter the `this` binding.
+     * Creates a function that invokes `func` with `partials` prepended to the
+     * arguments it receives. This method is like `_.bind` except it does **not**
+     * alter the `this` binding.
      *
      * The `_.partial.placeholder` value, which defaults to `_` in monolithic
      * builds, may be used as a placeholder for partially applied arguments.
@@ -35994,6 +36795,7 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 0.2.0
      * @category Function
      * @param {Function} func The function to partially apply arguments to.
      * @param {...*} [partials] The arguments to be partially applied.
@@ -36020,7 +36822,7 @@ module.exports = isObjectLike;
 
     /**
      * This method is like `_.partial` except that partially applied arguments
-     * are appended to those provided to the new function.
+     * are appended to the arguments it receives.
      *
      * The `_.partialRight.placeholder` value, which defaults to `_` in monolithic
      * builds, may be used as a placeholder for partially applied arguments.
@@ -36030,6 +36832,7 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 1.0.0
      * @category Function
      * @param {Function} func The function to partially apply arguments to.
      * @param {...*} [partials] The arguments to be partially applied.
@@ -36056,16 +36859,16 @@ module.exports = isObjectLike;
 
     /**
      * Creates a function that invokes `func` with arguments arranged according
-     * to the specified indexes where the argument value at the first index is
+     * to the specified `indexes` where the argument value at the first index is
      * provided as the first argument, the argument value at the second index is
      * provided as the second argument, and so on.
      *
      * @static
      * @memberOf _
+     * @since 3.0.0
      * @category Function
      * @param {Function} func The function to rearrange arguments for.
-     * @param {...(number|number[])} indexes The arranged argument indexes,
-     *  specified individually or in arrays.
+     * @param {...(number|number[])} indexes The arranged argument indexes.
      * @returns {Function} Returns the new function.
      * @example
      *
@@ -36082,12 +36885,15 @@ module.exports = isObjectLike;
 
     /**
      * Creates a function that invokes `func` with the `this` binding of the
-     * created function and arguments from `start` and beyond provided as an array.
+     * created function and arguments from `start` and beyond provided as
+     * an array.
      *
-     * **Note:** This method is based on the [rest parameter](https://mdn.io/rest_parameters).
+     * **Note:** This method is based on the
+     * [rest parameter](https://mdn.io/rest_parameters).
      *
      * @static
      * @memberOf _
+     * @since 4.0.0
      * @category Function
      * @param {Function} func The function to apply a rest parameter to.
      * @param {number} [start=func.length-1] The start position of the rest parameter.
@@ -36132,13 +36938,16 @@ module.exports = isObjectLike;
     }
 
     /**
-     * Creates a function that invokes `func` with the `this` binding of the created
-     * function and an array of arguments much like [`Function#apply`](https://es5.github.io/#x15.3.4.3).
+     * Creates a function that invokes `func` with the `this` binding of the
+     * create function and an array of arguments much like
+     * [`Function#apply`](http://www.ecma-international.org/ecma-262/6.0/#sec-function.prototype.apply).
      *
-     * **Note:** This method is based on the [spread operator](https://mdn.io/spread_operator).
+     * **Note:** This method is based on the
+     * [spread operator](https://mdn.io/spread_operator).
      *
      * @static
      * @memberOf _
+     * @since 3.2.0
      * @category Function
      * @param {Function} func The function to spread arguments over.
      * @param {number} [start=0] The start position of the spread.
@@ -36169,7 +36978,7 @@ module.exports = isObjectLike;
       start = start === undefined ? 0 : nativeMax(toInteger(start), 0);
       return rest(function(args) {
         var array = args[start],
-            otherArgs = args.slice(0, start);
+            otherArgs = castSlice(args, 0, start);
 
         if (array) {
           arrayPush(otherArgs, array);
@@ -36188,23 +36997,24 @@ module.exports = isObjectLike;
      * throttled function. Subsequent calls to the throttled function return the
      * result of the last `func` invocation.
      *
-     * **Note:** If `leading` and `trailing` options are `true`, `func` is invoked
-     * on the trailing edge of the timeout only if the throttled function is
-     * invoked more than once during the `wait` timeout.
+     * **Note:** If `leading` and `trailing` options are `true`, `func` is
+     * invoked on the trailing edge of the timeout only if the throttled function
+     * is invoked more than once during the `wait` timeout.
      *
-     * See [David Corbacho's article](http://drupalmotion.com/article/debounce-and-throttle-visual-explanation)
+     * See [David Corbacho's article](https://css-tricks.com/debouncing-throttling-explained-examples/)
      * for details over the differences between `_.throttle` and `_.debounce`.
      *
      * @static
      * @memberOf _
+     * @since 0.1.0
      * @category Function
      * @param {Function} func The function to throttle.
      * @param {number} [wait=0] The number of milliseconds to throttle invocations to.
-     * @param {Object} [options] The options object.
-     * @param {boolean} [options.leading=true] Specify invoking on the leading
-     *  edge of the timeout.
-     * @param {boolean} [options.trailing=true] Specify invoking on the trailing
-     *  edge of the timeout.
+     * @param {Object} [options={}] The options object.
+     * @param {boolean} [options.leading=true]
+     *  Specify invoking on the leading edge of the timeout.
+     * @param {boolean} [options.trailing=true]
+     *  Specify invoking on the trailing edge of the timeout.
      * @returns {Function} Returns the new throttled function.
      * @example
      *
@@ -36242,6 +37052,7 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 4.0.0
      * @category Function
      * @param {Function} func The function to cap arguments for.
      * @returns {Function} Returns the new function.
@@ -36262,6 +37073,7 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 0.1.0
      * @category Function
      * @param {*} value The value to wrap.
      * @param {Function} [wrapper=identity] The wrapper function.
@@ -36287,6 +37099,7 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 4.4.0
      * @category Lang
      * @param {*} value The value to inspect.
      * @returns {Array} Returns the cast array.
@@ -36335,6 +37148,7 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 0.1.0
      * @category Lang
      * @param {*} value The value to clone.
      * @returns {*} Returns the cloned value.
@@ -36352,12 +37166,13 @@ module.exports = isObjectLike;
 
     /**
      * This method is like `_.clone` except that it accepts `customizer` which
-     * is invoked to produce the cloned value. If `customizer` returns `undefined`
+     * is invoked to produce the cloned value. If `customizer` returns `undefined`,
      * cloning is handled by the method instead. The `customizer` is invoked with
      * up to four arguments; (value [, index|key, object, stack]).
      *
      * @static
      * @memberOf _
+     * @since 4.0.0
      * @category Lang
      * @param {*} value The value to clone.
      * @param {Function} [customizer] The function to customize cloning.
@@ -36388,6 +37203,7 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 1.0.0
      * @category Lang
      * @param {*} value The value to recursively clone.
      * @returns {*} Returns the deep cloned value.
@@ -36408,6 +37224,7 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 4.0.0
      * @category Lang
      * @param {*} value The value to recursively clone.
      * @param {Function} [customizer] The function to customize cloning.
@@ -36434,11 +37251,13 @@ module.exports = isObjectLike;
     }
 
     /**
-     * Performs a [`SameValueZero`](http://ecma-international.org/ecma-262/6.0/#sec-samevaluezero)
+     * Performs a
+     * [`SameValueZero`](http://ecma-international.org/ecma-262/6.0/#sec-samevaluezero)
      * comparison between two values to determine if they are equivalent.
      *
      * @static
      * @memberOf _
+     * @since 4.0.0
      * @category Lang
      * @param {*} value The value to compare.
      * @param {*} other The other value to compare.
@@ -36472,10 +37291,12 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 3.9.0
      * @category Lang
      * @param {*} value The value to compare.
      * @param {*} other The other value to compare.
-     * @returns {boolean} Returns `true` if `value` is greater than `other`, else `false`.
+     * @returns {boolean} Returns `true` if `value` is greater than `other`,
+     *  else `false`.
      * @example
      *
      * _.gt(3, 1);
@@ -36496,10 +37317,12 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 3.9.0
      * @category Lang
      * @param {*} value The value to compare.
      * @param {*} other The other value to compare.
-     * @returns {boolean} Returns `true` if `value` is greater than or equal to `other`, else `false`.
+     * @returns {boolean} Returns `true` if `value` is greater than or equal to
+     *  `other`, else `false`.
      * @example
      *
      * _.gte(3, 1);
@@ -36520,9 +37343,11 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 0.1.0
      * @category Lang
      * @param {*} value The value to check.
-     * @returns {boolean} Returns `true` if `value` is correctly classified, else `false`.
+     * @returns {boolean} Returns `true` if `value` is correctly classified,
+     *  else `false`.
      * @example
      *
      * _.isArguments(function() { return arguments; }());
@@ -36542,10 +37367,12 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 0.1.0
      * @type {Function}
      * @category Lang
      * @param {*} value The value to check.
-     * @returns {boolean} Returns `true` if `value` is correctly classified, else `false`.
+     * @returns {boolean} Returns `true` if `value` is correctly classified,
+     *  else `false`.
      * @example
      *
      * _.isArray([1, 2, 3]);
@@ -36567,9 +37394,11 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 4.3.0
      * @category Lang
      * @param {*} value The value to check.
-     * @returns {boolean} Returns `true` if `value` is correctly classified, else `false`.
+     * @returns {boolean} Returns `true` if `value` is correctly classified,
+     *  else `false`.
      * @example
      *
      * _.isArrayBuffer(new ArrayBuffer(2));
@@ -36589,6 +37418,7 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 4.0.0
      * @category Lang
      * @param {*} value The value to check.
      * @returns {boolean} Returns `true` if `value` is array-like, else `false`.
@@ -36616,9 +37446,11 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 4.0.0
      * @category Lang
      * @param {*} value The value to check.
-     * @returns {boolean} Returns `true` if `value` is an array-like object, else `false`.
+     * @returns {boolean} Returns `true` if `value` is an array-like object,
+     *  else `false`.
      * @example
      *
      * _.isArrayLikeObject([1, 2, 3]);
@@ -36642,9 +37474,11 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 0.1.0
      * @category Lang
      * @param {*} value The value to check.
-     * @returns {boolean} Returns `true` if `value` is correctly classified, else `false`.
+     * @returns {boolean} Returns `true` if `value` is correctly classified,
+     *  else `false`.
      * @example
      *
      * _.isBoolean(false);
@@ -36663,6 +37497,7 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 4.3.0
      * @category Lang
      * @param {*} value The value to check.
      * @returns {boolean} Returns `true` if `value` is a buffer, else `false`.
@@ -36683,9 +37518,11 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 0.1.0
      * @category Lang
      * @param {*} value The value to check.
-     * @returns {boolean} Returns `true` if `value` is correctly classified, else `false`.
+     * @returns {boolean} Returns `true` if `value` is correctly classified,
+     *  else `false`.
      * @example
      *
      * _.isDate(new Date);
@@ -36703,9 +37540,11 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 0.1.0
      * @category Lang
      * @param {*} value The value to check.
-     * @returns {boolean} Returns `true` if `value` is a DOM element, else `false`.
+     * @returns {boolean} Returns `true` if `value` is a DOM element,
+     *  else `false`.
      * @example
      *
      * _.isElement(document.body);
@@ -36719,12 +37558,18 @@ module.exports = isObjectLike;
     }
 
     /**
-     * Checks if `value` is an empty collection or object. A value is considered
-     * empty if it's an `arguments` object, array, string, or jQuery-like collection
-     * with a length of `0` or has no own enumerable properties.
+     * Checks if `value` is an empty object, collection, map, or set.
+     *
+     * Objects are considered empty if they have no own enumerable string keyed
+     * properties.
+     *
+     * Array-like values such as `arguments` objects, arrays, buffers, strings, or
+     * jQuery-like collections are considered empty if they have a `length` of `0`.
+     * Similarly, maps and sets are considered empty if they have a `size` of `0`.
      *
      * @static
      * @memberOf _
+     * @since 0.1.0
      * @category Lang
      * @param {*} value The value to check.
      * @returns {boolean} Returns `true` if `value` is empty, else `false`.
@@ -36747,16 +37592,22 @@ module.exports = isObjectLike;
      */
     function isEmpty(value) {
       if (isArrayLike(value) &&
-          (isArray(value) || isString(value) ||
-            isFunction(value.splice) || isArguments(value))) {
+          (isArray(value) || isString(value) || isFunction(value.splice) ||
+            isArguments(value) || isBuffer(value))) {
         return !value.length;
+      }
+      if (isObjectLike(value)) {
+        var tag = getTag(value);
+        if (tag == mapTag || tag == setTag) {
+          return !value.size;
+        }
       }
       for (var key in value) {
         if (hasOwnProperty.call(value, key)) {
           return false;
         }
       }
-      return true;
+      return !(nonEnumShadows && keys(value).length);
     }
 
     /**
@@ -36771,10 +37622,12 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 0.1.0
      * @category Lang
      * @param {*} value The value to compare.
      * @param {*} other The other value to compare.
-     * @returns {boolean} Returns `true` if the values are equivalent, else `false`.
+     * @returns {boolean} Returns `true` if the values are equivalent,
+     *  else `false`.
      * @example
      *
      * var object = { 'user': 'fred' };
@@ -36792,17 +37645,19 @@ module.exports = isObjectLike;
 
     /**
      * This method is like `_.isEqual` except that it accepts `customizer` which
-     * is invoked to compare values. If `customizer` returns `undefined` comparisons
+     * is invoked to compare values. If `customizer` returns `undefined`, comparisons
      * are handled by the method instead. The `customizer` is invoked with up to
      * six arguments: (objValue, othValue [, index|key, object, other, stack]).
      *
      * @static
      * @memberOf _
+     * @since 4.0.0
      * @category Lang
      * @param {*} value The value to compare.
      * @param {*} other The other value to compare.
      * @param {Function} [customizer] The function to customize comparisons.
-     * @returns {boolean} Returns `true` if the values are equivalent, else `false`.
+     * @returns {boolean} Returns `true` if the values are equivalent,
+     *  else `false`.
      * @example
      *
      * function isGreeting(value) {
@@ -36833,9 +37688,11 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 3.0.0
      * @category Lang
      * @param {*} value The value to check.
-     * @returns {boolean} Returns `true` if `value` is an error object, else `false`.
+     * @returns {boolean} Returns `true` if `value` is an error object,
+     *  else `false`.
      * @example
      *
      * _.isError(new Error);
@@ -36855,13 +37712,16 @@ module.exports = isObjectLike;
     /**
      * Checks if `value` is a finite primitive number.
      *
-     * **Note:** This method is based on [`Number.isFinite`](https://mdn.io/Number/isFinite).
+     * **Note:** This method is based on
+     * [`Number.isFinite`](https://mdn.io/Number/isFinite).
      *
      * @static
      * @memberOf _
+     * @since 0.1.0
      * @category Lang
      * @param {*} value The value to check.
-     * @returns {boolean} Returns `true` if `value` is a finite number, else `false`.
+     * @returns {boolean} Returns `true` if `value` is a finite number,
+     *  else `false`.
      * @example
      *
      * _.isFinite(3);
@@ -36885,9 +37745,11 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 0.1.0
      * @category Lang
      * @param {*} value The value to check.
-     * @returns {boolean} Returns `true` if `value` is correctly classified, else `false`.
+     * @returns {boolean} Returns `true` if `value` is correctly classified,
+     *  else `false`.
      * @example
      *
      * _.isFunction(_);
@@ -36907,10 +37769,12 @@ module.exports = isObjectLike;
     /**
      * Checks if `value` is an integer.
      *
-     * **Note:** This method is based on [`Number.isInteger`](https://mdn.io/Number/isInteger).
+     * **Note:** This method is based on
+     * [`Number.isInteger`](https://mdn.io/Number/isInteger).
      *
      * @static
      * @memberOf _
+     * @since 4.0.0
      * @category Lang
      * @param {*} value The value to check.
      * @returns {boolean} Returns `true` if `value` is an integer, else `false`.
@@ -36935,13 +37799,16 @@ module.exports = isObjectLike;
     /**
      * Checks if `value` is a valid array-like length.
      *
-     * **Note:** This function is loosely based on [`ToLength`](http://ecma-international.org/ecma-262/6.0/#sec-tolength).
+     * **Note:** This function is loosely based on
+     * [`ToLength`](http://ecma-international.org/ecma-262/6.0/#sec-tolength).
      *
      * @static
      * @memberOf _
+     * @since 4.0.0
      * @category Lang
      * @param {*} value The value to check.
-     * @returns {boolean} Returns `true` if `value` is a valid length, else `false`.
+     * @returns {boolean} Returns `true` if `value` is a valid length,
+     *  else `false`.
      * @example
      *
      * _.isLength(3);
@@ -36962,11 +37829,13 @@ module.exports = isObjectLike;
     }
 
     /**
-     * Checks if `value` is the [language type](https://es5.github.io/#x8) of `Object`.
-     * (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
+     * Checks if `value` is the
+     * [language type](http://www.ecma-international.org/ecma-262/6.0/#sec-ecmascript-language-types)
+     * of `Object`. (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
      *
      * @static
      * @memberOf _
+     * @since 0.1.0
      * @category Lang
      * @param {*} value The value to check.
      * @returns {boolean} Returns `true` if `value` is an object, else `false`.
@@ -36995,6 +37864,7 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 4.0.0
      * @category Lang
      * @param {*} value The value to check.
      * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
@@ -37021,9 +37891,11 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 4.3.0
      * @category Lang
      * @param {*} value The value to check.
-     * @returns {boolean} Returns `true` if `value` is correctly classified, else `false`.
+     * @returns {boolean} Returns `true` if `value` is correctly classified,
+     *  else `false`.
      * @example
      *
      * _.isMap(new Map);
@@ -37045,6 +37917,7 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 3.0.0
      * @category Lang
      * @param {Object} object The object to inspect.
      * @param {Object} source The object of property values to match.
@@ -37065,12 +37938,13 @@ module.exports = isObjectLike;
 
     /**
      * This method is like `_.isMatch` except that it accepts `customizer` which
-     * is invoked to compare values. If `customizer` returns `undefined` comparisons
+     * is invoked to compare values. If `customizer` returns `undefined`, comparisons
      * are handled by the method instead. The `customizer` is invoked with five
      * arguments: (objValue, srcValue, index|key, object, source).
      *
      * @static
      * @memberOf _
+     * @since 4.0.0
      * @category Lang
      * @param {Object} object The object to inspect.
      * @param {Object} source The object of property values to match.
@@ -37102,11 +37976,14 @@ module.exports = isObjectLike;
     /**
      * Checks if `value` is `NaN`.
      *
-     * **Note:** This method is not the same as [`isNaN`](https://es5.github.io/#x15.1.2.4)
-     * which returns `true` for `undefined` and other non-numeric values.
+     * **Note:** This method is based on
+     * [`Number.isNaN`](https://mdn.io/Number/isNaN) and is not the same as
+     * global [`isNaN`](https://mdn.io/isNaN) which returns `true` for
+     * `undefined` and other non-number values.
      *
      * @static
      * @memberOf _
+     * @since 0.1.0
      * @category Lang
      * @param {*} value The value to check.
      * @returns {boolean} Returns `true` if `value` is `NaN`, else `false`.
@@ -37126,7 +38003,8 @@ module.exports = isObjectLike;
      */
     function isNaN(value) {
       // An `NaN` primitive is the only value that is not equal to itself.
-      // Perform the `toStringTag` check first to avoid errors with some ActiveX objects in IE.
+      // Perform the `toStringTag` check first to avoid errors with some
+      // ActiveX objects in IE.
       return isNumber(value) && value != +value;
     }
 
@@ -37135,9 +38013,11 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 3.0.0
      * @category Lang
      * @param {*} value The value to check.
-     * @returns {boolean} Returns `true` if `value` is a native function, else `false`.
+     * @returns {boolean} Returns `true` if `value` is a native function,
+     *  else `false`.
      * @example
      *
      * _.isNative(Array.prototype.push);
@@ -37147,14 +38027,11 @@ module.exports = isObjectLike;
      * // => false
      */
     function isNative(value) {
-      if (value == null) {
+      if (!isObject(value)) {
         return false;
       }
-      if (isFunction(value)) {
-        return reIsNative.test(funcToString.call(value));
-      }
-      return isObjectLike(value) &&
-        (isHostObject(value) ? reIsNative : reIsHostCtor).test(value);
+      var pattern = (isFunction(value) || isHostObject(value)) ? reIsNative : reIsHostCtor;
+      return pattern.test(toSource(value));
     }
 
     /**
@@ -37162,6 +38039,7 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 0.1.0
      * @category Lang
      * @param {*} value The value to check.
      * @returns {boolean} Returns `true` if `value` is `null`, else `false`.
@@ -37182,6 +38060,7 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 4.0.0
      * @category Lang
      * @param {*} value The value to check.
      * @returns {boolean} Returns `true` if `value` is nullish, else `false`.
@@ -37203,14 +38082,16 @@ module.exports = isObjectLike;
     /**
      * Checks if `value` is classified as a `Number` primitive or object.
      *
-     * **Note:** To exclude `Infinity`, `-Infinity`, and `NaN`, which are classified
-     * as numbers, use the `_.isFinite` method.
+     * **Note:** To exclude `Infinity`, `-Infinity`, and `NaN`, which are
+     * classified as numbers, use the `_.isFinite` method.
      *
      * @static
      * @memberOf _
+     * @since 0.1.0
      * @category Lang
      * @param {*} value The value to check.
-     * @returns {boolean} Returns `true` if `value` is correctly classified, else `false`.
+     * @returns {boolean} Returns `true` if `value` is correctly classified,
+     *  else `false`.
      * @example
      *
      * _.isNumber(3);
@@ -37236,9 +38117,11 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 0.8.0
      * @category Lang
      * @param {*} value The value to check.
-     * @returns {boolean} Returns `true` if `value` is a plain object, else `false`.
+     * @returns {boolean} Returns `true` if `value` is a plain object,
+     *  else `false`.
      * @example
      *
      * function Foo() {
@@ -37262,11 +38145,11 @@ module.exports = isObjectLike;
           objectToString.call(value) != objectTag || isHostObject(value)) {
         return false;
       }
-      var proto = getPrototypeOf(value);
+      var proto = getPrototype(value);
       if (proto === null) {
         return true;
       }
-      var Ctor = proto.constructor;
+      var Ctor = hasOwnProperty.call(proto, 'constructor') && proto.constructor;
       return (typeof Ctor == 'function' &&
         Ctor instanceof Ctor && funcToString.call(Ctor) == objectCtorString);
     }
@@ -37276,9 +38159,11 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 0.1.0
      * @category Lang
      * @param {*} value The value to check.
-     * @returns {boolean} Returns `true` if `value` is correctly classified, else `false`.
+     * @returns {boolean} Returns `true` if `value` is correctly classified,
+     *  else `false`.
      * @example
      *
      * _.isRegExp(/abc/);
@@ -37295,13 +38180,16 @@ module.exports = isObjectLike;
      * Checks if `value` is a safe integer. An integer is safe if it's an IEEE-754
      * double precision number which isn't the result of a rounded unsafe integer.
      *
-     * **Note:** This method is based on [`Number.isSafeInteger`](https://mdn.io/Number/isSafeInteger).
+     * **Note:** This method is based on
+     * [`Number.isSafeInteger`](https://mdn.io/Number/isSafeInteger).
      *
      * @static
      * @memberOf _
+     * @since 4.0.0
      * @category Lang
      * @param {*} value The value to check.
-     * @returns {boolean} Returns `true` if `value` is a safe integer, else `false`.
+     * @returns {boolean} Returns `true` if `value` is a safe integer,
+     *  else `false`.
      * @example
      *
      * _.isSafeInteger(3);
@@ -37325,9 +38213,11 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 4.3.0
      * @category Lang
      * @param {*} value The value to check.
-     * @returns {boolean} Returns `true` if `value` is correctly classified, else `false`.
+     * @returns {boolean} Returns `true` if `value` is correctly classified,
+     *  else `false`.
      * @example
      *
      * _.isSet(new Set);
@@ -37344,10 +38234,12 @@ module.exports = isObjectLike;
      * Checks if `value` is classified as a `String` primitive or object.
      *
      * @static
+     * @since 0.1.0
      * @memberOf _
      * @category Lang
      * @param {*} value The value to check.
-     * @returns {boolean} Returns `true` if `value` is correctly classified, else `false`.
+     * @returns {boolean} Returns `true` if `value` is correctly classified,
+     *  else `false`.
      * @example
      *
      * _.isString('abc');
@@ -37366,9 +38258,11 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 4.0.0
      * @category Lang
      * @param {*} value The value to check.
-     * @returns {boolean} Returns `true` if `value` is correctly classified, else `false`.
+     * @returns {boolean} Returns `true` if `value` is correctly classified,
+     *  else `false`.
      * @example
      *
      * _.isSymbol(Symbol.iterator);
@@ -37387,9 +38281,11 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 3.0.0
      * @category Lang
      * @param {*} value The value to check.
-     * @returns {boolean} Returns `true` if `value` is correctly classified, else `false`.
+     * @returns {boolean} Returns `true` if `value` is correctly classified,
+     *  else `false`.
      * @example
      *
      * _.isTypedArray(new Uint8Array);
@@ -37407,6 +38303,7 @@ module.exports = isObjectLike;
      * Checks if `value` is `undefined`.
      *
      * @static
+     * @since 0.1.0
      * @memberOf _
      * @category Lang
      * @param {*} value The value to check.
@@ -37428,9 +38325,11 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 4.3.0
      * @category Lang
      * @param {*} value The value to check.
-     * @returns {boolean} Returns `true` if `value` is correctly classified, else `false`.
+     * @returns {boolean} Returns `true` if `value` is correctly classified,
+     *  else `false`.
      * @example
      *
      * _.isWeakMap(new WeakMap);
@@ -37448,9 +38347,11 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 4.3.0
      * @category Lang
      * @param {*} value The value to check.
-     * @returns {boolean} Returns `true` if `value` is correctly classified, else `false`.
+     * @returns {boolean} Returns `true` if `value` is correctly classified,
+     *  else `false`.
      * @example
      *
      * _.isWeakSet(new WeakSet);
@@ -37468,10 +38369,12 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 3.9.0
      * @category Lang
      * @param {*} value The value to compare.
      * @param {*} other The other value to compare.
-     * @returns {boolean} Returns `true` if `value` is less than `other`, else `false`.
+     * @returns {boolean} Returns `true` if `value` is less than `other`,
+     *  else `false`.
      * @example
      *
      * _.lt(1, 3);
@@ -37492,10 +38395,12 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 3.9.0
      * @category Lang
      * @param {*} value The value to compare.
      * @param {*} other The other value to compare.
-     * @returns {boolean} Returns `true` if `value` is less than or equal to `other`, else `false`.
+     * @returns {boolean} Returns `true` if `value` is less than or equal to
+     *  `other`, else `false`.
      * @example
      *
      * _.lte(1, 3);
@@ -37515,6 +38420,7 @@ module.exports = isObjectLike;
      * Converts `value` to an array.
      *
      * @static
+     * @since 0.1.0
      * @memberOf _
      * @category Lang
      * @param {*} value The value to convert.
@@ -37552,10 +38458,12 @@ module.exports = isObjectLike;
     /**
      * Converts `value` to an integer.
      *
-     * **Note:** This function is loosely based on [`ToInteger`](http://www.ecma-international.org/ecma-262/6.0/#sec-tointeger).
+     * **Note:** This function is loosely based on
+     * [`ToInteger`](http://www.ecma-international.org/ecma-262/6.0/#sec-tointeger).
      *
      * @static
      * @memberOf _
+     * @since 4.0.0
      * @category Lang
      * @param {*} value The value to convert.
      * @returns {number} Returns the converted integer.
@@ -37590,10 +38498,12 @@ module.exports = isObjectLike;
      * Converts `value` to an integer suitable for use as the length of an
      * array-like object.
      *
-     * **Note:** This method is based on [`ToLength`](http://ecma-international.org/ecma-262/6.0/#sec-tolength).
+     * **Note:** This method is based on
+     * [`ToLength`](http://ecma-international.org/ecma-262/6.0/#sec-tolength).
      *
      * @static
      * @memberOf _
+     * @since 4.0.0
      * @category Lang
      * @param {*} value The value to convert.
      * @returns {number} Returns the converted integer.
@@ -37620,6 +38530,7 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 4.0.0
      * @category Lang
      * @param {*} value The value to process.
      * @returns {number} Returns the number.
@@ -37638,6 +38549,12 @@ module.exports = isObjectLike;
      * // => 3
      */
     function toNumber(value) {
+      if (typeof value == 'number') {
+        return value;
+      }
+      if (isSymbol(value)) {
+        return NAN;
+      }
       if (isObject(value)) {
         var other = isFunction(value.valueOf) ? value.valueOf() : value;
         value = isObject(other) ? (other + '') : other;
@@ -37653,11 +38570,12 @@ module.exports = isObjectLike;
     }
 
     /**
-     * Converts `value` to a plain object flattening inherited enumerable
-     * properties of `value` to own properties of the plain object.
+     * Converts `value` to a plain object flattening inherited enumerable string
+     * keyed properties of `value` to own properties of the plain object.
      *
      * @static
      * @memberOf _
+     * @since 3.0.0
      * @category Lang
      * @param {*} value The value to convert.
      * @returns {Object} Returns the converted plain object.
@@ -37685,6 +38603,7 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 4.0.0
      * @category Lang
      * @param {*} value The value to convert.
      * @returns {number} Returns the converted integer.
@@ -37707,11 +38626,12 @@ module.exports = isObjectLike;
     }
 
     /**
-     * Converts `value` to a string if it's not one. An empty string is returned
-     * for `null` and `undefined` values. The sign of `-0` is preserved.
+     * Converts `value` to a string. An empty string is returned for `null`
+     * and `undefined` values. The sign of `-0` is preserved.
      *
      * @static
      * @memberOf _
+     * @since 4.0.0
      * @category Lang
      * @param {*} value The value to process.
      * @returns {string} Returns the string.
@@ -37744,15 +38664,16 @@ module.exports = isObjectLike;
     /*------------------------------------------------------------------------*/
 
     /**
-     * Assigns own enumerable properties of source objects to the destination
-     * object. Source objects are applied from left to right. Subsequent sources
-     * overwrite property assignments of previous sources.
+     * Assigns own enumerable string keyed properties of source objects to the
+     * destination object. Source objects are applied from left to right.
+     * Subsequent sources overwrite property assignments of previous sources.
      *
      * **Note:** This method mutates `object` and is loosely based on
      * [`Object.assign`](https://mdn.io/Object/assign).
      *
      * @static
      * @memberOf _
+     * @since 0.10.0
      * @category Object
      * @param {Object} object The destination object.
      * @param {...Object} [sources] The source objects.
@@ -37793,6 +38714,7 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 4.0.0
      * @alias extend
      * @category Object
      * @param {Object} object The destination object.
@@ -37825,15 +38747,16 @@ module.exports = isObjectLike;
     });
 
     /**
-     * This method is like `_.assignIn` except that it accepts `customizer` which
-     * is invoked to produce the assigned values. If `customizer` returns `undefined`
-     * assignment is handled by the method instead. The `customizer` is invoked
-     * with five arguments: (objValue, srcValue, key, object, source).
+     * This method is like `_.assignIn` except that it accepts `customizer`
+     * which is invoked to produce the assigned values. If `customizer` returns
+     * `undefined`, assignment is handled by the method instead. The `customizer`
+     * is invoked with five arguments: (objValue, srcValue, key, object, source).
      *
      * **Note:** This method mutates `object`.
      *
      * @static
      * @memberOf _
+     * @since 4.0.0
      * @alias extendWith
      * @category Object
      * @param {Object} object The destination object.
@@ -37856,15 +38779,16 @@ module.exports = isObjectLike;
     });
 
     /**
-     * This method is like `_.assign` except that it accepts `customizer` which
-     * is invoked to produce the assigned values. If `customizer` returns `undefined`
-     * assignment is handled by the method instead. The `customizer` is invoked
-     * with five arguments: (objValue, srcValue, key, object, source).
+     * This method is like `_.assign` except that it accepts `customizer`
+     * which is invoked to produce the assigned values. If `customizer` returns
+     * `undefined`, assignment is handled by the method instead. The `customizer`
+     * is invoked with five arguments: (objValue, srcValue, key, object, source).
      *
      * **Note:** This method mutates `object`.
      *
      * @static
      * @memberOf _
+     * @since 4.0.0
      * @category Object
      * @param {Object} object The destination object.
      * @param {...Object} sources The source objects.
@@ -37890,10 +38814,10 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 1.0.0
      * @category Object
      * @param {Object} object The object to iterate over.
-     * @param {...(string|string[])} [paths] The property paths of elements to pick,
-     *  specified individually or in arrays.
+     * @param {...(string|string[])} [paths] The property paths of elements to pick.
      * @returns {Array} Returns the new array of picked elements.
      * @example
      *
@@ -37910,11 +38834,13 @@ module.exports = isObjectLike;
     });
 
     /**
-     * Creates an object that inherits from the `prototype` object. If a `properties`
-     * object is given its own enumerable properties are assigned to the created object.
+     * Creates an object that inherits from the `prototype` object. If a
+     * `properties` object is given, its own enumerable string keyed properties
+     * are assigned to the created object.
      *
      * @static
      * @memberOf _
+     * @since 2.3.0
      * @category Object
      * @param {Object} prototype The object to inherit from.
      * @param {Object} [properties] The properties to assign to the object.
@@ -37947,14 +38873,15 @@ module.exports = isObjectLike;
     }
 
     /**
-     * Assigns own and inherited enumerable properties of source objects to the
-     * destination object for all destination properties that resolve to `undefined`.
-     * Source objects are applied from left to right. Once a property is set,
-     * additional values of the same property are ignored.
+     * Assigns own and inherited enumerable string keyed properties of source
+     * objects to the destination object for all destination properties that
+     * resolve to `undefined`. Source objects are applied from left to right.
+     * Once a property is set, additional values of the same property are ignored.
      *
      * **Note:** This method mutates `object`.
      *
      * @static
+     * @since 0.1.0
      * @memberOf _
      * @category Object
      * @param {Object} object The destination object.
@@ -37978,6 +38905,7 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 3.10.0
      * @category Object
      * @param {Object} object The destination object.
      * @param {...Object} [sources] The source objects.
@@ -37999,10 +38927,13 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 1.1.0
      * @category Object
      * @param {Object} object The object to search.
-     * @param {Function|Object|string} [predicate=_.identity] The function invoked per iteration.
-     * @returns {string|undefined} Returns the key of the matched element, else `undefined`.
+     * @param {Array|Function|Object|string} [predicate=_.identity]
+     *  The function invoked per iteration.
+     * @returns {string|undefined} Returns the key of the matched element,
+     *  else `undefined`.
      * @example
      *
      * var users = {
@@ -38036,10 +38967,13 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 2.0.0
      * @category Object
      * @param {Object} object The object to search.
-     * @param {Function|Object|string} [predicate=_.identity] The function invoked per iteration.
-     * @returns {string|undefined} Returns the key of the matched element, else `undefined`.
+     * @param {Array|Function|Object|string} [predicate=_.identity]
+     *  The function invoked per iteration.
+     * @returns {string|undefined} Returns the key of the matched element,
+     *  else `undefined`.
      * @example
      *
      * var users = {
@@ -38068,13 +39002,14 @@ module.exports = isObjectLike;
     }
 
     /**
-     * Iterates over own and inherited enumerable properties of an object invoking
-     * `iteratee` for each property. The iteratee is invoked with three arguments:
-     * (value, key, object). Iteratee functions may exit iteration early by explicitly
-     * returning `false`.
+     * Iterates over own and inherited enumerable string keyed properties of an
+     * object and invokes `iteratee` for each property. The iteratee is invoked
+     * with three arguments: (value, key, object). Iteratee functions may exit
+     * iteration early by explicitly returning `false`.
      *
      * @static
      * @memberOf _
+     * @since 0.3.0
      * @category Object
      * @param {Object} object The object to iterate over.
      * @param {Function} [iteratee=_.identity] The function invoked per iteration.
@@ -38091,12 +39026,12 @@ module.exports = isObjectLike;
      * _.forIn(new Foo, function(value, key) {
      *   console.log(key);
      * });
-     * // => logs 'a', 'b', then 'c' (iteration order is not guaranteed)
+     * // => Logs 'a', 'b', then 'c' (iteration order is not guaranteed).
      */
     function forIn(object, iteratee) {
       return object == null
         ? object
-        : baseFor(object, baseCastFunction(iteratee), keysIn);
+        : baseFor(object, getIteratee(iteratee), keysIn);
     }
 
     /**
@@ -38105,6 +39040,7 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 2.0.0
      * @category Object
      * @param {Object} object The object to iterate over.
      * @param {Function} [iteratee=_.identity] The function invoked per iteration.
@@ -38121,22 +39057,23 @@ module.exports = isObjectLike;
      * _.forInRight(new Foo, function(value, key) {
      *   console.log(key);
      * });
-     * // => logs 'c', 'b', then 'a' assuming `_.forIn` logs 'a', 'b', then 'c'
+     * // => Logs 'c', 'b', then 'a' assuming `_.forIn` logs 'a', 'b', then 'c'.
      */
     function forInRight(object, iteratee) {
       return object == null
         ? object
-        : baseForRight(object, baseCastFunction(iteratee), keysIn);
+        : baseForRight(object, getIteratee(iteratee), keysIn);
     }
 
     /**
-     * Iterates over own enumerable properties of an object invoking `iteratee`
-     * for each property. The iteratee is invoked with three arguments:
-     * (value, key, object). Iteratee functions may exit iteration early by
-     * explicitly returning `false`.
+     * Iterates over own enumerable string keyed properties of an object and
+     * invokes `iteratee` for each property. The iteratee is invoked with three
+     * arguments: (value, key, object). Iteratee functions may exit iteration
+     * early by explicitly returning `false`.
      *
      * @static
      * @memberOf _
+     * @since 0.3.0
      * @category Object
      * @param {Object} object The object to iterate over.
      * @param {Function} [iteratee=_.identity] The function invoked per iteration.
@@ -38153,10 +39090,10 @@ module.exports = isObjectLike;
      * _.forOwn(new Foo, function(value, key) {
      *   console.log(key);
      * });
-     * // => logs 'a' then 'b' (iteration order is not guaranteed)
+     * // => Logs 'a' then 'b' (iteration order is not guaranteed).
      */
     function forOwn(object, iteratee) {
-      return object && baseForOwn(object, baseCastFunction(iteratee));
+      return object && baseForOwn(object, getIteratee(iteratee));
     }
 
     /**
@@ -38165,6 +39102,7 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 2.0.0
      * @category Object
      * @param {Object} object The object to iterate over.
      * @param {Function} [iteratee=_.identity] The function invoked per iteration.
@@ -38181,10 +39119,10 @@ module.exports = isObjectLike;
      * _.forOwnRight(new Foo, function(value, key) {
      *   console.log(key);
      * });
-     * // => logs 'b' then 'a' assuming `_.forOwn` logs 'a' then 'b'
+     * // => Logs 'b' then 'a' assuming `_.forOwn` logs 'a' then 'b'.
      */
     function forOwnRight(object, iteratee) {
-      return object && baseForOwnRight(object, baseCastFunction(iteratee));
+      return object && baseForOwnRight(object, getIteratee(iteratee));
     }
 
     /**
@@ -38192,6 +39130,7 @@ module.exports = isObjectLike;
      * of `object`.
      *
      * @static
+     * @since 0.1.0
      * @memberOf _
      * @category Object
      * @param {Object} object The object to inspect.
@@ -38218,6 +39157,7 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 4.0.0
      * @category Object
      * @param {Object} object The object to inspect.
      * @returns {Array} Returns the new array of property names.
@@ -38239,14 +39179,15 @@ module.exports = isObjectLike;
 
     /**
      * Gets the value at `path` of `object`. If the resolved value is
-     * `undefined` the `defaultValue` is used in its place.
+     * `undefined`, the `defaultValue` is used in its place.
      *
      * @static
      * @memberOf _
+     * @since 3.7.0
      * @category Object
      * @param {Object} object The object to query.
      * @param {Array|string} path The path of the property to get.
-     * @param {*} [defaultValue] The value returned if the resolved value is `undefined`.
+     * @param {*} [defaultValue] The value returned for `undefined` resolved values.
      * @returns {*} Returns the resolved value.
      * @example
      *
@@ -38270,6 +39211,7 @@ module.exports = isObjectLike;
      * Checks if `path` is a direct property of `object`.
      *
      * @static
+     * @since 0.1.0
      * @memberOf _
      * @category Object
      * @param {Object} object The object to query.
@@ -38277,23 +39219,23 @@ module.exports = isObjectLike;
      * @returns {boolean} Returns `true` if `path` exists, else `false`.
      * @example
      *
-     * var object = { 'a': { 'b': { 'c': 3 } } };
-     * var other = _.create({ 'a': _.create({ 'b': _.create({ 'c': 3 }) }) });
+     * var object = { 'a': { 'b': 2 } };
+     * var other = _.create({ 'a': _.create({ 'b': 2 }) });
      *
      * _.has(object, 'a');
      * // => true
      *
-     * _.has(object, 'a.b.c');
+     * _.has(object, 'a.b');
      * // => true
      *
-     * _.has(object, ['a', 'b', 'c']);
+     * _.has(object, ['a', 'b']);
      * // => true
      *
      * _.has(other, 'a');
      * // => false
      */
     function has(object, path) {
-      return hasPath(object, path, baseHas);
+      return object != null && hasPath(object, path, baseHas);
     }
 
     /**
@@ -38301,37 +39243,39 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 4.0.0
      * @category Object
      * @param {Object} object The object to query.
      * @param {Array|string} path The path to check.
      * @returns {boolean} Returns `true` if `path` exists, else `false`.
      * @example
      *
-     * var object = _.create({ 'a': _.create({ 'b': _.create({ 'c': 3 }) }) });
+     * var object = _.create({ 'a': _.create({ 'b': 2 }) });
      *
      * _.hasIn(object, 'a');
      * // => true
      *
-     * _.hasIn(object, 'a.b.c');
+     * _.hasIn(object, 'a.b');
      * // => true
      *
-     * _.hasIn(object, ['a', 'b', 'c']);
+     * _.hasIn(object, ['a', 'b']);
      * // => true
      *
      * _.hasIn(object, 'b');
      * // => false
      */
     function hasIn(object, path) {
-      return hasPath(object, path, baseHasIn);
+      return object != null && hasPath(object, path, baseHasIn);
     }
 
     /**
      * Creates an object composed of the inverted keys and values of `object`.
-     * If `object` contains duplicate values, subsequent values overwrite property
-     * assignments of previous values.
+     * If `object` contains duplicate values, subsequent values overwrite
+     * property assignments of previous values.
      *
      * @static
      * @memberOf _
+     * @since 0.7.0
      * @category Object
      * @param {Object} object The object to invert.
      * @returns {Object} Returns the new inverted object.
@@ -38348,16 +39292,18 @@ module.exports = isObjectLike;
 
     /**
      * This method is like `_.invert` except that the inverted object is generated
-     * from the results of running each element of `object` through `iteratee`.
-     * The corresponding inverted value of each inverted key is an array of keys
+     * from the results of running each element of `object` thru `iteratee`. The
+     * corresponding inverted value of each inverted key is an array of keys
      * responsible for generating the inverted value. The iteratee is invoked
      * with one argument: (value).
      *
      * @static
      * @memberOf _
+     * @since 4.1.0
      * @category Object
      * @param {Object} object The object to invert.
-     * @param {Function|Object|string} [iteratee=_.identity] The iteratee invoked per element.
+     * @param {Array|Function|Object|string} [iteratee=_.identity]
+     *  The iteratee invoked per element.
      * @returns {Object} Returns the new inverted object.
      * @example
      *
@@ -38384,6 +39330,7 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 4.0.0
      * @category Object
      * @param {Object} object The object to query.
      * @param {Array|string} path The path of the method to invoke.
@@ -38406,6 +39353,7 @@ module.exports = isObjectLike;
      * for more details.
      *
      * @static
+     * @since 0.1.0
      * @memberOf _
      * @category Object
      * @param {Object} object The object to query.
@@ -38452,6 +39400,7 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 3.0.0
      * @category Object
      * @param {Object} object The object to query.
      * @returns {Array} Returns the array of property names.
@@ -38490,14 +39439,16 @@ module.exports = isObjectLike;
     /**
      * The opposite of `_.mapValues`; this method creates an object with the
      * same values as `object` and keys generated by running each own enumerable
-     * property of `object` through `iteratee`. The iteratee is invoked with
-     * three arguments: (value, key, object).
+     * string keyed property of `object` thru `iteratee`. The iteratee is invoked
+     * with three arguments: (value, key, object).
      *
      * @static
      * @memberOf _
+     * @since 3.8.0
      * @category Object
      * @param {Object} object The object to iterate over.
-     * @param {Function|Object|string} [iteratee=_.identity] The function invoked per iteration.
+     * @param {Array|Function|Object|string} [iteratee=_.identity]
+     *  The function invoked per iteration.
      * @returns {Object} Returns the new mapped object.
      * @example
      *
@@ -38517,15 +39468,18 @@ module.exports = isObjectLike;
     }
 
     /**
-     * Creates an object with the same keys as `object` and values generated by
-     * running each own enumerable property of `object` through `iteratee`. The
-     * iteratee is invoked with three arguments: (value, key, object).
+     * Creates an object with the same keys as `object` and values generated
+     * by running each own enumerable string keyed property of `object` thru
+     * `iteratee`. The iteratee is invoked with three arguments:
+     * (value, key, object).
      *
      * @static
      * @memberOf _
+     * @since 2.4.0
      * @category Object
      * @param {Object} object The object to iterate over.
-     * @param {Function|Object|string} [iteratee=_.identity] The function invoked per iteration.
+     * @param {Array|Function|Object|string} [iteratee=_.identity]
+     *  The function invoked per iteration.
      * @returns {Object} Returns the new mapped object.
      * @example
      *
@@ -38553,17 +39507,18 @@ module.exports = isObjectLike;
 
     /**
      * This method is like `_.assign` except that it recursively merges own and
-     * inherited enumerable properties of source objects into the destination
-     * object. Source properties that resolve to `undefined` are skipped if a
-     * destination value exists. Array and plain object properties are merged
-     * recursively.Other objects and value types are overridden by assignment.
-     * Source objects are applied from left to right. Subsequent sources
-     * overwrite property assignments of previous sources.
+     * inherited enumerable string keyed properties of source objects into the
+     * destination object. Source properties that resolve to `undefined` are
+     * skipped if a destination value exists. Array and plain object properties
+     * are merged recursively.Other objects and value types are overridden by
+     * assignment. Source objects are applied from left to right. Subsequent
+     * sources overwrite property assignments of previous sources.
      *
      * **Note:** This method mutates `object`.
      *
      * @static
      * @memberOf _
+     * @since 0.5.0
      * @category Object
      * @param {Object} object The destination object.
      * @param {...Object} [sources] The source objects.
@@ -38588,7 +39543,7 @@ module.exports = isObjectLike;
     /**
      * This method is like `_.merge` except that it accepts `customizer` which
      * is invoked to produce the merged values of the destination and source
-     * properties. If `customizer` returns `undefined` merging is handled by the
+     * properties. If `customizer` returns `undefined`, merging is handled by the
      * method instead. The `customizer` is invoked with seven arguments:
      * (objValue, srcValue, key, object, source, stack).
      *
@@ -38596,6 +39551,7 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 4.0.0
      * @category Object
      * @param {Object} object The destination object.
      * @param {...Object} sources The source objects.
@@ -38628,14 +39584,15 @@ module.exports = isObjectLike;
 
     /**
      * The opposite of `_.pick`; this method creates an object composed of the
-     * own and inherited enumerable properties of `object` that are not omitted.
+     * own and inherited enumerable string keyed properties of `object` that are
+     * not omitted.
      *
      * @static
+     * @since 0.1.0
      * @memberOf _
      * @category Object
      * @param {Object} object The source object.
-     * @param {...(string|string[])} [props] The property names to omit, specified
-     *  individually or in arrays.
+     * @param {...(string|string[])} [props] The property identifiers to omit.
      * @returns {Object} Returns the new object.
      * @example
      *
@@ -38648,21 +39605,23 @@ module.exports = isObjectLike;
       if (object == null) {
         return {};
       }
-      props = arrayMap(baseFlatten(props, 1), String);
-      return basePick(object, baseDifference(keysIn(object), props));
+      props = arrayMap(baseFlatten(props, 1), toKey);
+      return basePick(object, baseDifference(getAllKeysIn(object), props));
     });
 
     /**
      * The opposite of `_.pickBy`; this method creates an object composed of
-     * the own and inherited enumerable properties of `object` that `predicate`
-     * doesn't return truthy for. The predicate is invoked with two arguments:
-     * (value, key).
+     * the own and inherited enumerable string keyed properties of `object` that
+     * `predicate` doesn't return truthy for. The predicate is invoked with two
+     * arguments: (value, key).
      *
      * @static
      * @memberOf _
+     * @since 4.0.0
      * @category Object
      * @param {Object} object The source object.
-     * @param {Function|Object|string} [predicate=_.identity] The function invoked per property.
+     * @param {Array|Function|Object|string} [predicate=_.identity]
+     *  The function invoked per property.
      * @returns {Object} Returns the new object.
      * @example
      *
@@ -38682,11 +39641,11 @@ module.exports = isObjectLike;
      * Creates an object composed of the picked `object` properties.
      *
      * @static
+     * @since 0.1.0
      * @memberOf _
      * @category Object
      * @param {Object} object The source object.
-     * @param {...(string|string[])} [props] The property names to pick, specified
-     *  individually or in arrays.
+     * @param {...(string|string[])} [props] The property identifiers to pick.
      * @returns {Object} Returns the new object.
      * @example
      *
@@ -38705,9 +39664,11 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 4.0.0
      * @category Object
      * @param {Object} object The source object.
-     * @param {Function|Object|string} [predicate=_.identity] The function invoked per property.
+     * @param {Array|Function|Object|string} [predicate=_.identity]
+     *  The function invoked per property.
      * @returns {Object} Returns the new object.
      * @example
      *
@@ -38721,16 +39682,17 @@ module.exports = isObjectLike;
     }
 
     /**
-     * This method is like `_.get` except that if the resolved value is a function
-     * it's invoked with the `this` binding of its parent object and its result
-     * is returned.
+     * This method is like `_.get` except that if the resolved value is a
+     * function it's invoked with the `this` binding of its parent object and
+     * its result is returned.
      *
      * @static
+     * @since 0.1.0
      * @memberOf _
      * @category Object
      * @param {Object} object The object to query.
      * @param {Array|string} path The path of the property to resolve.
-     * @param {*} [defaultValue] The value returned if the resolved value is `undefined`.
+     * @param {*} [defaultValue] The value returned for `undefined` resolved values.
      * @returns {*} Returns the resolved value.
      * @example
      *
@@ -38749,21 +39711,29 @@ module.exports = isObjectLike;
      * // => 'default'
      */
     function result(object, path, defaultValue) {
-      if (!isKey(path, object)) {
-        path = baseCastPath(path);
-        var result = get(object, path);
-        object = parent(object, path);
-      } else {
-        result = object == null ? undefined : object[path];
+      path = isKey(path, object) ? [path] : castPath(path);
+
+      var index = -1,
+          length = path.length;
+
+      // Ensure the loop is entered when path is empty.
+      if (!length) {
+        object = undefined;
+        length = 1;
       }
-      if (result === undefined) {
-        result = defaultValue;
+      while (++index < length) {
+        var value = object == null ? undefined : object[path[index]];
+        if (value === undefined) {
+          index = length;
+          value = defaultValue;
+        }
+        object = isFunction(value) ? value.call(object) : value;
       }
-      return isFunction(result) ? result.call(object) : result;
+      return object;
     }
 
     /**
-     * Sets the value at `path` of `object`. If a portion of `path` doesn't exist
+     * Sets the value at `path` of `object`. If a portion of `path` doesn't exist,
      * it's created. Arrays are created for missing index properties while objects
      * are created for all other missing properties. Use `_.setWith` to customize
      * `path` creation.
@@ -38772,6 +39742,7 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 3.7.0
      * @category Object
      * @param {Object} object The object to modify.
      * @param {Array|string} path The path of the property to set.
@@ -38785,7 +39756,7 @@ module.exports = isObjectLike;
      * console.log(object.a[0].b.c);
      * // => 4
      *
-     * _.set(object, 'x[0].y.z', 5);
+     * _.set(object, ['x', '0', 'y', 'z'], 5);
      * console.log(object.x[0].y.z);
      * // => 5
      */
@@ -38803,6 +39774,7 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 4.0.0
      * @category Object
      * @param {Object} object The object to modify.
      * @param {Array|string} path The path of the property to set.
@@ -38822,11 +39794,13 @@ module.exports = isObjectLike;
     }
 
     /**
-     * Creates an array of own enumerable key-value pairs for `object` which
-     * can be consumed by `_.fromPairs`.
+     * Creates an array of own enumerable string keyed-value pairs for `object`
+     * which can be consumed by `_.fromPairs`.
      *
      * @static
      * @memberOf _
+     * @since 4.0.0
+     * @alias entries
      * @category Object
      * @param {Object} object The object to query.
      * @returns {Array} Returns the new array of key-value pairs.
@@ -38847,11 +39821,13 @@ module.exports = isObjectLike;
     }
 
     /**
-     * Creates an array of own and inherited enumerable key-value pairs for
-     * `object` which can be consumed by `_.fromPairs`.
+     * Creates an array of own and inherited enumerable string keyed-value pairs
+     * for `object` which can be consumed by `_.fromPairs`.
      *
      * @static
      * @memberOf _
+     * @since 4.0.0
+     * @alias entriesIn
      * @category Object
      * @param {Object} object The object to query.
      * @returns {Array} Returns the new array of key-value pairs.
@@ -38873,14 +39849,15 @@ module.exports = isObjectLike;
 
     /**
      * An alternative to `_.reduce`; this method transforms `object` to a new
-     * `accumulator` object which is the result of running each of its own enumerable
-     * properties through `iteratee`, with each invocation potentially mutating
-     * the `accumulator` object. The iteratee is invoked with four arguments:
-     * (accumulator, value, key, object). Iteratee functions may exit iteration
-     * early by explicitly returning `false`.
+     * `accumulator` object which is the result of running each of its own
+     * enumerable string keyed properties thru `iteratee`, with each invocation
+     * potentially mutating the `accumulator` object. The iteratee is invoked
+     * with four arguments: (accumulator, value, key, object). Iteratee functions
+     * may exit iteration early by explicitly returning `false`.
      *
      * @static
      * @memberOf _
+     * @since 1.3.0
      * @category Object
      * @param {Array|Object} object The object to iterate over.
      * @param {Function} [iteratee=_.identity] The function invoked per iteration.
@@ -38909,7 +39886,7 @@ module.exports = isObjectLike;
           if (isArr) {
             accumulator = isArray(object) ? new Ctor : [];
           } else {
-            accumulator = isFunction(Ctor) ? baseCreate(getPrototypeOf(object)) : {};
+            accumulator = isFunction(Ctor) ? baseCreate(getPrototype(object)) : {};
           }
         } else {
           accumulator = {};
@@ -38928,6 +39905,7 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 4.0.0
      * @category Object
      * @param {Object} object The object to modify.
      * @param {Array|string} path The path of the property to unset.
@@ -38941,7 +39919,7 @@ module.exports = isObjectLike;
      * console.log(object);
      * // => { 'a': [{ 'b': {} }] };
      *
-     * _.unset(object, 'a[0].b.c');
+     * _.unset(object, ['a', '0', 'b', 'c']);
      * // => true
      *
      * console.log(object);
@@ -38960,6 +39938,7 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 4.6.0
      * @category Object
      * @param {Object} object The object to modify.
      * @param {Array|string} path The path of the property to set.
@@ -38978,7 +39957,7 @@ module.exports = isObjectLike;
      * // => 0
      */
     function update(object, path, updater) {
-      return object == null ? object : baseUpdate(object, path, baseCastFunction(updater));
+      return object == null ? object : baseUpdate(object, path, castFunction(updater));
     }
 
     /**
@@ -38991,6 +39970,7 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 4.6.0
      * @category Object
      * @param {Object} object The object to modify.
      * @param {Array|string} path The path of the property to set.
@@ -39006,15 +39986,16 @@ module.exports = isObjectLike;
      */
     function updateWith(object, path, updater, customizer) {
       customizer = typeof customizer == 'function' ? customizer : undefined;
-      return object == null ? object : baseUpdate(object, path, baseCastFunction(updater), customizer);
+      return object == null ? object : baseUpdate(object, path, castFunction(updater), customizer);
     }
 
     /**
-     * Creates an array of the own enumerable property values of `object`.
+     * Creates an array of the own enumerable string keyed property values of `object`.
      *
      * **Note:** Non-object values are coerced to objects.
      *
      * @static
+     * @since 0.1.0
      * @memberOf _
      * @category Object
      * @param {Object} object The object to query.
@@ -39039,12 +40020,14 @@ module.exports = isObjectLike;
     }
 
     /**
-     * Creates an array of the own and inherited enumerable property values of `object`.
+     * Creates an array of the own and inherited enumerable string keyed property
+     * values of `object`.
      *
      * **Note:** Non-object values are coerced to objects.
      *
      * @static
      * @memberOf _
+     * @since 3.0.0
      * @category Object
      * @param {Object} object The object to query.
      * @returns {Array} Returns the array of property values.
@@ -39071,6 +40054,7 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 4.0.0
      * @category Number
      * @param {number} number The number to clamp.
      * @param {number} [lower] The lower bound.
@@ -39102,12 +40086,13 @@ module.exports = isObjectLike;
 
     /**
      * Checks if `n` is between `start` and up to but not including, `end`. If
-     * `end` is not specified it's set to `start` with `start` then set to `0`.
+     * `end` is not specified, it's set to `start` with `start` then set to `0`.
      * If `start` is greater than `end` the params are swapped to support
      * negative ranges.
      *
      * @static
      * @memberOf _
+     * @since 3.3.0
      * @category Number
      * @param {number} number The number to check.
      * @param {number} [start=0] The start of the range.
@@ -39151,14 +40136,15 @@ module.exports = isObjectLike;
     /**
      * Produces a random number between the inclusive `lower` and `upper` bounds.
      * If only one argument is provided a number between `0` and the given number
-     * is returned. If `floating` is `true`, or either `lower` or `upper` are floats,
-     * a floating-point number is returned instead of an integer.
+     * is returned. If `floating` is `true`, or either `lower` or `upper` are
+     * floats, a floating-point number is returned instead of an integer.
      *
      * **Note:** JavaScript follows the IEEE-754 standard for resolving
      * floating-point values which can produce unexpected results.
      *
      * @static
      * @memberOf _
+     * @since 0.7.0
      * @category Number
      * @param {number} [lower=0] The lower bound.
      * @param {number} [upper=1] The upper bound.
@@ -39224,6 +40210,7 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 3.0.0
      * @category String
      * @param {string} [string=''] The string to convert.
      * @returns {string} Returns the camel cased string.
@@ -39232,10 +40219,10 @@ module.exports = isObjectLike;
      * _.camelCase('Foo Bar');
      * // => 'fooBar'
      *
-     * _.camelCase('--foo-bar');
+     * _.camelCase('--foo-bar--');
      * // => 'fooBar'
      *
-     * _.camelCase('__foo_bar__');
+     * _.camelCase('__FOO_BAR__');
      * // => 'fooBar'
      */
     var camelCase = createCompounder(function(result, word, index) {
@@ -39249,6 +40236,7 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 3.0.0
      * @category String
      * @param {string} [string=''] The string to capitalize.
      * @returns {string} Returns the capitalized string.
@@ -39262,11 +40250,14 @@ module.exports = isObjectLike;
     }
 
     /**
-     * Deburrs `string` by converting [latin-1 supplementary letters](https://en.wikipedia.org/wiki/Latin-1_Supplement_(Unicode_block)#Character_table)
-     * to basic latin letters and removing [combining diacritical marks](https://en.wikipedia.org/wiki/Combining_Diacritical_Marks).
+     * Deburrs `string` by converting
+     * [latin-1 supplementary letters](https://en.wikipedia.org/wiki/Latin-1_Supplement_(Unicode_block)#Character_table)
+     * to basic latin letters and removing
+     * [combining diacritical marks](https://en.wikipedia.org/wiki/Combining_Diacritical_Marks).
      *
      * @static
      * @memberOf _
+     * @since 3.0.0
      * @category String
      * @param {string} [string=''] The string to deburr.
      * @returns {string} Returns the deburred string.
@@ -39285,11 +40276,13 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 3.0.0
      * @category String
      * @param {string} [string=''] The string to search.
      * @param {string} [target] The string to search for.
      * @param {number} [position=string.length] The position to search from.
-     * @returns {boolean} Returns `true` if `string` ends with `target`, else `false`.
+     * @returns {boolean} Returns `true` if `string` ends with `target`,
+     *  else `false`.
      * @example
      *
      * _.endsWith('abc', 'c');
@@ -39323,20 +40316,22 @@ module.exports = isObjectLike;
      *
      * Though the ">" character is escaped for symmetry, characters like
      * ">" and "/" don't need escaping in HTML and have no special meaning
-     * unless they're part of a tag or unquoted attribute value.
-     * See [Mathias Bynens's article](https://mathiasbynens.be/notes/ambiguous-ampersands)
+     * unless they're part of a tag or unquoted attribute value. See
+     * [Mathias Bynens's article](https://mathiasbynens.be/notes/ambiguous-ampersands)
      * (under "semi-related fun fact") for more details.
      *
      * Backticks are escaped because in IE < 9, they can break out of
      * attribute values or HTML comments. See [#59](https://html5sec.org/#59),
      * [#102](https://html5sec.org/#102), [#108](https://html5sec.org/#108), and
-     * [#133](https://html5sec.org/#133) of the [HTML5 Security Cheatsheet](https://html5sec.org/)
-     * for more details.
+     * [#133](https://html5sec.org/#133) of the
+     * [HTML5 Security Cheatsheet](https://html5sec.org/) for more details.
      *
-     * When working with HTML you should always [quote attribute values](http://wonko.com/post/html-escaping)
-     * to reduce XSS vectors.
+     * When working with HTML you should always
+     * [quote attribute values](http://wonko.com/post/html-escaping) to reduce
+     * XSS vectors.
      *
      * @static
+     * @since 0.1.0
      * @memberOf _
      * @category String
      * @param {string} [string=''] The string to escape.
@@ -39359,6 +40354,7 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 3.0.0
      * @category String
      * @param {string} [string=''] The string to escape.
      * @returns {string} Returns the escaped string.
@@ -39375,10 +40371,12 @@ module.exports = isObjectLike;
     }
 
     /**
-     * Converts `string` to [kebab case](https://en.wikipedia.org/wiki/Letter_case#Special_case_styles).
+     * Converts `string` to
+     * [kebab case](https://en.wikipedia.org/wiki/Letter_case#Special_case_styles).
      *
      * @static
      * @memberOf _
+     * @since 3.0.0
      * @category String
      * @param {string} [string=''] The string to convert.
      * @returns {string} Returns the kebab cased string.
@@ -39390,7 +40388,7 @@ module.exports = isObjectLike;
      * _.kebabCase('fooBar');
      * // => 'foo-bar'
      *
-     * _.kebabCase('__foo_bar__');
+     * _.kebabCase('__FOO_BAR__');
      * // => 'foo-bar'
      */
     var kebabCase = createCompounder(function(result, word, index) {
@@ -39402,12 +40400,13 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 4.0.0
      * @category String
      * @param {string} [string=''] The string to convert.
      * @returns {string} Returns the lower cased string.
      * @example
      *
-     * _.lowerCase('--Foo-Bar');
+     * _.lowerCase('--Foo-Bar--');
      * // => 'foo bar'
      *
      * _.lowerCase('fooBar');
@@ -39425,6 +40424,7 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 4.0.0
      * @category String
      * @param {string} [string=''] The string to convert.
      * @returns {string} Returns the converted string.
@@ -39439,29 +40439,12 @@ module.exports = isObjectLike;
     var lowerFirst = createCaseFirst('toLowerCase');
 
     /**
-     * Converts the first character of `string` to upper case.
-     *
-     * @static
-     * @memberOf _
-     * @category String
-     * @param {string} [string=''] The string to convert.
-     * @returns {string} Returns the converted string.
-     * @example
-     *
-     * _.upperFirst('fred');
-     * // => 'Fred'
-     *
-     * _.upperFirst('FRED');
-     * // => 'FRED'
-     */
-    var upperFirst = createCaseFirst('toUpperCase');
-
-    /**
      * Pads `string` on the left and right sides if it's shorter than `length`.
      * Padding characters are truncated if they can't be evenly divided by `length`.
      *
      * @static
      * @memberOf _
+     * @since 3.0.0
      * @category String
      * @param {string} [string=''] The string to pad.
      * @param {number} [length=0] The padding length.
@@ -39482,15 +40465,16 @@ module.exports = isObjectLike;
       string = toString(string);
       length = toInteger(length);
 
-      var strLength = stringSize(string);
+      var strLength = length ? stringSize(string) : 0;
       if (!length || strLength >= length) {
         return string;
       }
-      var mid = (length - strLength) / 2,
-          leftLength = nativeFloor(mid),
-          rightLength = nativeCeil(mid);
-
-      return createPadding('', leftLength, chars) + string + createPadding('', rightLength, chars);
+      var mid = (length - strLength) / 2;
+      return (
+        createPadding(nativeFloor(mid), chars) +
+        string +
+        createPadding(nativeCeil(mid), chars)
+      );
     }
 
     /**
@@ -39499,6 +40483,7 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 4.0.0
      * @category String
      * @param {string} [string=''] The string to pad.
      * @param {number} [length=0] The padding length.
@@ -39517,7 +40502,12 @@ module.exports = isObjectLike;
      */
     function padEnd(string, length, chars) {
       string = toString(string);
-      return string + createPadding(string, length, chars);
+      length = toInteger(length);
+
+      var strLength = length ? stringSize(string) : 0;
+      return (length && strLength < length)
+        ? (string + createPadding(length - strLength, chars))
+        : string;
     }
 
     /**
@@ -39526,6 +40516,7 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 4.0.0
      * @category String
      * @param {string} [string=''] The string to pad.
      * @param {number} [length=0] The padding length.
@@ -39544,23 +40535,29 @@ module.exports = isObjectLike;
      */
     function padStart(string, length, chars) {
       string = toString(string);
-      return createPadding(string, length, chars) + string;
+      length = toInteger(length);
+
+      var strLength = length ? stringSize(string) : 0;
+      return (length && strLength < length)
+        ? (createPadding(length - strLength, chars) + string)
+        : string;
     }
 
     /**
      * Converts `string` to an integer of the specified radix. If `radix` is
-     * `undefined` or `0`, a `radix` of `10` is used unless `value` is a hexadecimal,
-     * in which case a `radix` of `16` is used.
+     * `undefined` or `0`, a `radix` of `10` is used unless `value` is a
+     * hexadecimal, in which case a `radix` of `16` is used.
      *
-     * **Note:** This method aligns with the [ES5 implementation](https://es5.github.io/#x15.1.2.2)
-     * of `parseInt`.
+     * **Note:** This method aligns with the
+     * [ES5 implementation](https://es5.github.io/#x15.1.2.2) of `parseInt`.
      *
      * @static
      * @memberOf _
+     * @since 1.1.0
      * @category String
      * @param {string} string The string to convert.
      * @param {number} [radix=10] The radix to interpret `value` by.
-     * @param- {Object} [guard] Enables use as an iteratee for functions like `_.map`.
+     * @param- {Object} [guard] Enables use as an iteratee for methods like `_.map`.
      * @returns {number} Returns the converted integer.
      * @example
      *
@@ -39572,7 +40569,7 @@ module.exports = isObjectLike;
      */
     function parseInt(string, radix, guard) {
       // Chrome fails to trim leading <BOM> whitespace characters.
-      // See https://code.google.com/p/v8/issues/detail?id=3109 for more details.
+      // See https://bugs.chromium.org/p/v8/issues/detail?id=3109 for more details.
       if (guard || radix == null) {
         radix = 0;
       } else if (radix) {
@@ -39587,9 +40584,11 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 3.0.0
      * @category String
      * @param {string} [string=''] The string to repeat.
-     * @param {number} [n=0] The number of times to repeat the string.
+     * @param {number} [n=1] The number of times to repeat the string.
+     * @param- {Object} [guard] Enables use as an iteratee for methods like `_.map`.
      * @returns {string} Returns the repeated string.
      * @example
      *
@@ -39602,34 +40601,24 @@ module.exports = isObjectLike;
      * _.repeat('abc', 0);
      * // => ''
      */
-    function repeat(string, n) {
-      string = toString(string);
-      n = toInteger(n);
-
-      var result = '';
-      if (!string || n < 1 || n > MAX_SAFE_INTEGER) {
-        return result;
+    function repeat(string, n, guard) {
+      if ((guard ? isIterateeCall(string, n, guard) : n === undefined)) {
+        n = 1;
+      } else {
+        n = toInteger(n);
       }
-      // Leverage the exponentiation by squaring algorithm for a faster repeat.
-      // See https://en.wikipedia.org/wiki/Exponentiation_by_squaring for more details.
-      do {
-        if (n % 2) {
-          result += string;
-        }
-        n = nativeFloor(n / 2);
-        string += string;
-      } while (n);
-
-      return result;
+      return baseRepeat(toString(string), n);
     }
 
     /**
      * Replaces matches for `pattern` in `string` with `replacement`.
      *
-     * **Note:** This method is based on [`String#replace`](https://mdn.io/String/replace).
+     * **Note:** This method is based on
+     * [`String#replace`](https://mdn.io/String/replace).
      *
      * @static
      * @memberOf _
+     * @since 4.0.0
      * @category String
      * @param {string} [string=''] The string to modify.
      * @param {RegExp|string} pattern The pattern to replace.
@@ -39648,10 +40637,12 @@ module.exports = isObjectLike;
     }
 
     /**
-     * Converts `string` to [snake case](https://en.wikipedia.org/wiki/Snake_case).
+     * Converts `string` to
+     * [snake case](https://en.wikipedia.org/wiki/Snake_case).
      *
      * @static
      * @memberOf _
+     * @since 3.0.0
      * @category String
      * @param {string} [string=''] The string to convert.
      * @returns {string} Returns the snake cased string.
@@ -39663,7 +40654,7 @@ module.exports = isObjectLike;
      * _.snakeCase('fooBar');
      * // => 'foo_bar'
      *
-     * _.snakeCase('--foo-bar');
+     * _.snakeCase('--FOO-BAR--');
      * // => 'foo_bar'
      */
     var snakeCase = createCompounder(function(result, word, index) {
@@ -39673,10 +40664,12 @@ module.exports = isObjectLike;
     /**
      * Splits `string` by `separator`.
      *
-     * **Note:** This method is based on [`String#split`](https://mdn.io/String/split).
+     * **Note:** This method is based on
+     * [`String#split`](https://mdn.io/String/split).
      *
      * @static
      * @memberOf _
+     * @since 4.0.0
      * @category String
      * @param {string} [string=''] The string to split.
      * @param {RegExp|string} separator The separator pattern to split by.
@@ -39688,30 +40681,49 @@ module.exports = isObjectLike;
      * // => ['a', 'b']
      */
     function split(string, separator, limit) {
-      return toString(string).split(separator, limit);
+      if (limit && typeof limit != 'number' && isIterateeCall(string, separator, limit)) {
+        separator = limit = undefined;
+      }
+      limit = limit === undefined ? MAX_ARRAY_LENGTH : limit >>> 0;
+      if (!limit) {
+        return [];
+      }
+      string = toString(string);
+      if (string && (
+            typeof separator == 'string' ||
+            (separator != null && !isRegExp(separator))
+          )) {
+        separator += '';
+        if (separator == '' && reHasComplexSymbol.test(string)) {
+          return castSlice(stringToArray(string), 0, limit);
+        }
+      }
+      return string.split(separator, limit);
     }
 
     /**
-     * Converts `string` to [start case](https://en.wikipedia.org/wiki/Letter_case#Stylistic_or_specialised_usage).
+     * Converts `string` to
+     * [start case](https://en.wikipedia.org/wiki/Letter_case#Stylistic_or_specialised_usage).
      *
      * @static
      * @memberOf _
+     * @since 3.1.0
      * @category String
      * @param {string} [string=''] The string to convert.
      * @returns {string} Returns the start cased string.
      * @example
      *
-     * _.startCase('--foo-bar');
+     * _.startCase('--foo-bar--');
      * // => 'Foo Bar'
      *
      * _.startCase('fooBar');
      * // => 'Foo Bar'
      *
-     * _.startCase('__foo_bar__');
-     * // => 'Foo Bar'
+     * _.startCase('__FOO_BAR__');
+     * // => 'FOO BAR'
      */
     var startCase = createCompounder(function(result, word, index) {
-      return result + (index ? ' ' : '') + capitalize(word);
+      return result + (index ? ' ' : '') + upperFirst(word);
     });
 
     /**
@@ -39719,11 +40731,13 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 3.0.0
      * @category String
      * @param {string} [string=''] The string to search.
      * @param {string} [target] The string to search for.
      * @param {number} [position=0] The position to search from.
-     * @returns {boolean} Returns `true` if `string` starts with `target`, else `false`.
+     * @returns {boolean} Returns `true` if `string` starts with `target`,
+     *  else `false`.
      * @example
      *
      * _.startsWith('abc', 'a');
@@ -39746,7 +40760,7 @@ module.exports = isObjectLike;
      * in "interpolate" delimiters, HTML-escape interpolated data properties in
      * "escape" delimiters, and execute JavaScript in "evaluate" delimiters. Data
      * properties may be accessed as free variables in the template. If a setting
-     * object is given it takes precedence over `_.templateSettings` values.
+     * object is given, it takes precedence over `_.templateSettings` values.
      *
      * **Note:** In the development build `_.template` utilizes
      * [sourceURLs](http://www.html5rocks.com/en/tutorials/developertools/sourcemaps/#toc-sourceurl)
@@ -39759,17 +40773,24 @@ module.exports = isObjectLike;
      * [Chrome's extensions documentation](https://developer.chrome.com/extensions/sandboxingEval).
      *
      * @static
+     * @since 0.1.0
      * @memberOf _
      * @category String
      * @param {string} [string=''] The template string.
-     * @param {Object} [options] The options object.
-     * @param {RegExp} [options.escape] The HTML "escape" delimiter.
-     * @param {RegExp} [options.evaluate] The "evaluate" delimiter.
-     * @param {Object} [options.imports] An object to import into the template as free variables.
-     * @param {RegExp} [options.interpolate] The "interpolate" delimiter.
-     * @param {string} [options.sourceURL] The sourceURL of the template's compiled source.
-     * @param {string} [options.variable] The data object variable name.
-     * @param- {Object} [guard] Enables use as an iteratee for functions like `_.map`.
+     * @param {Object} [options={}] The options object.
+     * @param {RegExp} [options.escape=_.templateSettings.escape]
+     *  The HTML "escape" delimiter.
+     * @param {RegExp} [options.evaluate=_.templateSettings.evaluate]
+     *  The "evaluate" delimiter.
+     * @param {Object} [options.imports=_.templateSettings.imports]
+     *  An object to import into the template as free variables.
+     * @param {RegExp} [options.interpolate=_.templateSettings.interpolate]
+     *  The "interpolate" delimiter.
+     * @param {string} [options.sourceURL='lodash.templateSources[n]']
+     *  The sourceURL of the compiled template.
+     * @param {string} [options.variable='obj']
+     *  The data object variable name.
+     * @param- {Object} [guard] Enables use as an iteratee for methods like `_.map`.
      * @returns {Function} Returns the compiled template function.
      * @example
      *
@@ -39818,7 +40839,7 @@ module.exports = isObjectLike;
      * // Use the `sourceURL` option to specify a custom sourceURL for the template.
      * var compiled = _.template('hello <%= user %>!', { 'sourceURL': '/basic/greeting.jst' });
      * compiled(data);
-     * // => find the source of "greeting.jst" under the Sources tab or Resources panel of the web inspector
+     * // => Find the source of "greeting.jst" under the Sources tab or Resources panel of the web inspector.
      *
      * // Use the `variable` option to ensure a with-statement isn't used in the compiled template.
      * var compiled = _.template('hi <%= data.user %>!', { 'variable': 'data' });
@@ -39838,7 +40859,8 @@ module.exports = isObjectLike;
      * ');
      */
     function template(string, options, guard) {
-      // Based on John Resig's `tmpl` implementation (http://ejohn.org/blog/javascript-micro-templating/)
+      // Based on John Resig's `tmpl` implementation
+      // (http://ejohn.org/blog/javascript-micro-templating/)
       // and Laura Doktorova's doT.js (https://github.com/olado/doT).
       var settings = lodash.templateSettings;
 
@@ -39950,13 +40972,14 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 4.0.0
      * @category String
      * @param {string} [string=''] The string to convert.
      * @returns {string} Returns the lower cased string.
      * @example
      *
-     * _.toLower('--Foo-Bar');
-     * // => '--foo-bar'
+     * _.toLower('--Foo-Bar--');
+     * // => '--foo-bar--'
      *
      * _.toLower('fooBar');
      * // => 'foobar'
@@ -39974,13 +40997,14 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 4.0.0
      * @category String
      * @param {string} [string=''] The string to convert.
      * @returns {string} Returns the upper cased string.
      * @example
      *
-     * _.toUpper('--foo-bar');
-     * // => '--FOO-BAR'
+     * _.toUpper('--foo-bar--');
+     * // => '--FOO-BAR--'
      *
      * _.toUpper('fooBar');
      * // => 'FOOBAR'
@@ -39997,10 +41021,11 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 3.0.0
      * @category String
      * @param {string} [string=''] The string to trim.
      * @param {string} [chars=whitespace] The characters to trim.
-     * @param- {Object} [guard] Enables use as an iteratee for functions like `_.map`.
+     * @param- {Object} [guard] Enables use as an iteratee for methods like `_.map`.
      * @returns {string} Returns the trimmed string.
      * @example
      *
@@ -40021,16 +41046,15 @@ module.exports = isObjectLike;
       if (guard || chars === undefined) {
         return string.replace(reTrim, '');
       }
-      chars = (chars + '');
-      if (!chars) {
+      if (!(chars += '')) {
         return string;
       }
       var strSymbols = stringToArray(string),
-          chrSymbols = stringToArray(chars);
+          chrSymbols = stringToArray(chars),
+          start = charsStartIndex(strSymbols, chrSymbols),
+          end = charsEndIndex(strSymbols, chrSymbols) + 1;
 
-      return strSymbols
-        .slice(charsStartIndex(strSymbols, chrSymbols), charsEndIndex(strSymbols, chrSymbols) + 1)
-        .join('');
+      return castSlice(strSymbols, start, end).join('');
     }
 
     /**
@@ -40038,10 +41062,11 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 4.0.0
      * @category String
      * @param {string} [string=''] The string to trim.
      * @param {string} [chars=whitespace] The characters to trim.
-     * @param- {Object} [guard] Enables use as an iteratee for functions like `_.map`.
+     * @param- {Object} [guard] Enables use as an iteratee for methods like `_.map`.
      * @returns {string} Returns the trimmed string.
      * @example
      *
@@ -40059,14 +41084,13 @@ module.exports = isObjectLike;
       if (guard || chars === undefined) {
         return string.replace(reTrimEnd, '');
       }
-      chars = (chars + '');
-      if (!chars) {
+      if (!(chars += '')) {
         return string;
       }
-      var strSymbols = stringToArray(string);
-      return strSymbols
-        .slice(0, charsEndIndex(strSymbols, stringToArray(chars)) + 1)
-        .join('');
+      var strSymbols = stringToArray(string),
+          end = charsEndIndex(strSymbols, stringToArray(chars)) + 1;
+
+      return castSlice(strSymbols, 0, end).join('');
     }
 
     /**
@@ -40074,10 +41098,11 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 4.0.0
      * @category String
      * @param {string} [string=''] The string to trim.
      * @param {string} [chars=whitespace] The characters to trim.
-     * @param- {Object} [guard] Enables use as an iteratee for functions like `_.map`.
+     * @param- {Object} [guard] Enables use as an iteratee for methods like `_.map`.
      * @returns {string} Returns the trimmed string.
      * @example
      *
@@ -40095,14 +41120,13 @@ module.exports = isObjectLike;
       if (guard || chars === undefined) {
         return string.replace(reTrimStart, '');
       }
-      chars = (chars + '');
-      if (!chars) {
+      if (!(chars += '')) {
         return string;
       }
-      var strSymbols = stringToArray(string);
-      return strSymbols
-        .slice(charsStartIndex(strSymbols, stringToArray(chars)))
-        .join('');
+      var strSymbols = stringToArray(string),
+          start = charsStartIndex(strSymbols, stringToArray(chars));
+
+      return castSlice(strSymbols, start).join('');
     }
 
     /**
@@ -40112,9 +41136,10 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 4.0.0
      * @category String
      * @param {string} [string=''] The string to truncate.
-     * @param {Object} [options=({})] The options object.
+     * @param {Object} [options={}] The options object.
      * @param {number} [options.length=30] The maximum string length.
      * @param {string} [options.omission='...'] The string to indicate text is omitted.
      * @param {RegExp|string} [options.separator] The separator pattern to truncate to.
@@ -40165,7 +41190,7 @@ module.exports = isObjectLike;
         return omission;
       }
       var result = strSymbols
-        ? strSymbols.slice(0, end).join('')
+        ? castSlice(strSymbols, 0, end).join('')
         : string.slice(0, end);
 
       if (separator === undefined) {
@@ -40199,14 +41224,15 @@ module.exports = isObjectLike;
 
     /**
      * The inverse of `_.escape`; this method converts the HTML entities
-     * `&amp;`, `&lt;`, `&gt;`, `&quot;`, `&#39;`, and `&#96;` in `string` to their
-     * corresponding characters.
+     * `&amp;`, `&lt;`, `&gt;`, `&quot;`, `&#39;`, and `&#96;` in `string` to
+     * their corresponding characters.
      *
-     * **Note:** No other HTML entities are unescaped. To unescape additional HTML
-     * entities use a third-party library like [_he_](https://mths.be/he).
+     * **Note:** No other HTML entities are unescaped. To unescape additional
+     * HTML entities use a third-party library like [_he_](https://mths.be/he).
      *
      * @static
      * @memberOf _
+     * @since 0.6.0
      * @category String
      * @param {string} [string=''] The string to unescape.
      * @returns {string} Returns the unescaped string.
@@ -40227,6 +41253,7 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 4.0.0
      * @category String
      * @param {string} [string=''] The string to convert.
      * @returns {string} Returns the upper cased string.
@@ -40246,14 +41273,34 @@ module.exports = isObjectLike;
     });
 
     /**
+     * Converts the first character of `string` to upper case.
+     *
+     * @static
+     * @memberOf _
+     * @since 4.0.0
+     * @category String
+     * @param {string} [string=''] The string to convert.
+     * @returns {string} Returns the converted string.
+     * @example
+     *
+     * _.upperFirst('fred');
+     * // => 'Fred'
+     *
+     * _.upperFirst('FRED');
+     * // => 'FRED'
+     */
+    var upperFirst = createCaseFirst('toUpperCase');
+
+    /**
      * Splits `string` into an array of its words.
      *
      * @static
      * @memberOf _
+     * @since 3.0.0
      * @category String
      * @param {string} [string=''] The string to inspect.
      * @param {RegExp|string} [pattern] The pattern to match words.
-     * @param- {Object} [guard] Enables use as an iteratee for functions like `_.map`.
+     * @param- {Object} [guard] Enables use as an iteratee for methods like `_.map`.
      * @returns {Array} Returns the words of `string`.
      * @example
      *
@@ -40281,8 +41328,10 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 3.0.0
      * @category Util
      * @param {Function} func The function to attempt.
+     * @param {...*} [args] The arguments to invoke `func` with.
      * @returns {*} Returns the `func` result or error object.
      * @example
      *
@@ -40310,11 +41359,11 @@ module.exports = isObjectLike;
      * **Note:** This method doesn't set the "length" property of bound functions.
      *
      * @static
+     * @since 0.1.0
      * @memberOf _
      * @category Util
      * @param {Object} object The object to bind and assign the bound methods to.
-     * @param {...(string|string[])} methodNames The object method names to bind,
-     *  specified individually or in arrays.
+     * @param {...(string|string[])} methodNames The object method names to bind.
      * @returns {Object} Returns `object`.
      * @example
      *
@@ -40327,7 +41376,7 @@ module.exports = isObjectLike;
      *
      * _.bindAll(view, 'onClick');
      * jQuery(element).on('click', view.onClick);
-     * // => logs 'clicked docs' when clicked
+     * // => Logs 'clicked docs' when clicked.
      */
     var bindAll = rest(function(object, methodNames) {
       arrayEach(baseFlatten(methodNames, 1), function(key) {
@@ -40337,13 +41386,14 @@ module.exports = isObjectLike;
     });
 
     /**
-     * Creates a function that iterates over `pairs` invoking the corresponding
+     * Creates a function that iterates over `pairs` and invokes the corresponding
      * function of the first predicate to return truthy. The predicate-function
      * pairs are invoked with the `this` binding and arguments of the created
      * function.
      *
      * @static
      * @memberOf _
+     * @since 4.0.0
      * @category Util
      * @param {Array} pairs The predicate-function pairs.
      * @returns {Function} Returns the new function.
@@ -40393,6 +41443,7 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 4.0.0
      * @category Util
      * @param {Object} source The object of property predicates to conform to.
      * @returns {Function} Returns the new function.
@@ -40415,6 +41466,7 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 2.4.0
      * @category Util
      * @param {*} value The value to return from the new function.
      * @returns {Function} Returns the new function.
@@ -40439,6 +41491,7 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 3.0.0
      * @category Util
      * @param {...(Function|Function[])} [funcs] Functions to invoke.
      * @returns {Function} Returns the new function.
@@ -40459,6 +41512,7 @@ module.exports = isObjectLike;
      * invokes the given functions from right to left.
      *
      * @static
+     * @since 0.1.0
      * @memberOf _
      * @category Util
      * @param {...(Function|Function[])} [funcs] Functions to invoke.
@@ -40479,6 +41533,7 @@ module.exports = isObjectLike;
      * This method returns the first argument given to it.
      *
      * @static
+     * @since 0.1.0
      * @memberOf _
      * @category Util
      * @param {*} value Any value.
@@ -40496,12 +41551,13 @@ module.exports = isObjectLike;
 
     /**
      * Creates a function that invokes `func` with the arguments of the created
-     * function. If `func` is a property name the created callback returns the
-     * property value for a given element. If `func` is an object the created
-     * callback returns `true` for elements that contain the equivalent object
-     * properties, otherwise it returns `false`.
+     * function. If `func` is a property name, the created function returns the
+     * property value for a given element. If `func` is an array or object, the
+     * created function returns `true` for elements that contain the equivalent
+     * source properties, otherwise it returns `false`.
      *
      * @static
+     * @since 4.0.0
      * @memberOf _
      * @category Util
      * @param {*} [func=_.identity] The value to convert to a callback.
@@ -40509,20 +41565,31 @@ module.exports = isObjectLike;
      * @example
      *
      * var users = [
-     *   { 'user': 'barney', 'age': 36 },
-     *   { 'user': 'fred',   'age': 40 }
+     *   { 'user': 'barney', 'age': 36, 'active': true },
+     *   { 'user': 'fred',   'age': 40, 'active': false }
      * ];
      *
+     * // The `_.matches` iteratee shorthand.
+     * _.filter(users, _.iteratee({ 'user': 'barney', 'active': true }));
+     * // => [{ 'user': 'barney', 'age': 36, 'active': true }]
+     *
+     * // The `_.matchesProperty` iteratee shorthand.
+     * _.filter(users, _.iteratee(['user', 'fred']));
+     * // => [{ 'user': 'fred', 'age': 40 }]
+     *
+     * // The `_.property` iteratee shorthand.
+     * _.map(users, _.iteratee('user'));
+     * // => ['barney', 'fred']
+     *
      * // Create custom iteratee shorthands.
-     * _.iteratee = _.wrap(_.iteratee, function(callback, func) {
-     *   var p = /^(\S+)\s*([<>])\s*(\S+)$/.exec(func);
-     *   return !p ? callback(func) : function(object) {
-     *     return (p[2] == '>' ? object[p[1]] > p[3] : object[p[1]] < p[3]);
+     * _.iteratee = _.wrap(_.iteratee, function(iteratee, func) {
+     *   return !_.isRegExp(func) ? iteratee(func) : function(string) {
+     *     return func.test(string);
      *   };
      * });
      *
-     * _.filter(users, 'age > 36');
-     * // => [{ 'user': 'fred', 'age': 40 }]
+     * _.filter(['abc', 'def'], /ef/);
+     * // => ['def']
      */
     function iteratee(func) {
       return baseIteratee(typeof func == 'function' ? func : baseClone(func, true));
@@ -40538,6 +41605,7 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 3.0.0
      * @category Util
      * @param {Object} source The object of property values to match.
      * @returns {Function} Returns the new function.
@@ -40564,6 +41632,7 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 3.2.0
      * @category Util
      * @param {Array|string} path The path of the property to get.
      * @param {*} srcValue The value to match.
@@ -40588,6 +41657,7 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 3.7.0
      * @category Util
      * @param {Array|string} path The path of the method to invoke.
      * @param {...*} [args] The arguments to invoke the method with.
@@ -40595,15 +41665,15 @@ module.exports = isObjectLike;
      * @example
      *
      * var objects = [
-     *   { 'a': { 'b': { 'c': _.constant(2) } } },
-     *   { 'a': { 'b': { 'c': _.constant(1) } } }
+     *   { 'a': { 'b': _.constant(2) } },
+     *   { 'a': { 'b': _.constant(1) } }
      * ];
      *
-     * _.map(objects, _.method('a.b.c'));
+     * _.map(objects, _.method('a.b'));
      * // => [2, 1]
      *
-     * _.invokeMap(_.sortBy(objects, _.method(['a', 'b', 'c'])), 'a.b.c');
-     * // => [1, 2]
+     * _.map(objects, _.method(['a', 'b']));
+     * // => [2, 1]
      */
     var method = rest(function(path, args) {
       return function(object) {
@@ -40618,6 +41688,7 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 3.7.0
      * @category Util
      * @param {Object} object The object to query.
      * @param {...*} [args] The arguments to invoke the method with.
@@ -40640,21 +41711,21 @@ module.exports = isObjectLike;
     });
 
     /**
-     * Adds all own enumerable function properties of a source object to the
-     * destination object. If `object` is a function then methods are added to
-     * its prototype as well.
+     * Adds all own enumerable string keyed function properties of a source
+     * object to the destination object. If `object` is a function, then methods
+     * are added to its prototype as well.
      *
      * **Note:** Use `_.runInContext` to create a pristine `lodash` function to
      * avoid conflicts caused by modifying the original.
      *
      * @static
+     * @since 0.1.0
      * @memberOf _
      * @category Util
      * @param {Function|Object} [object=lodash] The destination object.
      * @param {Object} source The object of functions to add.
-     * @param {Object} [options] The options object.
-     * @param {boolean} [options.chain=true] Specify whether the functions added
-     *  are chainable.
+     * @param {Object} [options={}] The options object.
+     * @param {boolean} [options.chain=true] Specify whether mixins are chainable.
      * @returns {Function|Object} Returns `object`.
      * @example
      *
@@ -40716,6 +41787,7 @@ module.exports = isObjectLike;
      * the `lodash` function.
      *
      * @static
+     * @since 0.1.0
      * @memberOf _
      * @category Util
      * @returns {Function} Returns the `lodash` function.
@@ -40736,6 +41808,7 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 2.3.0
      * @category Util
      * @example
      *
@@ -40753,6 +41826,7 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 4.0.0
      * @category Util
      * @param {number} [n=0] The index of the argument to return.
      * @returns {Function} Returns the new function.
@@ -40771,13 +41845,15 @@ module.exports = isObjectLike;
     }
 
     /**
-     * Creates a function that invokes `iteratees` with the arguments provided
-     * to the created function and returns their results.
+     * Creates a function that invokes `iteratees` with the arguments it receives
+     * and returns their results.
      *
      * @static
      * @memberOf _
+     * @since 4.0.0
      * @category Util
-     * @param {...(Function|Function[])} iteratees The iteratees to invoke.
+     * @param {...(Array|Array[]|Function|Function[]|Object|Object[]|string|string[])}
+     *  [iteratees=[_.identity]] The iteratees to invoke.
      * @returns {Function} Returns the new function.
      * @example
      *
@@ -40790,12 +41866,14 @@ module.exports = isObjectLike;
 
     /**
      * Creates a function that checks if **all** of the `predicates` return
-     * truthy when invoked with the arguments provided to the created function.
+     * truthy when invoked with the arguments it receives.
      *
      * @static
      * @memberOf _
+     * @since 4.0.0
      * @category Util
-     * @param {...(Function|Function[])} predicates The predicates to check.
+     * @param {...(Array|Array[]|Function|Function[]|Object|Object[]|string|string[])}
+     *  [predicates=[_.identity]] The predicates to check.
      * @returns {Function} Returns the new function.
      * @example
      *
@@ -40814,12 +41892,14 @@ module.exports = isObjectLike;
 
     /**
      * Creates a function that checks if **any** of the `predicates` return
-     * truthy when invoked with the arguments provided to the created function.
+     * truthy when invoked with the arguments it receives.
      *
      * @static
      * @memberOf _
+     * @since 4.0.0
      * @category Util
-     * @param {...(Function|Function[])} predicates The predicates to check.
+     * @param {...(Array|Array[]|Function|Function[]|Object|Object[]|string|string[])}
+     *  [predicates=[_.identity]] The predicates to check.
      * @returns {Function} Returns the new function.
      * @example
      *
@@ -40841,20 +41921,21 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 2.4.0
      * @category Util
      * @param {Array|string} path The path of the property to get.
      * @returns {Function} Returns the new function.
      * @example
      *
      * var objects = [
-     *   { 'a': { 'b': { 'c': 2 } } },
-     *   { 'a': { 'b': { 'c': 1 } } }
+     *   { 'a': { 'b': 2 } },
+     *   { 'a': { 'b': 1 } }
      * ];
      *
-     * _.map(objects, _.property('a.b.c'));
+     * _.map(objects, _.property('a.b'));
      * // => [2, 1]
      *
-     * _.map(_.sortBy(objects, _.property(['a', 'b', 'c'])), 'a.b.c');
+     * _.map(_.sortBy(objects, _.property(['a', 'b'])), 'a.b');
      * // => [1, 2]
      */
     function property(path) {
@@ -40867,6 +41948,7 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 3.0.0
      * @category Util
      * @param {Object} object The object to query.
      * @returns {Function} Returns the new function.
@@ -40890,13 +41972,14 @@ module.exports = isObjectLike;
     /**
      * Creates an array of numbers (positive and/or negative) progressing from
      * `start` up to, but not including, `end`. A step of `-1` is used if a negative
-     * `start` is specified without an `end` or `step`. If `end` is not specified
+     * `start` is specified without an `end` or `step`. If `end` is not specified,
      * it's set to `start` with `start` then set to `0`.
      *
      * **Note:** JavaScript follows the IEEE-754 standard for resolving
      * floating-point values which can produce unexpected results.
      *
      * @static
+     * @since 0.1.0
      * @memberOf _
      * @category Util
      * @param {number} [start=0] The start of the range.
@@ -40934,6 +42017,7 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 4.0.0
      * @category Util
      * @param {number} [start=0] The start of the range.
      * @param {number} end The end of the range.
@@ -40969,6 +42053,7 @@ module.exports = isObjectLike;
      * each invocation. The iteratee is invoked with one argument; (index).
      *
      * @static
+     * @since 0.1.0
      * @memberOf _
      * @category Util
      * @param {number} n The number of times to invoke `iteratee`.
@@ -40990,7 +42075,7 @@ module.exports = isObjectLike;
       var index = MAX_ARRAY_LENGTH,
           length = nativeMin(n, MAX_ARRAY_LENGTH);
 
-      iteratee = baseCastFunction(iteratee);
+      iteratee = getIteratee(iteratee);
       n -= MAX_ARRAY_LENGTH;
 
       var result = baseTimes(length, iteratee);
@@ -41005,6 +42090,7 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 4.0.0
      * @category Util
      * @param {*} value The value to convert.
      * @returns {Array} Returns the new property path array.
@@ -41026,13 +42112,17 @@ module.exports = isObjectLike;
      * // => false
      */
     function toPath(value) {
-      return isArray(value) ? arrayMap(value, String) : stringToPath(value);
+      if (isArray(value)) {
+        return arrayMap(value, toKey);
+      }
+      return isSymbol(value) ? [value] : copyArray(stringToPath(value));
     }
 
     /**
-     * Generates a unique ID. If `prefix` is given the ID is appended to it.
+     * Generates a unique ID. If `prefix` is given, the ID is appended to it.
      *
      * @static
+     * @since 0.1.0
      * @memberOf _
      * @category Util
      * @param {string} [prefix=''] The value to prefix the ID with.
@@ -41057,6 +42147,7 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 3.4.0
      * @category Math
      * @param {number} augend The first number in an addition.
      * @param {number} addend The second number in an addition.
@@ -41066,25 +42157,16 @@ module.exports = isObjectLike;
      * _.add(6, 4);
      * // => 10
      */
-    function add(augend, addend) {
-      var result;
-      if (augend === undefined && addend === undefined) {
-        return 0;
-      }
-      if (augend !== undefined) {
-        result = augend;
-      }
-      if (addend !== undefined) {
-        result = result === undefined ? addend : (result + addend);
-      }
-      return result;
-    }
+    var add = createMathOperation(function(augend, addend) {
+      return augend + addend;
+    });
 
     /**
      * Computes `number` rounded up to `precision`.
      *
      * @static
      * @memberOf _
+     * @since 3.10.0
      * @category Math
      * @param {number} number The number to round up.
      * @param {number} [precision=0] The precision to round up to.
@@ -41103,10 +42185,30 @@ module.exports = isObjectLike;
     var ceil = createRound('ceil');
 
     /**
+     * Divide two numbers.
+     *
+     * @static
+     * @memberOf _
+     * @since 4.7.0
+     * @category Math
+     * @param {number} dividend The first number in a division.
+     * @param {number} divisor The second number in a division.
+     * @returns {number} Returns the quotient.
+     * @example
+     *
+     * _.divide(6, 4);
+     * // => 1.5
+     */
+    var divide = createMathOperation(function(dividend, divisor) {
+      return dividend / divisor;
+    });
+
+    /**
      * Computes `number` rounded down to `precision`.
      *
      * @static
      * @memberOf _
+     * @since 3.10.0
      * @category Math
      * @param {number} number The number to round down.
      * @param {number} [precision=0] The precision to round down to.
@@ -41125,10 +42227,11 @@ module.exports = isObjectLike;
     var floor = createRound('floor');
 
     /**
-     * Computes the maximum value of `array`. If `array` is empty or falsey
+     * Computes the maximum value of `array`. If `array` is empty or falsey,
      * `undefined` is returned.
      *
      * @static
+     * @since 0.1.0
      * @memberOf _
      * @category Math
      * @param {Array} array The array to iterate over.
@@ -41154,9 +42257,11 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 4.0.0
      * @category Math
      * @param {Array} array The array to iterate over.
-     * @param {Function|Object|string} [iteratee=_.identity] The iteratee invoked per element.
+     * @param {Array|Function|Object|string} [iteratee=_.identity]
+     *  The iteratee invoked per element.
      * @returns {*} Returns the maximum value.
      * @example
      *
@@ -41180,6 +42285,7 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 4.0.0
      * @category Math
      * @param {Array} array The array to iterate over.
      * @returns {number} Returns the mean.
@@ -41189,14 +42295,43 @@ module.exports = isObjectLike;
      * // => 5
      */
     function mean(array) {
-      return sum(array) / (array ? array.length : 0);
+      return baseMean(array, identity);
     }
 
     /**
-     * Computes the minimum value of `array`. If `array` is empty or falsey
+     * This method is like `_.mean` except that it accepts `iteratee` which is
+     * invoked for each element in `array` to generate the value to be averaged.
+     * The iteratee is invoked with one argument: (value).
+     *
+     * @static
+     * @memberOf _
+     * @since 4.7.0
+     * @category Math
+     * @param {Array} array The array to iterate over.
+     * @param {Array|Function|Object|string} [iteratee=_.identity]
+     *  The iteratee invoked per element.
+     * @returns {number} Returns the mean.
+     * @example
+     *
+     * var objects = [{ 'n': 4 }, { 'n': 2 }, { 'n': 8 }, { 'n': 6 }];
+     *
+     * _.meanBy(objects, function(o) { return o.n; });
+     * // => 5
+     *
+     * // The `_.property` iteratee shorthand.
+     * _.meanBy(objects, 'n');
+     * // => 5
+     */
+    function meanBy(array, iteratee) {
+      return baseMean(array, getIteratee(iteratee));
+    }
+
+    /**
+     * Computes the minimum value of `array`. If `array` is empty or falsey,
      * `undefined` is returned.
      *
      * @static
+     * @since 0.1.0
      * @memberOf _
      * @category Math
      * @param {Array} array The array to iterate over.
@@ -41222,9 +42357,11 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 4.0.0
      * @category Math
      * @param {Array} array The array to iterate over.
-     * @param {Function|Object|string} [iteratee=_.identity] The iteratee invoked per element.
+     * @param {Array|Function|Object|string} [iteratee=_.identity]
+     *  The iteratee invoked per element.
      * @returns {*} Returns the minimum value.
      * @example
      *
@@ -41244,10 +42381,30 @@ module.exports = isObjectLike;
     }
 
     /**
+     * Multiply two numbers.
+     *
+     * @static
+     * @memberOf _
+     * @since 4.7.0
+     * @category Math
+     * @param {number} multiplier The first number in a multiplication.
+     * @param {number} multiplicand The second number in a multiplication.
+     * @returns {number} Returns the product.
+     * @example
+     *
+     * _.multiply(6, 4);
+     * // => 24
+     */
+    var multiply = createMathOperation(function(multiplier, multiplicand) {
+      return multiplier * multiplicand;
+    });
+
+    /**
      * Computes `number` rounded to `precision`.
      *
      * @static
      * @memberOf _
+     * @since 3.10.0
      * @category Math
      * @param {number} number The number to round.
      * @param {number} [precision=0] The precision to round to.
@@ -41270,6 +42427,7 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 4.0.0
      * @category Math
      * @param {number} minuend The first number in a subtraction.
      * @param {number} subtrahend The second number in a subtraction.
@@ -41279,25 +42437,16 @@ module.exports = isObjectLike;
      * _.subtract(6, 4);
      * // => 2
      */
-    function subtract(minuend, subtrahend) {
-      var result;
-      if (minuend === undefined && subtrahend === undefined) {
-        return 0;
-      }
-      if (minuend !== undefined) {
-        result = minuend;
-      }
-      if (subtrahend !== undefined) {
-        result = result === undefined ? subtrahend : (result - subtrahend);
-      }
-      return result;
-    }
+    var subtract = createMathOperation(function(minuend, subtrahend) {
+      return minuend - subtrahend;
+    });
 
     /**
      * Computes the sum of the values in `array`.
      *
      * @static
      * @memberOf _
+     * @since 3.4.0
      * @category Math
      * @param {Array} array The array to iterate over.
      * @returns {number} Returns the sum.
@@ -41319,9 +42468,11 @@ module.exports = isObjectLike;
      *
      * @static
      * @memberOf _
+     * @since 4.0.0
      * @category Math
      * @param {Array} array The array to iterate over.
-     * @param {Function|Object|string} [iteratee=_.identity] The iteratee invoked per element.
+     * @param {Array|Function|Object|string} [iteratee=_.identity]
+     *  The iteratee invoked per element.
      * @returns {number} Returns the sum.
      * @example
      *
@@ -41342,40 +42493,7 @@ module.exports = isObjectLike;
 
     /*------------------------------------------------------------------------*/
 
-    // Ensure wrappers are instances of `baseLodash`.
-    lodash.prototype = baseLodash.prototype;
-    lodash.prototype.constructor = lodash;
-
-    LodashWrapper.prototype = baseCreate(baseLodash.prototype);
-    LodashWrapper.prototype.constructor = LodashWrapper;
-
-    LazyWrapper.prototype = baseCreate(baseLodash.prototype);
-    LazyWrapper.prototype.constructor = LazyWrapper;
-
-    // Avoid inheriting from `Object.prototype` when possible.
-    Hash.prototype = nativeCreate ? nativeCreate(null) : objectProto;
-
-    // Add functions to the `MapCache`.
-    MapCache.prototype.clear = mapClear;
-    MapCache.prototype['delete'] = mapDelete;
-    MapCache.prototype.get = mapGet;
-    MapCache.prototype.has = mapHas;
-    MapCache.prototype.set = mapSet;
-
-    // Add functions to the `SetCache`.
-    SetCache.prototype.push = cachePush;
-
-    // Add functions to the `Stack` cache.
-    Stack.prototype.clear = stackClear;
-    Stack.prototype['delete'] = stackDelete;
-    Stack.prototype.get = stackGet;
-    Stack.prototype.has = stackHas;
-    Stack.prototype.set = stackSet;
-
-    // Assign cache to `_.memoize`.
-    memoize.Cache = MapCache;
-
-    // Add functions that return wrapped values when chaining.
+    // Add methods that return wrapped values in chain sequences.
     lodash.after = after;
     lodash.ary = ary;
     lodash.assign = assign;
@@ -41414,6 +42532,8 @@ module.exports = isObjectLike;
     lodash.fill = fill;
     lodash.filter = filter;
     lodash.flatMap = flatMap;
+    lodash.flatMapDeep = flatMapDeep;
+    lodash.flatMapDepth = flatMapDepth;
     lodash.flatten = flatten;
     lodash.flattenDeep = flattenDeep;
     lodash.flattenDepth = flattenDepth;
@@ -41525,15 +42645,17 @@ module.exports = isObjectLike;
     lodash.zipWith = zipWith;
 
     // Add aliases.
+    lodash.entries = toPairs;
+    lodash.entriesIn = toPairsIn;
     lodash.extend = assignIn;
     lodash.extendWith = assignInWith;
 
-    // Add functions to `lodash.prototype`.
+    // Add methods to `lodash.prototype`.
     mixin(lodash, lodash);
 
     /*------------------------------------------------------------------------*/
 
-    // Add functions that return unwrapped values when chaining.
+    // Add methods that return unwrapped values in chain sequences.
     lodash.add = add;
     lodash.attempt = attempt;
     lodash.camelCase = camelCase;
@@ -41545,6 +42667,7 @@ module.exports = isObjectLike;
     lodash.cloneDeepWith = cloneDeepWith;
     lodash.cloneWith = cloneWith;
     lodash.deburr = deburr;
+    lodash.divide = divide;
     lodash.endsWith = endsWith;
     lodash.eq = eq;
     lodash.escape = escape;
@@ -41622,8 +42745,10 @@ module.exports = isObjectLike;
     lodash.max = max;
     lodash.maxBy = maxBy;
     lodash.mean = mean;
+    lodash.meanBy = meanBy;
     lodash.min = min;
     lodash.minBy = minBy;
+    lodash.multiply = multiply;
     lodash.noConflict = noConflict;
     lodash.noop = noop;
     lodash.now = now;
@@ -41863,7 +42988,7 @@ module.exports = isObjectLike;
       };
     });
 
-    // Add `Array` and `String` methods to `lodash.prototype`.
+    // Add `Array` methods to `lodash.prototype`.
     arrayEach(['pop', 'push', 'shift', 'sort', 'splice', 'unshift'], function(methodName) {
       var func = arrayProto[methodName],
           chainName = /^(?:push|sort|unshift)$/.test(methodName) ? 'tap' : 'thru',
@@ -41872,15 +42997,16 @@ module.exports = isObjectLike;
       lodash.prototype[methodName] = function() {
         var args = arguments;
         if (retUnwrapped && !this.__chain__) {
-          return func.apply(this.value(), args);
+          var value = this.value();
+          return func.apply(isArray(value) ? value : [], args);
         }
         return this[chainName](function(value) {
-          return func.apply(value, args);
+          return func.apply(isArray(value) ? value : [], args);
         });
       };
     });
 
-    // Map minified function names to their real names.
+    // Map minified method names to their real names.
     baseForOwn(LazyWrapper.prototype, function(func, methodName) {
       var lodashFunc = lodash[methodName];
       if (lodashFunc) {
@@ -41896,16 +43022,15 @@ module.exports = isObjectLike;
       'func': undefined
     }];
 
-    // Add functions to the lazy wrapper.
+    // Add methods to `LazyWrapper`.
     LazyWrapper.prototype.clone = lazyClone;
     LazyWrapper.prototype.reverse = lazyReverse;
     LazyWrapper.prototype.value = lazyValue;
 
-    // Add chaining functions to the `lodash` wrapper.
+    // Add chain sequence methods to the `lodash` wrapper.
     lodash.prototype.at = wrapperAt;
     lodash.prototype.chain = wrapperChain;
     lodash.prototype.commit = wrapperCommit;
-    lodash.prototype.flatMap = wrapperFlatMap;
     lodash.prototype.next = wrapperNext;
     lodash.prototype.plant = wrapperPlant;
     lodash.prototype.reverse = wrapperReverse;
@@ -41952,13 +43077,14 @@ module.exports = isObjectLike;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 
-},{}],393:[function(require,module,exports){
+},{}],396:[function(require,module,exports){
 /**
  * A no-operation function that returns `undefined` regardless of the
  * arguments it receives.
  *
  * @static
  * @memberOf _
+ * @since 2.3.0
  * @category Util
  * @example
  *
@@ -41973,7 +43099,7 @@ function noop() {
 
 module.exports = noop;
 
-},{}],394:[function(require,module,exports){
+},{}],397:[function(require,module,exports){
 var apply = require('./_apply'),
     toInteger = require('./toInteger');
 
@@ -41985,12 +43111,15 @@ var nativeMax = Math.max;
 
 /**
  * Creates a function that invokes `func` with the `this` binding of the
- * created function and arguments from `start` and beyond provided as an array.
+ * created function and arguments from `start` and beyond provided as
+ * an array.
  *
- * **Note:** This method is based on the [rest parameter](https://mdn.io/rest_parameters).
+ * **Note:** This method is based on the
+ * [rest parameter](https://mdn.io/rest_parameters).
  *
  * @static
  * @memberOf _
+ * @since 4.0.0
  * @category Function
  * @param {Function} func The function to apply a rest parameter to.
  * @param {number} [start=func.length-1] The start position of the rest parameter.
@@ -42036,7 +43165,7 @@ function rest(func, start) {
 
 module.exports = rest;
 
-},{"./_apply":363,"./toInteger":395}],395:[function(require,module,exports){
+},{"./_apply":363,"./toInteger":398}],398:[function(require,module,exports){
 var toNumber = require('./toNumber');
 
 /** Used as references for various `Number` constants. */
@@ -42046,10 +43175,12 @@ var INFINITY = 1 / 0,
 /**
  * Converts `value` to an integer.
  *
- * **Note:** This function is loosely based on [`ToInteger`](http://www.ecma-international.org/ecma-262/6.0/#sec-tointeger).
+ * **Note:** This function is loosely based on
+ * [`ToInteger`](http://www.ecma-international.org/ecma-262/6.0/#sec-tointeger).
  *
  * @static
  * @memberOf _
+ * @since 4.0.0
  * @category Lang
  * @param {*} value The value to convert.
  * @returns {number} Returns the converted integer.
@@ -42082,9 +43213,10 @@ function toInteger(value) {
 
 module.exports = toInteger;
 
-},{"./toNumber":396}],396:[function(require,module,exports){
+},{"./toNumber":399}],399:[function(require,module,exports){
 var isFunction = require('./isFunction'),
-    isObject = require('./isObject');
+    isObject = require('./isObject'),
+    isSymbol = require('./isSymbol');
 
 /** Used as references for various `Number` constants. */
 var NAN = 0 / 0;
@@ -42109,6 +43241,7 @@ var freeParseInt = parseInt;
  *
  * @static
  * @memberOf _
+ * @since 4.0.0
  * @category Lang
  * @param {*} value The value to process.
  * @returns {number} Returns the number.
@@ -42127,6 +43260,12 @@ var freeParseInt = parseInt;
  * // => 3
  */
 function toNumber(value) {
+  if (typeof value == 'number') {
+    return value;
+  }
+  if (isSymbol(value)) {
+    return NAN;
+  }
   if (isObject(value)) {
     var other = isFunction(value.valueOf) ? value.valueOf() : value;
     value = isObject(other) ? (other + '') : other;
@@ -42143,7 +43282,7 @@ function toNumber(value) {
 
 module.exports = toNumber;
 
-},{"./isFunction":387,"./isObject":390}],397:[function(require,module,exports){
+},{"./isFunction":389,"./isObject":392,"./isSymbol":394}],400:[function(require,module,exports){
 var LazyWrapper = require('./_LazyWrapper'),
     LodashWrapper = require('./_LodashWrapper'),
     baseLodash = require('./_baseLodash'),
@@ -42159,25 +43298,25 @@ var hasOwnProperty = objectProto.hasOwnProperty;
 
 /**
  * Creates a `lodash` object which wraps `value` to enable implicit method
- * chaining. Methods that operate on and return arrays, collections, and
- * functions can be chained together. Methods that retrieve a single value or
- * may return a primitive value will automatically end the chain sequence and
- * return the unwrapped value. Otherwise, the value must be unwrapped with
- * `_#value`.
+ * chain sequences. Methods that operate on and return arrays, collections,
+ * and functions can be chained together. Methods that retrieve a single value
+ * or may return a primitive value will automatically end the chain sequence
+ * and return the unwrapped value. Otherwise, the value must be unwrapped
+ * with `_#value`.
  *
- * Explicit chaining, which must be unwrapped with `_#value` in all cases,
- * may be enabled using `_.chain`.
+ * Explicit chain sequences, which must be unwrapped with `_#value`, may be
+ * enabled using `_.chain`.
  *
  * The execution of chained methods is lazy, that is, it's deferred until
  * `_#value` is implicitly or explicitly called.
  *
- * Lazy evaluation allows several methods to support shortcut fusion. Shortcut
- * fusion is an optimization to merge iteratee calls; this avoids the creation
- * of intermediate arrays and can greatly reduce the number of iteratee executions.
- * Sections of a chain sequence qualify for shortcut fusion if the section is
- * applied to an array of at least two hundred elements and any iteratees
- * accept only one argument. The heuristic for whether a section qualifies
- * for shortcut fusion is subject to change.
+ * Lazy evaluation allows several methods to support shortcut fusion.
+ * Shortcut fusion is an optimization to merge iteratee calls; this avoids
+ * the creation of intermediate arrays and can greatly reduce the number of
+ * iteratee executions. Sections of a chain sequence qualify for shortcut
+ * fusion if the section is applied to an array of at least `200` elements
+ * and any iteratees accept only one argument. The heuristic for whether a
+ * section qualifies for shortcut fusion is subject to change.
  *
  * Chaining is supported in custom builds as long as the `_#value` method is
  * directly or indirectly included in the build.
@@ -42202,48 +43341,49 @@ var hasOwnProperty = objectProto.hasOwnProperty;
  * `curry`, `debounce`, `defaults`, `defaultsDeep`, `defer`, `delay`,
  * `difference`, `differenceBy`, `differenceWith`, `drop`, `dropRight`,
  * `dropRightWhile`, `dropWhile`, `extend`, `extendWith`, `fill`, `filter`,
- * `flatten`, `flattenDeep`, `flattenDepth`, `flip`, `flow`, `flowRight`,
- * `fromPairs`, `functions`, `functionsIn`, `groupBy`, `initial`, `intersection`,
- * `intersectionBy`, `intersectionWith`, `invert`, `invertBy`, `invokeMap`,
- * `iteratee`, `keyBy`, `keys`, `keysIn`, `map`, `mapKeys`, `mapValues`,
- * `matches`, `matchesProperty`, `memoize`, `merge`, `mergeWith`, `method`,
- * `methodOf`, `mixin`, `negate`, `nthArg`, `omit`, `omitBy`, `once`, `orderBy`,
- * `over`, `overArgs`, `overEvery`, `overSome`, `partial`, `partialRight`,
- * `partition`, `pick`, `pickBy`, `plant`, `property`, `propertyOf`, `pull`,
- * `pullAll`, `pullAllBy`, `pullAllWith`, `pullAt`, `push`, `range`,
- * `rangeRight`, `rearg`, `reject`, `remove`, `rest`, `reverse`, `sampleSize`,
- * `set`, `setWith`, `shuffle`, `slice`, `sort`, `sortBy`, `splice`, `spread`,
- * `tail`, `take`, `takeRight`, `takeRightWhile`, `takeWhile`, `tap`, `throttle`,
- * `thru`, `toArray`, `toPairs`, `toPairsIn`, `toPath`, `toPlainObject`,
- * `transform`, `unary`, `union`, `unionBy`, `unionWith`, `uniq`, `uniqBy`,
- * `uniqWith`, `unset`, `unshift`, `unzip`, `unzipWith`, `update`, `values`,
- * `valuesIn`, `without`, `wrap`, `xor`, `xorBy`, `xorWith`, `zip`, `zipObject`,
- * `zipObjectDeep`, and `zipWith`
+ * `flatMap`, `flatMapDeep`, `flatMapDepth`, `flatten`, `flattenDeep`,
+ * `flattenDepth`, `flip`, `flow`, `flowRight`, `fromPairs`, `functions`,
+ * `functionsIn`, `groupBy`, `initial`, `intersection`, `intersectionBy`,
+ * `intersectionWith`, `invert`, `invertBy`, `invokeMap`, `iteratee`, `keyBy`,
+ * `keys`, `keysIn`, `map`, `mapKeys`, `mapValues`, `matches`, `matchesProperty`,
+ * `memoize`, `merge`, `mergeWith`, `method`, `methodOf`, `mixin`, `negate`,
+ * `nthArg`, `omit`, `omitBy`, `once`, `orderBy`, `over`, `overArgs`,
+ * `overEvery`, `overSome`, `partial`, `partialRight`, `partition`, `pick`,
+ * `pickBy`, `plant`, `property`, `propertyOf`, `pull`, `pullAll`, `pullAllBy`,
+ * `pullAllWith`, `pullAt`, `push`, `range`, `rangeRight`, `rearg`, `reject`,
+ * `remove`, `rest`, `reverse`, `sampleSize`, `set`, `setWith`, `shuffle`,
+ * `slice`, `sort`, `sortBy`, `splice`, `spread`, `tail`, `take`, `takeRight`,
+ * `takeRightWhile`, `takeWhile`, `tap`, `throttle`, `thru`, `toArray`,
+ * `toPairs`, `toPairsIn`, `toPath`, `toPlainObject`, `transform`, `unary`,
+ * `union`, `unionBy`, `unionWith`, `uniq`, `uniqBy`, `uniqWith`, `unset`,
+ * `unshift`, `unzip`, `unzipWith`, `update`, `updateWith`, `values`,
+ * `valuesIn`, `without`, `wrap`, `xor`, `xorBy`, `xorWith`, `zip`,
+ * `zipObject`, `zipObjectDeep`, and `zipWith`
  *
  * The wrapper methods that are **not** chainable by default are:
  * `add`, `attempt`, `camelCase`, `capitalize`, `ceil`, `clamp`, `clone`,
- * `cloneDeep`, `cloneDeepWith`, `cloneWith`, `deburr`, `each`, `eachRight`,
- * `endsWith`, `eq`, `escape`, `escapeRegExp`, `every`, `find`, `findIndex`,
- * `findKey`, `findLast`, `findLastIndex`, `findLastKey`, `first`, `floor`,
- * `forEach`, `forEachRight`, `forIn`, `forInRight`, `forOwn`, `forOwnRight`,
- * `get`, `gt`, `gte`, `has`, `hasIn`, `head`, `identity`, `includes`,
- * `indexOf`, `inRange`, `invoke`, `isArguments`, `isArray`, `isArrayBuffer`,
- * `isArrayLike`, `isArrayLikeObject`, `isBoolean`, `isBuffer`, `isDate`,
- * `isElement`, `isEmpty`, `isEqual`, `isEqualWith`, `isError`, `isFinite`,
- * `isFunction`, `isInteger`, `isLength`, `isMap`, `isMatch`, `isMatchWith`,
- * `isNaN`, `isNative`, `isNil`, `isNull`, `isNumber`, `isObject`, `isObjectLike`,
- * `isPlainObject`, `isRegExp`, `isSafeInteger`, `isSet`, `isString`,
- * `isUndefined`, `isTypedArray`, `isWeakMap`, `isWeakSet`, `join`, `kebabCase`,
- * `last`, `lastIndexOf`, `lowerCase`, `lowerFirst`, `lt`, `lte`, `max`,
- * `maxBy`, `mean`, `min`, `minBy`, `noConflict`, `noop`, `now`, `pad`,
- * `padEnd`, `padStart`, `parseInt`, `pop`, `random`, `reduce`, `reduceRight`,
- * `repeat`, `result`, `round`, `runInContext`, `sample`, `shift`, `size`,
- * `snakeCase`, `some`, `sortedIndex`, `sortedIndexBy`, `sortedLastIndex`,
- * `sortedLastIndexBy`, `startCase`, `startsWith`, `subtract`, `sum`, `sumBy`,
- * `template`, `times`, `toInteger`, `toJSON`, `toLength`, `toLower`,
- * `toNumber`, `toSafeInteger`, `toString`, `toUpper`, `trim`, `trimEnd`,
- * `trimStart`, `truncate`, `unescape`, `uniqueId`, `upperCase`, `upperFirst`,
- * `value`, and `words`
+ * `cloneDeep`, `cloneDeepWith`, `cloneWith`, `deburr`, `divide`, `each`,
+ * `eachRight`, `endsWith`, `eq`, `escape`, `escapeRegExp`, `every`, `find`,
+ * `findIndex`, `findKey`, `findLast`, `findLastIndex`, `findLastKey`, `first`,
+ * `floor`, `forEach`, `forEachRight`, `forIn`, `forInRight`, `forOwn`,
+ * `forOwnRight`, `get`, `gt`, `gte`, `has`, `hasIn`, `head`, `identity`,
+ * `includes`, `indexOf`, `inRange`, `invoke`, `isArguments`, `isArray`,
+ * `isArrayBuffer`, `isArrayLike`, `isArrayLikeObject`, `isBoolean`, `isBuffer`,
+ * `isDate`, `isElement`, `isEmpty`, `isEqual`, `isEqualWith`, `isError`,
+ * `isFinite`, `isFunction`, `isInteger`, `isLength`, `isMap`, `isMatch`,
+ * `isMatchWith`, `isNaN`, `isNative`, `isNil`, `isNull`, `isNumber`,
+ * `isObject`, `isObjectLike`, `isPlainObject`, `isRegExp`, `isSafeInteger`,
+ * `isSet`, `isString`, `isUndefined`, `isTypedArray`, `isWeakMap`, `isWeakSet`,
+ * `join`, `kebabCase`, `last`, `lastIndexOf`, `lowerCase`, `lowerFirst`,
+ * `lt`, `lte`, `max`, `maxBy`, `mean`, `meanBy`, `min`, `minBy`, `multiply`,
+ * `noConflict`, `noop`, `now`, `pad`, `padEnd`, `padStart`, `parseInt`,
+ * `pop`, `random`, `reduce`, `reduceRight`, `repeat`, `result`, `round`,
+ * `runInContext`, `sample`, `shift`, `size`, `snakeCase`, `some`, `sortedIndex`,
+ * `sortedIndexBy`, `sortedLastIndex`, `sortedLastIndexBy`, `startCase`,
+ * `startsWith`, `subtract`, `sum`, `sumBy`, `template`, `times`, `toInteger`,
+ * `toJSON`, `toLength`, `toLower`, `toNumber`, `toSafeInteger`, `toString`,
+ * `toUpper`, `trim`, `trimEnd`, `trimStart`, `truncate`, `unescape`,
+ * `uniqueId`, `upperCase`, `upperFirst`, `value`, and `words`
  *
  * @name _
  * @constructor
@@ -42289,7 +43429,7 @@ lodash.prototype.constructor = lodash;
 
 module.exports = lodash;
 
-},{"./_LazyWrapper":360,"./_LodashWrapper":361,"./_baseLodash":367,"./_wrapperClone":381,"./isArray":384,"./isObjectLike":391}],398:[function(require,module,exports){
+},{"./_LazyWrapper":360,"./_LodashWrapper":361,"./_baseLodash":367,"./_wrapperClone":383,"./isArray":386,"./isObjectLike":393}],401:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -42456,7 +43596,7 @@ Avatar.contextTypes = {
   muiTheme: _react2.default.PropTypes.object.isRequired
 };
 exports.default = Avatar;
-},{"react":693,"simple-assign":704}],399:[function(require,module,exports){
+},{"react":707,"simple-assign":708}],402:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -42471,7 +43611,7 @@ var _Avatar2 = _interopRequireDefault(_Avatar);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = _Avatar2.default;
-},{"./Avatar":398}],400:[function(require,module,exports){
+},{"./Avatar":401}],403:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -42659,7 +43799,111 @@ Card.defaultProps = {
   actAsExpander: false
 };
 exports.default = Card;
-},{"../Paper":430,"./CardExpandable":401,"react":693,"simple-assign":704}],401:[function(require,module,exports){
+},{"../Paper":434,"./CardExpandable":405,"react":707,"simple-assign":708}],404:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _simpleAssign = require('simple-assign');
+
+var _simpleAssign2 = _interopRequireDefault(_simpleAssign);
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+function getStyles() {
+  return {
+    root: {
+      padding: 8,
+      position: 'relative'
+    },
+    action: {
+      marginRight: 8
+    }
+  };
+}
+
+var CardActions = function (_React$Component) {
+  _inherits(CardActions, _React$Component);
+
+  function CardActions() {
+    _classCallCheck(this, CardActions);
+
+    return _possibleConstructorReturn(this, Object.getPrototypeOf(CardActions).apply(this, arguments));
+  }
+
+  _createClass(CardActions, [{
+    key: 'render',
+    value: function render() {
+      var prepareStyles = this.context.muiTheme.prepareStyles;
+
+      var styles = getStyles(this.props, this.context);
+
+      var children = _react2.default.Children.map(this.props.children, function (child) {
+        if (_react2.default.isValidElement(child)) {
+          return _react2.default.cloneElement(child, {
+            style: (0, _simpleAssign2.default)({}, styles.action, child.props.style)
+          });
+        }
+      });
+
+      return _react2.default.createElement(
+        'div',
+        _extends({}, this.props, { style: prepareStyles((0, _simpleAssign2.default)(styles.root, this.props.style)) }),
+        children
+      );
+    }
+  }]);
+
+  return CardActions;
+}(_react2.default.Component);
+
+CardActions.propTypes = {
+  /**
+   * If true, a click on this card component expands the card.
+   */
+  actAsExpander: _react2.default.PropTypes.bool,
+
+  /**
+   * Can be used to render elements inside the Card Action.
+   */
+  children: _react2.default.PropTypes.node,
+
+  /**
+   * If true, this card component is expandable.
+   */
+  expandable: _react2.default.PropTypes.bool,
+
+  /**
+   * If true, this card component will include a button to expand the card.
+   */
+  showExpandableButton: _react2.default.PropTypes.bool,
+
+  /**
+   * Override the inline-styles of the root element.
+   */
+  style: _react2.default.PropTypes.object
+};
+CardActions.contextTypes = {
+  muiTheme: _react2.default.PropTypes.object.isRequired
+};
+exports.default = CardActions;
+},{"react":707,"simple-assign":708}],405:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -42745,7 +43989,7 @@ CardExpandable.contextTypes = {
   muiTheme: _react2.default.PropTypes.object.isRequired
 };
 exports.default = CardExpandable;
-},{"../IconButton":418,"../svg-icons/hardware/keyboard-arrow-down":491,"../svg-icons/hardware/keyboard-arrow-up":492,"react":693,"simple-assign":704}],402:[function(require,module,exports){
+},{"../IconButton":422,"../svg-icons/hardware/keyboard-arrow-down":508,"../svg-icons/hardware/keyboard-arrow-up":509,"react":707,"simple-assign":708}],406:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -42947,7 +44191,7 @@ CardHeader.contextTypes = {
   muiTheme: _react2.default.PropTypes.object.isRequired
 };
 exports.default = CardHeader;
-},{"../Avatar":399,"react":693,"simple-assign":704}],403:[function(require,module,exports){
+},{"../Avatar":402,"react":707,"simple-assign":708}],407:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -43046,7 +44290,7 @@ CardText.contextTypes = {
   muiTheme: _react2.default.PropTypes.object.isRequired
 };
 exports.default = CardText;
-},{"react":693,"simple-assign":704}],404:[function(require,module,exports){
+},{"react":707,"simple-assign":708}],408:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -43335,7 +44579,7 @@ Checkbox.contextTypes = {
   muiTheme: _react2.default.PropTypes.object.isRequired
 };
 exports.default = Checkbox;
-},{"../internal/EnhancedSwitch":474,"../styles/transitions":487,"../svg-icons/toggle/check-box":498,"../svg-icons/toggle/check-box-outline-blank":497,"../utils/deprecatedPropType":504,"react":693,"simple-assign":704}],405:[function(require,module,exports){
+},{"../internal/EnhancedSwitch":478,"../styles/transitions":504,"../svg-icons/toggle/check-box":515,"../svg-icons/toggle/check-box-outline-blank":514,"../utils/deprecatedPropType":521,"react":707,"simple-assign":708}],409:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -43350,7 +44594,7 @@ var _Checkbox2 = _interopRequireDefault(_Checkbox);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = _Checkbox2.default;
-},{"./Checkbox":404}],406:[function(require,module,exports){
+},{"./Checkbox":408}],410:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -43925,7 +45169,7 @@ Dialog.defaultProps = {
   repositionOnUpdate: true
 };
 exports.default = Dialog;
-},{"../Paper":430,"../internal/Overlay":476,"../internal/RenderToLayer":477,"../styles/transitions":487,"keycode":351,"react":693,"react-addons-transition-group":512,"react-dom":514,"react-event-listener":515,"simple-assign":704}],407:[function(require,module,exports){
+},{"../Paper":434,"../internal/Overlay":480,"../internal/RenderToLayer":481,"../styles/transitions":504,"keycode":351,"react":707,"react-addons-transition-group":487,"react-dom":527,"react-event-listener":528,"simple-assign":708}],411:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -43940,7 +45184,7 @@ var _Dialog2 = _interopRequireDefault(_Dialog);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = _Dialog2.default;
-},{"./Dialog":406}],408:[function(require,module,exports){
+},{"./Dialog":410}],412:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -44338,7 +45582,7 @@ DropDownMenu.contextTypes = {
   muiTheme: _react2.default.PropTypes.object.isRequired
 };
 exports.default = DropDownMenu;
-},{"../Menu/Menu":426,"../Popover/Popover":431,"../Popover/PopoverAnimationVertical":433,"../internal/ClearFix":471,"../styles/transitions":487,"../svg-icons/navigation/arrow-drop-down":493,"react":693,"simple-assign":704}],409:[function(require,module,exports){
+},{"../Menu/Menu":430,"../Popover/Popover":435,"../Popover/PopoverAnimationVertical":437,"../internal/ClearFix":475,"../styles/transitions":504,"../svg-icons/navigation/arrow-drop-down":510,"react":707,"simple-assign":708}],413:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -44359,7 +45603,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.DropDownMenu = _DropDownMenu3.default;
 exports.MenuItem = _MenuItem3.default;
 exports.default = _DropDownMenu3.default;
-},{"../MenuItem/MenuItem":427,"./DropDownMenu":408}],410:[function(require,module,exports){
+},{"../MenuItem/MenuItem":431,"./DropDownMenu":412}],414:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -44693,7 +45937,7 @@ FlatButton.contextTypes = {
   muiTheme: _react2.default.PropTypes.object.isRequired
 };
 exports.default = FlatButton;
-},{"../internal/EnhancedButton":473,"../styles/transitions":487,"../utils/childUtils":502,"../utils/colorManipulator":503,"./FlatButtonLabel":411,"react":693,"simple-assign":704}],411:[function(require,module,exports){
+},{"../internal/EnhancedButton":477,"../styles/transitions":504,"../utils/childUtils":519,"../utils/colorManipulator":520,"./FlatButtonLabel":415,"react":707,"simple-assign":708}],415:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -44774,7 +46018,7 @@ FlatButtonLabel.contextTypes = {
   muiTheme: _react2.default.PropTypes.object.isRequired
 };
 exports.default = FlatButtonLabel;
-},{"react":693,"simple-assign":704}],412:[function(require,module,exports){
+},{"react":707,"simple-assign":708}],416:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -44789,7 +46033,7 @@ var _FlatButton2 = _interopRequireDefault(_FlatButton);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = _FlatButton2.default;
-},{"./FlatButton":410}],413:[function(require,module,exports){
+},{"./FlatButton":414}],417:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -45179,7 +46423,7 @@ FloatingActionButton.contextTypes = {
 exports.default = FloatingActionButton;
 }).call(this,require('_process'))
 
-},{"../FontIcon":416,"../Paper":430,"../internal/EnhancedButton":473,"../styles/transitions":487,"../utils/childUtils":502,"../utils/colorManipulator":503,"../utils/propTypes":507,"_process":510,"react":693,"simple-assign":704,"warning":706}],414:[function(require,module,exports){
+},{"../FontIcon":420,"../Paper":434,"../internal/EnhancedButton":477,"../styles/transitions":504,"../utils/childUtils":519,"../utils/colorManipulator":520,"../utils/propTypes":524,"_process":526,"react":707,"simple-assign":708,"warning":710}],418:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -45194,7 +46438,7 @@ var _FloatingActionButton2 = _interopRequireDefault(_FloatingActionButton);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = _FloatingActionButton2.default;
-},{"./FloatingActionButton":413}],415:[function(require,module,exports){
+},{"./FloatingActionButton":417}],419:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -45345,7 +46589,7 @@ FontIcon.contextTypes = {
   muiTheme: _react2.default.PropTypes.object.isRequired
 };
 exports.default = FontIcon;
-},{"../styles/transitions":487,"react":693,"simple-assign":704}],416:[function(require,module,exports){
+},{"../styles/transitions":504,"react":707,"simple-assign":708}],420:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -45360,7 +46604,7 @@ var _FontIcon2 = _interopRequireDefault(_FontIcon);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = _FontIcon2.default;
-},{"./FontIcon":415}],417:[function(require,module,exports){
+},{"./FontIcon":419}],421:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -45694,7 +46938,7 @@ IconButton.contextTypes = {
   muiTheme: _react2.default.PropTypes.object.isRequired
 };
 exports.default = IconButton;
-},{"../FontIcon":416,"../internal/EnhancedButton":473,"../internal/Tooltip":480,"../styles/transitions":487,"../utils/childUtils":502,"../utils/propTypes":507,"react":693,"simple-assign":704}],418:[function(require,module,exports){
+},{"../FontIcon":420,"../internal/EnhancedButton":477,"../internal/Tooltip":484,"../styles/transitions":504,"../utils/childUtils":519,"../utils/propTypes":524,"react":707,"simple-assign":708}],422:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -45709,7 +46953,7 @@ var _IconButton2 = _interopRequireDefault(_IconButton);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = _IconButton2.default;
-},{"./IconButton":417}],419:[function(require,module,exports){
+},{"./IconButton":421}],423:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -46116,7 +47360,7 @@ IconMenu.contextTypes = {
   muiTheme: _react2.default.PropTypes.object.isRequired
 };
 exports.default = IconMenu;
-},{"../Menu/Menu":426,"../Popover/Popover":431,"../utils/events":506,"../utils/propTypes":507,"react":693,"react-dom":514,"simple-assign":704}],420:[function(require,module,exports){
+},{"../Menu/Menu":430,"../Popover/Popover":435,"../utils/events":523,"../utils/propTypes":524,"react":707,"react-dom":527,"simple-assign":708}],424:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -46137,7 +47381,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.IconMenu = _IconMenu3.default;
 exports.MenuItem = _MenuItem3.default;
 exports.default = _IconMenu3.default;
-},{"../MenuItem/MenuItem":427,"./IconMenu":419}],421:[function(require,module,exports){
+},{"../MenuItem/MenuItem":431,"./IconMenu":423}],425:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -46356,7 +47600,7 @@ LinearProgress.contextTypes = {
   muiTheme: _react2.default.PropTypes.object.isRequired
 };
 exports.default = LinearProgress;
-},{"../styles/transitions":487,"react":693,"simple-assign":704}],422:[function(require,module,exports){
+},{"../styles/transitions":504,"react":707,"simple-assign":708}],426:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -46371,7 +47615,7 @@ var _LinearProgress2 = _interopRequireDefault(_LinearProgress);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = _LinearProgress2.default;
-},{"./LinearProgress":421}],423:[function(require,module,exports){
+},{"./LinearProgress":425}],427:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -46519,7 +47763,7 @@ List.contextTypes = {
 exports.default = List;
 }).call(this,require('_process'))
 
-},{"../Subheader":441,"../utils/deprecatedPropType":504,"../utils/propTypes":507,"_process":510,"react":693,"simple-assign":704,"warning":706}],424:[function(require,module,exports){
+},{"../Subheader":445,"../utils/deprecatedPropType":521,"../utils/propTypes":524,"_process":526,"react":707,"simple-assign":708,"warning":710}],428:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -47220,7 +48464,7 @@ ListItem.contextTypes = {
   muiTheme: _react2.default.PropTypes.object.isRequired
 };
 exports.default = ListItem;
-},{"../IconButton":418,"../internal/EnhancedButton":473,"../styles/transitions":487,"../svg-icons/navigation/expand-less":495,"../svg-icons/navigation/expand-more":496,"../utils/colorManipulator":503,"./NestedIist":425,"react":693,"react-dom":514,"recompose/shallowEqual":701,"simple-assign":704}],425:[function(require,module,exports){
+},{"../IconButton":422,"../internal/EnhancedButton":477,"../styles/transitions":504,"../svg-icons/navigation/expand-less":512,"../svg-icons/navigation/expand-more":513,"../utils/colorManipulator":520,"./NestedIist":429,"react":707,"react-dom":527,"recompose/shallowEqual":496,"simple-assign":708}],429:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -47304,7 +48548,7 @@ NestedList.defaultProps = {
   open: false
 };
 exports.default = NestedList;
-},{"./List":423,"react":693,"simple-assign":704}],426:[function(require,module,exports){
+},{"./List":427,"react":707,"simple-assign":708}],430:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -48013,7 +49257,7 @@ var _initialiseProps = function _initialiseProps() {
 exports.default = Menu;
 }).call(this,require('_process'))
 
-},{"../List/List":423,"../internal/ClickAwayListener":472,"../styles/transitions":487,"../utils/autoPrefix":499,"../utils/deprecatedPropType":504,"../utils/propTypes":507,"_process":510,"keycode":351,"react":693,"react-addons-update":513,"react-dom":514,"recompose/shallowEqual":701,"simple-assign":704,"warning":706}],427:[function(require,module,exports){
+},{"../List/List":427,"../internal/ClickAwayListener":476,"../styles/transitions":504,"../utils/autoPrefix":516,"../utils/deprecatedPropType":521,"../utils/propTypes":524,"_process":526,"keycode":351,"react":707,"react-addons-update":488,"react-dom":527,"recompose/shallowEqual":496,"simple-assign":708,"warning":710}],431:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -48384,7 +49628,7 @@ MenuItem.contextTypes = {
   muiTheme: _react2.default.PropTypes.object.isRequired
 };
 exports.default = MenuItem;
-},{"../List/ListItem":424,"../Menu/Menu":426,"../Popover/Popover":431,"../svg-icons/navigation/check":494,"react":693,"react-dom":514,"recompose/shallowEqual":701,"simple-assign":704}],428:[function(require,module,exports){
+},{"../List/ListItem":428,"../Menu/Menu":430,"../Popover/Popover":435,"../svg-icons/navigation/check":511,"react":707,"react-dom":527,"recompose/shallowEqual":496,"simple-assign":708}],432:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -48399,7 +49643,7 @@ var _MenuItem2 = _interopRequireDefault(_MenuItem);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = _MenuItem2.default;
-},{"./MenuItem":427}],429:[function(require,module,exports){
+},{"./MenuItem":431}],433:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -48535,7 +49779,7 @@ Paper.contextTypes = {
   muiTheme: _react2.default.PropTypes.object.isRequired
 };
 exports.default = Paper;
-},{"../styles/transitions":487,"../utils/propTypes":507,"react":693,"simple-assign":704}],430:[function(require,module,exports){
+},{"../styles/transitions":504,"../utils/propTypes":524,"react":707,"simple-assign":708}],434:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -48550,7 +49794,7 @@ var _Paper2 = _interopRequireDefault(_Paper);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = _Paper2.default;
-},{"./Paper":429}],431:[function(require,module,exports){
+},{"./Paper":433}],435:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -49000,7 +50244,7 @@ Popover.contextTypes = {
   muiTheme: _react2.default.PropTypes.object.isRequired
 };
 exports.default = Popover;
-},{"../Paper":430,"../internal/RenderToLayer":477,"../utils/propTypes":507,"./PopoverAnimationDefault":432,"lodash.throttle":359,"react":693,"react-dom":514,"react-event-listener":515}],432:[function(require,module,exports){
+},{"../Paper":434,"../internal/RenderToLayer":481,"../utils/propTypes":524,"./PopoverAnimationDefault":436,"lodash.throttle":359,"react":707,"react-dom":527,"react-event-listener":528}],436:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -49160,7 +50404,7 @@ PopoverDefaultAnimation.contextTypes = {
   muiTheme: _react2.default.PropTypes.object.isRequired
 };
 exports.default = PopoverDefaultAnimation;
-},{"../Paper":430,"../styles/transitions":487,"../utils/propTypes":507,"react":693,"simple-assign":704}],433:[function(require,module,exports){
+},{"../Paper":434,"../styles/transitions":504,"../utils/propTypes":524,"react":707,"simple-assign":708}],437:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -49294,7 +50538,7 @@ PopoverAnimationVertical.contextTypes = {
   muiTheme: _react2.default.PropTypes.object.isRequired
 };
 exports.default = PopoverAnimationVertical;
-},{"../Paper":430,"../styles/transitions":487,"../utils/propTypes":507,"react":693,"simple-assign":704}],434:[function(require,module,exports){
+},{"../Paper":434,"../styles/transitions":504,"../utils/propTypes":524,"react":707,"simple-assign":708}],438:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -49758,7 +51002,7 @@ RaisedButton.contextTypes = {
   muiTheme: _react2.default.PropTypes.object.isRequired
 };
 exports.default = RaisedButton;
-},{"../Paper":430,"../internal/EnhancedButton":473,"../styles/transitions":487,"../utils/childUtils":502,"../utils/colorManipulator":503,"react":693,"simple-assign":704}],435:[function(require,module,exports){
+},{"../Paper":434,"../internal/EnhancedButton":477,"../styles/transitions":504,"../utils/childUtils":519,"../utils/colorManipulator":520,"react":707,"simple-assign":708}],439:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -49773,7 +51017,7 @@ var _RaisedButton2 = _interopRequireDefault(_RaisedButton);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = _RaisedButton2.default;
-},{"./RaisedButton":434}],436:[function(require,module,exports){
+},{"./RaisedButton":438}],440:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -50164,7 +51408,7 @@ RefreshIndicator.contextTypes = {
   muiTheme: _react2.default.PropTypes.object.isRequired
 };
 exports.default = RefreshIndicator;
-},{"../Paper":430,"../styles/transitions":487,"../utils/autoPrefix":499,"react":693,"simple-assign":704}],437:[function(require,module,exports){
+},{"../Paper":434,"../styles/transitions":504,"../utils/autoPrefix":516,"react":707,"simple-assign":708}],441:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -50179,7 +51423,7 @@ var _RefreshIndicator2 = _interopRequireDefault(_RefreshIndicator);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = _RefreshIndicator2.default;
-},{"./RefreshIndicator":436}],438:[function(require,module,exports){
+},{"./RefreshIndicator":440}],442:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -50429,7 +51673,7 @@ SelectField.contextTypes = {
   muiTheme: _react2.default.PropTypes.object.isRequired
 };
 exports.default = SelectField;
-},{"../DropDownMenu":409,"../TextField":461,"react":693,"simple-assign":704}],439:[function(require,module,exports){
+},{"../DropDownMenu":413,"../TextField":465,"react":707,"simple-assign":708}],443:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -50444,7 +51688,7 @@ var _SelectField2 = _interopRequireDefault(_SelectField);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = _SelectField2.default;
-},{"./SelectField":438}],440:[function(require,module,exports){
+},{"./SelectField":442}],444:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -50527,7 +51771,7 @@ Subheader.defaultProps = defaultProps;
 Subheader.contextTypes = contextTypes;
 
 exports.default = Subheader;
-},{"react":693,"simple-assign":704}],441:[function(require,module,exports){
+},{"react":707,"simple-assign":708}],445:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -50542,7 +51786,7 @@ var _Subheader2 = _interopRequireDefault(_Subheader);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = _Subheader2.default;
-},{"./Subheader":440}],442:[function(require,module,exports){
+},{"./Subheader":444}],446:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -50702,7 +51946,7 @@ SvgIcon.contextTypes = {
   muiTheme: _react2.default.PropTypes.object.isRequired
 };
 exports.default = SvgIcon;
-},{"../styles/transitions":487,"react":693,"simple-assign":704}],443:[function(require,module,exports){
+},{"../styles/transitions":504,"react":707,"simple-assign":708}],447:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -50717,7 +51961,7 @@ var _SvgIcon2 = _interopRequireDefault(_SvgIcon);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = _SvgIcon2.default;
-},{"./SvgIcon":442}],444:[function(require,module,exports){
+},{"./SvgIcon":446}],448:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -51074,7 +52318,7 @@ Table.contextTypes = {
   muiTheme: _react2.default.PropTypes.object.isRequired
 };
 exports.default = Table;
-},{"react":693,"simple-assign":704}],445:[function(require,module,exports){
+},{"react":707,"simple-assign":708}],449:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -51574,7 +52818,7 @@ TableBody.contextTypes = {
   muiTheme: _react2.default.PropTypes.object.isRequired
 };
 exports.default = TableBody;
-},{"../Checkbox":405,"../internal/ClickAwayListener":472,"./TableRowColumn":450,"react":693,"simple-assign":704}],446:[function(require,module,exports){
+},{"../Checkbox":409,"../internal/ClickAwayListener":476,"./TableRowColumn":454,"react":707,"simple-assign":708}],450:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -51710,7 +52954,7 @@ TableFooter.contextTypes = {
   muiTheme: _react2.default.PropTypes.object.isRequired
 };
 exports.default = TableFooter;
-},{"./TableRowColumn":450,"react":693,"simple-assign":704}],447:[function(require,module,exports){
+},{"./TableRowColumn":454,"react":707,"simple-assign":708}],451:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -51939,7 +53183,7 @@ TableHeader.contextTypes = {
   muiTheme: _react2.default.PropTypes.object.isRequired
 };
 exports.default = TableHeader;
-},{"../Checkbox":405,"./TableHeaderColumn":448,"react":693,"simple-assign":704}],448:[function(require,module,exports){
+},{"../Checkbox":409,"./TableHeaderColumn":452,"react":707,"simple-assign":708}],452:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -52112,7 +53356,7 @@ TableHeaderColumn.contextTypes = {
   muiTheme: _react2.default.PropTypes.object.isRequired
 };
 exports.default = TableHeaderColumn;
-},{"../internal/Tooltip":480,"react":693,"simple-assign":704}],449:[function(require,module,exports){
+},{"../internal/Tooltip":484,"react":707,"simple-assign":708}],453:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -52400,7 +53644,7 @@ TableRow.contextTypes = {
   muiTheme: _react2.default.PropTypes.object.isRequired
 };
 exports.default = TableRow;
-},{"react":693,"simple-assign":704}],450:[function(require,module,exports){
+},{"react":707,"simple-assign":708}],454:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -52579,7 +53823,7 @@ TableRowColumn.contextTypes = {
   muiTheme: _react2.default.PropTypes.object.isRequired
 };
 exports.default = TableRowColumn;
-},{"react":693,"simple-assign":704}],451:[function(require,module,exports){
+},{"react":707,"simple-assign":708}],455:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -52625,7 +53869,7 @@ exports.TableHeaderColumn = _TableHeaderColumn3.default;
 exports.TableRow = _TableRow3.default;
 exports.TableRowColumn = _TableRowColumn3.default;
 exports.default = _Table3.default;
-},{"./Table":444,"./TableBody":445,"./TableFooter":446,"./TableHeader":447,"./TableHeaderColumn":448,"./TableRow":449,"./TableRowColumn":450}],452:[function(require,module,exports){
+},{"./Table":448,"./TableBody":449,"./TableFooter":450,"./TableHeader":451,"./TableHeaderColumn":452,"./TableRow":453,"./TableRowColumn":454}],456:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -52711,7 +53955,7 @@ InkBar.contextTypes = {
   muiTheme: _react2.default.PropTypes.object.isRequired
 };
 exports.default = InkBar;
-},{"../styles/transitions":487,"react":693,"simple-assign":704}],453:[function(require,module,exports){
+},{"../styles/transitions":504,"react":707,"simple-assign":708}],457:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -52912,7 +54156,7 @@ Tab.contextTypes = {
   muiTheme: _react2.default.PropTypes.object.isRequired
 };
 exports.default = Tab;
-},{"../internal/EnhancedButton":473,"react":693,"simple-assign":704}],454:[function(require,module,exports){
+},{"../internal/EnhancedButton":477,"react":707,"simple-assign":708}],458:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -52972,7 +54216,7 @@ TabTemplate.propTypes = {
   selected: _react2.default.PropTypes.bool
 };
 exports.default = TabTemplate;
-},{"react":693}],455:[function(require,module,exports){
+},{"react":707}],459:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -53290,7 +54534,7 @@ Tabs.contextTypes = {
 exports.default = Tabs;
 }).call(this,require('_process'))
 
-},{"./InkBar":452,"./TabTemplate":454,"_process":510,"react":693,"react-dom":514,"simple-assign":704,"warning":706}],456:[function(require,module,exports){
+},{"./InkBar":456,"./TabTemplate":458,"_process":526,"react":707,"react-dom":527,"simple-assign":708,"warning":710}],460:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -53510,7 +54754,7 @@ EnhancedTextarea.contextTypes = {
   muiTheme: _react2.default.PropTypes.object.isRequired
 };
 exports.default = EnhancedTextarea;
-},{"react":693,"react-event-listener":515,"simple-assign":704}],457:[function(require,module,exports){
+},{"react":707,"react-event-listener":528,"simple-assign":708}],461:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -54103,7 +55347,7 @@ TextField.contextTypes = {
 exports.default = TextField;
 }).call(this,require('_process'))
 
-},{"../styles/transitions":487,"../utils/colorManipulator":503,"../utils/deprecatedPropType":504,"./EnhancedTextarea":456,"./TextFieldHint":458,"./TextFieldLabel":459,"./TextFieldUnderline":460,"_process":510,"keycode":351,"react":693,"react-dom":514,"recompose/shallowEqual":701,"simple-assign":704,"warning":706}],458:[function(require,module,exports){
+},{"../styles/transitions":504,"../utils/colorManipulator":520,"../utils/deprecatedPropType":521,"./EnhancedTextarea":460,"./TextFieldHint":462,"./TextFieldLabel":463,"./TextFieldUnderline":464,"_process":526,"keycode":351,"react":707,"react-dom":527,"recompose/shallowEqual":496,"simple-assign":708,"warning":710}],462:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -54181,7 +55425,7 @@ TextFieldHint.propTypes = propTypes;
 TextFieldHint.defaultProps = defaultProps;
 
 exports.default = TextFieldHint;
-},{"../styles/transitions":487,"react":693,"simple-assign":704}],459:[function(require,module,exports){
+},{"../styles/transitions":504,"react":707,"simple-assign":708}],463:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -54295,7 +55539,7 @@ TextFieldLabel.propTypes = propTypes;
 TextFieldLabel.defaultProps = defaultProps;
 
 exports.default = TextFieldLabel;
-},{"../styles/transitions":487,"react":693,"simple-assign":704}],460:[function(require,module,exports){
+},{"../styles/transitions":504,"react":707,"simple-assign":708}],464:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -54433,7 +55677,7 @@ TextFieldUnderline.propTypes = propTypes;
 TextFieldUnderline.defaultProps = defaultProps;
 
 exports.default = TextFieldUnderline;
-},{"../styles/transitions":487,"react":693,"simple-assign":704}],461:[function(require,module,exports){
+},{"../styles/transitions":504,"react":707,"simple-assign":708}],465:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -54448,7 +55692,7 @@ var _TextField2 = _interopRequireDefault(_TextField);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = _TextField2.default;
-},{"./TextField":457}],462:[function(require,module,exports){
+},{"./TextField":461}],466:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -54750,7 +55994,7 @@ Toggle.contextTypes = {
   muiTheme: _react2.default.PropTypes.object.isRequired
 };
 exports.default = Toggle;
-},{"../Paper":430,"../internal/EnhancedSwitch":474,"../styles/transitions":487,"react":693,"simple-assign":704}],463:[function(require,module,exports){
+},{"../Paper":434,"../internal/EnhancedSwitch":478,"../styles/transitions":504,"react":707,"simple-assign":708}],467:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -54765,7 +56009,7 @@ var _Toggle2 = _interopRequireDefault(_Toggle);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = _Toggle2.default;
-},{"./Toggle":462}],464:[function(require,module,exports){
+},{"./Toggle":466}],468:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -54876,7 +56120,7 @@ Toolbar.contextTypes = {
   muiTheme: _react2.default.PropTypes.object.isRequired
 };
 exports.default = Toolbar;
-},{"react":693,"simple-assign":704}],465:[function(require,module,exports){
+},{"react":707,"simple-assign":708}],469:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -55092,7 +56336,7 @@ ToolbarGroup.contextTypes = {
   muiTheme: _react2.default.PropTypes.object.isRequired
 };
 exports.default = ToolbarGroup;
-},{"react":693,"simple-assign":704}],466:[function(require,module,exports){
+},{"react":707,"simple-assign":708}],470:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -55185,7 +56429,7 @@ ToolbarSeparator.contextTypes = {
   muiTheme: _react2.default.PropTypes.object.isRequired
 };
 exports.default = ToolbarSeparator;
-},{"react":693,"simple-assign":704}],467:[function(require,module,exports){
+},{"react":707,"simple-assign":708}],471:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -55288,7 +56532,7 @@ ToolbarTitle.contextTypes = {
   muiTheme: _react2.default.PropTypes.object.isRequired
 };
 exports.default = ToolbarTitle;
-},{"react":693,"simple-assign":704}],468:[function(require,module,exports){
+},{"react":707,"simple-assign":708}],472:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -55395,7 +56639,7 @@ AutoLockScrolling.propTypes = {
   lock: _react2.default.PropTypes.bool.isRequired
 };
 exports.default = AutoLockScrolling;
-},{"react":693}],469:[function(require,module,exports){
+},{"react":707}],473:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -55539,7 +56783,7 @@ BeforeAfterWrapper.contextTypes = {
   muiTheme: _react2.default.PropTypes.object.isRequired
 };
 exports.default = BeforeAfterWrapper;
-},{"react":693,"simple-assign":704}],470:[function(require,module,exports){
+},{"react":707,"simple-assign":708}],474:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -55694,7 +56938,7 @@ CircleRipple.contextTypes = {
   muiTheme: _react2.default.PropTypes.object.isRequired
 };
 exports.default = CircleRipple;
-},{"../styles/transitions":487,"../utils/autoPrefix":499,"react":693,"react-dom":514,"recompose/shallowEqual":701,"simple-assign":704}],471:[function(require,module,exports){
+},{"../styles/transitions":504,"../utils/autoPrefix":516,"react":707,"react-dom":527,"recompose/shallowEqual":496,"simple-assign":708}],475:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -55756,7 +57000,7 @@ ClearFix.propTypes = {
 };
 
 exports.default = ClearFix;
-},{"./BeforeAfterWrapper":469,"react":693}],472:[function(require,module,exports){
+},{"./BeforeAfterWrapper":473,"react":707}],476:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -55868,7 +57112,7 @@ ClickAwayListener.propTypes = {
   onClickAway: _react2.default.PropTypes.any
 };
 exports.default = ClickAwayListener;
-},{"../utils/events":506,"react":693,"react-dom":514}],473:[function(require,module,exports){
+},{"../utils/events":523,"react":707,"react-dom":527}],477:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -56245,7 +57489,7 @@ EnhancedButton.contextTypes = {
   muiTheme: _react2.default.PropTypes.object.isRequired
 };
 exports.default = EnhancedButton;
-},{"../utils/childUtils":502,"../utils/events":506,"./FocusRipple":475,"./TouchRipple":481,"keycode":351,"react":693,"simple-assign":704}],474:[function(require,module,exports){
+},{"../utils/childUtils":519,"../utils/events":523,"./FocusRipple":479,"./TouchRipple":485,"keycode":351,"react":707,"simple-assign":708}],478:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -56692,7 +57936,7 @@ EnhancedSwitch.contextTypes = {
 exports.default = EnhancedSwitch;
 }).call(this,require('_process'))
 
-},{"../styles/transitions":487,"./../Paper":430,"./FocusRipple":475,"./TouchRipple":481,"_process":510,"keycode":351,"react":693,"react-event-listener":515,"simple-assign":704,"warning":706}],475:[function(require,module,exports){
+},{"../styles/transitions":504,"./../Paper":434,"./FocusRipple":479,"./TouchRipple":485,"_process":526,"keycode":351,"react":707,"react-event-listener":528,"simple-assign":708,"warning":710}],479:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -56877,7 +58121,7 @@ FocusRipple.contextTypes = {
   muiTheme: _react2.default.PropTypes.object.isRequired
 };
 exports.default = FocusRipple;
-},{"../styles/transitions":487,"../utils/autoPrefix":499,"./ScaleIn":478,"react":693,"react-dom":514,"recompose/shallowEqual":701,"simple-assign":704}],476:[function(require,module,exports){
+},{"../styles/transitions":504,"../utils/autoPrefix":516,"./ScaleIn":482,"react":707,"react-dom":527,"recompose/shallowEqual":496,"simple-assign":708}],480:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -57006,7 +58250,7 @@ Overlay.contextTypes = {
   muiTheme: _react2.default.PropTypes.object.isRequired
 };
 exports.default = Overlay;
-},{"../styles/transitions":487,"./AutoLockScrolling":468,"react":693,"simple-assign":704}],477:[function(require,module,exports){
+},{"../styles/transitions":504,"./AutoLockScrolling":472,"react":707,"simple-assign":708}],481:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -57182,7 +58426,7 @@ RenderToLayer.contextTypes = {
   muiTheme: _react2.default.PropTypes.object.isRequired
 };
 exports.default = RenderToLayer;
-},{"../utils/dom":505,"react":693,"react-dom":514}],478:[function(require,module,exports){
+},{"../utils/dom":522,"react":707,"react-dom":527}],482:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -57297,7 +58541,7 @@ ScaleIn.contextTypes = {
   muiTheme: _react2.default.PropTypes.object.isRequired
 };
 exports.default = ScaleIn;
-},{"./ScaleInChild":479,"react":693,"react-addons-transition-group":512,"simple-assign":704}],479:[function(require,module,exports){
+},{"./ScaleInChild":483,"react":707,"react-addons-transition-group":487,"simple-assign":708}],483:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -57451,7 +58695,7 @@ ScaleInChild.contextTypes = {
   muiTheme: _react2.default.PropTypes.object.isRequired
 };
 exports.default = ScaleInChild;
-},{"../styles/transitions":487,"../utils/autoPrefix":499,"react":693,"react-dom":514,"simple-assign":704}],480:[function(require,module,exports){
+},{"../styles/transitions":504,"../utils/autoPrefix":516,"react":707,"react-dom":527,"simple-assign":708}],484:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -57658,7 +58902,7 @@ Tooltip.contextTypes = {
   muiTheme: _react2.default.PropTypes.object.isRequired
 };
 exports.default = Tooltip;
-},{"../styles/transitions":487,"react":693,"simple-assign":704}],481:[function(require,module,exports){
+},{"../styles/transitions":504,"react":707,"simple-assign":708}],485:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -57952,7 +59196,323 @@ TouchRipple.contextTypes = {
   muiTheme: _react2.default.PropTypes.object.isRequired
 };
 exports.default = TouchRipple;
-},{"../utils/dom":505,"./CircleRipple":470,"react":693,"react-addons-transition-group":512,"react-addons-update":513,"react-dom":514,"simple-assign":704}],482:[function(require,module,exports){
+},{"../utils/dom":522,"./CircleRipple":474,"react":707,"react-addons-transition-group":487,"react-addons-update":488,"react-dom":527,"simple-assign":708}],486:[function(require,module,exports){
+module.exports = require('react/lib/ReactFragment').create;
+},{"react/lib/ReactFragment":606}],487:[function(require,module,exports){
+module.exports = require('react/lib/ReactTransitionGroup');
+},{"react/lib/ReactTransitionGroup":628}],488:[function(require,module,exports){
+module.exports = require('react/lib/update');
+},{"react/lib/update":678}],489:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _flowRight = require('lodash/flowRight');
+
+var _flowRight2 = _interopRequireDefault(_flowRight);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = _flowRight2.default;
+},{"lodash/flowRight":384}],490:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _isReferentiallyTransparentFunctionComponent = require('./isReferentiallyTransparentFunctionComponent');
+
+var _isReferentiallyTransparentFunctionComponent2 = _interopRequireDefault(_isReferentiallyTransparentFunctionComponent);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var createElement = function createElement(Component, props, children) {
+  /* eslint-disable */
+  var hasKey = props && props.hasOwnProperty('key');
+  /* eslint-enable */
+
+  if (!hasKey && (0, _isReferentiallyTransparentFunctionComponent2.default)(Component)) {
+    var component = Component;
+    if (children) {
+      return component(_extends({}, props, { children: children }));
+    }
+    return component(props);
+  }
+
+  if (children) {
+    return _react2.default.createElement(
+      Component,
+      props,
+      children
+    );
+  }
+
+  return _react2.default.createElement(Component, props);
+};
+
+exports.default = createElement;
+},{"./isReferentiallyTransparentFunctionComponent":494,"react":707}],491:[function(require,module,exports){
+(function (process){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+
+var createHelper = function createHelper(func, helperName) {
+  var setDisplayName = arguments.length <= 2 || arguments[2] === undefined ? true : arguments[2];
+  var noArgs = arguments.length <= 3 || arguments[3] === undefined ? false : arguments[3];
+
+  if (process.env.NODE_ENV !== 'production' && setDisplayName) {
+    var _ret = function () {
+      var wrapDisplayName = require('./wrapDisplayName').default;
+
+      if (noArgs) {
+        return {
+          v: function v(BaseComponent) {
+            var Component = func(BaseComponent);
+            Component.displayName = wrapDisplayName(BaseComponent, helperName);
+            return Component;
+          }
+        };
+      }
+
+      return {
+        v: function v() {
+          for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+            args[_key] = arguments[_key];
+          }
+
+          if (process.env.NODE_ENV !== 'production' && args.length > func.length) {
+            /* eslint-disable */
+            console.error(
+            /* eslint-enable */
+            'Too many arguments passed to ' + helperName + '(). It should called ' + ('like so: ' + helperName + '(...args)(BaseComponent).'));
+          }
+
+          return function (BaseComponent) {
+            var Component = noArgs ? func(BaseComponent) : func.apply(undefined, args)(BaseComponent);
+
+            Component.displayName = wrapDisplayName(BaseComponent, helperName);
+
+            return Component;
+          };
+        }
+      };
+    }();
+
+    if ((typeof _ret === 'undefined' ? 'undefined' : _typeof(_ret)) === "object") return _ret.v;
+  }
+
+  return func;
+};
+
+exports.default = createHelper;
+}).call(this,require('_process'))
+
+},{"./wrapDisplayName":498,"_process":526}],492:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var getDisplayName = function getDisplayName(Component) {
+  if (typeof Component === 'string') {
+    return Component;
+  }
+
+  if (!Component) {
+    return undefined;
+  }
+
+  return Component.displayName || Component.name || 'Component';
+};
+
+exports.default = getDisplayName;
+},{}],493:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+
+var isClassComponent = function isClassComponent(Component) {
+  return Boolean(Component && Component.prototype && _typeof(Component.prototype.isReactComponent) === 'object');
+};
+
+exports.default = isClassComponent;
+},{}],494:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _isClassComponent = require('./isClassComponent.js');
+
+var _isClassComponent2 = _interopRequireDefault(_isClassComponent);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var isReferentiallyTransparentFunctionComponent = function isReferentiallyTransparentFunctionComponent(Component) {
+  return Boolean(typeof Component === 'function' && !(0, _isClassComponent2.default)(Component) && !Component.defaultProps && !Component.contextTypes && !Component.propTypes);
+};
+
+exports.default = isReferentiallyTransparentFunctionComponent;
+},{"./isClassComponent.js":493}],495:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _shouldUpdate = require('./shouldUpdate');
+
+var _shouldUpdate2 = _interopRequireDefault(_shouldUpdate);
+
+var _shallowEqual = require('./shallowEqual');
+
+var _shallowEqual2 = _interopRequireDefault(_shallowEqual);
+
+var _createHelper = require('./createHelper');
+
+var _createHelper2 = _interopRequireDefault(_createHelper);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var pure = (0, _shouldUpdate2.default)(function (props, nextProps) {
+  return !(0, _shallowEqual2.default)(props, nextProps);
+});
+
+exports.default = (0, _createHelper2.default)(pure, 'pure', true, true);
+},{"./createHelper":491,"./shallowEqual":496,"./shouldUpdate":497}],496:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+
+exports.default = shallowEqual;
+// Copied from https://github.com/facebook/fbjs/blob/master/src/core/shallowEqual.js
+
+var hasOwnProperty = Object.prototype.hasOwnProperty;
+
+function shallowEqual(objA, objB) {
+  if (objA === objB) {
+    return true;
+  }
+
+  if ((typeof objA === 'undefined' ? 'undefined' : _typeof(objA)) !== 'object' || objA === null || (typeof objB === 'undefined' ? 'undefined' : _typeof(objB)) !== 'object' || objB === null) {
+    return false;
+  }
+
+  var keysA = Object.keys(objA);
+  var keysB = Object.keys(objB);
+
+  if (keysA.length !== keysB.length) {
+    return false;
+  }
+
+  // Test for A's keys different from B.
+  var bHasOwnProperty = hasOwnProperty.bind(objB);
+  for (var i = 0; i < keysA.length; i++) {
+    if (!bHasOwnProperty(keysA[i]) || objA[keysA[i]] !== objB[keysA[i]]) {
+      return false;
+    }
+  }
+
+  return true;
+}
+},{}],497:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = require('react');
+
+var _createHelper = require('./createHelper');
+
+var _createHelper2 = _interopRequireDefault(_createHelper);
+
+var _createElement = require('./createElement');
+
+var _createElement2 = _interopRequireDefault(_createElement);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var shouldUpdate = function shouldUpdate(test) {
+  return function (BaseComponent) {
+    return function (_Component) {
+      _inherits(_class, _Component);
+
+      function _class() {
+        _classCallCheck(this, _class);
+
+        return _possibleConstructorReturn(this, Object.getPrototypeOf(_class).apply(this, arguments));
+      }
+
+      _createClass(_class, [{
+        key: 'shouldComponentUpdate',
+        value: function shouldComponentUpdate(nextProps) {
+          return test(this.props, nextProps);
+        }
+      }, {
+        key: 'render',
+        value: function render() {
+          return (0, _createElement2.default)(BaseComponent, this.props);
+        }
+      }]);
+
+      return _class;
+    }(_react.Component);
+  };
+};
+
+exports.default = (0, _createHelper2.default)(shouldUpdate, 'shouldUpdate');
+},{"./createElement":490,"./createHelper":491,"react":707}],498:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _getDisplayName = require('./getDisplayName');
+
+var _getDisplayName2 = _interopRequireDefault(_getDisplayName);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var wrapDisplayName = function wrapDisplayName(BaseComponent, hocName) {
+  return hocName + '(' + (0, _getDisplayName2.default)(BaseComponent) + ')';
+};
+
+exports.default = wrapDisplayName;
+},{"./getDisplayName":492}],499:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -58009,7 +59569,7 @@ MuiThemeProvider.childContextTypes = {
   muiTheme: _react.PropTypes.object.isRequired
 };
 exports.default = MuiThemeProvider;
-},{"./getMuiTheme":485,"react":693}],483:[function(require,module,exports){
+},{"./getMuiTheme":502,"react":707}],500:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -58052,7 +59612,7 @@ exports.default = {
     shadowColor: _colors.fullBlack
   }
 };
-},{"../../utils/colorManipulator":503,"../colors":484,"../spacing":486}],484:[function(require,module,exports){
+},{"../../utils/colorManipulator":520,"../colors":501,"../spacing":503}],501:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -58343,7 +59903,7 @@ var faintBlack = exports.faintBlack = 'rgba(0, 0, 0, 0.12)';
 var fullWhite = exports.fullWhite = 'rgba(255, 255, 255, 1)';
 var darkWhite = exports.darkWhite = 'rgba(255, 255, 255, 0.87)';
 var lightWhite = exports.lightWhite = 'rgba(255, 255, 255, 0.54)';
-},{}],485:[function(require,module,exports){
+},{}],502:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -58696,7 +60256,7 @@ function getMuiTheme(muiTheme) {
 
   return muiTheme;
 }
-},{"../utils/autoprefixer":500,"../utils/callOnce":501,"../utils/colorManipulator":503,"../utils/rtl":508,"./baseThemes/lightBaseTheme":483,"./colors":484,"./typography":488,"./zIndex":489,"lodash.merge":357,"recompose/compose":694}],486:[function(require,module,exports){
+},{"../utils/autoprefixer":517,"../utils/callOnce":518,"../utils/colorManipulator":520,"../utils/rtl":525,"./baseThemes/lightBaseTheme":500,"./colors":501,"./typography":505,"./zIndex":506,"lodash.merge":357,"recompose/compose":489}],503:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -58716,7 +60276,7 @@ exports.default = {
   desktopSubheaderHeight: 48,
   desktopToolbarHeight: 56
 };
-},{}],487:[function(require,module,exports){
+},{}],504:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -58751,7 +60311,7 @@ exports.default = {
     return property + ' ' + duration + ' ' + easeFunction + ' ' + delay;
   }
 };
-},{}],488:[function(require,module,exports){
+},{}],505:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -58783,7 +60343,7 @@ var Typography = function Typography() {
 };
 
 exports.default = new Typography();
-},{"./colors":484}],489:[function(require,module,exports){
+},{"./colors":501}],506:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -58801,7 +60361,7 @@ exports.default = {
   snackbar: 2900,
   tooltip: 3000
 };
-},{}],490:[function(require,module,exports){
+},{}],507:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -58833,7 +60393,7 @@ ContentAdd = (0, _pure2.default)(ContentAdd);
 ContentAdd.displayName = 'ContentAdd';
 
 exports.default = ContentAdd;
-},{"../../SvgIcon":443,"react":693,"recompose/pure":700}],491:[function(require,module,exports){
+},{"../../SvgIcon":447,"react":707,"recompose/pure":495}],508:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -58865,7 +60425,7 @@ HardwareKeyboardArrowDown = (0, _pure2.default)(HardwareKeyboardArrowDown);
 HardwareKeyboardArrowDown.displayName = 'HardwareKeyboardArrowDown';
 
 exports.default = HardwareKeyboardArrowDown;
-},{"../../SvgIcon":443,"react":693,"recompose/pure":700}],492:[function(require,module,exports){
+},{"../../SvgIcon":447,"react":707,"recompose/pure":495}],509:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -58897,7 +60457,7 @@ HardwareKeyboardArrowUp = (0, _pure2.default)(HardwareKeyboardArrowUp);
 HardwareKeyboardArrowUp.displayName = 'HardwareKeyboardArrowUp';
 
 exports.default = HardwareKeyboardArrowUp;
-},{"../../SvgIcon":443,"react":693,"recompose/pure":700}],493:[function(require,module,exports){
+},{"../../SvgIcon":447,"react":707,"recompose/pure":495}],510:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -58929,7 +60489,7 @@ NavigationArrowDropDown = (0, _pure2.default)(NavigationArrowDropDown);
 NavigationArrowDropDown.displayName = 'NavigationArrowDropDown';
 
 exports.default = NavigationArrowDropDown;
-},{"../../SvgIcon":443,"react":693,"recompose/pure":700}],494:[function(require,module,exports){
+},{"../../SvgIcon":447,"react":707,"recompose/pure":495}],511:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -58961,7 +60521,7 @@ NavigationCheck = (0, _pure2.default)(NavigationCheck);
 NavigationCheck.displayName = 'NavigationCheck';
 
 exports.default = NavigationCheck;
-},{"../../SvgIcon":443,"react":693,"recompose/pure":700}],495:[function(require,module,exports){
+},{"../../SvgIcon":447,"react":707,"recompose/pure":495}],512:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -58993,7 +60553,7 @@ NavigationExpandLess = (0, _pure2.default)(NavigationExpandLess);
 NavigationExpandLess.displayName = 'NavigationExpandLess';
 
 exports.default = NavigationExpandLess;
-},{"../../SvgIcon":443,"react":693,"recompose/pure":700}],496:[function(require,module,exports){
+},{"../../SvgIcon":447,"react":707,"recompose/pure":495}],513:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -59025,7 +60585,7 @@ NavigationExpandMore = (0, _pure2.default)(NavigationExpandMore);
 NavigationExpandMore.displayName = 'NavigationExpandMore';
 
 exports.default = NavigationExpandMore;
-},{"../../SvgIcon":443,"react":693,"recompose/pure":700}],497:[function(require,module,exports){
+},{"../../SvgIcon":447,"react":707,"recompose/pure":495}],514:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -59057,7 +60617,7 @@ ToggleCheckBoxOutlineBlank = (0, _pure2.default)(ToggleCheckBoxOutlineBlank);
 ToggleCheckBoxOutlineBlank.displayName = 'ToggleCheckBoxOutlineBlank';
 
 exports.default = ToggleCheckBoxOutlineBlank;
-},{"../../SvgIcon":443,"react":693,"recompose/pure":700}],498:[function(require,module,exports){
+},{"../../SvgIcon":447,"react":707,"recompose/pure":495}],515:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -59089,7 +60649,7 @@ ToggleCheckBox = (0, _pure2.default)(ToggleCheckBox);
 ToggleCheckBox.displayName = 'ToggleCheckBox';
 
 exports.default = ToggleCheckBox;
-},{"../../SvgIcon":443,"react":693,"recompose/pure":700}],499:[function(require,module,exports){
+},{"../../SvgIcon":447,"react":707,"recompose/pure":495}],516:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -59100,7 +60660,7 @@ exports.default = {
     style[key] = value;
   }
 };
-},{}],500:[function(require,module,exports){
+},{}],517:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -59161,7 +60721,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var hasWarnedAboutUserAgent = false;
 }).call(this,require('_process'))
 
-},{"_process":510,"inline-style-prefixer":334,"warning":706}],501:[function(require,module,exports){
+},{"_process":526,"inline-style-prefixer":334,"warning":710}],518:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -59191,7 +60751,7 @@ function callOnce() {
 }
 }).call(this,require('_process'))
 
-},{"_process":510,"warning":706}],502:[function(require,module,exports){
+},{"_process":526,"warning":710}],519:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -59240,7 +60800,7 @@ function extendChildren(children, extendedProps, extendedChildren) {
     return _react2.default.cloneElement(child, newProps, newChildren);
   }) : children;
 }
-},{"react":693,"react-addons-create-fragment":511}],503:[function(require,module,exports){
+},{"react":707,"react-addons-create-fragment":486}],520:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -59464,7 +61024,7 @@ function lighten(color, coefficient) {
 }
 }).call(this,require('_process'))
 
-},{"_process":510,"warning":706}],504:[function(require,module,exports){
+},{"_process":526,"warning":710}],521:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -59490,7 +61050,7 @@ function deprecated(propType, explanation) {
 }
 }).call(this,require('_process'))
 
-},{"_process":510,"warning":706}],505:[function(require,module,exports){
+},{"_process":526,"warning":710}],522:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -59515,7 +61075,7 @@ exports.default = {
     };
   }
 };
-},{}],506:[function(require,module,exports){
+},{}],523:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -59555,7 +61115,7 @@ exports.default = {
     return ['keydown', 'keypress', 'keyup'].indexOf(event.type) !== -1;
   }
 };
-},{}],507:[function(require,module,exports){
+},{}],524:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -59591,7 +61151,7 @@ exports.default = {
   zDepth: _react2.default.PropTypes.oneOf([0, 1, 2, 3, 4, 5])
 
 };
-},{"react":693}],508:[function(require,module,exports){
+},{"react":707}],525:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -59675,48 +61235,7 @@ function rtl(muiTheme) {
     };
   }
 }
-},{}],509:[function(require,module,exports){
-/* eslint-disable no-unused-vars */
-'use strict';
-var hasOwnProperty = Object.prototype.hasOwnProperty;
-var propIsEnumerable = Object.prototype.propertyIsEnumerable;
-
-function toObject(val) {
-	if (val === null || val === undefined) {
-		throw new TypeError('Object.assign cannot be called with null or undefined');
-	}
-
-	return Object(val);
-}
-
-module.exports = Object.assign || function (target, source) {
-	var from;
-	var to = toObject(target);
-	var symbols;
-
-	for (var s = 1; s < arguments.length; s++) {
-		from = Object(arguments[s]);
-
-		for (var key in from) {
-			if (hasOwnProperty.call(from, key)) {
-				to[key] = from[key];
-			}
-		}
-
-		if (Object.getOwnPropertySymbols) {
-			symbols = Object.getOwnPropertySymbols(from);
-			for (var i = 0; i < symbols.length; i++) {
-				if (propIsEnumerable.call(from, symbols[i])) {
-					to[symbols[i]] = from[symbols[i]];
-				}
-			}
-		}
-	}
-
-	return to;
-};
-
-},{}],510:[function(require,module,exports){
+},{}],526:[function(require,module,exports){
 // shim for using process in browser
 
 var process = module.exports = {};
@@ -59809,18 +61328,12 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],511:[function(require,module,exports){
-module.exports = require('react/lib/ReactFragment').create;
-},{"react/lib/ReactFragment":593}],512:[function(require,module,exports){
-module.exports = require('react/lib/ReactTransitionGroup');
-},{"react/lib/ReactTransitionGroup":615}],513:[function(require,module,exports){
-module.exports = require('react/lib/update');
-},{"react/lib/update":665}],514:[function(require,module,exports){
+},{}],527:[function(require,module,exports){
 'use strict';
 
 module.exports = require('react/lib/ReactDOM');
 
-},{"react/lib/ReactDOM":561}],515:[function(require,module,exports){
+},{"react/lib/ReactDOM":574}],528:[function(require,module,exports){
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -59917,7 +61430,7 @@ EventListener.propTypes = {
   elementName: _react2.default.PropTypes.string
 };
 exports.default = EventListener;
-},{"react":693}],516:[function(require,module,exports){
+},{"react":707}],529:[function(require,module,exports){
 'use strict';
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
@@ -60044,7 +61557,7 @@ var AutosizeInput = React.createClass({
 });
 
 module.exports = AutosizeInput;
-},{"react":693}],517:[function(require,module,exports){
+},{"react":707}],530:[function(require,module,exports){
 'use strict';
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
@@ -60213,7 +61726,7 @@ var Async = _react2['default'].createClass({
 });
 
 module.exports = Async;
-},{"./Select":519,"./utils/stripDiacritics":521,"react":693}],518:[function(require,module,exports){
+},{"./Select":532,"./utils/stripDiacritics":534,"react":707}],531:[function(require,module,exports){
 'use strict';
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -60318,7 +61831,7 @@ var Option = _react2['default'].createClass({
 });
 
 module.exports = Option;
-},{"classnames":314,"react":693}],519:[function(require,module,exports){
+},{"classnames":314,"react":707}],532:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -60380,6 +61893,7 @@ var Select = _react2['default'].createClass({
 		allowCreate: _react2['default'].PropTypes.bool, // whether to allow creation of new entries
 		autoBlur: _react2['default'].PropTypes.bool,
 		autofocus: _react2['default'].PropTypes.bool, // autofocus the component on mount
+		autosize: _react2['default'].PropTypes.bool, // whether to enable autosizing or not
 		backspaceRemoves: _react2['default'].PropTypes.bool, // whether backspace removes an item if there is no text input
 		className: _react2['default'].PropTypes.string, // className for the outer element
 		clearAllText: stringOrNode, // title for the "clear" control when multi: true
@@ -60394,11 +61908,13 @@ var Select = _react2['default'].createClass({
 		ignoreCase: _react2['default'].PropTypes.bool, // whether to perform case-insensitive filtering
 		inputProps: _react2['default'].PropTypes.object, // custom attributes for the Input
 		isLoading: _react2['default'].PropTypes.bool, // whether the Select is loading externally or not (such as options being loaded)
+		joinValues: _react2['default'].PropTypes.bool, // joins multiple values into a single form field with the delimiter (legacy mode)
 		labelKey: _react2['default'].PropTypes.string, // path of the label value in option objects
 		matchPos: _react2['default'].PropTypes.string, // (any|start) match the start or entire string when filtering
 		matchProp: _react2['default'].PropTypes.string, // (any|label|value) which option property to filter on
 		menuBuffer: _react2['default'].PropTypes.number, // optional buffer (in px) between the bottom of the viewport and the bottom of the menu
 		menuContainerStyle: _react2['default'].PropTypes.object, // optional style to apply to the menu container
+		menuRenderer: _react2['default'].PropTypes.func, // renders a custom menu with options
 		menuStyle: _react2['default'].PropTypes.object, // optional style to apply to the menu
 		multi: _react2['default'].PropTypes.bool, // multi-value input
 		name: _react2['default'].PropTypes.string, // generates a hidden <input /> tag with this field name for html forms
@@ -60413,6 +61929,8 @@ var Select = _react2['default'].createClass({
 		onMenuScrollToBottom: _react2['default'].PropTypes.func, // fires when the menu is scrolled to the bottom; can be used to paginate options
 		onOpen: _react2['default'].PropTypes.func, // fires when the menu is opened
 		onValueClick: _react2['default'].PropTypes.func, // onClick handler for value labels: function (value, event) {}
+		openAfterFocus: _react2['default'].PropTypes.bool, // boolean to enable opening dropdown when focused
+		optionClassName: _react2['default'].PropTypes.string, // additional class(es) to apply to the <Option /> elements
 		optionComponent: _react2['default'].PropTypes.func, // option component to render in dropdown
 		optionRenderer: _react2['default'].PropTypes.func, // optionRenderer: function (option) {}
 		options: _react2['default'].PropTypes.array, // array of options
@@ -60435,6 +61953,7 @@ var Select = _react2['default'].createClass({
 	getDefaultProps: function getDefaultProps() {
 		return {
 			addLabelText: 'Add "{label}"?',
+			autosize: true,
 			allowCreate: false,
 			backspaceRemoves: true,
 			clearable: true,
@@ -60448,6 +61967,7 @@ var Select = _react2['default'].createClass({
 			ignoreCase: true,
 			inputProps: {},
 			isLoading: false,
+			joinValues: false,
 			labelKey: 'label',
 			matchPos: 'any',
 			matchProp: 'any',
@@ -60455,6 +61975,7 @@ var Select = _react2['default'].createClass({
 			multi: false,
 			noResultsText: 'No results found',
 			onBlurResetsInput: true,
+			openAfterFocus: false,
 			optionComponent: _Option2['default'],
 			placeholder: 'Select...',
 			required: false,
@@ -60480,6 +62001,14 @@ var Select = _react2['default'].createClass({
 	componentDidMount: function componentDidMount() {
 		if (this.props.autofocus) {
 			this.focus();
+		}
+	},
+
+	componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
+		if (this.props.value !== nextProps.value && nextProps.required) {
+			this.setState({
+				required: this.handleRequired(nextProps.value, nextProps.multi)
+			});
 		}
 	},
 
@@ -60528,6 +62057,12 @@ var Select = _react2['default'].createClass({
 	focus: function focus() {
 		if (!this.refs.input) return;
 		this.refs.input.focus();
+
+		if (this.props.openAfterFocus) {
+			this.setState({
+				isOpen: true
+			});
+		}
 	},
 
 	blurInput: function blurInput() {
@@ -60969,17 +62504,32 @@ var Select = _react2['default'].createClass({
 				ref: 'input',
 				style: { border: 0, width: 1, display: 'inline-block' } }));
 		}
-		return _react2['default'].createElement(_reactInputAutosize2['default'], _extends({}, this.props.inputProps, {
-			className: className,
-			tabIndex: this.props.tabIndex,
-			onBlur: this.handleInputBlur,
-			onChange: this.handleInputChange,
-			onFocus: this.handleInputFocus,
-			minWidth: '5',
-			ref: 'input',
-			required: this.state.required,
-			value: this.state.inputValue
-		}));
+		if (this.props.autosize) {
+			return _react2['default'].createElement(_reactInputAutosize2['default'], _extends({}, this.props.inputProps, {
+				className: className,
+				tabIndex: this.props.tabIndex,
+				onBlur: this.handleInputBlur,
+				onChange: this.handleInputChange,
+				onFocus: this.handleInputFocus,
+				minWidth: '5',
+				ref: 'input',
+				required: this.state.required,
+				value: this.state.inputValue
+			}));
+		}
+		return _react2['default'].createElement(
+			'div',
+			{ className: className },
+			_react2['default'].createElement('input', _extends({}, this.props.inputProps, {
+				tabIndex: this.props.tabIndex,
+				onBlur: this.handleInputBlur,
+				onChange: this.handleInputChange,
+				onFocus: this.handleInputFocus,
+				ref: 'input',
+				required: this.state.required,
+				value: this.state.inputValue
+			}))
+		);
 	},
 
 	renderClear: function renderClear() {
@@ -61046,42 +62596,53 @@ var Select = _react2['default'].createClass({
 		var _this4 = this;
 
 		if (options && options.length) {
-			var _ret = (function () {
-				var Option = _this4.props.optionComponent;
-				var renderLabel = _this4.props.optionRenderer || _this4.getOptionLabel;
+			if (this.props.menuRenderer) {
+				return this.props.menuRenderer({
+					focusedOption: focusedOption,
+					focusOption: this.focusOption,
+					labelKey: this.props.labelKey,
+					options: options,
+					selectValue: this.selectValue,
+					valueArray: valueArray
+				});
+			} else {
+				var _ret = (function () {
+					var Option = _this4.props.optionComponent;
+					var renderLabel = _this4.props.optionRenderer || _this4.getOptionLabel;
 
-				return {
-					v: options.map(function (option, i) {
-						var isSelected = valueArray && valueArray.indexOf(option) > -1;
-						var isFocused = option === focusedOption;
-						var optionRef = isFocused ? 'focused' : null;
-						var optionClass = (0, _classnames2['default'])({
-							'Select-option': true,
-							'is-selected': isSelected,
-							'is-focused': isFocused,
-							'is-disabled': option.disabled
-						});
+					return {
+						v: options.map(function (option, i) {
+							var isSelected = valueArray && valueArray.indexOf(option) > -1;
+							var isFocused = option === focusedOption;
+							var optionRef = isFocused ? 'focused' : null;
+							var optionClass = (0, _classnames2['default'])(_this4.props.optionClassName, {
+								'Select-option': true,
+								'is-selected': isSelected,
+								'is-focused': isFocused,
+								'is-disabled': option.disabled
+							});
 
-						return _react2['default'].createElement(
-							Option,
-							{
-								className: optionClass,
-								isDisabled: option.disabled,
-								isFocused: isFocused,
-								key: 'option-' + i + '-' + option[_this4.props.valueKey],
-								onSelect: _this4.selectValue,
-								onFocus: _this4.focusOption,
-								option: option,
-								isSelected: isSelected,
-								ref: optionRef
-							},
-							renderLabel(option)
-						);
-					})
-				};
-			})();
+							return _react2['default'].createElement(
+								Option,
+								{
+									className: optionClass,
+									isDisabled: option.disabled,
+									isFocused: isFocused,
+									key: 'option-' + i + '-' + option[_this4.props.valueKey],
+									onSelect: _this4.selectValue,
+									onFocus: _this4.focusOption,
+									option: option,
+									isSelected: isSelected,
+									ref: optionRef
+								},
+								renderLabel(option)
+							);
+						})
+					};
+				})();
 
-			if (typeof _ret === 'object') return _ret.v;
+				if (typeof _ret === 'object') return _ret.v;
+			}
 		} else if (this.props.noResultsText) {
 			return _react2['default'].createElement(
 				'div',
@@ -61097,10 +62658,25 @@ var Select = _react2['default'].createClass({
 		var _this5 = this;
 
 		if (!this.props.name) return;
-		var value = valueArray.map(function (i) {
-			return stringifyValue(i[_this5.props.valueKey]);
-		}).join(this.props.delimiter);
-		return _react2['default'].createElement('input', { type: 'hidden', ref: 'value', name: this.props.name, value: value, disabled: this.props.disabled });
+		if (this.props.joinValues) {
+			var value = valueArray.map(function (i) {
+				return stringifyValue(i[_this5.props.valueKey]);
+			}).join(this.props.delimiter);
+			return _react2['default'].createElement('input', {
+				type: 'hidden',
+				ref: 'value',
+				name: this.props.name,
+				value: value,
+				disabled: this.props.disabled });
+		}
+		return valueArray.map(function (item, index) {
+			return _react2['default'].createElement('input', { key: 'hidden.' + index,
+				type: 'hidden',
+				ref: 'value' + index,
+				name: _this5.props.name,
+				value: stringifyValue(item[_this5.props.valueKey]),
+				disabled: _this5.props.disabled });
+		});
 	},
 
 	getFocusableOption: function getFocusableOption(selectedOption) {
@@ -61168,7 +62744,7 @@ var Select = _react2['default'].createClass({
 
 exports['default'] = Select;
 module.exports = exports['default'];
-},{"./Async":517,"./Option":518,"./Value":520,"./utils/stripDiacritics":521,"classnames":314,"react":693,"react-dom":514,"react-input-autosize":516}],520:[function(require,module,exports){
+},{"./Async":530,"./Option":531,"./Value":533,"./utils/stripDiacritics":534,"classnames":314,"react":707,"react-dom":527,"react-input-autosize":529}],533:[function(require,module,exports){
 'use strict';
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -61273,7 +62849,7 @@ var Value = _react2['default'].createClass({
 });
 
 module.exports = Value;
-},{"classnames":314,"react":693}],521:[function(require,module,exports){
+},{"classnames":314,"react":707}],534:[function(require,module,exports){
 'use strict';
 
 var map = [{ 'base': 'A', 'letters': /[\u0041\u24B6\uFF21\u00C0\u00C1\u00C2\u1EA6\u1EA4\u1EAA\u1EA8\u00C3\u0100\u0102\u1EB0\u1EAE\u1EB4\u1EB2\u0226\u01E0\u00C4\u01DE\u1EA2\u00C5\u01FA\u01CD\u0200\u0202\u1EA0\u1EAC\u1EB6\u1E00\u0104\u023A\u2C6F]/g }, { 'base': 'AA', 'letters': /[\uA732]/g }, { 'base': 'AE', 'letters': /[\u00C6\u01FC\u01E2]/g }, { 'base': 'AO', 'letters': /[\uA734]/g }, { 'base': 'AU', 'letters': /[\uA736]/g }, { 'base': 'AV', 'letters': /[\uA738\uA73A]/g }, { 'base': 'AY', 'letters': /[\uA73C]/g }, { 'base': 'B', 'letters': /[\u0042\u24B7\uFF22\u1E02\u1E04\u1E06\u0243\u0182\u0181]/g }, { 'base': 'C', 'letters': /[\u0043\u24B8\uFF23\u0106\u0108\u010A\u010C\u00C7\u1E08\u0187\u023B\uA73E]/g }, { 'base': 'D', 'letters': /[\u0044\u24B9\uFF24\u1E0A\u010E\u1E0C\u1E10\u1E12\u1E0E\u0110\u018B\u018A\u0189\uA779]/g }, { 'base': 'DZ', 'letters': /[\u01F1\u01C4]/g }, { 'base': 'Dz', 'letters': /[\u01F2\u01C5]/g }, { 'base': 'E', 'letters': /[\u0045\u24BA\uFF25\u00C8\u00C9\u00CA\u1EC0\u1EBE\u1EC4\u1EC2\u1EBC\u0112\u1E14\u1E16\u0114\u0116\u00CB\u1EBA\u011A\u0204\u0206\u1EB8\u1EC6\u0228\u1E1C\u0118\u1E18\u1E1A\u0190\u018E]/g }, { 'base': 'F', 'letters': /[\u0046\u24BB\uFF26\u1E1E\u0191\uA77B]/g }, { 'base': 'G', 'letters': /[\u0047\u24BC\uFF27\u01F4\u011C\u1E20\u011E\u0120\u01E6\u0122\u01E4\u0193\uA7A0\uA77D\uA77E]/g }, { 'base': 'H', 'letters': /[\u0048\u24BD\uFF28\u0124\u1E22\u1E26\u021E\u1E24\u1E28\u1E2A\u0126\u2C67\u2C75\uA78D]/g }, { 'base': 'I', 'letters': /[\u0049\u24BE\uFF29\u00CC\u00CD\u00CE\u0128\u012A\u012C\u0130\u00CF\u1E2E\u1EC8\u01CF\u0208\u020A\u1ECA\u012E\u1E2C\u0197]/g }, { 'base': 'J', 'letters': /[\u004A\u24BF\uFF2A\u0134\u0248]/g }, { 'base': 'K', 'letters': /[\u004B\u24C0\uFF2B\u1E30\u01E8\u1E32\u0136\u1E34\u0198\u2C69\uA740\uA742\uA744\uA7A2]/g }, { 'base': 'L', 'letters': /[\u004C\u24C1\uFF2C\u013F\u0139\u013D\u1E36\u1E38\u013B\u1E3C\u1E3A\u0141\u023D\u2C62\u2C60\uA748\uA746\uA780]/g }, { 'base': 'LJ', 'letters': /[\u01C7]/g }, { 'base': 'Lj', 'letters': /[\u01C8]/g }, { 'base': 'M', 'letters': /[\u004D\u24C2\uFF2D\u1E3E\u1E40\u1E42\u2C6E\u019C]/g }, { 'base': 'N', 'letters': /[\u004E\u24C3\uFF2E\u01F8\u0143\u00D1\u1E44\u0147\u1E46\u0145\u1E4A\u1E48\u0220\u019D\uA790\uA7A4]/g }, { 'base': 'NJ', 'letters': /[\u01CA]/g }, { 'base': 'Nj', 'letters': /[\u01CB]/g }, { 'base': 'O', 'letters': /[\u004F\u24C4\uFF2F\u00D2\u00D3\u00D4\u1ED2\u1ED0\u1ED6\u1ED4\u00D5\u1E4C\u022C\u1E4E\u014C\u1E50\u1E52\u014E\u022E\u0230\u00D6\u022A\u1ECE\u0150\u01D1\u020C\u020E\u01A0\u1EDC\u1EDA\u1EE0\u1EDE\u1EE2\u1ECC\u1ED8\u01EA\u01EC\u00D8\u01FE\u0186\u019F\uA74A\uA74C]/g }, { 'base': 'OI', 'letters': /[\u01A2]/g }, { 'base': 'OO', 'letters': /[\uA74E]/g }, { 'base': 'OU', 'letters': /[\u0222]/g }, { 'base': 'P', 'letters': /[\u0050\u24C5\uFF30\u1E54\u1E56\u01A4\u2C63\uA750\uA752\uA754]/g }, { 'base': 'Q', 'letters': /[\u0051\u24C6\uFF31\uA756\uA758\u024A]/g }, { 'base': 'R', 'letters': /[\u0052\u24C7\uFF32\u0154\u1E58\u0158\u0210\u0212\u1E5A\u1E5C\u0156\u1E5E\u024C\u2C64\uA75A\uA7A6\uA782]/g }, { 'base': 'S', 'letters': /[\u0053\u24C8\uFF33\u1E9E\u015A\u1E64\u015C\u1E60\u0160\u1E66\u1E62\u1E68\u0218\u015E\u2C7E\uA7A8\uA784]/g }, { 'base': 'T', 'letters': /[\u0054\u24C9\uFF34\u1E6A\u0164\u1E6C\u021A\u0162\u1E70\u1E6E\u0166\u01AC\u01AE\u023E\uA786]/g }, { 'base': 'TZ', 'letters': /[\uA728]/g }, { 'base': 'U', 'letters': /[\u0055\u24CA\uFF35\u00D9\u00DA\u00DB\u0168\u1E78\u016A\u1E7A\u016C\u00DC\u01DB\u01D7\u01D5\u01D9\u1EE6\u016E\u0170\u01D3\u0214\u0216\u01AF\u1EEA\u1EE8\u1EEE\u1EEC\u1EF0\u1EE4\u1E72\u0172\u1E76\u1E74\u0244]/g }, { 'base': 'V', 'letters': /[\u0056\u24CB\uFF36\u1E7C\u1E7E\u01B2\uA75E\u0245]/g }, { 'base': 'VY', 'letters': /[\uA760]/g }, { 'base': 'W', 'letters': /[\u0057\u24CC\uFF37\u1E80\u1E82\u0174\u1E86\u1E84\u1E88\u2C72]/g }, { 'base': 'X', 'letters': /[\u0058\u24CD\uFF38\u1E8A\u1E8C]/g }, { 'base': 'Y', 'letters': /[\u0059\u24CE\uFF39\u1EF2\u00DD\u0176\u1EF8\u0232\u1E8E\u0178\u1EF6\u1EF4\u01B3\u024E\u1EFE]/g }, { 'base': 'Z', 'letters': /[\u005A\u24CF\uFF3A\u0179\u1E90\u017B\u017D\u1E92\u1E94\u01B5\u0224\u2C7F\u2C6B\uA762]/g }, { 'base': 'a', 'letters': /[\u0061\u24D0\uFF41\u1E9A\u00E0\u00E1\u00E2\u1EA7\u1EA5\u1EAB\u1EA9\u00E3\u0101\u0103\u1EB1\u1EAF\u1EB5\u1EB3\u0227\u01E1\u00E4\u01DF\u1EA3\u00E5\u01FB\u01CE\u0201\u0203\u1EA1\u1EAD\u1EB7\u1E01\u0105\u2C65\u0250]/g }, { 'base': 'aa', 'letters': /[\uA733]/g }, { 'base': 'ae', 'letters': /[\u00E6\u01FD\u01E3]/g }, { 'base': 'ao', 'letters': /[\uA735]/g }, { 'base': 'au', 'letters': /[\uA737]/g }, { 'base': 'av', 'letters': /[\uA739\uA73B]/g }, { 'base': 'ay', 'letters': /[\uA73D]/g }, { 'base': 'b', 'letters': /[\u0062\u24D1\uFF42\u1E03\u1E05\u1E07\u0180\u0183\u0253]/g }, { 'base': 'c', 'letters': /[\u0063\u24D2\uFF43\u0107\u0109\u010B\u010D\u00E7\u1E09\u0188\u023C\uA73F\u2184]/g }, { 'base': 'd', 'letters': /[\u0064\u24D3\uFF44\u1E0B\u010F\u1E0D\u1E11\u1E13\u1E0F\u0111\u018C\u0256\u0257\uA77A]/g }, { 'base': 'dz', 'letters': /[\u01F3\u01C6]/g }, { 'base': 'e', 'letters': /[\u0065\u24D4\uFF45\u00E8\u00E9\u00EA\u1EC1\u1EBF\u1EC5\u1EC3\u1EBD\u0113\u1E15\u1E17\u0115\u0117\u00EB\u1EBB\u011B\u0205\u0207\u1EB9\u1EC7\u0229\u1E1D\u0119\u1E19\u1E1B\u0247\u025B\u01DD]/g }, { 'base': 'f', 'letters': /[\u0066\u24D5\uFF46\u1E1F\u0192\uA77C]/g }, { 'base': 'g', 'letters': /[\u0067\u24D6\uFF47\u01F5\u011D\u1E21\u011F\u0121\u01E7\u0123\u01E5\u0260\uA7A1\u1D79\uA77F]/g }, { 'base': 'h', 'letters': /[\u0068\u24D7\uFF48\u0125\u1E23\u1E27\u021F\u1E25\u1E29\u1E2B\u1E96\u0127\u2C68\u2C76\u0265]/g }, { 'base': 'hv', 'letters': /[\u0195]/g }, { 'base': 'i', 'letters': /[\u0069\u24D8\uFF49\u00EC\u00ED\u00EE\u0129\u012B\u012D\u00EF\u1E2F\u1EC9\u01D0\u0209\u020B\u1ECB\u012F\u1E2D\u0268\u0131]/g }, { 'base': 'j', 'letters': /[\u006A\u24D9\uFF4A\u0135\u01F0\u0249]/g }, { 'base': 'k', 'letters': /[\u006B\u24DA\uFF4B\u1E31\u01E9\u1E33\u0137\u1E35\u0199\u2C6A\uA741\uA743\uA745\uA7A3]/g }, { 'base': 'l', 'letters': /[\u006C\u24DB\uFF4C\u0140\u013A\u013E\u1E37\u1E39\u013C\u1E3D\u1E3B\u017F\u0142\u019A\u026B\u2C61\uA749\uA781\uA747]/g }, { 'base': 'lj', 'letters': /[\u01C9]/g }, { 'base': 'm', 'letters': /[\u006D\u24DC\uFF4D\u1E3F\u1E41\u1E43\u0271\u026F]/g }, { 'base': 'n', 'letters': /[\u006E\u24DD\uFF4E\u01F9\u0144\u00F1\u1E45\u0148\u1E47\u0146\u1E4B\u1E49\u019E\u0272\u0149\uA791\uA7A5]/g }, { 'base': 'nj', 'letters': /[\u01CC]/g }, { 'base': 'o', 'letters': /[\u006F\u24DE\uFF4F\u00F2\u00F3\u00F4\u1ED3\u1ED1\u1ED7\u1ED5\u00F5\u1E4D\u022D\u1E4F\u014D\u1E51\u1E53\u014F\u022F\u0231\u00F6\u022B\u1ECF\u0151\u01D2\u020D\u020F\u01A1\u1EDD\u1EDB\u1EE1\u1EDF\u1EE3\u1ECD\u1ED9\u01EB\u01ED\u00F8\u01FF\u0254\uA74B\uA74D\u0275]/g }, { 'base': 'oi', 'letters': /[\u01A3]/g }, { 'base': 'ou', 'letters': /[\u0223]/g }, { 'base': 'oo', 'letters': /[\uA74F]/g }, { 'base': 'p', 'letters': /[\u0070\u24DF\uFF50\u1E55\u1E57\u01A5\u1D7D\uA751\uA753\uA755]/g }, { 'base': 'q', 'letters': /[\u0071\u24E0\uFF51\u024B\uA757\uA759]/g }, { 'base': 'r', 'letters': /[\u0072\u24E1\uFF52\u0155\u1E59\u0159\u0211\u0213\u1E5B\u1E5D\u0157\u1E5F\u024D\u027D\uA75B\uA7A7\uA783]/g }, { 'base': 's', 'letters': /[\u0073\u24E2\uFF53\u00DF\u015B\u1E65\u015D\u1E61\u0161\u1E67\u1E63\u1E69\u0219\u015F\u023F\uA7A9\uA785\u1E9B]/g }, { 'base': 't', 'letters': /[\u0074\u24E3\uFF54\u1E6B\u1E97\u0165\u1E6D\u021B\u0163\u1E71\u1E6F\u0167\u01AD\u0288\u2C66\uA787]/g }, { 'base': 'tz', 'letters': /[\uA729]/g }, { 'base': 'u', 'letters': /[\u0075\u24E4\uFF55\u00F9\u00FA\u00FB\u0169\u1E79\u016B\u1E7B\u016D\u00FC\u01DC\u01D8\u01D6\u01DA\u1EE7\u016F\u0171\u01D4\u0215\u0217\u01B0\u1EEB\u1EE9\u1EEF\u1EED\u1EF1\u1EE5\u1E73\u0173\u1E77\u1E75\u0289]/g }, { 'base': 'v', 'letters': /[\u0076\u24E5\uFF56\u1E7D\u1E7F\u028B\uA75F\u028C]/g }, { 'base': 'vy', 'letters': /[\uA761]/g }, { 'base': 'w', 'letters': /[\u0077\u24E6\uFF57\u1E81\u1E83\u0175\u1E87\u1E85\u1E98\u1E89\u2C73]/g }, { 'base': 'x', 'letters': /[\u0078\u24E7\uFF58\u1E8B\u1E8D]/g }, { 'base': 'y', 'letters': /[\u0079\u24E8\uFF59\u1EF3\u00FD\u0177\u1EF9\u0233\u1E8F\u00FF\u1EF7\u1E99\u1EF5\u01B4\u024F\u1EFF]/g }, { 'base': 'z', 'letters': /[\u007A\u24E9\uFF5A\u017A\u1E91\u017C\u017E\u1E93\u1E95\u01B6\u0225\u0240\u2C6C\uA763]/g }];
@@ -61284,7 +62860,7 @@ module.exports = function stripDiacritics(str) {
 	}
 	return str;
 };
-},{}],522:[function(require,module,exports){
+},{}],535:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -61337,7 +62913,7 @@ var invariant = function (condition, format, a, b, c, d, e, f) {
 module.exports = invariant;
 }).call(this,require('_process'))
 
-},{"_process":510}],523:[function(require,module,exports){
+},{"_process":526}],536:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -61373,7 +62949,7 @@ var keyOf = function (oneKeyObj) {
 };
 
 module.exports = keyOf;
-},{}],524:[function(require,module,exports){
+},{}],537:[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -61545,7 +63121,7 @@ function createTapEventPlugin(shouldRejectClick) {
 
 module.exports = createTapEventPlugin;
 
-},{"./TouchEventUtils":525,"fbjs/lib/keyOf":523,"react/lib/EventConstants":542,"react/lib/EventPluginUtils":545,"react/lib/EventPropagators":546,"react/lib/SyntheticUIEvent":633,"react/lib/ViewportMetrics":636}],525:[function(require,module,exports){
+},{"./TouchEventUtils":538,"fbjs/lib/keyOf":536,"react/lib/EventConstants":555,"react/lib/EventPluginUtils":558,"react/lib/EventPropagators":559,"react/lib/SyntheticUIEvent":646,"react/lib/ViewportMetrics":649}],538:[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -61589,14 +63165,14 @@ var TouchEventUtils = {
 
 module.exports = TouchEventUtils;
 
-},{}],526:[function(require,module,exports){
+},{}],539:[function(require,module,exports){
 module.exports = function(lastTouchEvent, clickTimestamp) {
   if (lastTouchEvent && (clickTimestamp - lastTouchEvent) < 750) {
     return true;
   }
 };
 
-},{}],527:[function(require,module,exports){
+},{}],540:[function(require,module,exports){
 (function (process){
 var invariant = require('fbjs/lib/invariant');
 var defaultClickRejectionStrategy = require('./defaultClickRejectionStrategy');
@@ -61627,7 +63203,7 @@ should be injected by the application.'
 
 }).call(this,require('_process'))
 
-},{"./TapEventPlugin.js":524,"./defaultClickRejectionStrategy":526,"_process":510,"fbjs/lib/invariant":522,"react/lib/EventPluginHub":543}],528:[function(require,module,exports){
+},{"./TapEventPlugin.js":537,"./defaultClickRejectionStrategy":539,"_process":526,"fbjs/lib/invariant":535,"react/lib/EventPluginHub":556}],541:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -61652,7 +63228,7 @@ var AutoFocusUtils = {
 };
 
 module.exports = AutoFocusUtils;
-},{"./ReactDOMComponentTree":565,"fbjs/lib/focusNode":676}],529:[function(require,module,exports){
+},{"./ReactDOMComponentTree":578,"fbjs/lib/focusNode":689}],542:[function(require,module,exports){
 /**
  * Copyright 2013-present Facebook, Inc.
  * All rights reserved.
@@ -62041,7 +63617,7 @@ var BeforeInputEventPlugin = {
 };
 
 module.exports = BeforeInputEventPlugin;
-},{"./EventConstants":542,"./EventPropagators":546,"./FallbackCompositionState":547,"./SyntheticCompositionEvent":624,"./SyntheticInputEvent":628,"fbjs/lib/ExecutionEnvironment":668,"fbjs/lib/keyOf":686}],530:[function(require,module,exports){
+},{"./EventConstants":555,"./EventPropagators":559,"./FallbackCompositionState":560,"./SyntheticCompositionEvent":637,"./SyntheticInputEvent":641,"fbjs/lib/ExecutionEnvironment":681,"fbjs/lib/keyOf":699}],543:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -62190,7 +63766,7 @@ var CSSProperty = {
 };
 
 module.exports = CSSProperty;
-},{}],531:[function(require,module,exports){
+},{}],544:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-present, Facebook, Inc.
@@ -62399,7 +63975,7 @@ ReactPerf.measureMethods(CSSPropertyOperations, 'CSSPropertyOperations', {
 module.exports = CSSPropertyOperations;
 }).call(this,require('_process'))
 
-},{"./CSSProperty":530,"./ReactPerf":607,"./dangerousStyleValue":641,"_process":510,"fbjs/lib/ExecutionEnvironment":668,"fbjs/lib/camelizeStyleName":670,"fbjs/lib/hyphenateStyleName":681,"fbjs/lib/memoizeStringOnly":688,"fbjs/lib/warning":692}],532:[function(require,module,exports){
+},{"./CSSProperty":543,"./ReactPerf":620,"./dangerousStyleValue":654,"_process":526,"fbjs/lib/ExecutionEnvironment":681,"fbjs/lib/camelizeStyleName":683,"fbjs/lib/hyphenateStyleName":694,"fbjs/lib/memoizeStringOnly":701,"fbjs/lib/warning":705}],545:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-present, Facebook, Inc.
@@ -62508,7 +64084,7 @@ PooledClass.addPoolingTo(CallbackQueue);
 module.exports = CallbackQueue;
 }).call(this,require('_process'))
 
-},{"./PooledClass":550,"_process":510,"fbjs/lib/invariant":682,"object-assign":509}],533:[function(require,module,exports){
+},{"./PooledClass":563,"_process":526,"fbjs/lib/invariant":695,"object-assign":706}],546:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -62834,7 +64410,7 @@ var ChangeEventPlugin = {
 };
 
 module.exports = ChangeEventPlugin;
-},{"./EventConstants":542,"./EventPluginHub":543,"./EventPropagators":546,"./ReactDOMComponentTree":565,"./ReactUpdates":617,"./SyntheticEvent":626,"./getEventTarget":649,"./isEventSupported":656,"./isTextInputElement":657,"fbjs/lib/ExecutionEnvironment":668,"fbjs/lib/keyOf":686}],534:[function(require,module,exports){
+},{"./EventConstants":555,"./EventPluginHub":556,"./EventPropagators":559,"./ReactDOMComponentTree":578,"./ReactUpdates":630,"./SyntheticEvent":639,"./getEventTarget":662,"./isEventSupported":669,"./isTextInputElement":670,"fbjs/lib/ExecutionEnvironment":681,"fbjs/lib/keyOf":699}],547:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -62994,7 +64570,7 @@ ReactPerf.measureMethods(DOMChildrenOperations, 'DOMChildrenOperations', {
 });
 
 module.exports = DOMChildrenOperations;
-},{"./DOMLazyTree":535,"./Danger":539,"./ReactMultiChildUpdateTypes":602,"./ReactPerf":607,"./createMicrosoftUnsafeLocalFunction":640,"./setInnerHTML":661,"./setTextContent":662}],535:[function(require,module,exports){
+},{"./DOMLazyTree":548,"./Danger":552,"./ReactMultiChildUpdateTypes":615,"./ReactPerf":620,"./createMicrosoftUnsafeLocalFunction":653,"./setInnerHTML":674,"./setTextContent":675}],548:[function(require,module,exports){
 /**
  * Copyright 2015-present, Facebook, Inc.
  * All rights reserved.
@@ -63100,7 +64676,7 @@ DOMLazyTree.queueHTML = queueHTML;
 DOMLazyTree.queueText = queueText;
 
 module.exports = DOMLazyTree;
-},{"./createMicrosoftUnsafeLocalFunction":640,"./setTextContent":662}],536:[function(require,module,exports){
+},{"./createMicrosoftUnsafeLocalFunction":653,"./setTextContent":675}],549:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -63121,7 +64697,7 @@ var DOMNamespaces = {
 };
 
 module.exports = DOMNamespaces;
-},{}],537:[function(require,module,exports){
+},{}],550:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-present, Facebook, Inc.
@@ -63338,7 +64914,7 @@ var DOMProperty = {
 module.exports = DOMProperty;
 }).call(this,require('_process'))
 
-},{"_process":510,"fbjs/lib/invariant":682}],538:[function(require,module,exports){
+},{"_process":526,"fbjs/lib/invariant":695}],551:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-present, Facebook, Inc.
@@ -63555,7 +65131,7 @@ ReactPerf.measureMethods(DOMPropertyOperations, 'DOMPropertyOperations', {
 module.exports = DOMPropertyOperations;
 }).call(this,require('_process'))
 
-},{"./DOMProperty":537,"./ReactDOMInstrumentation":573,"./ReactPerf":607,"./quoteAttributeValueForBrowser":659,"_process":510,"fbjs/lib/warning":692}],539:[function(require,module,exports){
+},{"./DOMProperty":550,"./ReactDOMInstrumentation":586,"./ReactPerf":620,"./quoteAttributeValueForBrowser":672,"_process":526,"fbjs/lib/warning":705}],552:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-present, Facebook, Inc.
@@ -63703,7 +65279,7 @@ var Danger = {
 module.exports = Danger;
 }).call(this,require('_process'))
 
-},{"./DOMLazyTree":535,"_process":510,"fbjs/lib/ExecutionEnvironment":668,"fbjs/lib/createNodesFromMarkup":673,"fbjs/lib/emptyFunction":674,"fbjs/lib/getMarkupWrap":678,"fbjs/lib/invariant":682}],540:[function(require,module,exports){
+},{"./DOMLazyTree":548,"_process":526,"fbjs/lib/ExecutionEnvironment":681,"fbjs/lib/createNodesFromMarkup":686,"fbjs/lib/emptyFunction":687,"fbjs/lib/getMarkupWrap":691,"fbjs/lib/invariant":695}],553:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -63731,7 +65307,7 @@ var keyOf = require('fbjs/lib/keyOf');
 var DefaultEventPluginOrder = [keyOf({ ResponderEventPlugin: null }), keyOf({ SimpleEventPlugin: null }), keyOf({ TapEventPlugin: null }), keyOf({ EnterLeaveEventPlugin: null }), keyOf({ ChangeEventPlugin: null }), keyOf({ SelectEventPlugin: null }), keyOf({ BeforeInputEventPlugin: null })];
 
 module.exports = DefaultEventPluginOrder;
-},{"fbjs/lib/keyOf":686}],541:[function(require,module,exports){
+},{"fbjs/lib/keyOf":699}],554:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -63837,7 +65413,7 @@ var EnterLeaveEventPlugin = {
 };
 
 module.exports = EnterLeaveEventPlugin;
-},{"./EventConstants":542,"./EventPropagators":546,"./ReactDOMComponentTree":565,"./SyntheticMouseEvent":630,"fbjs/lib/keyOf":686}],542:[function(require,module,exports){
+},{"./EventConstants":555,"./EventPropagators":559,"./ReactDOMComponentTree":578,"./SyntheticMouseEvent":643,"fbjs/lib/keyOf":699}],555:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -63935,7 +65511,7 @@ var EventConstants = {
 };
 
 module.exports = EventConstants;
-},{"fbjs/lib/keyMirror":685}],543:[function(require,module,exports){
+},{"fbjs/lib/keyMirror":698}],556:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-present, Facebook, Inc.
@@ -64174,7 +65750,7 @@ var EventPluginHub = {
 module.exports = EventPluginHub;
 }).call(this,require('_process'))
 
-},{"./EventPluginRegistry":544,"./EventPluginUtils":545,"./ReactErrorUtils":589,"./accumulateInto":637,"./forEachAccumulated":645,"_process":510,"fbjs/lib/invariant":682}],544:[function(require,module,exports){
+},{"./EventPluginRegistry":557,"./EventPluginUtils":558,"./ReactErrorUtils":602,"./accumulateInto":650,"./forEachAccumulated":658,"_process":526,"fbjs/lib/invariant":695}],557:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-present, Facebook, Inc.
@@ -64419,7 +65995,7 @@ var EventPluginRegistry = {
 module.exports = EventPluginRegistry;
 }).call(this,require('_process'))
 
-},{"_process":510,"fbjs/lib/invariant":682}],545:[function(require,module,exports){
+},{"_process":526,"fbjs/lib/invariant":695}],558:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-present, Facebook, Inc.
@@ -64650,7 +66226,7 @@ var EventPluginUtils = {
 module.exports = EventPluginUtils;
 }).call(this,require('_process'))
 
-},{"./EventConstants":542,"./ReactErrorUtils":589,"_process":510,"fbjs/lib/invariant":682,"fbjs/lib/warning":692}],546:[function(require,module,exports){
+},{"./EventConstants":555,"./ReactErrorUtils":602,"_process":526,"fbjs/lib/invariant":695,"fbjs/lib/warning":705}],559:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-present, Facebook, Inc.
@@ -64791,7 +66367,7 @@ var EventPropagators = {
 module.exports = EventPropagators;
 }).call(this,require('_process'))
 
-},{"./EventConstants":542,"./EventPluginHub":543,"./EventPluginUtils":545,"./accumulateInto":637,"./forEachAccumulated":645,"_process":510,"fbjs/lib/warning":692}],547:[function(require,module,exports){
+},{"./EventConstants":555,"./EventPluginHub":556,"./EventPluginUtils":558,"./accumulateInto":650,"./forEachAccumulated":658,"_process":526,"fbjs/lib/warning":705}],560:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -64887,7 +66463,7 @@ _assign(FallbackCompositionState.prototype, {
 PooledClass.addPoolingTo(FallbackCompositionState);
 
 module.exports = FallbackCompositionState;
-},{"./PooledClass":550,"./getTextContentAccessor":653,"object-assign":509}],548:[function(require,module,exports){
+},{"./PooledClass":563,"./getTextContentAccessor":666,"object-assign":706}],561:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -65097,7 +66673,7 @@ var HTMLDOMPropertyConfig = {
 };
 
 module.exports = HTMLDOMPropertyConfig;
-},{"./DOMProperty":537}],549:[function(require,module,exports){
+},{"./DOMProperty":550}],562:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-present, Facebook, Inc.
@@ -65234,7 +66810,7 @@ var LinkedValueUtils = {
 module.exports = LinkedValueUtils;
 }).call(this,require('_process'))
 
-},{"./ReactPropTypeLocations":609,"./ReactPropTypes":610,"_process":510,"fbjs/lib/invariant":682,"fbjs/lib/warning":692}],550:[function(require,module,exports){
+},{"./ReactPropTypeLocations":622,"./ReactPropTypes":623,"_process":526,"fbjs/lib/invariant":695,"fbjs/lib/warning":705}],563:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-present, Facebook, Inc.
@@ -65357,7 +66933,7 @@ var PooledClass = {
 module.exports = PooledClass;
 }).call(this,require('_process'))
 
-},{"_process":510,"fbjs/lib/invariant":682}],551:[function(require,module,exports){
+},{"_process":526,"fbjs/lib/invariant":695}],564:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-present, Facebook, Inc.
@@ -65448,7 +67024,7 @@ var React = {
 module.exports = React;
 }).call(this,require('_process'))
 
-},{"./ReactChildren":554,"./ReactClass":555,"./ReactComponent":556,"./ReactDOMFactories":569,"./ReactElement":586,"./ReactElementValidator":587,"./ReactPropTypes":610,"./ReactVersion":618,"./onlyChild":658,"_process":510,"fbjs/lib/warning":692,"object-assign":509}],552:[function(require,module,exports){
+},{"./ReactChildren":567,"./ReactClass":568,"./ReactComponent":569,"./ReactDOMFactories":582,"./ReactElement":599,"./ReactElementValidator":600,"./ReactPropTypes":623,"./ReactVersion":631,"./onlyChild":671,"_process":526,"fbjs/lib/warning":705,"object-assign":706}],565:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -65766,7 +67342,7 @@ var ReactBrowserEventEmitter = _assign({}, ReactEventEmitterMixin, {
 });
 
 module.exports = ReactBrowserEventEmitter;
-},{"./EventConstants":542,"./EventPluginRegistry":544,"./ReactEventEmitterMixin":590,"./ViewportMetrics":636,"./getVendorPrefixedEventName":654,"./isEventSupported":656,"object-assign":509}],553:[function(require,module,exports){
+},{"./EventConstants":555,"./EventPluginRegistry":557,"./ReactEventEmitterMixin":603,"./ViewportMetrics":649,"./getVendorPrefixedEventName":667,"./isEventSupported":669,"object-assign":706}],566:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2014-present, Facebook, Inc.
@@ -65894,7 +67470,7 @@ var ReactChildReconciler = {
 module.exports = ReactChildReconciler;
 }).call(this,require('_process'))
 
-},{"./ReactReconciler":612,"./instantiateReactComponent":655,"./shouldUpdateReactComponent":663,"./traverseAllChildren":664,"_process":510,"fbjs/lib/warning":692}],554:[function(require,module,exports){
+},{"./ReactReconciler":625,"./instantiateReactComponent":668,"./shouldUpdateReactComponent":676,"./traverseAllChildren":677,"_process":526,"fbjs/lib/warning":705}],567:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -66078,7 +67654,7 @@ var ReactChildren = {
 };
 
 module.exports = ReactChildren;
-},{"./PooledClass":550,"./ReactElement":586,"./traverseAllChildren":664,"fbjs/lib/emptyFunction":674}],555:[function(require,module,exports){
+},{"./PooledClass":563,"./ReactElement":599,"./traverseAllChildren":677,"fbjs/lib/emptyFunction":687}],568:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-present, Facebook, Inc.
@@ -66805,7 +68381,7 @@ var ReactClass = {
 module.exports = ReactClass;
 }).call(this,require('_process'))
 
-},{"./ReactComponent":556,"./ReactElement":586,"./ReactNoopUpdateQueue":605,"./ReactPropTypeLocationNames":608,"./ReactPropTypeLocations":609,"_process":510,"fbjs/lib/emptyObject":675,"fbjs/lib/invariant":682,"fbjs/lib/keyMirror":685,"fbjs/lib/keyOf":686,"fbjs/lib/warning":692,"object-assign":509}],556:[function(require,module,exports){
+},{"./ReactComponent":569,"./ReactElement":599,"./ReactNoopUpdateQueue":618,"./ReactPropTypeLocationNames":621,"./ReactPropTypeLocations":622,"_process":526,"fbjs/lib/emptyObject":688,"fbjs/lib/invariant":695,"fbjs/lib/keyMirror":698,"fbjs/lib/keyOf":699,"fbjs/lib/warning":705,"object-assign":706}],569:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-present, Facebook, Inc.
@@ -66930,7 +68506,7 @@ if (process.env.NODE_ENV !== 'production') {
 module.exports = ReactComponent;
 }).call(this,require('_process'))
 
-},{"./ReactInstrumentation":597,"./ReactNoopUpdateQueue":605,"./canDefineProperty":639,"_process":510,"fbjs/lib/emptyObject":675,"fbjs/lib/invariant":682,"fbjs/lib/warning":692}],557:[function(require,module,exports){
+},{"./ReactInstrumentation":610,"./ReactNoopUpdateQueue":618,"./canDefineProperty":652,"_process":526,"fbjs/lib/emptyObject":688,"fbjs/lib/invariant":695,"fbjs/lib/warning":705}],570:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -66975,7 +68551,7 @@ ReactPerf.measureMethods(ReactComponentBrowserEnvironment, 'ReactComponentBrowse
 });
 
 module.exports = ReactComponentBrowserEnvironment;
-},{"./DOMChildrenOperations":534,"./ReactDOMIDOperations":571,"./ReactPerf":607}],558:[function(require,module,exports){
+},{"./DOMChildrenOperations":547,"./ReactDOMIDOperations":584,"./ReactPerf":620}],571:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2014-present, Facebook, Inc.
@@ -67030,7 +68606,7 @@ var ReactComponentEnvironment = {
 module.exports = ReactComponentEnvironment;
 }).call(this,require('_process'))
 
-},{"_process":510,"fbjs/lib/invariant":682}],559:[function(require,module,exports){
+},{"_process":526,"fbjs/lib/invariant":695}],572:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-present, Facebook, Inc.
@@ -67820,7 +69396,7 @@ var ReactCompositeComponent = {
 module.exports = ReactCompositeComponent;
 }).call(this,require('_process'))
 
-},{"./ReactComponentEnvironment":558,"./ReactCurrentOwner":560,"./ReactElement":586,"./ReactErrorUtils":589,"./ReactInstanceMap":596,"./ReactInstrumentation":597,"./ReactNodeTypes":604,"./ReactPerf":607,"./ReactPropTypeLocationNames":608,"./ReactPropTypeLocations":609,"./ReactReconciler":612,"./ReactUpdateQueue":616,"./shouldUpdateReactComponent":663,"_process":510,"fbjs/lib/emptyObject":675,"fbjs/lib/invariant":682,"fbjs/lib/warning":692,"object-assign":509}],560:[function(require,module,exports){
+},{"./ReactComponentEnvironment":571,"./ReactCurrentOwner":573,"./ReactElement":599,"./ReactErrorUtils":602,"./ReactInstanceMap":609,"./ReactInstrumentation":610,"./ReactNodeTypes":617,"./ReactPerf":620,"./ReactPropTypeLocationNames":621,"./ReactPropTypeLocations":622,"./ReactReconciler":625,"./ReactUpdateQueue":629,"./shouldUpdateReactComponent":676,"_process":526,"fbjs/lib/emptyObject":688,"fbjs/lib/invariant":695,"fbjs/lib/warning":705,"object-assign":706}],573:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -67852,7 +69428,7 @@ var ReactCurrentOwner = {
 };
 
 module.exports = ReactCurrentOwner;
-},{}],561:[function(require,module,exports){
+},{}],574:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-present, Facebook, Inc.
@@ -67960,7 +69536,7 @@ if (process.env.NODE_ENV !== 'production') {
 module.exports = React;
 }).call(this,require('_process'))
 
-},{"./ReactDOMComponentTree":565,"./ReactDefaultInjection":583,"./ReactMount":600,"./ReactPerf":607,"./ReactReconciler":612,"./ReactUpdates":617,"./ReactVersion":618,"./findDOMNode":643,"./getNativeComponentFromComposite":651,"./renderSubtreeIntoContainer":660,"_process":510,"fbjs/lib/ExecutionEnvironment":668,"fbjs/lib/warning":692}],562:[function(require,module,exports){
+},{"./ReactDOMComponentTree":578,"./ReactDefaultInjection":596,"./ReactMount":613,"./ReactPerf":620,"./ReactReconciler":625,"./ReactUpdates":630,"./ReactVersion":631,"./findDOMNode":656,"./getNativeComponentFromComposite":664,"./renderSubtreeIntoContainer":673,"_process":526,"fbjs/lib/ExecutionEnvironment":681,"fbjs/lib/warning":705}],575:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -68011,7 +69587,7 @@ var ReactDOMButton = {
 };
 
 module.exports = ReactDOMButton;
-},{}],563:[function(require,module,exports){
+},{}],576:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-present, Facebook, Inc.
@@ -68920,7 +70496,7 @@ _assign(ReactDOMComponent.prototype, ReactDOMComponent.Mixin, ReactMultiChild.Mi
 module.exports = ReactDOMComponent;
 }).call(this,require('_process'))
 
-},{"./AutoFocusUtils":528,"./CSSPropertyOperations":531,"./DOMLazyTree":535,"./DOMNamespaces":536,"./DOMProperty":537,"./DOMPropertyOperations":538,"./EventConstants":542,"./EventPluginHub":543,"./EventPluginRegistry":544,"./ReactBrowserEventEmitter":552,"./ReactComponentBrowserEnvironment":557,"./ReactDOMButton":562,"./ReactDOMComponentFlags":564,"./ReactDOMComponentTree":565,"./ReactDOMInput":572,"./ReactDOMOption":574,"./ReactDOMSelect":575,"./ReactDOMTextarea":578,"./ReactMultiChild":601,"./ReactPerf":607,"./escapeTextContentForBrowser":642,"./isEventSupported":656,"./validateDOMNesting":666,"_process":510,"fbjs/lib/invariant":682,"fbjs/lib/keyOf":686,"fbjs/lib/shallowEqual":691,"fbjs/lib/warning":692,"object-assign":509}],564:[function(require,module,exports){
+},{"./AutoFocusUtils":541,"./CSSPropertyOperations":544,"./DOMLazyTree":548,"./DOMNamespaces":549,"./DOMProperty":550,"./DOMPropertyOperations":551,"./EventConstants":555,"./EventPluginHub":556,"./EventPluginRegistry":557,"./ReactBrowserEventEmitter":565,"./ReactComponentBrowserEnvironment":570,"./ReactDOMButton":575,"./ReactDOMComponentFlags":577,"./ReactDOMComponentTree":578,"./ReactDOMInput":585,"./ReactDOMOption":587,"./ReactDOMSelect":588,"./ReactDOMTextarea":591,"./ReactMultiChild":614,"./ReactPerf":620,"./escapeTextContentForBrowser":655,"./isEventSupported":669,"./validateDOMNesting":679,"_process":526,"fbjs/lib/invariant":695,"fbjs/lib/keyOf":699,"fbjs/lib/shallowEqual":704,"fbjs/lib/warning":705,"object-assign":706}],577:[function(require,module,exports){
 /**
  * Copyright 2015-present, Facebook, Inc.
  * All rights reserved.
@@ -68939,7 +70515,7 @@ var ReactDOMComponentFlags = {
 };
 
 module.exports = ReactDOMComponentFlags;
-},{}],565:[function(require,module,exports){
+},{}],578:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-present, Facebook, Inc.
@@ -69129,7 +70705,7 @@ var ReactDOMComponentTree = {
 module.exports = ReactDOMComponentTree;
 }).call(this,require('_process'))
 
-},{"./DOMProperty":537,"./ReactDOMComponentFlags":564,"_process":510,"fbjs/lib/invariant":682}],566:[function(require,module,exports){
+},{"./DOMProperty":550,"./ReactDOMComponentFlags":577,"_process":526,"fbjs/lib/invariant":695}],579:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-present, Facebook, Inc.
@@ -69165,7 +70741,7 @@ function ReactDOMContainerInfo(topLevelWrapper, node) {
 module.exports = ReactDOMContainerInfo;
 }).call(this,require('_process'))
 
-},{"./validateDOMNesting":666,"_process":510}],567:[function(require,module,exports){
+},{"./validateDOMNesting":679,"_process":526}],580:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-present, Facebook, Inc.
@@ -69230,7 +70806,7 @@ ReactDOMDebugTool.addDevtool(ReactDOMUnknownPropertyDevtool);
 module.exports = ReactDOMDebugTool;
 }).call(this,require('_process'))
 
-},{"./ReactDOMUnknownPropertyDevtool":580,"_process":510,"fbjs/lib/warning":692}],568:[function(require,module,exports){
+},{"./ReactDOMUnknownPropertyDevtool":593,"_process":526,"fbjs/lib/warning":705}],581:[function(require,module,exports){
 /**
  * Copyright 2014-present, Facebook, Inc.
  * All rights reserved.
@@ -69291,7 +70867,7 @@ _assign(ReactDOMEmptyComponent.prototype, {
 });
 
 module.exports = ReactDOMEmptyComponent;
-},{"./DOMLazyTree":535,"./ReactDOMComponentTree":565,"object-assign":509}],569:[function(require,module,exports){
+},{"./DOMLazyTree":548,"./ReactDOMComponentTree":578,"object-assign":706}],582:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-present, Facebook, Inc.
@@ -69471,7 +71047,7 @@ var ReactDOMFactories = mapObject({
 module.exports = ReactDOMFactories;
 }).call(this,require('_process'))
 
-},{"./ReactElement":586,"./ReactElementValidator":587,"_process":510,"fbjs/lib/mapObject":687}],570:[function(require,module,exports){
+},{"./ReactElement":599,"./ReactElementValidator":600,"_process":526,"fbjs/lib/mapObject":700}],583:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -69490,7 +71066,7 @@ var ReactDOMFeatureFlags = {
 };
 
 module.exports = ReactDOMFeatureFlags;
-},{}],571:[function(require,module,exports){
+},{}],584:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -69530,7 +71106,7 @@ ReactPerf.measureMethods(ReactDOMIDOperations, 'ReactDOMIDOperations', {
 });
 
 module.exports = ReactDOMIDOperations;
-},{"./DOMChildrenOperations":534,"./ReactDOMComponentTree":565,"./ReactPerf":607}],572:[function(require,module,exports){
+},{"./DOMChildrenOperations":547,"./ReactDOMComponentTree":578,"./ReactPerf":620}],585:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-present, Facebook, Inc.
@@ -69737,7 +71313,7 @@ function _handleChange(event) {
 module.exports = ReactDOMInput;
 }).call(this,require('_process'))
 
-},{"./DOMPropertyOperations":538,"./LinkedValueUtils":549,"./ReactDOMComponentTree":565,"./ReactUpdates":617,"_process":510,"fbjs/lib/invariant":682,"fbjs/lib/warning":692,"object-assign":509}],573:[function(require,module,exports){
+},{"./DOMPropertyOperations":551,"./LinkedValueUtils":562,"./ReactDOMComponentTree":578,"./ReactUpdates":630,"_process":526,"fbjs/lib/invariant":695,"fbjs/lib/warning":705,"object-assign":706}],586:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -69754,7 +71330,7 @@ module.exports = ReactDOMInput;
 var ReactDOMDebugTool = require('./ReactDOMDebugTool');
 
 module.exports = { debugTool: ReactDOMDebugTool };
-},{"./ReactDOMDebugTool":567}],574:[function(require,module,exports){
+},{"./ReactDOMDebugTool":580}],587:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-present, Facebook, Inc.
@@ -69859,7 +71435,7 @@ var ReactDOMOption = {
 module.exports = ReactDOMOption;
 }).call(this,require('_process'))
 
-},{"./ReactChildren":554,"./ReactDOMComponentTree":565,"./ReactDOMSelect":575,"_process":510,"fbjs/lib/warning":692,"object-assign":509}],575:[function(require,module,exports){
+},{"./ReactChildren":567,"./ReactDOMComponentTree":578,"./ReactDOMSelect":588,"_process":526,"fbjs/lib/warning":705,"object-assign":706}],588:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-present, Facebook, Inc.
@@ -70075,7 +71651,7 @@ function _handleChange(event) {
 module.exports = ReactDOMSelect;
 }).call(this,require('_process'))
 
-},{"./LinkedValueUtils":549,"./ReactDOMComponentTree":565,"./ReactUpdates":617,"_process":510,"fbjs/lib/warning":692,"object-assign":509}],576:[function(require,module,exports){
+},{"./LinkedValueUtils":562,"./ReactDOMComponentTree":578,"./ReactUpdates":630,"_process":526,"fbjs/lib/warning":705,"object-assign":706}],589:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -70288,7 +71864,7 @@ var ReactDOMSelection = {
 };
 
 module.exports = ReactDOMSelection;
-},{"./getNodeForCharacterOffset":652,"./getTextContentAccessor":653,"fbjs/lib/ExecutionEnvironment":668}],577:[function(require,module,exports){
+},{"./getNodeForCharacterOffset":665,"./getTextContentAccessor":666,"fbjs/lib/ExecutionEnvironment":681}],590:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-present, Facebook, Inc.
@@ -70461,7 +72037,7 @@ ReactPerf.measureMethods(ReactDOMTextComponent.prototype, 'ReactDOMTextComponent
 module.exports = ReactDOMTextComponent;
 }).call(this,require('_process'))
 
-},{"./DOMChildrenOperations":534,"./DOMLazyTree":535,"./ReactDOMComponentTree":565,"./ReactPerf":607,"./escapeTextContentForBrowser":642,"./validateDOMNesting":666,"_process":510,"fbjs/lib/invariant":682,"object-assign":509}],578:[function(require,module,exports){
+},{"./DOMChildrenOperations":547,"./DOMLazyTree":548,"./ReactDOMComponentTree":578,"./ReactPerf":620,"./escapeTextContentForBrowser":655,"./validateDOMNesting":679,"_process":526,"fbjs/lib/invariant":695,"object-assign":706}],591:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-present, Facebook, Inc.
@@ -70606,7 +72182,7 @@ function _handleChange(event) {
 module.exports = ReactDOMTextarea;
 }).call(this,require('_process'))
 
-},{"./DOMPropertyOperations":538,"./LinkedValueUtils":549,"./ReactDOMComponentTree":565,"./ReactUpdates":617,"_process":510,"fbjs/lib/invariant":682,"fbjs/lib/warning":692,"object-assign":509}],579:[function(require,module,exports){
+},{"./DOMPropertyOperations":551,"./LinkedValueUtils":562,"./ReactDOMComponentTree":578,"./ReactUpdates":630,"_process":526,"fbjs/lib/invariant":695,"fbjs/lib/warning":705,"object-assign":706}],592:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2015-present, Facebook, Inc.
@@ -70744,7 +72320,7 @@ module.exports = {
 };
 }).call(this,require('_process'))
 
-},{"_process":510,"fbjs/lib/invariant":682}],580:[function(require,module,exports){
+},{"_process":526,"fbjs/lib/invariant":695}],593:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-present, Facebook, Inc.
@@ -70812,7 +72388,7 @@ var ReactDOMUnknownPropertyDevtool = {
 module.exports = ReactDOMUnknownPropertyDevtool;
 }).call(this,require('_process'))
 
-},{"./DOMProperty":537,"./EventPluginRegistry":544,"_process":510,"fbjs/lib/warning":692}],581:[function(require,module,exports){
+},{"./DOMProperty":550,"./EventPluginRegistry":557,"_process":526,"fbjs/lib/warning":705}],594:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2016-present, Facebook, Inc.
@@ -70888,7 +72464,7 @@ ReactDebugTool.addDevtool(ReactInvalidSetStateWarningDevTool);
 module.exports = ReactDebugTool;
 }).call(this,require('_process'))
 
-},{"./ReactInvalidSetStateWarningDevTool":598,"_process":510,"fbjs/lib/warning":692}],582:[function(require,module,exports){
+},{"./ReactInvalidSetStateWarningDevTool":611,"_process":526,"fbjs/lib/warning":705}],595:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -70957,7 +72533,7 @@ var ReactDefaultBatchingStrategy = {
 };
 
 module.exports = ReactDefaultBatchingStrategy;
-},{"./ReactUpdates":617,"./Transaction":635,"fbjs/lib/emptyFunction":674,"object-assign":509}],583:[function(require,module,exports){
+},{"./ReactUpdates":630,"./Transaction":648,"fbjs/lib/emptyFunction":687,"object-assign":706}],596:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-present, Facebook, Inc.
@@ -71054,7 +72630,7 @@ module.exports = {
 };
 }).call(this,require('_process'))
 
-},{"./BeforeInputEventPlugin":529,"./ChangeEventPlugin":533,"./DefaultEventPluginOrder":540,"./EnterLeaveEventPlugin":541,"./HTMLDOMPropertyConfig":548,"./ReactComponentBrowserEnvironment":557,"./ReactDOMComponent":563,"./ReactDOMComponentTree":565,"./ReactDOMEmptyComponent":568,"./ReactDOMTextComponent":577,"./ReactDOMTreeTraversal":579,"./ReactDefaultBatchingStrategy":582,"./ReactDefaultPerf":584,"./ReactEventListener":591,"./ReactInjection":594,"./ReactReconcileTransaction":611,"./SVGDOMPropertyConfig":619,"./SelectEventPlugin":620,"./SimpleEventPlugin":621,"_process":510,"fbjs/lib/ExecutionEnvironment":668}],584:[function(require,module,exports){
+},{"./BeforeInputEventPlugin":542,"./ChangeEventPlugin":546,"./DefaultEventPluginOrder":553,"./EnterLeaveEventPlugin":554,"./HTMLDOMPropertyConfig":561,"./ReactComponentBrowserEnvironment":570,"./ReactDOMComponent":576,"./ReactDOMComponentTree":578,"./ReactDOMEmptyComponent":581,"./ReactDOMTextComponent":590,"./ReactDOMTreeTraversal":592,"./ReactDefaultBatchingStrategy":595,"./ReactDefaultPerf":597,"./ReactEventListener":604,"./ReactInjection":607,"./ReactReconcileTransaction":624,"./SVGDOMPropertyConfig":632,"./SelectEventPlugin":633,"./SimpleEventPlugin":634,"_process":526,"fbjs/lib/ExecutionEnvironment":681}],597:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-present, Facebook, Inc.
@@ -71374,7 +72950,7 @@ var ReactDefaultPerf = {
 module.exports = ReactDefaultPerf;
 }).call(this,require('_process'))
 
-},{"./DOMProperty":537,"./ReactDOMComponentTree":565,"./ReactDefaultPerfAnalysis":585,"./ReactMount":600,"./ReactPerf":607,"_process":510,"fbjs/lib/performanceNow":690,"fbjs/lib/warning":692}],585:[function(require,module,exports){
+},{"./DOMProperty":550,"./ReactDOMComponentTree":578,"./ReactDefaultPerfAnalysis":598,"./ReactMount":613,"./ReactPerf":620,"_process":526,"fbjs/lib/performanceNow":703,"fbjs/lib/warning":705}],598:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -71584,7 +73160,7 @@ var ReactDefaultPerfAnalysis = {
 };
 
 module.exports = ReactDefaultPerfAnalysis;
-},{"object-assign":509}],586:[function(require,module,exports){
+},{"object-assign":706}],599:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2014-present, Facebook, Inc.
@@ -71875,7 +73451,7 @@ ReactElement.isValidElement = function (object) {
 module.exports = ReactElement;
 }).call(this,require('_process'))
 
-},{"./ReactCurrentOwner":560,"./canDefineProperty":639,"_process":510,"fbjs/lib/warning":692,"object-assign":509}],587:[function(require,module,exports){
+},{"./ReactCurrentOwner":573,"./canDefineProperty":652,"_process":526,"fbjs/lib/warning":705,"object-assign":706}],600:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2014-present, Facebook, Inc.
@@ -72160,7 +73736,7 @@ var ReactElementValidator = {
 module.exports = ReactElementValidator;
 }).call(this,require('_process'))
 
-},{"./ReactCurrentOwner":560,"./ReactElement":586,"./ReactPropTypeLocationNames":608,"./ReactPropTypeLocations":609,"./canDefineProperty":639,"./getIteratorFn":650,"_process":510,"fbjs/lib/invariant":682,"fbjs/lib/warning":692}],588:[function(require,module,exports){
+},{"./ReactCurrentOwner":573,"./ReactElement":599,"./ReactPropTypeLocationNames":621,"./ReactPropTypeLocations":622,"./canDefineProperty":652,"./getIteratorFn":663,"_process":526,"fbjs/lib/invariant":695,"fbjs/lib/warning":705}],601:[function(require,module,exports){
 /**
  * Copyright 2014-present, Facebook, Inc.
  * All rights reserved.
@@ -72191,7 +73767,7 @@ var ReactEmptyComponent = {
 ReactEmptyComponent.injection = ReactEmptyComponentInjection;
 
 module.exports = ReactEmptyComponent;
-},{}],589:[function(require,module,exports){
+},{}],602:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-present, Facebook, Inc.
@@ -72271,7 +73847,7 @@ if (process.env.NODE_ENV !== 'production') {
 module.exports = ReactErrorUtils;
 }).call(this,require('_process'))
 
-},{"_process":510}],590:[function(require,module,exports){
+},{"_process":526}],603:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -72305,7 +73881,7 @@ var ReactEventEmitterMixin = {
 };
 
 module.exports = ReactEventEmitterMixin;
-},{"./EventPluginHub":543}],591:[function(require,module,exports){
+},{"./EventPluginHub":556}],604:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -72463,7 +74039,7 @@ var ReactEventListener = {
 };
 
 module.exports = ReactEventListener;
-},{"./PooledClass":550,"./ReactDOMComponentTree":565,"./ReactUpdates":617,"./getEventTarget":649,"fbjs/lib/EventListener":667,"fbjs/lib/ExecutionEnvironment":668,"fbjs/lib/getUnboundedScrollPosition":679,"object-assign":509}],592:[function(require,module,exports){
+},{"./PooledClass":563,"./ReactDOMComponentTree":578,"./ReactUpdates":630,"./getEventTarget":662,"fbjs/lib/EventListener":680,"fbjs/lib/ExecutionEnvironment":681,"fbjs/lib/getUnboundedScrollPosition":692,"object-assign":706}],605:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -72485,7 +74061,7 @@ var ReactFeatureFlags = {
 };
 
 module.exports = ReactFeatureFlags;
-},{}],593:[function(require,module,exports){
+},{}],606:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2015-present, Facebook, Inc.
@@ -72553,7 +74129,7 @@ var ReactFragment = {
 module.exports = ReactFragment;
 }).call(this,require('_process'))
 
-},{"./ReactChildren":554,"./ReactElement":586,"_process":510,"fbjs/lib/emptyFunction":674,"fbjs/lib/invariant":682,"fbjs/lib/warning":692}],594:[function(require,module,exports){
+},{"./ReactChildren":567,"./ReactElement":599,"_process":526,"fbjs/lib/emptyFunction":687,"fbjs/lib/invariant":695,"fbjs/lib/warning":705}],607:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -72592,7 +74168,7 @@ var ReactInjection = {
 };
 
 module.exports = ReactInjection;
-},{"./DOMProperty":537,"./EventPluginHub":543,"./EventPluginUtils":545,"./ReactBrowserEventEmitter":552,"./ReactClass":555,"./ReactComponentEnvironment":558,"./ReactEmptyComponent":588,"./ReactNativeComponent":603,"./ReactPerf":607,"./ReactUpdates":617}],595:[function(require,module,exports){
+},{"./DOMProperty":550,"./EventPluginHub":556,"./EventPluginUtils":558,"./ReactBrowserEventEmitter":565,"./ReactClass":568,"./ReactComponentEnvironment":571,"./ReactEmptyComponent":601,"./ReactNativeComponent":616,"./ReactPerf":620,"./ReactUpdates":630}],608:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -72717,7 +74293,7 @@ var ReactInputSelection = {
 };
 
 module.exports = ReactInputSelection;
-},{"./ReactDOMSelection":576,"fbjs/lib/containsNode":671,"fbjs/lib/focusNode":676,"fbjs/lib/getActiveElement":677}],596:[function(require,module,exports){
+},{"./ReactDOMSelection":589,"fbjs/lib/containsNode":684,"fbjs/lib/focusNode":689,"fbjs/lib/getActiveElement":690}],609:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -72766,7 +74342,7 @@ var ReactInstanceMap = {
 };
 
 module.exports = ReactInstanceMap;
-},{}],597:[function(require,module,exports){
+},{}],610:[function(require,module,exports){
 /**
  * Copyright 2016-present, Facebook, Inc.
  * All rights reserved.
@@ -72783,7 +74359,7 @@ module.exports = ReactInstanceMap;
 var ReactDebugTool = require('./ReactDebugTool');
 
 module.exports = { debugTool: ReactDebugTool };
-},{"./ReactDebugTool":581}],598:[function(require,module,exports){
+},{"./ReactDebugTool":594}],611:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2016-present, Facebook, Inc.
@@ -72823,7 +74399,7 @@ var ReactInvalidSetStateWarningDevTool = {
 module.exports = ReactInvalidSetStateWarningDevTool;
 }).call(this,require('_process'))
 
-},{"_process":510,"fbjs/lib/warning":692}],599:[function(require,module,exports){
+},{"_process":526,"fbjs/lib/warning":705}],612:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -72874,7 +74450,7 @@ var ReactMarkupChecksum = {
 };
 
 module.exports = ReactMarkupChecksum;
-},{"./adler32":638}],600:[function(require,module,exports){
+},{"./adler32":651}],613:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-present, Facebook, Inc.
@@ -73356,7 +74932,7 @@ ReactPerf.measureMethods(ReactMount, 'ReactMount', {
 module.exports = ReactMount;
 }).call(this,require('_process'))
 
-},{"./DOMLazyTree":535,"./DOMProperty":537,"./ReactBrowserEventEmitter":552,"./ReactCurrentOwner":560,"./ReactDOMComponentTree":565,"./ReactDOMContainerInfo":566,"./ReactDOMFeatureFlags":570,"./ReactElement":586,"./ReactFeatureFlags":592,"./ReactInstrumentation":597,"./ReactMarkupChecksum":599,"./ReactPerf":607,"./ReactReconciler":612,"./ReactUpdateQueue":616,"./ReactUpdates":617,"./instantiateReactComponent":655,"./setInnerHTML":661,"./shouldUpdateReactComponent":663,"_process":510,"fbjs/lib/emptyObject":675,"fbjs/lib/invariant":682,"fbjs/lib/warning":692}],601:[function(require,module,exports){
+},{"./DOMLazyTree":548,"./DOMProperty":550,"./ReactBrowserEventEmitter":565,"./ReactCurrentOwner":573,"./ReactDOMComponentTree":578,"./ReactDOMContainerInfo":579,"./ReactDOMFeatureFlags":583,"./ReactElement":599,"./ReactFeatureFlags":605,"./ReactInstrumentation":610,"./ReactMarkupChecksum":612,"./ReactPerf":620,"./ReactReconciler":625,"./ReactUpdateQueue":629,"./ReactUpdates":630,"./instantiateReactComponent":668,"./setInnerHTML":674,"./shouldUpdateReactComponent":676,"_process":526,"fbjs/lib/emptyObject":688,"fbjs/lib/invariant":695,"fbjs/lib/warning":705}],614:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-present, Facebook, Inc.
@@ -73762,7 +75338,7 @@ var ReactMultiChild = {
 module.exports = ReactMultiChild;
 }).call(this,require('_process'))
 
-},{"./ReactChildReconciler":553,"./ReactComponentEnvironment":558,"./ReactCurrentOwner":560,"./ReactMultiChildUpdateTypes":602,"./ReactReconciler":612,"./flattenChildren":644,"_process":510,"fbjs/lib/invariant":682}],602:[function(require,module,exports){
+},{"./ReactChildReconciler":566,"./ReactComponentEnvironment":571,"./ReactCurrentOwner":573,"./ReactMultiChildUpdateTypes":615,"./ReactReconciler":625,"./flattenChildren":657,"_process":526,"fbjs/lib/invariant":695}],615:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -73795,7 +75371,7 @@ var ReactMultiChildUpdateTypes = keyMirror({
 });
 
 module.exports = ReactMultiChildUpdateTypes;
-},{"fbjs/lib/keyMirror":685}],603:[function(require,module,exports){
+},{"fbjs/lib/keyMirror":698}],616:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2014-present, Facebook, Inc.
@@ -73894,7 +75470,7 @@ var ReactNativeComponent = {
 module.exports = ReactNativeComponent;
 }).call(this,require('_process'))
 
-},{"_process":510,"fbjs/lib/invariant":682,"object-assign":509}],604:[function(require,module,exports){
+},{"_process":526,"fbjs/lib/invariant":695,"object-assign":706}],617:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-present, Facebook, Inc.
@@ -73935,7 +75511,7 @@ var ReactNodeTypes = {
 module.exports = ReactNodeTypes;
 }).call(this,require('_process'))
 
-},{"./ReactElement":586,"_process":510,"fbjs/lib/invariant":682}],605:[function(require,module,exports){
+},{"./ReactElement":599,"_process":526,"fbjs/lib/invariant":695}],618:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2015-present, Facebook, Inc.
@@ -74034,7 +75610,7 @@ var ReactNoopUpdateQueue = {
 module.exports = ReactNoopUpdateQueue;
 }).call(this,require('_process'))
 
-},{"_process":510,"fbjs/lib/warning":692}],606:[function(require,module,exports){
+},{"_process":526,"fbjs/lib/warning":705}],619:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-present, Facebook, Inc.
@@ -74130,7 +75706,7 @@ var ReactOwner = {
 module.exports = ReactOwner;
 }).call(this,require('_process'))
 
-},{"_process":510,"fbjs/lib/invariant":682}],607:[function(require,module,exports){
+},{"_process":526,"fbjs/lib/invariant":695}],620:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-present, Facebook, Inc.
@@ -74230,7 +75806,7 @@ function _noMeasure(objName, fnName, func) {
 module.exports = ReactPerf;
 }).call(this,require('_process'))
 
-},{"_process":510}],608:[function(require,module,exports){
+},{"_process":526}],621:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-present, Facebook, Inc.
@@ -74258,7 +75834,7 @@ if (process.env.NODE_ENV !== 'production') {
 module.exports = ReactPropTypeLocationNames;
 }).call(this,require('_process'))
 
-},{"_process":510}],609:[function(require,module,exports){
+},{"_process":526}],622:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -74281,7 +75857,7 @@ var ReactPropTypeLocations = keyMirror({
 });
 
 module.exports = ReactPropTypeLocations;
-},{"fbjs/lib/keyMirror":685}],610:[function(require,module,exports){
+},{"fbjs/lib/keyMirror":698}],623:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -74662,7 +76238,7 @@ function getClassName(propValue) {
 }
 
 module.exports = ReactPropTypes;
-},{"./ReactElement":586,"./ReactPropTypeLocationNames":608,"./getIteratorFn":650,"fbjs/lib/emptyFunction":674}],611:[function(require,module,exports){
+},{"./ReactElement":599,"./ReactPropTypeLocationNames":621,"./getIteratorFn":663,"fbjs/lib/emptyFunction":687}],624:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -74825,7 +76401,7 @@ _assign(ReactReconcileTransaction.prototype, Transaction.Mixin, Mixin);
 PooledClass.addPoolingTo(ReactReconcileTransaction);
 
 module.exports = ReactReconcileTransaction;
-},{"./CallbackQueue":532,"./PooledClass":550,"./ReactBrowserEventEmitter":552,"./ReactInputSelection":595,"./Transaction":635,"object-assign":509}],612:[function(require,module,exports){
+},{"./CallbackQueue":545,"./PooledClass":563,"./ReactBrowserEventEmitter":565,"./ReactInputSelection":608,"./Transaction":648,"object-assign":706}],625:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-present, Facebook, Inc.
@@ -74959,7 +76535,7 @@ var ReactReconciler = {
 module.exports = ReactReconciler;
 }).call(this,require('_process'))
 
-},{"./ReactInstrumentation":597,"./ReactRef":613,"_process":510}],613:[function(require,module,exports){
+},{"./ReactInstrumentation":610,"./ReactRef":626,"_process":526}],626:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -75038,7 +76614,7 @@ ReactRef.detachRefs = function (instance, element) {
 };
 
 module.exports = ReactRef;
-},{"./ReactOwner":606}],614:[function(require,module,exports){
+},{"./ReactOwner":619}],627:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -75136,7 +76712,7 @@ var ReactTransitionChildMapping = {
 };
 
 module.exports = ReactTransitionChildMapping;
-},{"./flattenChildren":644}],615:[function(require,module,exports){
+},{"./flattenChildren":657}],628:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -75343,7 +76919,7 @@ var ReactTransitionGroup = React.createClass({
 });
 
 module.exports = ReactTransitionGroup;
-},{"./React":551,"./ReactTransitionChildMapping":614,"fbjs/lib/emptyFunction":674,"object-assign":509}],616:[function(require,module,exports){
+},{"./React":564,"./ReactTransitionChildMapping":627,"fbjs/lib/emptyFunction":687,"object-assign":706}],629:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2015-present, Facebook, Inc.
@@ -75562,7 +77138,7 @@ var ReactUpdateQueue = {
 module.exports = ReactUpdateQueue;
 }).call(this,require('_process'))
 
-},{"./ReactCurrentOwner":560,"./ReactInstanceMap":596,"./ReactUpdates":617,"_process":510,"fbjs/lib/invariant":682,"fbjs/lib/warning":692}],617:[function(require,module,exports){
+},{"./ReactCurrentOwner":573,"./ReactInstanceMap":609,"./ReactUpdates":630,"_process":526,"fbjs/lib/invariant":695,"fbjs/lib/warning":705}],630:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-present, Facebook, Inc.
@@ -75807,7 +77383,7 @@ var ReactUpdates = {
 module.exports = ReactUpdates;
 }).call(this,require('_process'))
 
-},{"./CallbackQueue":532,"./PooledClass":550,"./ReactFeatureFlags":592,"./ReactPerf":607,"./ReactReconciler":612,"./Transaction":635,"_process":510,"fbjs/lib/invariant":682,"object-assign":509}],618:[function(require,module,exports){
+},{"./CallbackQueue":545,"./PooledClass":563,"./ReactFeatureFlags":605,"./ReactPerf":620,"./ReactReconciler":625,"./Transaction":648,"_process":526,"fbjs/lib/invariant":695,"object-assign":706}],631:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -75822,7 +77398,7 @@ module.exports = ReactUpdates;
 'use strict';
 
 module.exports = '15.0.1';
-},{}],619:[function(require,module,exports){
+},{}],632:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -76123,7 +77699,7 @@ Object.keys(ATTRS).map(function (key) {
 });
 
 module.exports = SVGDOMPropertyConfig;
-},{}],620:[function(require,module,exports){
+},{}],633:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -76320,7 +77896,7 @@ var SelectEventPlugin = {
 };
 
 module.exports = SelectEventPlugin;
-},{"./EventConstants":542,"./EventPropagators":546,"./ReactDOMComponentTree":565,"./ReactInputSelection":595,"./SyntheticEvent":626,"./isTextInputElement":657,"fbjs/lib/ExecutionEnvironment":668,"fbjs/lib/getActiveElement":677,"fbjs/lib/keyOf":686,"fbjs/lib/shallowEqual":691}],621:[function(require,module,exports){
+},{"./EventConstants":555,"./EventPropagators":559,"./ReactDOMComponentTree":578,"./ReactInputSelection":608,"./SyntheticEvent":639,"./isTextInputElement":670,"fbjs/lib/ExecutionEnvironment":681,"fbjs/lib/getActiveElement":690,"fbjs/lib/keyOf":699,"fbjs/lib/shallowEqual":704}],634:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-present, Facebook, Inc.
@@ -76951,7 +78527,7 @@ var SimpleEventPlugin = {
 module.exports = SimpleEventPlugin;
 }).call(this,require('_process'))
 
-},{"./EventConstants":542,"./EventPropagators":546,"./ReactDOMComponentTree":565,"./SyntheticAnimationEvent":622,"./SyntheticClipboardEvent":623,"./SyntheticDragEvent":625,"./SyntheticEvent":626,"./SyntheticFocusEvent":627,"./SyntheticKeyboardEvent":629,"./SyntheticMouseEvent":630,"./SyntheticTouchEvent":631,"./SyntheticTransitionEvent":632,"./SyntheticUIEvent":633,"./SyntheticWheelEvent":634,"./getEventCharCode":646,"_process":510,"fbjs/lib/EventListener":667,"fbjs/lib/emptyFunction":674,"fbjs/lib/invariant":682,"fbjs/lib/keyOf":686}],622:[function(require,module,exports){
+},{"./EventConstants":555,"./EventPropagators":559,"./ReactDOMComponentTree":578,"./SyntheticAnimationEvent":635,"./SyntheticClipboardEvent":636,"./SyntheticDragEvent":638,"./SyntheticEvent":639,"./SyntheticFocusEvent":640,"./SyntheticKeyboardEvent":642,"./SyntheticMouseEvent":643,"./SyntheticTouchEvent":644,"./SyntheticTransitionEvent":645,"./SyntheticUIEvent":646,"./SyntheticWheelEvent":647,"./getEventCharCode":659,"_process":526,"fbjs/lib/EventListener":680,"fbjs/lib/emptyFunction":687,"fbjs/lib/invariant":695,"fbjs/lib/keyOf":699}],635:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -76991,7 +78567,7 @@ function SyntheticAnimationEvent(dispatchConfig, dispatchMarker, nativeEvent, na
 SyntheticEvent.augmentClass(SyntheticAnimationEvent, AnimationEventInterface);
 
 module.exports = SyntheticAnimationEvent;
-},{"./SyntheticEvent":626}],623:[function(require,module,exports){
+},{"./SyntheticEvent":639}],636:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -77030,7 +78606,7 @@ function SyntheticClipboardEvent(dispatchConfig, dispatchMarker, nativeEvent, na
 SyntheticEvent.augmentClass(SyntheticClipboardEvent, ClipboardEventInterface);
 
 module.exports = SyntheticClipboardEvent;
-},{"./SyntheticEvent":626}],624:[function(require,module,exports){
+},{"./SyntheticEvent":639}],637:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -77067,7 +78643,7 @@ function SyntheticCompositionEvent(dispatchConfig, dispatchMarker, nativeEvent, 
 SyntheticEvent.augmentClass(SyntheticCompositionEvent, CompositionEventInterface);
 
 module.exports = SyntheticCompositionEvent;
-},{"./SyntheticEvent":626}],625:[function(require,module,exports){
+},{"./SyntheticEvent":639}],638:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -77104,7 +78680,7 @@ function SyntheticDragEvent(dispatchConfig, dispatchMarker, nativeEvent, nativeE
 SyntheticMouseEvent.augmentClass(SyntheticDragEvent, DragEventInterface);
 
 module.exports = SyntheticDragEvent;
-},{"./SyntheticMouseEvent":630}],626:[function(require,module,exports){
+},{"./SyntheticMouseEvent":643}],639:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-present, Facebook, Inc.
@@ -77369,7 +78945,7 @@ function getPooledWarningPropertyDefinition(propName, getVal) {
 }
 }).call(this,require('_process'))
 
-},{"./PooledClass":550,"_process":510,"fbjs/lib/emptyFunction":674,"fbjs/lib/warning":692,"object-assign":509}],627:[function(require,module,exports){
+},{"./PooledClass":563,"_process":526,"fbjs/lib/emptyFunction":687,"fbjs/lib/warning":705,"object-assign":706}],640:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -77406,7 +78982,7 @@ function SyntheticFocusEvent(dispatchConfig, dispatchMarker, nativeEvent, native
 SyntheticUIEvent.augmentClass(SyntheticFocusEvent, FocusEventInterface);
 
 module.exports = SyntheticFocusEvent;
-},{"./SyntheticUIEvent":633}],628:[function(require,module,exports){
+},{"./SyntheticUIEvent":646}],641:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -77444,7 +79020,7 @@ function SyntheticInputEvent(dispatchConfig, dispatchMarker, nativeEvent, native
 SyntheticEvent.augmentClass(SyntheticInputEvent, InputEventInterface);
 
 module.exports = SyntheticInputEvent;
-},{"./SyntheticEvent":626}],629:[function(require,module,exports){
+},{"./SyntheticEvent":639}],642:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -77529,7 +79105,7 @@ function SyntheticKeyboardEvent(dispatchConfig, dispatchMarker, nativeEvent, nat
 SyntheticUIEvent.augmentClass(SyntheticKeyboardEvent, KeyboardEventInterface);
 
 module.exports = SyntheticKeyboardEvent;
-},{"./SyntheticUIEvent":633,"./getEventCharCode":646,"./getEventKey":647,"./getEventModifierState":648}],630:[function(require,module,exports){
+},{"./SyntheticUIEvent":646,"./getEventCharCode":659,"./getEventKey":660,"./getEventModifierState":661}],643:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -77602,7 +79178,7 @@ function SyntheticMouseEvent(dispatchConfig, dispatchMarker, nativeEvent, native
 SyntheticUIEvent.augmentClass(SyntheticMouseEvent, MouseEventInterface);
 
 module.exports = SyntheticMouseEvent;
-},{"./SyntheticUIEvent":633,"./ViewportMetrics":636,"./getEventModifierState":648}],631:[function(require,module,exports){
+},{"./SyntheticUIEvent":646,"./ViewportMetrics":649,"./getEventModifierState":661}],644:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -77648,7 +79224,7 @@ function SyntheticTouchEvent(dispatchConfig, dispatchMarker, nativeEvent, native
 SyntheticUIEvent.augmentClass(SyntheticTouchEvent, TouchEventInterface);
 
 module.exports = SyntheticTouchEvent;
-},{"./SyntheticUIEvent":633,"./getEventModifierState":648}],632:[function(require,module,exports){
+},{"./SyntheticUIEvent":646,"./getEventModifierState":661}],645:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -77688,7 +79264,7 @@ function SyntheticTransitionEvent(dispatchConfig, dispatchMarker, nativeEvent, n
 SyntheticEvent.augmentClass(SyntheticTransitionEvent, TransitionEventInterface);
 
 module.exports = SyntheticTransitionEvent;
-},{"./SyntheticEvent":626}],633:[function(require,module,exports){
+},{"./SyntheticEvent":639}],646:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -77748,7 +79324,7 @@ function SyntheticUIEvent(dispatchConfig, dispatchMarker, nativeEvent, nativeEve
 SyntheticEvent.augmentClass(SyntheticUIEvent, UIEventInterface);
 
 module.exports = SyntheticUIEvent;
-},{"./SyntheticEvent":626,"./getEventTarget":649}],634:[function(require,module,exports){
+},{"./SyntheticEvent":639,"./getEventTarget":662}],647:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -77803,7 +79379,7 @@ function SyntheticWheelEvent(dispatchConfig, dispatchMarker, nativeEvent, native
 SyntheticMouseEvent.augmentClass(SyntheticWheelEvent, WheelEventInterface);
 
 module.exports = SyntheticWheelEvent;
-},{"./SyntheticMouseEvent":630}],635:[function(require,module,exports){
+},{"./SyntheticMouseEvent":643}],648:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-present, Facebook, Inc.
@@ -78038,7 +79614,7 @@ var Transaction = {
 module.exports = Transaction;
 }).call(this,require('_process'))
 
-},{"_process":510,"fbjs/lib/invariant":682}],636:[function(require,module,exports){
+},{"_process":526,"fbjs/lib/invariant":695}],649:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -78066,7 +79642,7 @@ var ViewportMetrics = {
 };
 
 module.exports = ViewportMetrics;
-},{}],637:[function(require,module,exports){
+},{}],650:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2014-present, Facebook, Inc.
@@ -78129,7 +79705,7 @@ function accumulateInto(current, next) {
 module.exports = accumulateInto;
 }).call(this,require('_process'))
 
-},{"_process":510,"fbjs/lib/invariant":682}],638:[function(require,module,exports){
+},{"_process":526,"fbjs/lib/invariant":695}],651:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -78173,7 +79749,7 @@ function adler32(data) {
 }
 
 module.exports = adler32;
-},{}],639:[function(require,module,exports){
+},{}],652:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-present, Facebook, Inc.
@@ -78201,7 +79777,7 @@ if (process.env.NODE_ENV !== 'production') {
 module.exports = canDefineProperty;
 }).call(this,require('_process'))
 
-},{"_process":510}],640:[function(require,module,exports){
+},{"_process":526}],653:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -78234,7 +79810,7 @@ var createMicrosoftUnsafeLocalFunction = function (func) {
 };
 
 module.exports = createMicrosoftUnsafeLocalFunction;
-},{}],641:[function(require,module,exports){
+},{}],654:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-present, Facebook, Inc.
@@ -78315,7 +79891,7 @@ function dangerousStyleValue(name, value, component) {
 module.exports = dangerousStyleValue;
 }).call(this,require('_process'))
 
-},{"./CSSProperty":530,"_process":510,"fbjs/lib/warning":692}],642:[function(require,module,exports){
+},{"./CSSProperty":543,"_process":526,"fbjs/lib/warning":705}],655:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -78354,7 +79930,7 @@ function escapeTextContentForBrowser(text) {
 }
 
 module.exports = escapeTextContentForBrowser;
-},{}],643:[function(require,module,exports){
+},{}],656:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-present, Facebook, Inc.
@@ -78414,7 +79990,7 @@ function findDOMNode(componentOrElement) {
 module.exports = findDOMNode;
 }).call(this,require('_process'))
 
-},{"./ReactCurrentOwner":560,"./ReactDOMComponentTree":565,"./ReactInstanceMap":596,"./getNativeComponentFromComposite":651,"_process":510,"fbjs/lib/invariant":682,"fbjs/lib/warning":692}],644:[function(require,module,exports){
+},{"./ReactCurrentOwner":573,"./ReactDOMComponentTree":578,"./ReactInstanceMap":609,"./getNativeComponentFromComposite":664,"_process":526,"fbjs/lib/invariant":695,"fbjs/lib/warning":705}],657:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-present, Facebook, Inc.
@@ -78466,7 +80042,7 @@ function flattenChildren(children) {
 module.exports = flattenChildren;
 }).call(this,require('_process'))
 
-},{"./traverseAllChildren":664,"_process":510,"fbjs/lib/warning":692}],645:[function(require,module,exports){
+},{"./traverseAllChildren":677,"_process":526,"fbjs/lib/warning":705}],658:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -78497,7 +80073,7 @@ var forEachAccumulated = function (arr, cb, scope) {
 };
 
 module.exports = forEachAccumulated;
-},{}],646:[function(require,module,exports){
+},{}],659:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -78548,7 +80124,7 @@ function getEventCharCode(nativeEvent) {
 }
 
 module.exports = getEventCharCode;
-},{}],647:[function(require,module,exports){
+},{}],660:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -78651,7 +80227,7 @@ function getEventKey(nativeEvent) {
 }
 
 module.exports = getEventKey;
-},{"./getEventCharCode":646}],648:[function(require,module,exports){
+},{"./getEventCharCode":659}],661:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -78695,7 +80271,7 @@ function getEventModifierState(nativeEvent) {
 }
 
 module.exports = getEventModifierState;
-},{}],649:[function(require,module,exports){
+},{}],662:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -78731,7 +80307,7 @@ function getEventTarget(nativeEvent) {
 }
 
 module.exports = getEventTarget;
-},{}],650:[function(require,module,exports){
+},{}],663:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -78772,7 +80348,7 @@ function getIteratorFn(maybeIterable) {
 }
 
 module.exports = getIteratorFn;
-},{}],651:[function(require,module,exports){
+},{}],664:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -78803,7 +80379,7 @@ function getNativeComponentFromComposite(inst) {
 }
 
 module.exports = getNativeComponentFromComposite;
-},{"./ReactNodeTypes":604}],652:[function(require,module,exports){
+},{"./ReactNodeTypes":617}],665:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -78878,7 +80454,7 @@ function getNodeForCharacterOffset(root, offset) {
 }
 
 module.exports = getNodeForCharacterOffset;
-},{}],653:[function(require,module,exports){
+},{}],666:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -78912,7 +80488,7 @@ function getTextContentAccessor() {
 }
 
 module.exports = getTextContentAccessor;
-},{"fbjs/lib/ExecutionEnvironment":668}],654:[function(require,module,exports){
+},{"fbjs/lib/ExecutionEnvironment":681}],667:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -79014,7 +80590,7 @@ function getVendorPrefixedEventName(eventName) {
 }
 
 module.exports = getVendorPrefixedEventName;
-},{"fbjs/lib/ExecutionEnvironment":668}],655:[function(require,module,exports){
+},{"fbjs/lib/ExecutionEnvironment":681}],668:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-present, Facebook, Inc.
@@ -79129,7 +80705,7 @@ function instantiateReactComponent(node) {
 module.exports = instantiateReactComponent;
 }).call(this,require('_process'))
 
-},{"./ReactCompositeComponent":559,"./ReactEmptyComponent":588,"./ReactNativeComponent":603,"_process":510,"fbjs/lib/invariant":682,"fbjs/lib/warning":692,"object-assign":509}],656:[function(require,module,exports){
+},{"./ReactCompositeComponent":572,"./ReactEmptyComponent":601,"./ReactNativeComponent":616,"_process":526,"fbjs/lib/invariant":695,"fbjs/lib/warning":705,"object-assign":706}],669:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -79190,7 +80766,7 @@ function isEventSupported(eventNameSuffix, capture) {
 }
 
 module.exports = isEventSupported;
-},{"fbjs/lib/ExecutionEnvironment":668}],657:[function(require,module,exports){
+},{"fbjs/lib/ExecutionEnvironment":681}],670:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -79232,7 +80808,7 @@ function isTextInputElement(elem) {
 }
 
 module.exports = isTextInputElement;
-},{}],658:[function(require,module,exports){
+},{}],671:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-present, Facebook, Inc.
@@ -79269,7 +80845,7 @@ function onlyChild(children) {
 module.exports = onlyChild;
 }).call(this,require('_process'))
 
-},{"./ReactElement":586,"_process":510,"fbjs/lib/invariant":682}],659:[function(require,module,exports){
+},{"./ReactElement":599,"_process":526,"fbjs/lib/invariant":695}],672:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -79296,7 +80872,7 @@ function quoteAttributeValueForBrowser(value) {
 }
 
 module.exports = quoteAttributeValueForBrowser;
-},{"./escapeTextContentForBrowser":642}],660:[function(require,module,exports){
+},{"./escapeTextContentForBrowser":655}],673:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -79313,7 +80889,7 @@ module.exports = quoteAttributeValueForBrowser;
 var ReactMount = require('./ReactMount');
 
 module.exports = ReactMount.renderSubtreeIntoContainer;
-},{"./ReactMount":600}],661:[function(require,module,exports){
+},{"./ReactMount":613}],674:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -79396,7 +80972,7 @@ if (ExecutionEnvironment.canUseDOM) {
 }
 
 module.exports = setInnerHTML;
-},{"./createMicrosoftUnsafeLocalFunction":640,"fbjs/lib/ExecutionEnvironment":668}],662:[function(require,module,exports){
+},{"./createMicrosoftUnsafeLocalFunction":653,"fbjs/lib/ExecutionEnvironment":681}],675:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -79437,7 +81013,7 @@ if (ExecutionEnvironment.canUseDOM) {
 }
 
 module.exports = setTextContent;
-},{"./escapeTextContentForBrowser":642,"./setInnerHTML":661,"fbjs/lib/ExecutionEnvironment":668}],663:[function(require,module,exports){
+},{"./escapeTextContentForBrowser":655,"./setInnerHTML":674,"fbjs/lib/ExecutionEnvironment":681}],676:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -79480,7 +81056,7 @@ function shouldUpdateReactComponent(prevElement, nextElement) {
 }
 
 module.exports = shouldUpdateReactComponent;
-},{}],664:[function(require,module,exports){
+},{}],677:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-present, Facebook, Inc.
@@ -79673,7 +81249,7 @@ function traverseAllChildren(children, callback, traverseContext) {
 module.exports = traverseAllChildren;
 }).call(this,require('_process'))
 
-},{"./ReactCurrentOwner":560,"./ReactElement":586,"./getIteratorFn":650,"_process":510,"fbjs/lib/invariant":682,"fbjs/lib/warning":692}],665:[function(require,module,exports){
+},{"./ReactCurrentOwner":573,"./ReactElement":599,"./getIteratorFn":663,"_process":526,"fbjs/lib/invariant":695,"fbjs/lib/warning":705}],678:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-present, Facebook, Inc.
@@ -79785,7 +81361,7 @@ function update(value, spec) {
 module.exports = update;
 }).call(this,require('_process'))
 
-},{"_process":510,"fbjs/lib/invariant":682,"fbjs/lib/keyOf":686,"object-assign":509}],666:[function(require,module,exports){
+},{"_process":526,"fbjs/lib/invariant":695,"fbjs/lib/keyOf":699,"object-assign":706}],679:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2015-present, Facebook, Inc.
@@ -80157,7 +81733,7 @@ if (process.env.NODE_ENV !== 'production') {
 module.exports = validateDOMNesting;
 }).call(this,require('_process'))
 
-},{"_process":510,"fbjs/lib/emptyFunction":674,"fbjs/lib/warning":692,"object-assign":509}],667:[function(require,module,exports){
+},{"_process":526,"fbjs/lib/emptyFunction":687,"fbjs/lib/warning":705,"object-assign":706}],680:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -80244,7 +81820,7 @@ var EventListener = {
 module.exports = EventListener;
 }).call(this,require('_process'))
 
-},{"./emptyFunction":674,"_process":510}],668:[function(require,module,exports){
+},{"./emptyFunction":687,"_process":526}],681:[function(require,module,exports){
 /**
  * Copyright (c) 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -80280,7 +81856,7 @@ var ExecutionEnvironment = {
 };
 
 module.exports = ExecutionEnvironment;
-},{}],669:[function(require,module,exports){
+},{}],682:[function(require,module,exports){
 "use strict";
 
 /**
@@ -80312,7 +81888,7 @@ function camelize(string) {
 }
 
 module.exports = camelize;
-},{}],670:[function(require,module,exports){
+},{}],683:[function(require,module,exports){
 /**
  * Copyright (c) 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -80352,7 +81928,7 @@ function camelizeStyleName(string) {
 }
 
 module.exports = camelizeStyleName;
-},{"./camelize":669}],671:[function(require,module,exports){
+},{"./camelize":682}],684:[function(require,module,exports){
 'use strict';
 
 /**
@@ -80396,7 +81972,7 @@ function containsNode(outerNode, innerNode) {
 }
 
 module.exports = containsNode;
-},{"./isTextNode":684}],672:[function(require,module,exports){
+},{"./isTextNode":697}],685:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -80526,7 +82102,7 @@ function createArrayFromMixed(obj) {
 module.exports = createArrayFromMixed;
 }).call(this,require('_process'))
 
-},{"./invariant":682,"_process":510}],673:[function(require,module,exports){
+},{"./invariant":695,"_process":526}],686:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -80613,7 +82189,7 @@ function createNodesFromMarkup(markup, handleScript) {
 module.exports = createNodesFromMarkup;
 }).call(this,require('_process'))
 
-},{"./ExecutionEnvironment":668,"./createArrayFromMixed":672,"./getMarkupWrap":678,"./invariant":682,"_process":510}],674:[function(require,module,exports){
+},{"./ExecutionEnvironment":681,"./createArrayFromMixed":685,"./getMarkupWrap":691,"./invariant":695,"_process":526}],687:[function(require,module,exports){
 "use strict";
 
 /**
@@ -80651,7 +82227,7 @@ emptyFunction.thatReturnsArgument = function (arg) {
 };
 
 module.exports = emptyFunction;
-},{}],675:[function(require,module,exports){
+},{}],688:[function(require,module,exports){
 (function (process){
 /**
  * Copyright (c) 2013-present, Facebook, Inc.
@@ -80674,7 +82250,7 @@ if (process.env.NODE_ENV !== 'production') {
 module.exports = emptyObject;
 }).call(this,require('_process'))
 
-},{"_process":510}],676:[function(require,module,exports){
+},{"_process":526}],689:[function(require,module,exports){
 /**
  * Copyright (c) 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -80701,7 +82277,7 @@ function focusNode(node) {
 }
 
 module.exports = focusNode;
-},{}],677:[function(require,module,exports){
+},{}],690:[function(require,module,exports){
 'use strict';
 
 /**
@@ -80736,7 +82312,7 @@ function getActiveElement() /*?DOMElement*/{
 }
 
 module.exports = getActiveElement;
-},{}],678:[function(require,module,exports){
+},{}],691:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -80834,7 +82410,7 @@ function getMarkupWrap(nodeName) {
 module.exports = getMarkupWrap;
 }).call(this,require('_process'))
 
-},{"./ExecutionEnvironment":668,"./invariant":682,"_process":510}],679:[function(require,module,exports){
+},{"./ExecutionEnvironment":681,"./invariant":695,"_process":526}],692:[function(require,module,exports){
 /**
  * Copyright (c) 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -80873,7 +82449,7 @@ function getUnboundedScrollPosition(scrollable) {
 }
 
 module.exports = getUnboundedScrollPosition;
-},{}],680:[function(require,module,exports){
+},{}],693:[function(require,module,exports){
 'use strict';
 
 /**
@@ -80906,7 +82482,7 @@ function hyphenate(string) {
 }
 
 module.exports = hyphenate;
-},{}],681:[function(require,module,exports){
+},{}],694:[function(require,module,exports){
 /**
  * Copyright (c) 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -80945,7 +82521,7 @@ function hyphenateStyleName(string) {
 }
 
 module.exports = hyphenateStyleName;
-},{"./hyphenate":680}],682:[function(require,module,exports){
+},{"./hyphenate":693}],695:[function(require,module,exports){
 (function (process){
 /**
  * Copyright (c) 2013-present, Facebook, Inc.
@@ -80998,7 +82574,7 @@ function invariant(condition, format, a, b, c, d, e, f) {
 module.exports = invariant;
 }).call(this,require('_process'))
 
-},{"_process":510}],683:[function(require,module,exports){
+},{"_process":526}],696:[function(require,module,exports){
 'use strict';
 
 /**
@@ -81021,7 +82597,7 @@ function isNode(object) {
 }
 
 module.exports = isNode;
-},{}],684:[function(require,module,exports){
+},{}],697:[function(require,module,exports){
 'use strict';
 
 /**
@@ -81046,7 +82622,7 @@ function isTextNode(object) {
 }
 
 module.exports = isTextNode;
-},{"./isNode":683}],685:[function(require,module,exports){
+},{"./isNode":696}],698:[function(require,module,exports){
 (function (process){
 /**
  * Copyright (c) 2013-present, Facebook, Inc.
@@ -81097,7 +82673,7 @@ var keyMirror = function (obj) {
 module.exports = keyMirror;
 }).call(this,require('_process'))
 
-},{"./invariant":682,"_process":510}],686:[function(require,module,exports){
+},{"./invariant":695,"_process":526}],699:[function(require,module,exports){
 "use strict";
 
 /**
@@ -81132,7 +82708,7 @@ var keyOf = function (oneKeyObj) {
 };
 
 module.exports = keyOf;
-},{}],687:[function(require,module,exports){
+},{}],700:[function(require,module,exports){
 /**
  * Copyright (c) 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -81183,7 +82759,7 @@ function mapObject(object, callback, context) {
 }
 
 module.exports = mapObject;
-},{}],688:[function(require,module,exports){
+},{}],701:[function(require,module,exports){
 /**
  * Copyright (c) 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -81215,7 +82791,7 @@ function memoizeStringOnly(callback) {
 }
 
 module.exports = memoizeStringOnly;
-},{}],689:[function(require,module,exports){
+},{}],702:[function(require,module,exports){
 /**
  * Copyright (c) 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -81238,7 +82814,7 @@ if (ExecutionEnvironment.canUseDOM) {
 }
 
 module.exports = performance || {};
-},{"./ExecutionEnvironment":668}],690:[function(require,module,exports){
+},{"./ExecutionEnvironment":681}],703:[function(require,module,exports){
 'use strict';
 
 /**
@@ -81272,7 +82848,7 @@ if (performance.now) {
 }
 
 module.exports = performanceNow;
-},{"./performance":689}],691:[function(require,module,exports){
+},{"./performance":702}],704:[function(require,module,exports){
 /**
  * Copyright (c) 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -81339,7 +82915,7 @@ function shallowEqual(objA, objB) {
 }
 
 module.exports = shallowEqual;
-},{}],692:[function(require,module,exports){
+},{}],705:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2014-2015, Facebook, Inc.
@@ -81399,322 +82975,53 @@ if (process.env.NODE_ENV !== 'production') {
 module.exports = warning;
 }).call(this,require('_process'))
 
-},{"./emptyFunction":674,"_process":510}],693:[function(require,module,exports){
+},{"./emptyFunction":687,"_process":526}],706:[function(require,module,exports){
+/* eslint-disable no-unused-vars */
+'use strict';
+var hasOwnProperty = Object.prototype.hasOwnProperty;
+var propIsEnumerable = Object.prototype.propertyIsEnumerable;
+
+function toObject(val) {
+	if (val === null || val === undefined) {
+		throw new TypeError('Object.assign cannot be called with null or undefined');
+	}
+
+	return Object(val);
+}
+
+module.exports = Object.assign || function (target, source) {
+	var from;
+	var to = toObject(target);
+	var symbols;
+
+	for (var s = 1; s < arguments.length; s++) {
+		from = Object(arguments[s]);
+
+		for (var key in from) {
+			if (hasOwnProperty.call(from, key)) {
+				to[key] = from[key];
+			}
+		}
+
+		if (Object.getOwnPropertySymbols) {
+			symbols = Object.getOwnPropertySymbols(from);
+			for (var i = 0; i < symbols.length; i++) {
+				if (propIsEnumerable.call(from, symbols[i])) {
+					to[symbols[i]] = from[symbols[i]];
+				}
+			}
+		}
+	}
+
+	return to;
+};
+
+},{}],707:[function(require,module,exports){
 'use strict';
 
 module.exports = require('./lib/React');
 
-},{"./lib/React":551}],694:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _flowRight = require('lodash/flowRight');
-
-var _flowRight2 = _interopRequireDefault(_flowRight);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-exports.default = _flowRight2.default;
-},{"lodash/flowRight":382}],695:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-var _react = require('react');
-
-var _react2 = _interopRequireDefault(_react);
-
-var _isReferentiallyTransparentFunctionComponent = require('./isReferentiallyTransparentFunctionComponent');
-
-var _isReferentiallyTransparentFunctionComponent2 = _interopRequireDefault(_isReferentiallyTransparentFunctionComponent);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var createElement = function createElement(Component, props, children) {
-  /* eslint-disable */
-  var hasKey = props && props.hasOwnProperty('key');
-  /* eslint-enable */
-
-  if (!hasKey && (0, _isReferentiallyTransparentFunctionComponent2.default)(Component)) {
-    var component = Component;
-    if (children) {
-      return component(_extends({}, props, { children: children }));
-    }
-    return component(props);
-  }
-
-  if (children) {
-    return _react2.default.createElement(
-      Component,
-      props,
-      children
-    );
-  }
-
-  return _react2.default.createElement(Component, props);
-};
-
-exports.default = createElement;
-},{"./isReferentiallyTransparentFunctionComponent":699,"react":693}],696:[function(require,module,exports){
-(function (process){
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
-
-var createHelper = function createHelper(func, helperName) {
-  var setDisplayName = arguments.length <= 2 || arguments[2] === undefined ? true : arguments[2];
-  var noArgs = arguments.length <= 3 || arguments[3] === undefined ? false : arguments[3];
-
-  if (process.env.NODE_ENV !== 'production' && setDisplayName) {
-    var _ret = function () {
-      var wrapDisplayName = require('./wrapDisplayName').default;
-
-      if (noArgs) {
-        return {
-          v: function v(BaseComponent) {
-            var Component = func(BaseComponent);
-            Component.displayName = wrapDisplayName(BaseComponent, helperName);
-            return Component;
-          }
-        };
-      }
-
-      return {
-        v: function v() {
-          for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-            args[_key] = arguments[_key];
-          }
-
-          if (process.env.NODE_ENV !== 'production' && args.length > func.length) {
-            /* eslint-disable */
-            console.error(
-            /* eslint-enable */
-            'Too many arguments passed to ' + helperName + '(). It should called ' + ('like so: ' + helperName + '(...args)(BaseComponent).'));
-          }
-
-          return function (BaseComponent) {
-            var Component = noArgs ? func(BaseComponent) : func.apply(undefined, args)(BaseComponent);
-
-            Component.displayName = wrapDisplayName(BaseComponent, helperName);
-
-            return Component;
-          };
-        }
-      };
-    }();
-
-    if ((typeof _ret === 'undefined' ? 'undefined' : _typeof(_ret)) === "object") return _ret.v;
-  }
-
-  return func;
-};
-
-exports.default = createHelper;
-}).call(this,require('_process'))
-
-},{"./wrapDisplayName":703,"_process":510}],697:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-var getDisplayName = function getDisplayName(Component) {
-  if (typeof Component === 'string') {
-    return Component;
-  }
-
-  if (!Component) {
-    return undefined;
-  }
-
-  return Component.displayName || Component.name || 'Component';
-};
-
-exports.default = getDisplayName;
-},{}],698:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
-
-var isClassComponent = function isClassComponent(Component) {
-  return Boolean(Component && Component.prototype && _typeof(Component.prototype.isReactComponent) === 'object');
-};
-
-exports.default = isClassComponent;
-},{}],699:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _isClassComponent = require('./isClassComponent.js');
-
-var _isClassComponent2 = _interopRequireDefault(_isClassComponent);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var isReferentiallyTransparentFunctionComponent = function isReferentiallyTransparentFunctionComponent(Component) {
-  return Boolean(typeof Component === 'function' && !(0, _isClassComponent2.default)(Component) && !Component.defaultProps && !Component.contextTypes && !Component.propTypes);
-};
-
-exports.default = isReferentiallyTransparentFunctionComponent;
-},{"./isClassComponent.js":698}],700:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _shouldUpdate = require('./shouldUpdate');
-
-var _shouldUpdate2 = _interopRequireDefault(_shouldUpdate);
-
-var _shallowEqual = require('./shallowEqual');
-
-var _shallowEqual2 = _interopRequireDefault(_shallowEqual);
-
-var _createHelper = require('./createHelper');
-
-var _createHelper2 = _interopRequireDefault(_createHelper);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var pure = (0, _shouldUpdate2.default)(function (props, nextProps) {
-  return !(0, _shallowEqual2.default)(props, nextProps);
-});
-
-exports.default = (0, _createHelper2.default)(pure, 'pure', true, true);
-},{"./createHelper":696,"./shallowEqual":701,"./shouldUpdate":702}],701:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
-
-exports.default = shallowEqual;
-// Copied from https://github.com/facebook/fbjs/blob/master/src/core/shallowEqual.js
-
-var hasOwnProperty = Object.prototype.hasOwnProperty;
-
-function shallowEqual(objA, objB) {
-  if (objA === objB) {
-    return true;
-  }
-
-  if ((typeof objA === 'undefined' ? 'undefined' : _typeof(objA)) !== 'object' || objA === null || (typeof objB === 'undefined' ? 'undefined' : _typeof(objB)) !== 'object' || objB === null) {
-    return false;
-  }
-
-  var keysA = Object.keys(objA);
-  var keysB = Object.keys(objB);
-
-  if (keysA.length !== keysB.length) {
-    return false;
-  }
-
-  // Test for A's keys different from B.
-  var bHasOwnProperty = hasOwnProperty.bind(objB);
-  for (var i = 0; i < keysA.length; i++) {
-    if (!bHasOwnProperty(keysA[i]) || objA[keysA[i]] !== objB[keysA[i]]) {
-      return false;
-    }
-  }
-
-  return true;
-}
-},{}],702:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = require('react');
-
-var _createHelper = require('./createHelper');
-
-var _createHelper2 = _interopRequireDefault(_createHelper);
-
-var _createElement = require('./createElement');
-
-var _createElement2 = _interopRequireDefault(_createElement);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var shouldUpdate = function shouldUpdate(test) {
-  return function (BaseComponent) {
-    return function (_Component) {
-      _inherits(_class, _Component);
-
-      function _class() {
-        _classCallCheck(this, _class);
-
-        return _possibleConstructorReturn(this, Object.getPrototypeOf(_class).apply(this, arguments));
-      }
-
-      _createClass(_class, [{
-        key: 'shouldComponentUpdate',
-        value: function shouldComponentUpdate(nextProps) {
-          return test(this.props, nextProps);
-        }
-      }, {
-        key: 'render',
-        value: function render() {
-          return (0, _createElement2.default)(BaseComponent, this.props);
-        }
-      }]);
-
-      return _class;
-    }(_react.Component);
-  };
-};
-
-exports.default = (0, _createHelper2.default)(shouldUpdate, 'shouldUpdate');
-},{"./createElement":695,"./createHelper":696,"react":693}],703:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _getDisplayName = require('./getDisplayName');
-
-var _getDisplayName2 = _interopRequireDefault(_getDisplayName);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var wrapDisplayName = function wrapDisplayName(BaseComponent, hocName) {
-  return hocName + '(' + (0, _getDisplayName2.default)(BaseComponent) + ')';
-};
-
-exports.default = wrapDisplayName;
-},{"./getDisplayName":697}],704:[function(require,module,exports){
+},{"./lib/React":564}],708:[function(require,module,exports){
 module.exports = function (target) {
   for (var i = 1; i < arguments.length; i++) {
     var source = arguments[i];
@@ -81727,7 +83034,7 @@ module.exports = function (target) {
   return target;
 };
 
-},{}],705:[function(require,module,exports){
+},{}],709:[function(require,module,exports){
 /*
  * Toastr
  * Copyright 2012-2015
@@ -82164,7 +83471,7 @@ module.exports = function (target) {
     }
 }));
 
-},{"jquery":350}],706:[function(require,module,exports){
+},{"jquery":350}],710:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2014-2015, Facebook, Inc.
@@ -82229,5 +83536,5 @@ module.exports = warning;
 
 }).call(this,require('_process'))
 
-},{"_process":510}]},{},[17])
+},{"_process":526}]},{},[17])
 //# sourceMappingURL=bundle.js.map

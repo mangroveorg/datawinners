@@ -3,17 +3,27 @@ import QuestionActions from '../actions/questionnaire-actions';
 import Toastr from 'toastr';
 import Card from 'material-ui/Card/Card';
 import CardHeader from 'material-ui/Card/CardHeader';
+import CardActions from 'material-ui/Card/CardActions';
+import FlatButton from 'material-ui/FlatButton';
 import CardText from 'material-ui/Card/CardText';
 import AppConstants from '../constants/app-constants';
 import FormFactory from './form-factory';
 import _ from 'lodash';
 import FontIcon from 'material-ui/FontIcon';
 import Paper from 'material-ui/Paper';
-import FlatButton from 'material-ui/FlatButton';
 
 const style = {
-  question_row: {
+  questionRow: {
     background: "#e8eff6",
+    borderTopStyle: "solid",
+    borderTopColor: "grey",
+    borderWidth: "2px",
+    float: "left",
+    clear: "both",
+    width: "75.3%"
+  },
+  questionAction: {
+    float: "right",
     borderTopStyle: "solid",
     borderTopColor: "grey",
     borderWidth: "2px"
@@ -66,6 +76,14 @@ export default class Question extends React.Component {
     this.props.onDelete(this.props.question);
   }
 
+  onMoveUp = (event) => {
+    this.props.onMoveUp(this.props.question);
+  };
+
+  onMoveDown = (event) => {
+    this.props.onMoveDown(this.props.question);
+  };
+
   render() {
       return (
         <Card>
@@ -74,8 +92,17 @@ export default class Question extends React.Component {
             subtitle={this.props.question.type}
             actAsExpander={true}
             showExpandableButton={true}
-            style={style.question_row}
-          />
+            style={style.questionRow}
+          >
+          </CardHeader>
+          <CardActions style={style.questionAction}>
+            <FlatButton label="Up"
+                onMouseDown={this.onMoveUp}
+                icon={<FontIcon className="material-icons">arrow_upward</FontIcon>} />
+           <FlatButton label="Down"
+                onMouseDown={this.onMoveDown}
+                icon={<FontIcon className="material-icons">arrow_downward</FontIcon>} />
+          </CardActions>
           <CardText expandable={true}>
               <this.formType
                 question={this.props.question}
