@@ -255,8 +255,12 @@ def reminder_settings(request, project_id):
         if len(details):
             UserActivityLog().log(request, action=UPDATED_REMINDERS, project=questionnaire.name, detail=json.dumps(details))
 
-        if data['select_day'] != post_data['select_day']:
+        if data['frequency_period']== "week" and data['select_day'] != post_data['select_day']:
             details = 'Deadline updated: weekday'
+            UserActivityLog().log(request, action=SET_DEADLINE, project=questionnaire.name, detail=details)
+
+        if data['frequency_period']== "month" and data['select_day'] != post_data['select_day']:
+            details = 'Deadline updated: month day'
             UserActivityLog().log(request, action=SET_DEADLINE, project=questionnaire.name, detail=details)
 
         post_data['should_send_reminder_to_all_ds'] = not post_data['whom_to_send_message'] == 'true'

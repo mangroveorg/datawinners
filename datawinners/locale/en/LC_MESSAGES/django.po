@@ -5046,3 +5046,6 @@ msgstr ""
 
 msgid "Edited Data Submission(s) for advanced questionnaire"
 msgstr ""
+
+msgid "Deadline updated: month day"
+msgstr ""
