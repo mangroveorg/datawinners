@@ -405,16 +405,22 @@ def edit_xform_submission_post(request, survey_response_id):
     new_data_dict = new_data.values()[0]
     details = dict()
     question = ''
+    from datawinners.utils import convert_dmy_to_ymd
     for key, value in new_data_dict.iteritems():
         if key in old_data and key not in {"intro", "meta", "form_code"}:
             if new_data_dict[key] != old_data[key]:
-                if key == 'date':
-                    from datawinners.utils import convert_dmy_to_ymd
+                if questionnaire.get_field_by_code(key).type == 'date':
                     formated_date = old_data[key].replace(".", "-")
                     converted_date = convert_dmy_to_ymd(formated_date)
                     if converted_date != new_data_dict[key]:
                         details.update({key: {'old_data': converted_date, 'new_data': new_data_dict[key]}})
-                if key != 'date':
+                        
+                elif questionnaire.get_field_by_code(key).type == 'geocode':
+                    formated_geopoint = new_data_dict[key].replace(" ", ",")
+                    if formated_geopoint != old_data[key]:
+                        details.update({key: {'old_data': formated_geopoint, 'new_data': new_data_dict[key]}})
+
+                else:
                     details.update({key: {'old_data': old_data[key], 'new_data': new_data_dict[key]}})
 
     edit_details = dict()
