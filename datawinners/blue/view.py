@@ -405,9 +405,16 @@ def edit_xform_submission_post(request, survey_response_id):
     for key, value in new_data_dict.iteritems():
         if key in old_data and key not in {"intro", "meta", "form_code"}:
             if new_data_dict[key] != old_data[key]:
-                details.update({key: {'old_data': old_data[key], 'new_data': new_data_dict[key]}})
-    edit_details = dict()
+                if key == 'date':
+                    from datawinners.utils import convert_dmy_to_ymd
+                    formated_date = old_data[key].replace(".", "-")
+                    converted_date = convert_dmy_to_ymd(formated_date)
+                    if converted_date != new_data_dict[key]:
+                        details.update({key: {'old_data': converted_date, 'new_data': new_data_dict[key]}})
+                if key != 'date':
+                    details.update({key: {'old_data': old_data[key], 'new_data': new_data_dict[key]}})
 
+    edit_details = dict()
     for key, value in details.iteritems():
         for field in questionnaire._form_fields:
             if field.code == key:
