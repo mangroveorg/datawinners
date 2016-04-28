@@ -519,7 +519,7 @@ var BuilderToolbar = function (_React$Component) {
 
       if (event.detail.status == 'success') {
         _questionnaireActions2.default.initQuestionnaire(_questionnaireStore2.default.getQuestionnaireId(), 'true');
-      } else if (event.details.status == 'error') {
+      } else if (event.detail.status == 'error') {
         _toastr2.default["error"](event.detail.error_msg, "Upload Failed");
       }
     };
