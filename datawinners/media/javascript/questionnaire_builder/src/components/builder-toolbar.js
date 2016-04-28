@@ -46,13 +46,10 @@ export default class BuilderToolbar extends React.Component {
 
   onUploadFileComplete = (event) => {
     this.setState({isLoading: false});
-    if (!event.detail) {
-      return;
-    }
 
-    if (event.detail.success) {
-      Toastr["success"]("File Uploaded Successfully", "Upload Success");
-    } else {
+    if (event.detail.status == 'success') {
+      QuestionnaireActions.initQuestionnaire(QuestionnaireStore.getQuestionnaireId(), 'true');
+    } else if (event.details.status == 'error') {
       Toastr["error"](event.detail.error_msg, "Upload Failed");
     }
   }

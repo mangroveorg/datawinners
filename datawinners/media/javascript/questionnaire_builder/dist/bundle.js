@@ -516,13 +516,10 @@ var BuilderToolbar = function (_React$Component) {
 
     _this.onUploadFileComplete = function (event) {
       _this.setState({ isLoading: false });
-      if (!event.detail) {
-        return;
-      }
 
-      if (event.detail.success) {
-        _toastr2.default["success"]("File Uploaded Successfully", "Upload Success");
-      } else {
+      if (event.detail.status == 'success') {
+        _questionnaireActions2.default.initQuestionnaire(_questionnaireStore2.default.getQuestionnaireId(), 'true');
+      } else if (event.details.status == 'error') {
         _toastr2.default["error"](event.detail.error_msg, "Upload Failed");
       }
     };
