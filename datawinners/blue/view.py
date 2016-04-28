@@ -323,6 +323,9 @@ class ProjectUpdate(View):
         self._purge_feed_documents(questionnaire, request)
         self._purge_media_details_documents(manager, questionnaire)
         self.recreate_submissions_mapping(manager, questionnaire)
+        excel_file = _temp_file(request)
+        excel_file.seek(0)
+        _save_questionnaire_as_dict_for_builder(questionnaire, excel_file=excel_file)
         if xls_parser_response.info:
             info_list = list(xls_parser_response.info)
             logger.info("User: %s. Edit upload Errors: %s", request.user.username, json.dumps(info_list))
