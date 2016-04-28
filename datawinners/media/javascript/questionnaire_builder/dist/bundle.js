@@ -1650,6 +1650,10 @@ var _lodash = require('lodash');
 
 var _lodash2 = _interopRequireDefault(_lodash);
 
+var _toastr = require('toastr');
+
+var _toastr2 = _interopRequireDefault(_toastr);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -1702,6 +1706,7 @@ var QuestionnaireList = function (_React$Component) {
 		key: 'componentWillMount',
 		value: function componentWillMount() {
 			_questionnaireStore2.default.addChangeListener(this._onChange);
+			_questionnaireStore2.default.addErrorListener(this._onError);
 		}
 	}, {
 		key: 'componentWillUnmount',
@@ -1718,6 +1723,11 @@ var QuestionnaireList = function (_React$Component) {
 				reason: _questionnaireStore2.default.getInitErrors().reason,
 				details: _questionnaireStore2.default.getInitErrors().details
 			});
+		}
+	}, {
+		key: '_onError',
+		value: function _onError() {
+			_toastr2.default['error']('', _questionnaireStore2.default.getToastError().message);
 		}
 	}, {
 		key: 'render',
@@ -1796,7 +1806,7 @@ var QuestionnaireList = function (_React$Component) {
 
 exports.default = QuestionnaireList;
 
-},{"../actions/questionnaire-actions":1,"../constants/app-constants":15,"../store/questionnaire-store":21,"./builder-toolbar":3,"./choices-tab":5,"./form-factory":7,"./survey-tab":13,"lodash":395,"material-ui/Card/Card":403,"material-ui/Card/CardText":407,"material-ui/FloatingActionButton":418,"material-ui/FontIcon":420,"material-ui/IconButton":422,"material-ui/LinearProgress":426,"material-ui/Paper":434,"material-ui/Tabs/Tab":457,"material-ui/Tabs/Tabs":459,"material-ui/svg-icons/content/add":507,"react":707}],12:[function(require,module,exports){
+},{"../actions/questionnaire-actions":1,"../constants/app-constants":15,"../store/questionnaire-store":21,"./builder-toolbar":3,"./choices-tab":5,"./form-factory":7,"./survey-tab":13,"lodash":395,"material-ui/Card/Card":403,"material-ui/Card/CardText":407,"material-ui/FloatingActionButton":418,"material-ui/FontIcon":420,"material-ui/IconButton":422,"material-ui/LinearProgress":426,"material-ui/Paper":434,"material-ui/Tabs/Tab":457,"material-ui/Tabs/Tabs":459,"material-ui/svg-icons/content/add":507,"react":707,"toastr":709}],12:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -2407,6 +2417,7 @@ var _lodash2 = _interopRequireDefault(_lodash);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var CHANGE_EVENT = 'change';
+var ERROR_EVENT = 'error';
 
 
 var _questionnaireId = undefined;
@@ -2417,6 +2428,7 @@ var _uniqueIdTypes = [];
 var _choicesGrouped = {};
 var _cascadesGrouped = [];
 var _initErrors = {};
+var _toastError = {};
 
 var createChoiceGroup = function createChoiceGroup() {
 	var choice = _defaultChoice();
@@ -2586,10 +2598,12 @@ var moveUp = function moveUp(question) {
 	if (index > 0) {
 		var previousIndex = index - 1;
 		var previousQuestion = _questionnaire.survey[previousIndex];
-		console.log(_appConstants2.default.GroupBoundaries);
 		if (_appConstants2.default.GroupBoundaries.indexOf(previousQuestion.type) == -1) {
 			_questionnaire.survey[index] = previousQuestion;
 			_questionnaire.survey[previousIndex] = question;
+		} else {
+			_toastError.message = 'Question cannot be moved in and out of Group/Repeat';
+			QuestionnaireStore.emitError();
 		}
 	}
 };
@@ -2602,6 +2616,9 @@ var moveDown = function moveDown(question) {
 		if (_appConstants2.default.GroupBoundaries.indexOf(nextQuestion.type) == -1) {
 			_questionnaire.survey[index] = nextQuestion;
 			_questionnaire.survey[nextIndex] = question;
+		} else {
+			_toastError.message = 'Question cannot be moved in and out of Group/Repeat';
+			QuestionnaireStore.emitError();
 		}
 	}
 };
@@ -2616,8 +2633,20 @@ var QuestionnaireStore = Object.assign({}, _events.EventEmitter.prototype, {
 		this.removeListener(CHANGE_EVENT, callback);
 	},
 
+	addErrorListener: function addErrorListener(callback) {
+		this.on(ERROR_EVENT, callback);
+	},
+
+	removeErrorListener: function removeErrorListener(callback) {
+		this.removeListener(ERROR_EVENT, callback);
+	},
+
 	emitChange: function emitChange() {
 		this.emit(CHANGE_EVENT);
+	},
+
+	emitError: function emitError() {
+		this.emit(ERROR_EVENT);
 	},
 
 	getQuestionnaireId: function getQuestionnaireId() {
@@ -2658,6 +2687,10 @@ var QuestionnaireStore = Object.assign({}, _events.EventEmitter.prototype, {
 		_errors = _lodash2.default.concat(_errors, _validator2.default.validateChoices(_questionnaire));
 		QuestionnaireStore.emitChange();
 		return _errors.length > 0;
+	},
+
+	getToastError: function getToastError() {
+		return _toastError;
 	},
 
 	questionFields: function questionFields() {

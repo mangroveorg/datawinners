@@ -1,6 +1,7 @@
 import {EventEmitter} from 'events';
 
 const CHANGE_EVENT = 'change';
+const ERROR_EVENT = 'error';
 import AppDispatcher from '../dispatcher/app-dispatcher';
 import AppConstants from '../constants/app-constants';
 import Validator from './validator';
@@ -14,6 +15,7 @@ var _uniqueIdTypes = [];
 var _choicesGrouped = {};
 var _cascadesGrouped = [];
 var _initErrors = {};
+var _toastError = {};
 
 var createChoiceGroup = () => {
 	let choice = _defaultChoice();
@@ -146,10 +148,12 @@ var moveUp = function (question) {
 	if(index > 0) {
 		let previousIndex = index - 1;
 		var previousQuestion = _questionnaire.survey[previousIndex];
-		console.log(AppConstants.GroupBoundaries);
 		if (AppConstants.GroupBoundaries.indexOf(previousQuestion.type) == -1) {
 			_questionnaire.survey[index] = previousQuestion;
 			_questionnaire.survey[previousIndex] = question;
+		} else {
+			_toastError.message = 'Question cannot be moved in and out of Group/Repeat';
+			QuestionnaireStore.emitError();
 		}
 	}
 }
@@ -162,6 +166,9 @@ var moveDown = function (question) {
 		if (AppConstants.GroupBoundaries.indexOf(nextQuestion.type) == -1) {
 			_questionnaire.survey[index] = nextQuestion;
 			_questionnaire.survey[nextIndex] = question;
+		} else {
+			_toastError.message = 'Question cannot be moved in and out of Group/Repeat';
+			QuestionnaireStore.emitError();
 		}
 	}
 }
@@ -176,8 +183,20 @@ var QuestionnaireStore = Object.assign({},EventEmitter.prototype, {
 		this.removeListener(CHANGE_EVENT, callback);
 	},
 
+	addErrorListener: function (callback) {
+		this.on(ERROR_EVENT, callback);
+	},
+
+	removeErrorListener: function (callback) {
+		this.removeListener(ERROR_EVENT, callback);
+	},
+
 	emitChange: function () {
-		this.emit(CHANGE_EVENT)
+		this.emit(CHANGE_EVENT);
+	},
+
+	emitError: function () {
+		this.emit(ERROR_EVENT);
 	},
 
 	getQuestionnaireId: function () {
@@ -218,6 +237,10 @@ var QuestionnaireStore = Object.assign({},EventEmitter.prototype, {
 		_errors = _.concat(_errors, Validator.validateChoices(_questionnaire));
 		QuestionnaireStore.emitChange();
 		return _errors.length > 0;
+	},
+
+	getToastError: function () {
+		return _toastError;
 	},
 
 	questionFields: function () {

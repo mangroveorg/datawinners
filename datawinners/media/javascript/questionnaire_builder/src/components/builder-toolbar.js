@@ -81,7 +81,7 @@ export default class BuilderToolbar extends React.Component {
 
   onSaveDraft = (event) => {
     this.onLoading(AppConstants.LoaderMessages.SAVE_DRAFT_MESSAGE);
-     QuestionnaireActions.saveDraft(this.onSaveComplete);
+    QuestionnaireActions.saveDraft(this.onSaveComplete);
   }
 
 

@@ -19,6 +19,7 @@ import FormFactory from './form-factory';
 import ChoicesTab from './choices-tab';
 import SurveyTab from './survey-tab';
 import _ from 'lodash';
+import Toastr from 'toastr';
 
 const style = {
 	tabs: {
@@ -43,6 +44,7 @@ export default class QuestionnaireList extends React.Component {
 
 	componentWillMount(){
 		QuestionnaireStore.addChangeListener(this._onChange);
+		QuestionnaireStore.addErrorListener(this._onError);
 	}
 
 	componentWillUnmount() {
@@ -64,6 +66,10 @@ export default class QuestionnaireList extends React.Component {
 			reason: QuestionnaireStore.getInitErrors().reason,
 			details: QuestionnaireStore.getInitErrors().details
 		});
+	}
+
+	_onError(){
+		Toastr['error']('', QuestionnaireStore.getToastError().message);
 	}
 
 	cancelSaveQuestionnaire = (event) => {
