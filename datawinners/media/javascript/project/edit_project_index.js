@@ -20,8 +20,9 @@ $(function () {
         },
         postErrorHandler: function(responseJSON) {
             DW.trackEvent('advanced-questionnaire-edited', 'edit-questionnaire-errored');
-
-            raiseUploadFileCompletedEvent(responseJSON);
+            if (typeof(questionnaire_builder_enabled) != 'undefined') {
+                raiseUploadFileCompletedEvent(responseJSON);
+            }
             DW.showError(responseJSON['error_msg'],responseJSON.message_prefix, responseJSON.message_suffix);
         },
         promptOverwrite: function(responseJSON, file_uploader, file_input) {
@@ -44,7 +45,9 @@ $(function () {
                 cancelLinkSelector: "#cancel_dialog",
                 width: 780
             };
-            raiseUploadFileCompletedEvent();
+            if (typeof(questionnaire_builder_enabled) != 'undefined') {
+                raiseUploadFileCompletedEvent();
+            }
             var warningDialog = new DW.Dialog(editQuestionnaireWarningOptions).init();
             warningDialog.show();
         },
@@ -57,6 +60,9 @@ $(function () {
         onSuccess:function(){
             DW.trackEvent('advanced-questionnaire-edited', 'edit-questionnaire-success');
 
+            if (typeof(questionnaire_builder_enabled) != 'undefined') {
+                raiseUploadFileCompletedEvent();
+            }
             var kwargs = {dialogDiv: "#inform_datasender_about_changes",
                 title: gettext('Inform Your Data Senders about the Changes'),
                 width:650,

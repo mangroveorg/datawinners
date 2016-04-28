@@ -21,7 +21,6 @@ DW.Dialog = function (options) {
     };
 
     this.show = function(){
-        raiseUploadFileCompletedEvent();
         self.cancelDialog.dialog("open");
     };
 
