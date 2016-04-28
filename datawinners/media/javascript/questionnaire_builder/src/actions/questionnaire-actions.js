@@ -37,7 +37,7 @@ var QuestionnaireActions = {
 						actionType: AppConstants.ActionTypes.ERROR_ON_SAVE,
 						data: data.errors
 					});
-				}else {
+				} else {
 					QuestionnaireActions.initQuestionnaire(QuestionnaireStore.getQuestionnaireId(), 'true');
 				}
 

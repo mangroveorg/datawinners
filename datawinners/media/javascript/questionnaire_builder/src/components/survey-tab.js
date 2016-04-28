@@ -13,7 +13,8 @@ const style = {
 		position: 'relative',
     bottom: '22px',
     right: '20px',
-    float: 'right'
+    float: 'right',
+    clear: 'both'
 	},
 	saveButton: {
 		backgroundColor: 'red'

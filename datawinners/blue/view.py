@@ -620,6 +620,7 @@ def _try_parse_xls(manager, request, questionnaire_name, excel_file=None):
 
             return HttpResponse(content_type='application/json', content=json.dumps({
                 'success': False,
+                'status': 'error',
                 'error_msg': info_list,
                 'message_prefix': _("Sorry! Current version of DataWinners does not support"),
                 'message_suffix': _("Update your XLSForm and upload again.")
@@ -653,6 +654,9 @@ def _try_parse_xls(manager, request, questionnaire_name, excel_file=None):
                     "On your \"survey\" sheet the first and second column must be \"type\" and \"name\".  Possible errors:")
             return HttpResponse(content_type='application/json', content=json.dumps({
                 'success': False,
+                'status': 'error',
+                'details': message,
+                'reason': 'Save Failed',
                 'error_msg': [_("Columns are missing"), _("Column name is misspelled"),
                               _("Additional space in column name")],
                 'message_prefix': message_prefix,
@@ -661,6 +665,9 @@ def _try_parse_xls(manager, request, questionnaire_name, excel_file=None):
         else:
             return HttpResponse(content_type='application/json', content=json.dumps({
                 'success': False,
+                'status': 'error',
+                'details': message,
+                'reason': 'Save Failed',
                 'error_msg': [message if message else ugettext(
                     "all XLSForm features. Please check the list of unsupported features.")]
             }))
@@ -670,6 +677,9 @@ def _try_parse_xls(manager, request, questionnaire_name, excel_file=None):
 
         return HttpResponse(content_type='application/json', content=json.dumps({
             'success': False,
+            'status': 'error',
+            'details': e.message,
+            'reason': 'Save Failed',
             'error_msg': [
                 _(
                     "Check your columns for errors.<br>There are missing symbols (like $ for relevant or calculate) or incorrect characters<br>") + _(
@@ -689,7 +699,8 @@ def _try_parse_xls(manager, request, questionnaire_name, excel_file=None):
             odk_message = translate_odk_message(e.message)
         message = odk_message if odk_message else message
         return HttpResponse(content_type='application/json', content=json.dumps({
-            'error_msg': [message], 'success': False,
+            'error_msg': [message], 'success': False, 'status': 'error', 'details': message,
+                'reason': 'Save Failed'
         }))
 
     return xls_parser_response
