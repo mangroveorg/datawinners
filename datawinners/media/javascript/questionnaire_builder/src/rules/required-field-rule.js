@@ -4,7 +4,7 @@ import _ from 'lodash';
 var requiredFieldRule = function (question) {
   let errors = {};
 
-  let errorKey = question.name || question.temp_id || undefined;
+  let errorKey = question.temp_id || question.name || undefined;
 
   if (!errorKey) {
       return {};

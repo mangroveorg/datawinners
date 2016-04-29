@@ -52,8 +52,8 @@ export default class Question extends React.Component {
   //TODO: eventually, we need our own SelectField with name prop
   onChangeForQuestionType = (event,index,value) => {
     this.props.question['type'] = value;
-    this.props.onChange(this.props.question);
     this.formType = FormFactory.getFormForQuestionType(value);
+    this.props.onChange(this.props.question);
   }
 
   onChangeForChoiceType = (event,index,value) => {

@@ -82,6 +82,7 @@ var QuestionnaireActions = {
 			}
 			new_question['type'] = new_question_type;
 			new_question['isNewQuestion'] = true;
+			new_question['isSupported'] = true;
 			new_question['temp_id'] = Math.random();
 			QuestionnaireStore.add(new_question);
 			AppDispatcher.dispatch({
