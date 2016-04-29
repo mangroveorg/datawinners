@@ -4264,8 +4264,32 @@ msgstr "Questions ajoutées"
 msgid "Answer type changed to %(answer_type)s for \"%(question_label)s\""
 msgstr "Type de réponse changé en %(answer_type)s pour \"%(question_label)s\""
 
-msgid "Question Labels Changed"
+msgid "Question Label Changed"
 msgstr "Questions reformulées"
+
+msgid "Question Hint Changed"
+msgstr "Hint modifié"
+
+msgid "Question Constraint message Changed"
+msgstr "Constraint message modifié"
+
+msgid "Question Constraint Changed"
+msgstr "Constraint modifié"
+
+msgid "Question Relevant Changed"
+msgstr "Relevant modifié"
+
+msgid "Question Required Changed"
+msgstr "Required modifié"
+
+msgid "Question Default Changed"
+msgstr "Default modifié"
+
+msgid "Question Appearance Changed"
+msgstr "Appearance modifié
+
+msgid "Question Choice Changed"
+msgstr "Choice modifié"
 
 msgid "Untitled Project"
 msgstr "Projet sans titre"
