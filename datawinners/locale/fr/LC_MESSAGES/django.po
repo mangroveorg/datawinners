@@ -4286,7 +4286,7 @@ msgid "Question Default Changed"
 msgstr "Default modifié"
 
 msgid "Question Appearance Changed"
-msgstr "Appearance modifié
+msgstr "Appearance modifié"
 
 msgid "Question Choice Changed"
 msgstr "Choice modifié"
