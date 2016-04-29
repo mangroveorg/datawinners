@@ -32,7 +32,7 @@ var QuestionnaireActions = {
 					Toastr['error'](data.error_msg, data.message_prefix);
 				}
 
-				if(data.status == 'error') {
+				if(data.status == 'error' && data.errors) {
 					AppDispatcher.dispatch({
 						actionType: AppConstants.ActionTypes.ERROR_ON_SAVE,
 						data: data.errors
