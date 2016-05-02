@@ -143,7 +143,7 @@ class ProjectBuilder(View):
         try:
             if not self._reload_required(request): #Switch to handle unexpected failures
                 excel_as_dict = self._get_pre_computed_questionnaire_as_dict(questionnaire)
-            raw_excel, file_type = questionnaire.has_attachment()[1:]
+            raw_excel, file_type = questionnaire.has_questionnaire_attachment()[1:]
             if excel_as_dict is None:
                 excel_as_dict = convert_excel_to_dict(file_content=raw_excel, file_type=file_type)
                 _save_questionnaire_as_dict_for_builder(questionnaire, excel_as_dict)
@@ -478,7 +478,7 @@ def project_download(request):
     questionnaire = get_form_model_by_code(manager, questionnaire_code)
     project = Project.from_form_model(questionnaire)
     try:
-        raw_excel, file_extension = project.has_attachment()[1:]
+        raw_excel, file_extension = project.has_questionnaire_attachment()[1:]
 
         response = HttpResponse(mimetype="application/vnd.ms-excel", content=raw_excel)
         response['Content-Disposition'] = 'attachment; filename="%s.%s"' % (slugify(project_name), file_extension)
