@@ -23,8 +23,8 @@ class NoteRule(Rule):
     def _update_xform(self, new_fields, old_fields, parent_node, old_xform, new_xform, activity_log_detail):
         for bind_node in old_xform.get_readonly_bind_nodes():
             old_xform.remove_bind_node(bind_node)
-            old_xform.remove_node_given_bind_node(bind_node)
             old_xform.remove_instance_node_given_bind_node(bind_node)
+            old_xform.remove_node_given_bind_node(bind_node)
 
         for bind_node in new_xform.get_readonly_bind_nodes():
             old_xform.add_bind_node(bind_node)
