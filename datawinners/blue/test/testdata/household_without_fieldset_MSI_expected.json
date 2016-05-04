@@ -9,9 +9,7 @@
          "required":"",
          "appearance":"",
          "constraint":"",
-         "relevant":"",
-         "default":"",
-         "constraint_message":""
+         "relevant":""
       },
       {
          "type":"text",
@@ -368,822 +366,822 @@
    ],
    "choices":[
       {
-         "list name":"",
+         "list_name":"",
          "name":"",
          "label":""
       },
       {
-         "list name":"district",
+         "list_name":"district",
          "name":1.0,
          "label":"district 01"
       },
       {
-         "list name":"district",
+         "list_name":"district",
          "name":2.0,
          "label":"district 02"
       },
       {
-         "list name":"district",
+         "list_name":"district",
          "name":3.0,
          "label":"district 03"
       },
       {
-         "list name":"district",
+         "list_name":"district",
          "name":4.0,
          "label":"district 04"
       },
       {
-         "list name":"",
+         "list_name":"",
          "name":"",
          "label":""
       },
       {
-         "list name":"facility",
+         "list_name":"facility",
          "name":1.0,
          "label":"facility 01"
       },
       {
-         "list name":"facility",
+         "list_name":"facility",
          "name":2.0,
          "label":"facility 02"
       },
       {
-         "list name":"facility",
+         "list_name":"facility",
          "name":3.0,
          "label":"facility 03"
       },
       {
-         "list name":"facility",
+         "list_name":"facility",
          "name":4.0,
          "label":"facility 04"
       },
       {
-         "list name":"",
+         "list_name":"",
          "name":"",
          "label":""
       },
       {
-         "list name":"zone",
+         "list_name":"zone",
          "name":1.0,
          "label":"zone 1"
       },
       {
-         "list name":"zone",
+         "list_name":"zone",
          "name":2.0,
          "label":"zone 2"
       },
       {
-         "list name":"zone",
+         "list_name":"zone",
          "name":3.0,
          "label":"zone 3"
       },
       {
-         "list name":"zone",
+         "list_name":"zone",
          "name":4.0,
          "label":"zone 4"
       },
       {
-         "list name":"zone",
+         "list_name":"zone",
          "name":5.0,
          "label":"zone 5"
       },
       {
-         "list name":"zone",
+         "list_name":"zone",
          "name":6.0,
          "label":"zone 6"
       },
       {
-         "list name":"zone",
+         "list_name":"zone",
          "name":7.0,
          "label":"zone 7"
       },
       {
-         "list name":"zone",
+         "list_name":"zone",
          "name":8.0,
          "label":"zone 8"
       },
       {
-         "list name":"zone",
+         "list_name":"zone",
          "name":9.0,
          "label":"zone 9"
       },
       {
-         "list name":"",
+         "list_name":"",
          "name":"",
          "label":""
       },
       {
-         "list name":"result",
+         "list_name":"result",
          "name":"completed",
          "label":"Yes, a competent household member is available"
       },
       {
-         "list name":"result",
+         "list_name":"result",
          "name":"no_member",
          "label":"No competent household member is available"
       },
       {
-         "list name":"result",
+         "list_name":"result",
          "name":"postponed",
          "label":"Postponed"
       },
       {
-         "list name":"result",
+         "list_name":"result",
          "name":"refused",
          "label":"Refused to participate in survey"
       },
       {
-         "list name":"result",
+         "list_name":"result",
          "name":"other",
          "label":"Other"
       },
       {
-         "list name":"",
+         "list_name":"",
          "name":"",
          "label":""
       },
       {
-         "list name":"sex",
+         "list_name":"sex",
          "name":"male",
          "label":"Male"
       },
       {
-         "list name":"sex",
+         "list_name":"sex",
          "name":"female",
          "label":"Female"
       },
       {
-         "list name":"",
+         "list_name":"",
          "name":"",
          "label":""
       },
       {
-         "list name":"relation",
+         "list_name":"relation",
          "name":"head",
          "label":"Head"
       },
       {
-         "list name":"relation",
+         "list_name":"relation",
          "name":"spouse",
          "label":"Spouse"
       },
       {
-         "list name":"relation",
+         "list_name":"relation",
          "name":"child",
          "label":"Child"
       },
       {
-         "list name":"relation",
+         "list_name":"relation",
          "name":"father",
          "label":"Father"
       },
       {
-         "list name":"relation",
+         "list_name":"relation",
          "name":"grand",
          "label":"Grandfather"
       },
       {
-         "list name":"relation",
+         "list_name":"relation",
          "name":"uncle",
          "label":"Uncle"
       },
       {
-         "list name":"relation",
+         "list_name":"relation",
          "name":"cousin",
          "label":"Cousin/Brother"
       },
       {
-         "list name":"relation",
+         "list_name":"relation",
          "name":"nephew",
          "label":"Nephew"
       },
       {
-         "list name":"relation",
+         "list_name":"relation",
          "name":"grandson",
          "label":"Grandson"
       },
       {
-         "list name":"relation",
+         "list_name":"relation",
          "name":"stepson",
          "label":"Stepson"
       },
       {
-         "list name":"relation",
+         "list_name":"relation",
          "name":"adopted",
          "label":"Adopted"
       },
       {
-         "list name":"relation",
+         "list_name":"relation",
          "name":"inlaw",
          "label":"Inlaw"
       },
       {
-         "list name":"relation",
+         "list_name":"relation",
          "name":"no",
          "label":"No relation"
       },
       {
-         "list name":"",
+         "list_name":"",
          "name":"",
          "label":""
       },
       {
-         "list name":"marital",
+         "list_name":"marital",
          "name":"single",
          "label":"Single"
       },
       {
-         "list name":"marital",
+         "list_name":"marital",
          "name":"engaged",
          "label":"Engaged"
       },
       {
-         "list name":"marital",
+         "list_name":"marital",
          "name":"one",
          "label":"Married to one wife"
       },
       {
-         "list name":"marital",
+         "list_name":"marital",
          "name":"more",
          "label":"Married to more than one wife"
       },
       {
-         "list name":"marital",
+         "list_name":"marital",
          "name":"divorced",
          "label":"Divorced"
       },
       {
-         "list name":"marital",
+         "list_name":"marital",
          "name":"widow",
          "label":"Widow"
       },
       {
-         "list name":"marital",
+         "list_name":"marital",
          "name":"separation",
          "label":"On separation"
       },
       {
-         "list name":"",
+         "list_name":"",
          "name":"",
          "label":""
       },
       {
-         "list name":"occupation",
+         "list_name":"occupation",
          "name":"crop",
          "label":"Crop/Vegetables farming/sales"
       },
       {
-         "list name":"occupation",
+         "list_name":"occupation",
          "name":"livestock",
          "label":"Livestock production/sales"
       },
       {
-         "list name":"occupation",
+         "list_name":"occupation",
          "name":"pension",
          "label":"Pension/Gifts/Remittances/Cash transfer"
       },
       {
-         "list name":"occupation",
+         "list_name":"occupation",
          "name":"trade",
          "label":"Skilled trade"
       },
       {
-         "list name":"occupation",
+         "list_name":"occupation",
          "name":"labour",
          "label":"Casual labour"
       },
       {
-         "list name":"occupation",
+         "list_name":"occupation",
          "name":"business",
          "label":"Small business/fishing/small scale mining/brewing"
       },
       {
-         "list name":"occupation",
+         "list_name":"occupation",
          "name":"salary",
          "label":"Formal wages/salary"
       },
       {
-         "list name":"occupation",
+         "list_name":"occupation",
          "name":"sex",
          "label":"Commercial Sex worker"
       },
       {
-         "list name":"occupation",
+         "list_name":"occupation",
          "name":"dependant",
          "label":"Dependant"
       },
       {
-         "list name":"occupation",
+         "list_name":"occupation",
          "name":"school",
          "label":"In School/College/University"
       },
       {
-         "list name":"occupation",
+         "list_name":"occupation",
          "name":"other",
          "label":"Other"
       },
       {
-         "list name":"",
+         "list_name":"",
          "name":"",
          "label":""
       },
       {
-         "list name":"education",
+         "list_name":"education",
          "name":"never",
          "label":"Never attended School"
       },
       {
-         "list name":"education",
+         "list_name":"education",
          "name":"grade1_4",
          "label":"Grade 1 - 4"
       },
       {
-         "list name":"education",
+         "list_name":"education",
          "name":"grade5_7",
          "label":"Grade 5 - 7"
       },
       {
-         "list name":"education",
+         "list_name":"education",
          "name":"grade8_9",
          "label":"Grade 8 - 9"
       },
       {
-         "list name":"education",
+         "list_name":"education",
          "name":"grade10_12",
          "label":"Grade 10 - 12"
       },
       {
-         "list name":"education",
+         "list_name":"education",
          "name":"prof_certificate",
          "label":"Professional Certificate"
       },
       {
-         "list name":"education",
+         "list_name":"education",
          "name":"diploma",
          "label":"Diploma"
       },
       {
-         "list name":"education",
+         "list_name":"education",
          "name":"university",
          "label":"University Degree & above"
       },
       {
-         "list name":"",
+         "list_name":"",
          "name":"",
          "label":""
       },
       {
-         "list name":"visit_status",
+         "list_name":"visit_status",
          "name":"pre_awareness",
          "label":"Pre-awareness"
       },
       {
-         "list name":"visit_status",
+         "list_name":"visit_status",
          "name":"awareness",
          "label":"Awareness"
       },
       {
-         "list name":"visit_status",
+         "list_name":"visit_status",
          "name":"circumcised",
          "label":"Decided to go for circumcision"
       },
       {
-         "list name":"",
+         "list_name":"",
          "name":"",
          "label":""
       },
       {
-         "list name":"age",
+         "list_name":"age",
          "name":7.0,
          "label":7.0
       },
       {
-         "list name":"age",
+         "list_name":"age",
          "name":8.0,
          "label":8.0
       },
       {
-         "list name":"age",
+         "list_name":"age",
          "name":9.0,
          "label":9.0
       },
       {
-         "list name":"age",
+         "list_name":"age",
          "name":10.0,
          "label":10.0
       },
       {
-         "list name":"age",
+         "list_name":"age",
          "name":11.0,
          "label":11.0
       },
       {
-         "list name":"age",
+         "list_name":"age",
          "name":12.0,
          "label":12.0
       },
       {
-         "list name":"age",
+         "list_name":"age",
          "name":13.0,
          "label":13.0
       },
       {
-         "list name":"age",
+         "list_name":"age",
          "name":14.0,
          "label":14.0
       },
       {
-         "list name":"age",
+         "list_name":"age",
          "name":15.0,
          "label":15.0
       },
       {
-         "list name":"age",
+         "list_name":"age",
          "name":16.0,
          "label":16.0
       },
       {
-         "list name":"age",
+         "list_name":"age",
          "name":17.0,
          "label":17.0
       },
       {
-         "list name":"age",
+         "list_name":"age",
          "name":18.0,
          "label":18.0
       },
       {
-         "list name":"age",
+         "list_name":"age",
          "name":19.0,
          "label":19.0
       },
       {
-         "list name":"age",
+         "list_name":"age",
          "name":20.0,
          "label":20.0
       },
       {
-         "list name":"age",
+         "list_name":"age",
          "name":21.0,
          "label":21.0
       },
       {
-         "list name":"age",
+         "list_name":"age",
          "name":22.0,
          "label":22.0
       },
       {
-         "list name":"age",
+         "list_name":"age",
          "name":23.0,
          "label":23.0
       },
       {
-         "list name":"age",
+         "list_name":"age",
          "name":24.0,
          "label":24.0
       },
       {
-         "list name":"age",
+         "list_name":"age",
          "name":25.0,
          "label":25.0
       },
       {
-         "list name":"age",
+         "list_name":"age",
          "name":26.0,
          "label":26.0
       },
       {
-         "list name":"age",
+         "list_name":"age",
          "name":27.0,
          "label":27.0
       },
       {
-         "list name":"age",
+         "list_name":"age",
          "name":28.0,
          "label":28.0
       },
       {
-         "list name":"age",
+         "list_name":"age",
          "name":29.0,
          "label":29.0
       },
       {
-         "list name":"age",
+         "list_name":"age",
          "name":30.0,
          "label":30.0
       },
       {
-         "list name":"age",
+         "list_name":"age",
          "name":31.0,
          "label":31.0
       },
       {
-         "list name":"age",
+         "list_name":"age",
          "name":32.0,
          "label":32.0
       },
       {
-         "list name":"age",
+         "list_name":"age",
          "name":33.0,
          "label":33.0
       },
       {
-         "list name":"age",
+         "list_name":"age",
          "name":34.0,
          "label":34.0
       },
       {
-         "list name":"age",
+         "list_name":"age",
          "name":35.0,
          "label":35.0
       },
       {
-         "list name":"age",
+         "list_name":"age",
          "name":36.0,
          "label":36.0
       },
       {
-         "list name":"age",
+         "list_name":"age",
          "name":37.0,
          "label":37.0
       },
       {
-         "list name":"age",
+         "list_name":"age",
          "name":38.0,
          "label":38.0
       },
       {
-         "list name":"age",
+         "list_name":"age",
          "name":39.0,
          "label":39.0
       },
       {
-         "list name":"age",
+         "list_name":"age",
          "name":40.0,
          "label":40.0
       },
       {
-         "list name":"age",
+         "list_name":"age",
          "name":41.0,
          "label":41.0
       },
       {
-         "list name":"age",
+         "list_name":"age",
          "name":42.0,
          "label":42.0
       },
       {
-         "list name":"age",
+         "list_name":"age",
          "name":43.0,
          "label":43.0
       },
       {
-         "list name":"age",
+         "list_name":"age",
          "name":44.0,
          "label":44.0
       },
       {
-         "list name":"age",
+         "list_name":"age",
          "name":45.0,
          "label":45.0
       },
       {
-         "list name":"age",
+         "list_name":"age",
          "name":46.0,
          "label":46.0
       },
       {
-         "list name":"age",
+         "list_name":"age",
          "name":47.0,
          "label":47.0
       },
       {
-         "list name":"age",
+         "list_name":"age",
          "name":48.0,
          "label":48.0
       },
       {
-         "list name":"age",
+         "list_name":"age",
          "name":49.0,
          "label":49.0
       },
       {
-         "list name":"age",
+         "list_name":"age",
          "name":50.0,
          "label":50.0
       },
       {
-         "list name":"age",
+         "list_name":"age",
          "name":51.0,
          "label":51.0
       },
       {
-         "list name":"age",
+         "list_name":"age",
          "name":52.0,
          "label":52.0
       },
       {
-         "list name":"age",
+         "list_name":"age",
          "name":53.0,
          "label":53.0
       },
       {
-         "list name":"age",
+         "list_name":"age",
          "name":54.0,
          "label":54.0
       },
       {
-         "list name":"age",
+         "list_name":"age",
          "name":55.0,
          "label":55.0
       },
       {
-         "list name":"age",
+         "list_name":"age",
          "name":56.0,
          "label":56.0
       },
       {
-         "list name":"age",
+         "list_name":"age",
          "name":57.0,
          "label":57.0
       },
       {
-         "list name":"age",
+         "list_name":"age",
          "name":58.0,
          "label":58.0
       },
       {
-         "list name":"age",
+         "list_name":"age",
          "name":59.0,
          "label":59.0
       },
       {
-         "list name":"age",
+         "list_name":"age",
          "name":60.0,
          "label":60.0
       },
       {
-         "list name":"age",
+         "list_name":"age",
          "name":61.0,
          "label":61.0
       },
       {
-         "list name":"age",
+         "list_name":"age",
          "name":62.0,
          "label":62.0
       },
       {
-         "list name":"age",
+         "list_name":"age",
          "name":63.0,
          "label":63.0
       },
       {
-         "list name":"age",
+         "list_name":"age",
          "name":64.0,
          "label":64.0
       },
       {
-         "list name":"age",
+         "list_name":"age",
          "name":65.0,
          "label":65.0
       },
       {
-         "list name":"age",
+         "list_name":"age",
          "name":66.0,
          "label":66.0
       },
       {
-         "list name":"age",
+         "list_name":"age",
          "name":67.0,
          "label":67.0
       },
       {
-         "list name":"age",
+         "list_name":"age",
          "name":68.0,
          "label":68.0
       },
       {
-         "list name":"age",
+         "list_name":"age",
          "name":69.0,
          "label":69.0
       },
       {
-         "list name":"age",
+         "list_name":"age",
          "name":70.0,
          "label":70.0
       },
       {
-         "list name":"age",
+         "list_name":"age",
          "name":71.0,
          "label":71.0
       },
       {
-         "list name":"age",
+         "list_name":"age",
          "name":72.0,
          "label":72.0
       },
       {
-         "list name":"age",
+         "list_name":"age",
          "name":73.0,
          "label":73.0
       },
       {
-         "list name":"age",
+         "list_name":"age",
          "name":74.0,
          "label":74.0
       },
       {
-         "list name":"age",
+         "list_name":"age",
          "name":75.0,
          "label":75.0
       },
       {
-         "list name":"age",
+         "list_name":"age",
          "name":76.0,
          "label":76.0
       },
       {
-         "list name":"age",
+         "list_name":"age",
          "name":77.0,
          "label":77.0
       },
       {
-         "list name":"age",
+         "list_name":"age",
          "name":78.0,
          "label":78.0
       },
       {
-         "list name":"age",
+         "list_name":"age",
          "name":79.0,
          "label":79.0
       },
       {
-         "list name":"age",
+         "list_name":"age",
          "name":80.0,
          "label":80.0
       },
       {
-         "list name":"age",
+         "list_name":"age",
          "name":81.0,
          "label":81.0
       },
       {
-         "list name":"age",
+         "list_name":"age",
          "name":82.0,
          "label":82.0
       },
       {
-         "list name":"age",
+         "list_name":"age",
          "name":83.0,
          "label":83.0
       },
       {
-         "list name":"age",
+         "list_name":"age",
          "name":84.0,
          "label":84.0
       },
       {
-         "list name":"age",
+         "list_name":"age",
          "name":85.0,
          "label":85.0
       },
       {
-         "list name":"age",
+         "list_name":"age",
          "name":86.0,
          "label":86.0
       },
       {
-         "list name":"age",
+         "list_name":"age",
          "name":87.0,
          "label":87.0
       },
       {
-         "list name":"age",
+         "list_name":"age",
          "name":88.0,
          "label":88.0
       },
       {
-         "list name":"age",
+         "list_name":"age",
          "name":89.0,
          "label":89.0
       },
       {
-         "list name":"age",
+         "list_name":"age",
          "name":90.0,
          "label":90.0
       },
       {
-         "list name":"",
+         "list_name":"",
          "name":"",
          "label":""
       },
       {
-         "list name":"response",
+         "list_name":"response",
          "name":"yes",
          "label":"Yes"
       },
       {
-         "list name":"response",
+         "list_name":"response",
          "name":"no",
          "label":"No"
       }
