@@ -9,7 +9,9 @@
          "required":"",
          "appearance":"",
          "constraint":"",
-         "relevant":""
+         "relevant":"",
+         "default":"",
+         "constraint_message":""
       },
       {
          "type":"text",
