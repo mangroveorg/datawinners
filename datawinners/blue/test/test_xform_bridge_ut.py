@@ -392,7 +392,7 @@ class TestXformBridge(unittest.TestCase):
                                   'default': None, 'hint': None, 'appearance': None,
                                   'name': u'Sex_other',
                                   'instruction': 'Answer must be a word',
-                                  'is_entity_question': False, 'type': u'text'})
+                                  'is_entity_question': False, 'type': u'text', 'is_other': True})
 
     def test_should_return_correct_date_format_for_year_or_monthyear_appearance(self):
         with patch('datawinners.blue.xform_bridge.parse_file_to_json') as get_xform_dict:
