@@ -1,0 +1,32 @@
+[
+  {
+    "pk" : 1,
+    "model" : "feature_toggle.feature",
+    "fields" : {
+      "name" : "questionnaire_builder"
+    }
+  },
+  {
+    "pk" : 2,
+    "model" : "feature_toggle.feature",
+    "fields" : {
+      "name" : "xlsform_edit"
+    }
+  },
+  {
+    "pk" : 1,
+    "model" : "feature_toggle.featuresubscription",
+    "fields" : {
+      "feature" : 1,
+      "organizations" : ["SLX364903"]
+    }
+  },
+  {
+    "pk" : 2,
+    "model" : "feature_toggle.featuresubscription",
+    "fields" : {
+      "feature" : 2,
+      "organizations" : ["SLX364903"]
+    }
+  }
+]

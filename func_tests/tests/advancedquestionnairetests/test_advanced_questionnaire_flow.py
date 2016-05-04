@@ -407,3 +407,16 @@ class TestAdvancedQuestionnaireEndToEnd(HeadlessRunnerTest):
         self.assertTrue(web_submission_page.has_choice(9, "Bomi"))
         web_submission_page.select_choice(9, 0)
         self.assertTrue(web_submission_page.has_choice(10, "Klay"))
+
+    @attr('functional_test')
+    def test_should_edit_via_builder(self):
+        self.project_name = random_string()
+        self.client.login(username="rasitefa@mailinator.com", password="test123")
+        form_code = self._verify_questionnaire_creation(self.project_name, 'simple_advance_questionnaire.xls')
+        self.assertEqual(len(form_code), 3)
+        projects_page = self.global_navigation_page.navigate_to_view_all_project_page()
+        projects_page.navigate_to_project_overview_page(self.project_name).navigate_to_questionnaire_tab()
+        # edit label and save
+        # assert the label changed in web submission
+        # assert the label changed in submission page
+        pass
