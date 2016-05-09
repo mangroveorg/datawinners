@@ -91,9 +91,19 @@ def show_log(request):
                 text_details += "<ul class='bulleted'>"
                 for key,value in details.iteritems():
                     question = unicode(value['question'])
-                    old_data_value = str(value['old'])
-                    new_data_value = str(value['new'])
-                    text_details += '<li>'+ question + ': "' + old_data_value + '" ' + _("to") + ' "' + new_data_value +'"</li>'
+                    #if value['old'] and value['new']:
+                    try:
+                        old_data_value = str(value['old'])
+                        new_data_value = str(value['new'])
+                        text_details += '<li>'+ question + ': "' + old_data_value + '" ' + _("to") + ' "' + new_data_value +'"</li>'
+                    #except :
+                        #new_data_value = str(value['new'])
+                        #text_details += '<li>'+ _("New node: ") + '</br>' + question + ':' + new_data_value +'"</li>'
+                    #else :
+                        #old_data_value = str(value['old'])
+                        #text_details += '<li>'+ _("Delete node: ") + '</br>' + question + ':' + old_data_value +'"</li>'
+                    except (ValueError, IndexError):
+                        entry.detail = _(entry.detail)
                 text_details += "</ul>"
                 entry.detail = text_details
 
