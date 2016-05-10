@@ -5,35 +5,45 @@ from selenium.webdriver.support.select import Select
 from framework.utils.common_utils import by_css, by_id, generateId, CommonUtilities, by_xpath, by_name
 from framework.utils.data_fetcher import fetch_, from_
 from framework.utils.global_constant import WAIT_FOR_TITLE
-from pages.createdatasenderquestionnairepage.create_data_sender_questionnaire_page import CreateDataSenderQuestionnairePage
-from pages.createprojectpage.create_project_locator import PROJECT_NAME_TB, SAVE_AND_CREATE_BTN, INFORM_DATASENDERS_OK_BUTTON_BY_CSS
-from pages.createquestionnairepage.create_questionnaire_locator import ADD_A_QUESTION_LINK, CHARACTER_LIMIT_RB, WORD_OR_PHRASE_MAX_LENGTH_TB, QUESTIONNAIRE_CODE_TB, SAVE_CHANGES_BTN, QUESTION_TB, WORD_OR_PHRASE, ANSWER_TYPE_DROPDOWN, NO_CHARACTER_LIMIT_RB, NUMBER_OPTION, NUMBER_MIN_LENGTH_TB, NUMBER_MAX_LENGTH_TB, MONTH_YEAR_RB, DATE_OPTION, MULTIPLE_ANSWER_RB, ONLY_ONE_ANSWER_RB, CHOICE_XPATH_LOCATOR, CHOICE_TB_XPATH_LOCATOR, QUESTION_LINK_CSS_LOCATOR_PART1, QUESTION_LINK_CSS_LOCATOR_PART2, CURRENT_QUESTION_TYPE_LOCATOR, PERIOD_QUESTION_TIP_CSS_LOCATOR, DATE_MONTH_YEAR_RB, MONTH_DATE_YEAR_RB, BACK_LINK, GPS_COORDINATES, LIST_OF_CHOICES_OPTION, ADD_CHOICE_LINK, \
+from pages.createdatasenderquestionnairepage.create_data_sender_questionnaire_page import \
+    CreateDataSenderQuestionnairePage
+from pages.createprojectpage.create_project_locator import PROJECT_NAME_TB, SAVE_AND_CREATE_BTN, \
+    INFORM_DATASENDERS_OK_BUTTON_BY_CSS
+from pages.createquestionnairepage.create_questionnaire_locator import ADD_A_QUESTION_LINK, CHARACTER_LIMIT_RB, \
+    WORD_OR_PHRASE_MAX_LENGTH_TB, QUESTIONNAIRE_CODE_TB, SAVE_CHANGES_BTN, QUESTION_TB, WORD_OR_PHRASE, \
+    ANSWER_TYPE_DROPDOWN, NO_CHARACTER_LIMIT_RB, NUMBER_OPTION, NUMBER_MIN_LENGTH_TB, NUMBER_MAX_LENGTH_TB, \
+    MONTH_YEAR_RB, DATE_OPTION, MULTIPLE_ANSWER_RB, ONLY_ONE_ANSWER_RB, CHOICE_XPATH_LOCATOR, CHOICE_TB_XPATH_LOCATOR, \
+    QUESTION_LINK_CSS_LOCATOR_PART1, QUESTION_LINK_CSS_LOCATOR_PART2, CURRENT_QUESTION_TYPE_LOCATOR, \
+    PERIOD_QUESTION_TIP_CSS_LOCATOR, DATE_MONTH_YEAR_RB, MONTH_DATE_YEAR_RB, BACK_LINK, GPS_COORDINATES, \
+    LIST_OF_CHOICES_OPTION, ADD_CHOICE_LINK, \
     CHARACTER_COUNT, LAST_QUESTION_LINK_LOCATOR, CODE_TB, PREVIOUS_STEP_LINK, CHOICE_S_XPATH_LOCATOR, \
-    UNIQUE_ID_CHOICE_BOX, UNIQUE_ID_TYPE_LIST, UNIQUE_ID_COMBO_BOX, UNIQUE_ID_OPTION, NEW_UNIQUE_ID_TEXT, NEW_UNIQUE_ID_ADD_BUTTON
+    UNIQUE_ID_CHOICE_BOX, UNIQUE_ID_TYPE_LIST, UNIQUE_ID_COMBO_BOX, UNIQUE_ID_OPTION, NEW_UNIQUE_ID_TEXT, \
+    NEW_UNIQUE_ID_ADD_BUTTON
 from pages.page import Page
 from pages.projectoverviewpage.project_overview_page import ProjectOverviewPage
 from pages.warningdialog.questionnaire_modified_dialog import QuestionnaireModifiedDialog
-from tests.projects.questionnairetests.project_questionnaire_data import TYPE, PROJECT_NAME, GEN_RANDOM, QUESTIONS, QUESTIONNAIRE_CODE, QUESTION, LIMIT, LIMITED, NO_LIMIT, MAX, MIN, MM_YYYY, ONLY_ONE_ANSWER, MULTIPLE_ANSWERS, CHOICE, MM_DD_YYYY, DD_MM_YYYY, GEO, CODE, ALLOWED_CHOICE, LIST_OF_CHOICES, WORD, NUMBER, DATE, DATE_FORMAT, \
+from tests.projects.questionnairetests.project_questionnaire_data import TYPE, PROJECT_NAME, GEN_RANDOM, QUESTIONS, \
+    QUESTIONNAIRE_CODE, QUESTION, LIMIT, LIMITED, NO_LIMIT, MAX, MIN, MM_YYYY, ONLY_ONE_ANSWER, MULTIPLE_ANSWERS, \
+    CHOICE, MM_DD_YYYY, DD_MM_YYYY, GEO, CODE, ALLOWED_CHOICE, LIST_OF_CHOICES, WORD, NUMBER, DATE, DATE_FORMAT, \
     UNIQUE_ID, EXISTING_UNIQUE_ID_TYPE, NEW_UNIQUE_ID_TYPE
 from tests.testsettings import UI_TEST_TIMEOUT
-
 
 SUCCESS_PROJECT_SAVE_MESSAGE = "Your changes have been saved."
 DUPLICATE_QUESTIONNAIRE_CODE_MESSAGE = "Questionnaire with same code already exists."
 MANDATORY_FIELD_ERROR_MESSAGE = "This field is required."
 
-class QuestionnaireTabPage(Page):
 
+class QuestionnaireTabPage(Page):
     def __init__(self, driver):
         Page.__init__(self, driver)
         self.SELECT_FUNC = {
-                                WORD: self.configure_word_type_question,
-                                NUMBER: self.configure_number_type_question,
-                                DATE: self.configure_date_type_question,
-                                LIST_OF_CHOICES: self.configure_list_of_choices_type_question,
+            WORD: self.configure_word_type_question,
+            NUMBER: self.configure_number_type_question,
+            DATE: self.configure_date_type_question,
+            LIST_OF_CHOICES: self.configure_list_of_choices_type_question,
             GEO: self.configure_geo_type_question,
             UNIQUE_ID: self.configure_unique_id_type_question
-                            }
+        }
 
     def create_questionnaire_with(self, project_data, questionnaire_data):
         """
@@ -58,7 +68,6 @@ class QuestionnaireTabPage(Page):
         for question in fetch_(QUESTIONS, from_(questionnaire_data)):
             self.add_question(question)
 
-
     def get_questionnaire_title(self):
         return self.driver.find_text_box(by_id("questionnaire_title")).text
 
@@ -68,7 +77,6 @@ class QuestionnaireTabPage(Page):
     def get_existing_question_list(self):
         questions = self.driver.find_elements_(by_css("#qns_list li > a"))
         return [question.text for question in questions]
-
 
     def type_project_name(self, project_data):
         project_name = fetch_(PROJECT_NAME, from_(project_data))
@@ -138,7 +146,6 @@ class QuestionnaireTabPage(Page):
         self.fill_question_title(question_data)
         return self
 
-
     def fill_question_title(self, question_data):
         """
         Function to fill the question and code text box on the questionnaire page
@@ -151,7 +158,6 @@ class QuestionnaireTabPage(Page):
         self.driver.wait_for_element(UI_TEST_TIMEOUT, QUESTION_TB, True)
         self.driver.find_text_box(QUESTION_TB).enter_text(fetch_(QUESTION, from_(question_data)))
         return self
-
 
     def configure_word_type_question(self, question_data):
         """
@@ -171,7 +177,6 @@ class QuestionnaireTabPage(Page):
             self.driver.find_radio_button(NO_CHARACTER_LIMIT_RB).click()
         return self
 
-
     def change_answer_type_to_choice_question(self):
         self.driver.find_drop_down(ANSWER_TYPE_DROPDOWN).set_selected(LIST_OF_CHOICES_OPTION)
 
@@ -188,7 +193,6 @@ class QuestionnaireTabPage(Page):
         self.driver.find_text_box(NUMBER_MIN_LENGTH_TB).enter_text(fetch_(MIN, from_(question_data)))
         self.driver.find_text_box(NUMBER_MAX_LENGTH_TB).enter_text(fetch_(MAX, from_(question_data)))
         return self
-
 
     def configure_date_type_question(self, question_data):
         """
@@ -209,7 +213,6 @@ class QuestionnaireTabPage(Page):
             self.driver.find_radio_button(MONTH_DATE_YEAR_RB).click()
         return self
 
-
     def configure_list_of_choices_type_question(self, question_data):
         """
         Function to select list of choices option and add the choices on the questionnaire page
@@ -226,7 +229,7 @@ class QuestionnaireTabPage(Page):
         for choice in choices:
             if index > 1:
                 self.driver.find(ADD_CHOICE_LINK).click()
-                box = self.driver.find_text_box(by_id("choice_text%d" % (index-1)))
+                box = self.driver.find_text_box(by_id("choice_text%d" % (index - 1)))
                 box.send_keys(choice)
             index += 1
         box = self.driver.find_text_box(by_xpath(CHOICE_XPATH_LOCATOR + "[1]" + CHOICE_TB_XPATH_LOCATOR))
@@ -280,7 +283,6 @@ class QuestionnaireTabPage(Page):
         self.driver.find_drop_down(ANSWER_TYPE_DROPDOWN).set_selected(GPS_COORDINATES)
         return self
 
-
     def get_success_message(self):
         """
         Function to fetch the success message from label of the questionnaire page
@@ -299,8 +301,6 @@ class QuestionnaireTabPage(Page):
         error_msg = self.driver.wait_for_element(UI_TEST_TIMEOUT, by_css("#questionnaire_code_validation_message"))
         return error_msg.text
 
-
-
     def get_remaining_character_count(self):
         """
         Function to fetch the remaining character count from label of the questionnaire page
@@ -308,7 +308,6 @@ class QuestionnaireTabPage(Page):
         Return success message
         """
         return self.driver.find(CHARACTER_COUNT).text
-
 
     def get_question_link_text(self, question_number):
         """
@@ -319,7 +318,7 @@ class QuestionnaireTabPage(Page):
 
         Return link text
         """
-        question_locator = by_xpath("//ol/li[%s]/a"%(question_number))
+        question_locator = by_xpath("//ol/li[%s]/a" % (question_number))
         return self.driver.find(question_locator).text
 
     def get_last_question_link_text(self):
@@ -336,7 +335,6 @@ class QuestionnaireTabPage(Page):
             question_number) + ")" + QUESTION_LINK_CSS_LOCATOR_PART2
         self.driver.find(by_css(question_locator)).click()
 
-
     def get_question(self):
         """
         Function to fetch the question text on the questionnaire page
@@ -344,7 +342,6 @@ class QuestionnaireTabPage(Page):
         return question
         """
         return self.driver.find_text_box(QUESTION_TB).get_attribute("value")
-
 
     def get_question_code(self):
         """
@@ -362,7 +359,6 @@ class QuestionnaireTabPage(Page):
 
         return self.driver.find_element_by_css_selector(".select_question_message")
 
-
     def navigate_to_previous_step(self):
         """
         Function to go on subject questionnaire page
@@ -370,17 +366,16 @@ class QuestionnaireTabPage(Page):
         Return self
         """
         self.driver.find(PREVIOUS_STEP_LINK).click()
-        from pages.createsubjectquestionnairepage.create_subject_questionnaire_page import CreateSubjectQuestionnairePage
+        from pages.createsubjectquestionnairepage.create_subject_questionnaire_page import \
+            CreateSubjectQuestionnairePage
 
         return CreateSubjectQuestionnairePage(self.driver)
-
 
     def get_page_title(self):
         try:
             return self.driver.find_element_by_css_selector('.project_title').text
         except NoSuchElementException:
             return ""
-
 
     def get_word_type_question(self):
         """
@@ -400,7 +395,6 @@ class QuestionnaireTabPage(Page):
         question[CODE] = self.get_question_code()
         return question
 
-
     def get_number_type_question(self):
         """
         Function to get the number option and the details min or max on the questionnaire page
@@ -415,7 +409,6 @@ class QuestionnaireTabPage(Page):
         question[QUESTION] = self.get_question()
         question[CODE] = self.get_question_code()
         return question
-
 
     def get_date_type_question(self):
         """
@@ -436,7 +429,6 @@ class QuestionnaireTabPage(Page):
         question[CODE] = self.get_question_code()
         return question
 
-
     def get_list_of_choices_type_question(self):
         """
         Function to get the list of choices question option on the questionnaire page
@@ -446,15 +438,15 @@ class QuestionnaireTabPage(Page):
         question = dict()
         if self.driver.find_drop_down(ANSWER_TYPE_DROPDOWN).is_selected(LIST_OF_CHOICES_OPTION):
             question[TYPE] = LIST_OF_CHOICES
-            #options_tbs = self.driver.find_elements_(by_xpath(CHOICE_XPATH_LOCATOR))
+            # options_tbs = self.driver.find_elements_(by_xpath(CHOICE_XPATH_LOCATOR))
         options_tbs = self.driver.find_elements_(by_xpath(CHOICE_XPATH_LOCATOR + CHOICE_TB_XPATH_LOCATOR))
         count = options_tbs.__len__() + 1
         choices = []
         index = 1
         for options_tb in options_tbs:
-        #while index < count:
-            #choices.append(self.driver.find_text_box(by_xpath(CHOICE_XPATH_LOCATOR + "[" + str(index) + "]" + CHOICE_TB_XPATH_LOCATOR)).get_attribute("value"))
-            #index = index + 1
+            # while index < count:
+            # choices.append(self.driver.find_text_box(by_xpath(CHOICE_XPATH_LOCATOR + "[" + str(index) + "]" + CHOICE_TB_XPATH_LOCATOR)).get_attribute("value"))
+            # index = index + 1
             choices.append(options_tb.get_attribute("value"))
         question[CHOICE] = choices
 
@@ -466,7 +458,6 @@ class QuestionnaireTabPage(Page):
         question[QUESTION] = self.get_question()
         question[CODE] = self.get_question_code()
         return question
-
 
     def get_geo_type_question(self):
         """
@@ -487,7 +478,6 @@ class QuestionnaireTabPage(Page):
     def get_questionnaire_code(self):
         return self.driver.find_text_box(QUESTIONNAIRE_CODE_TB).get_attribute("value")
 
-
     def get_option_by_index_for_multiple_choice_question(self, index):
         code = self.driver.find(by_xpath(CHOICE_XPATH_LOCATOR + "[" + str(index) + "]" + CHOICE_S_XPATH_LOCATOR)).text
         text = self.driver.find_text_box(
@@ -495,8 +485,7 @@ class QuestionnaireTabPage(Page):
         return {'code': code, 'text': text}
 
     def delete_option_for_multiple_choice_question(self, index):
-        self.driver.find(by_id("delete_choice%d" % (index-1))).click()
-
+        self.driver.find(by_id("delete_choice%d" % (index - 1))).click()
 
     def change_date_type_question(self, date_format):
         if date_format == MM_YYYY:
@@ -528,8 +517,8 @@ class QuestionnaireTabPage(Page):
         Function change a text of one question
 
         """
-        self.driver.find_elements_(by_css(".questions li"))[index-1].click()
-        self.driver.find_elements_(by_css(".questions li .delete_link"))[index-1].click()
+        self.driver.find_elements_(by_css(".questions li"))[index - 1].click()
+        self.driver.find_elements_(by_css(".questions li .delete_link"))[index - 1].click()
 
     def get_question_type(self, index):
         question_locator = QUESTION_LINK_CSS_LOCATOR_PART1 + ":nth-child(" + str(
@@ -538,17 +527,16 @@ class QuestionnaireTabPage(Page):
         return self.driver.find(CURRENT_QUESTION_TYPE_LOCATOR).get_attribute("value")
 
     def get_nth_option_of_choice(self, index):
-        return self.driver.find(by_id("choice_text%d" % (index-1)))
+        return self.driver.find(by_id("choice_text%d" % (index - 1)))
 
     def get_nth_option_choice_text(self, index):
         try:
-            return self.driver.find(by_id("choice_text%d" % (index-1))).get_attribute('value')
+            return self.driver.find(by_id("choice_text%d" % (index - 1))).get_attribute('value')
         except NoSuchElementException:
             return ""
 
-
     def change_nth_option_of_choice(self, index, new_text):
-        self.driver.find_text_box(by_id("choice_text%d" % (index-1))).enter_text(new_text)
+        self.driver.find_text_box(by_id("choice_text%d" % (index - 1))).enter_text(new_text)
 
     def change_number_question_limit(self, max_value, min_value=0):
         self.set_min_range_limit(min_value)
@@ -586,7 +574,6 @@ class QuestionnaireTabPage(Page):
         locator = comm_utils.is_element_present(INFORM_DATASENDERS_OK_BUTTON_BY_CSS)
         if locator and locator.is_displayed():
             locator.click()
-
 
     def change_question_type(self, question):
         self.SELECT_FUNC[fetch_(TYPE, from_(question))](question)
@@ -640,7 +627,7 @@ class QuestionnaireTabPage(Page):
         return self._get_validation_message_for("questionnaire_code_validation_message")
 
     def get_choice_error_message(self, index):
-        return self._get_validation_message_for("choice_validation_message%d" % (index-1))
+        return self._get_validation_message_for("choice_validation_message%d" % (index - 1))
 
     def get_duplicate_questionnaire_code_error_message(self):
         self.driver.wait_for_element(UI_TEST_TIMEOUT, by_css("#questionnaire_code_validation_message"), True)
@@ -677,7 +664,6 @@ class QuestionnaireTabPage(Page):
         # self.driver.wait_for_element(UI_TEST_TIMEOUT, by_xpath(".//*[@id='project_profile']/h5"), True)
         return QuestionnaireCreationOptionsPage(self.driver)
 
-
     def save_and_create_project_successfully(self, click_ok=True):
         self.driver.find(SAVE_AND_CREATE_BTN).click()
         self.driver.wait_for_page_with_title(UI_TEST_TIMEOUT, "Questionnaires - Overview")
@@ -696,3 +682,40 @@ class QuestionnaireTabPage(Page):
         if click_ok:
             self.got_redistribute_questionnaire_message()
         return self
+
+    def select_question_in_builder(self, index):
+        self.driver.find(by_css(
+            '#questionnaire_builder > div > div > div:nth-child(2) > div:nth-child(3) > div:nth-child(1) > div > div:nth-child(' + str(
+                index) + ') > div > div:nth-child(1)')).click()
+
+    def select_choice_for_question_in_builder(self, question_index, choice_index):
+        self.driver.find(by_css(
+            'body > div:nth-child(' + str(question_index) + ') > div > div > div > div:nth-child(' + str(
+                choice_index) + ') > span ')).click()
+
+    def add_question_in_builder_at(self, index):
+        self.driver.find(by_css(
+            '#questionnaire_builder > div > div > div:nth-child(2) > div:nth-child(3) > div:nth-child(1) > div > div:nth-child(' + str(
+                index) + ') > div > button')).click()
+
+    def set_question_label_in_builder(self, index, label):
+        self.driver.find_elements_by_name('label')[index].clear()
+        self.driver.find_elements_by_name('label')[index].send_keys(label)
+
+    def set_question_hint_in_builder(self, index, hint):
+        self.driver.find_elements_by_name('hint')[index].clear()
+        self.driver.find_elements_by_name('hint')[index].send_keys(hint)
+
+    def set_question_name_in_builder(self, index, name):
+        self.driver.find_elements_by_name('name')[index].clear()
+        self.driver.find_elements_by_name('name')[index].send_keys(name)
+
+    def select_question_type_in_builder(self, index):
+        self.driver.find_elements_by_name('type')[index].click()
+
+    def save_questionnaire_in_builder(self):
+        self.driver.find(by_css(
+            '#questionnaire_builder > div > div > div:nth-child(1) > div:nth-child(2) > div:nth-child(3) > button > div > div')).click()
+
+    def get_save_success_message(self):
+        return self.driver.wait_for_element(UI_TEST_TIMEOUT, by_css("#toast-container .toast-success")).text
