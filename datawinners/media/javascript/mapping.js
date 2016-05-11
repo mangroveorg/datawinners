@@ -95,6 +95,14 @@ function init_map2() {
                             layer: 'watercolor'
                         })
                     }),
+                    new ol.layer.Tile({
+                        title: 'Toner',
+                        type: 'base',
+                        visible: false,
+                        source: new ol.source.Stamen({
+                            layer: 'toner'
+                        })
+                    }),
                     //new ol.layer.Tile({
                     //    title: 'OpenStreetMap',
                     //    type: 'base',
