@@ -6,6 +6,7 @@
     border: 1px solid #cccccc;
     bottom: 12px;
     left: -50px;
+    border-radius: 8px;
 }
 
 .ol-popup:after, .ol-popup:before {
@@ -33,7 +34,7 @@
 }
 
 .ol-popup-content {
-    min-width: 170px;
+    /*min-width: 120px;*/
     max-height: 200px;
     overflow-x: auto;
 }
