@@ -9,7 +9,7 @@
  *                              within view.
  */
 ol.Overlay.Popup = function(opt_options) {
-    var is_shown = false;
+    //var is_shown = false;
     var options = opt_options || {};
 
     this.panMapIfOutOfView = options.panMapIfOutOfView;
@@ -66,8 +66,8 @@ ol.inherits(ol.Overlay.Popup, ol.Overlay);
  * @param {String} html String of HTML to display within the popup.
  */
 ol.Overlay.Popup.prototype.show = function(coord, html) {
-    if(!this.is_shown){
-        this.is_shown = !this.is_shown;
+    //if(!this.is_shown){
+    //    this.is_shown = !this.is_shown;
         this.setPosition(coord);
         this.content.innerHTML = html;
         this.container.style.display = 'block';
@@ -75,7 +75,7 @@ ol.Overlay.Popup.prototype.show = function(coord, html) {
             this.panIntoView_(coord);
         }
         this.content.scrollTop = 0;
-    }
+    //}
     return this;
 };
 
@@ -166,9 +166,9 @@ ol.Overlay.Popup.enableTouchScroll_ = function(elm) {
  * Hide the popup.
  */
 ol.Overlay.Popup.prototype.hide = function() {
-    if(this.is_shown){
-        this.is_shown = !this.is_shown;
+    //if(this.is_shown){
+    //    this.is_shown = !this.is_shown;
         this.container.style.display = 'none';
-    }
+    //}
     return this;
 };

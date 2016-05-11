@@ -187,30 +187,30 @@ function init_map2() {
         source.on('change', function(evt){//Wait ajax is finished before getting features
             if(source.getState() === 'ready' && !really_ready){
                 really_ready = true;
-                console.debug("source ok : " + source.getFeatures());
                 var features = source.getFeatures();
-                console.debug("features.length : " + features.length);
 
                 var tooltip = [];
                 source.forEachFeature(function(currentFeature){
                     add_icon_toFeature(currentFeature, image);
-                    tooltip[currentFeature] = new ol.Overlay.Popup({insertFirst: false});
-                    map.addOverlay(tooltip[currentFeature]);
+                    currentFeature.setId(currentFeature.get('short_code'));//for comparison
+                    tooltip[currentFeature.get('short_code')] = new ol.Overlay.Popup({insertFirst: false});
+                    map.addOverlay(tooltip[currentFeature.get('short_code')]);
                 });
 
 
                 var selected_features = [];//manage multiple features
                     map.on("click", function(e) {
                         var listen_clicked_layer = false;
+                        count_click_on_map++;
                         map.forEachFeatureAtPixel(e.pixel, function (feature, layer) {
                             if(layer.get("name") == name){//avoid to listen other layer
                                 listen_clicked_layer = true;
-                                count_click_on_map++;
-                                console.debug("click : " + count_click_on_map);
+
                                 selected_features.push(feature);
-                                console.debug("Layer : " + layer.get("name"));
+
                             }
                         });
+
 
                         if(listen_clicked_layer && selected_features.length > 0){
                             var one_feature = selected_features[0];
@@ -228,9 +228,12 @@ function init_map2() {
                                 }
                             }
                             popup_container = '<div><h3>'+ popup_head +'</h3>' +
-                                    '<p>'+ popup_content +'</p></div>'
-                            tooltip[one_feature].show(coord, popup_container);
+                                    '<p>'+ popup_content +'</p></div>';
+                            tooltip[one_feature.get('short_code')].show(coord, popup_container);
+
                             selected_features = [];
+                        }else{
+                            selected_layers = [];
                         }
 
                     });
@@ -246,7 +249,7 @@ function init_map2() {
             anchor: [0.35, 0.7],//[0.35, 0.7]
             anchorXUnits: 'fraction',
             anchorYUnits: 'fraction',//or pixels
-            opacity: 0.75,
+            //opacity: 0.75,
             src: image
           }))
         });
