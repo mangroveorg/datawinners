@@ -80,13 +80,48 @@ function init_map2() {
     view.setCenter([0, 0]);
     view.setZoom(1);
 
-    layers.push(new ol.layer.Tile({source: new ol.source.MapQuest({layer: 'osm'})}));
+    var Base_map = new ol.layer.Group({
+                'title': 'Maps',
+                layers: [
+                    new ol.layer.Tile({
+                        title: 'Water color',
+                        type: 'base',
+                        visible: false,
+                        source: new ol.source.Stamen({
+                            layer: 'watercolor'
+                        })
+                    }),
+                    new ol.layer.Tile({
+                        title: 'OpenStreetMap',
+                        type: 'base',
+                        visible: true,
+                        source: new ol.source.OSM()
+                    }),
+                    new ol.layer.Tile({
+                        title: 'Satellite',
+                        type: 'base',
+                        visible: false,
+                        source: new ol.source.MapQuest({layer: 'sat'})
+                    })//,new ol.layer.Tile({source: new ol.source.MapQuest({layer: 'osm'})})
+                ]
+            });
+    layers.push(Base_map);
+
+    var layer_entity = [];
     for (var i = 0; i < entity_types.length; i++) {
         var entity_type = entity_types[i];
         var image_url = '/media/images/pin_entity_' + (i%10 + 1) + ".png";
-        layers.push(create_layer_vector(entity_type, image_url,geo_url + "/" + entity_type));
+        layer_entity.push(create_layer_vector(entity_type, image_url,geo_url + "/" + entity_type));
     }
-    layers.push(create_layer_vector(pgettext('datasender short','Data Senders'),"/media/images/pin_datasender.png",geo_url));
+    layers.push(new ol.layer.Group({
+                title: 'Entity',
+                layers: layer_entity
+            }));
+    layers.push(new ol.layer.Group({
+                title: 'Datasender',
+                layers: [create_layer_vector(pgettext('datasender short','Data Senders'),"/media/images/pin_datasender.png",geo_url)]
+            })
+        );
 
     var map = new ol.Map({
       target: 'map',
@@ -94,27 +129,6 @@ function init_map2() {
       view: view,
       layers: layers
     });
-
-    var my_tooltip = $('<img src="/media/images/pin_entity_1.png">')
-        .css({marginTop: '-100%', marginLeft: '-30%', cursor: 'pointer'})//marginTop: '-200%', marginLeft: '-50%',
-            //.tooltip({title: 'Hello, world!', trigger: 'click'});
-            //
-            //;
-
-    var pin = new ol.Overlay({
-        position: exampleLoc,
-        element: my_tooltip[0]
-      });
-
-    var popup = new ol.Overlay.Popup({insertFirst: false});
-    map.addOverlay(popup);
-
-    my_tooltip.click(function(evt) {
-        var prettyCoord = ol.coordinate.toStringHDMS(ol.proj.transform(exampleLoc, 'EPSG:3857', 'EPSG:4326'), 2);
-        popup.show(exampleLoc, '<div><h2>Coordinates</h2><p>' + prettyCoord + '</p></div>');
-    });
-
-    map.addOverlay(pin);
 
     //#### define pointer style
     var cursorHoverStyle = "pointer";
@@ -137,7 +151,6 @@ function init_map2() {
         name = '<img src="' + image + '">' + name;
         var really_ready = false;
         var source = new ol.source.Vector({
-            //features: new ol.format.GeoJSON().readFeatures(url)
                 url: url,
                 format: new ol.format.GeoJSON({
                     projection: "EPSG:3857"
@@ -145,6 +158,7 @@ function init_map2() {
             });
 
         var vector = new ol.layer.Vector({
+            title: name,
             name: name,
             source: source
         });
@@ -167,17 +181,12 @@ function init_map2() {
                 var selected_features = [];//manage multiple features
                     map.on("click", function(e) {
                         var listen_clicked_layer = false;
-                        //count_click_on_map++;
-                        //console.debug("click : " + count_click_on_map);
-                        //var is_first_layer = (count_click_on_map % nbr_listened_layer) == 0;//the last clicked layer is the top layer on the map
-                        //console.debug("click : " + count_click_on_map + "| " + is_first_layer);
                         map.forEachFeatureAtPixel(e.pixel, function (feature, layer) {
                             if(layer.get("name") == name){//avoid to listen other layer
                                 listen_clicked_layer = true;
                                 count_click_on_map++;
                                 console.debug("click : " + count_click_on_map);
                                 selected_features.push(feature);
-                                //selected_layers.push(layer);
                                 console.debug("Layer : " + layer.get("name"));
                             }
                         });
@@ -186,23 +195,26 @@ function init_map2() {
                             var one_feature = selected_features[0];
                             var type = one_feature.getGeometry().getType();
                             var coord = one_feature.getGeometry().getCoordinates();
-
-                            tooltip[one_feature].show(coord, '<div><h2>' + type + '</h2><p>Coord : ' + coord + '</p></div>');
+                            var obj_prop = one_feature.getProperties(), prop;
+                            var popup_container = "", popup_content = "", popup_head = "";
+                            for(prop in obj_prop){
+                                if(prop !== "geometry"){
+                                    if(prop === "short_code"){
+                                        popup_head = obj_prop[prop];
+                                    }else{
+                                        popup_content +=   obj_prop[prop]+'<br />';
+                                    }
+                                }
+                            }
+                            popup_container = '<div><h3>'+ popup_head +'</h3>' +
+                                    '<p>'+ popup_content +'</p></div>'
+                            tooltip[one_feature].show(coord, popup_container);
                             selected_features = [];
                         }
 
                     });
             }
         });
-
-
-        //for(var i=0; i< features.length; i++) {
-        //    var currentFeature = features[i];
-        //    add_icon_toFeature(currentFeature, image);
-        //
-        //}
-
-
 
         return vector;
     }
