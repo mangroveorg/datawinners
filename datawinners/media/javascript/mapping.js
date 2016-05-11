@@ -95,6 +95,14 @@ function init_map2() {
                             layer: 'watercolor'
                         })
                     }),
+                    new ol.layer.Tile({
+                        title: 'Toner',
+                        type: 'base',
+                        visible: false,
+                        source: new ol.source.Stamen({
+                            layer: 'toner'
+                        })
+                    }),
                     //new ol.layer.Tile({
                     //    title: 'OpenStreetMap',
                     //    type: 'base',
@@ -217,17 +225,25 @@ function init_map2() {
                             var type = one_feature.getGeometry().getType();
                             var coord = one_feature.getGeometry().getCoordinates();
                             var obj_prop = one_feature.getProperties(), prop;
-                            var popup_container = "", popup_content = "", popup_head = "";
+                            var popup_container = "", popup_content = "", popup_head = "", popup_gps = "";
                             for(prop in obj_prop){
                                 if(prop !== "geometry"){
-                                    if(prop === "short_code"){
-                                        popup_head = obj_prop[prop];
+                                    if(prop === "name"){
+                                        popup_head = '<p class = "p_head">' + obj_prop[prop];
+                                        popup_head += '<br>' + obj_prop["entity_type"] + '[' +obj_prop["short_code"] + ']</p>';
+                                    }else if(prop === "geo_code"){
+                                        popup_gps =   '<p class="p_geo_code">' + obj_prop[prop]+'<p />';
+                                    }else if (prop === "entity_type" || prop === "short_code"){
+                                        //just a control
                                     }else{
-                                        popup_content +=   obj_prop[prop]+'<br />';
+                                        if(obj_prop[prop] !== false){//avoid false value (for reporter)
+                                            popup_content +=   obj_prop[prop] +'<br />';
+                                        }
                                     }
                                 }
                             }
-                            popup_container = '<div><h3>'+ popup_head +'</h3>' +
+                            popup_content = popup_gps + popup_content;
+                            popup_container = '<div>'+ popup_head +
                                     '<p>'+ popup_content +'</p></div>';
                             tooltip[one_feature.get('short_code')].show(coord, popup_container);
 
@@ -255,5 +271,13 @@ function init_map2() {
         });
 
         feature.setStyle(iconStyle);
+    }
+
+    function join(my_array, separator){//if we want to join array before
+        if(Array.isArray(my_array)){
+            return my_array.join(separator);
+        }else{
+            return my_array;
+        }
     }
 }
