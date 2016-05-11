@@ -76,12 +76,13 @@ function init_map2() {
     var view = new ol.View({
       // make sure the view doesn't go beyond the 22 zoom levels of Google Maps
       maxZoom: 21,
-      maxResolution : 156543.0339,
-        theme: null,
-        maxExtent: [-20037508, -20037508, 20037508, 20037508]
+      minZoom : 2,
+      //maxResolution : 156543.0339,
+      //  maxExtent: [-20037508, -20037508, 20037508, 20037508],
+      //  units: "m",
+        zoom: 2
     });
     view.setCenter([0, 0]);
-    view.setZoom(1);
 
     var Base_map = new ol.layer.Group({
                 'title': 'Maps',
@@ -134,7 +135,7 @@ function init_map2() {
 
     var map = new ol.Map({
       target: 'map',
-      renderer: 'canvas',
+      //renderer: 'canvas',
       view: view,
       layers: layers
     });
@@ -143,6 +144,12 @@ function init_map2() {
         tipLabel: 'Switch' // Optional label for button
     });
     map.addControl(layerSwitcher);
+    map.addControl(new ol.control.ScaleLine());
+    map.addControl(new ol.control.FullScreen());
+    map.addControl(new ol.control.ZoomSlider());
+    map.addControl(new ol.control.OverviewMap());
+
+
 
     //#### define pointer style
     var cursorHoverStyle = "pointer";
