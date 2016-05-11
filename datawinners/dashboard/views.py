@@ -194,18 +194,26 @@ def _get_first_geocode_field_for_entity_type(dbm, entity_type):
     return geocode_fields[0] if len(geocode_fields) > 0 else None
 
 
-def to_json_point(value):
+def to_json_point(value,data=None):
     point_json = {"type": "Feature", "geometry":
         {
             "type": "Point",
             "coordinates": [
                 value[1],
                 value[0]
-            ]
+            ],
+            "properties": simplify_field_data(data)
         }
     }
     return point_json
 
+# simplify the field Data to be displayed on the map
+# Just remove the key "value" in each field of data property
+def simplify_field_data(data):
+    simple_data = {}
+    for key,value_field in data.items():
+        simple_data[key] = value_field["value"]
+    return simple_data
 
 def get_location_list_for_entities(first_geocode_field, unique_ids):
     location_list = []
@@ -213,7 +221,7 @@ def get_location_list_for_entities(first_geocode_field, unique_ids):
         value_dict = entity.data.get(first_geocode_field["name"])
         if value_dict and value_dict.has_key('value'):
             value = value_dict["value"]
-            location_list.append(to_json_point(value))
+            location_list.append(to_json_point(value,entity.data))
     return location_list
 
 
@@ -252,5 +260,5 @@ def get_location_list_for_datasenders(datasenders):
         geocode = entity.geometry
         if geocode:
             value = (geocode["coordinates"][0], geocode["coordinates"][1])
-            location_list.append(to_json_point(value))
+            location_list.append(to_json_point(value,entity.data))
     return location_list
