@@ -185,10 +185,11 @@ function init_map2() {
         for(prop in obj_prop){
             if(prop !== "geometry"){
                 if(prop === "name"){
-                    popup_head = '<p class = "p_head">' + join(obj_prop[prop], " ");
-                    popup_head += '<br>' + obj_prop["entity_type"]  + " " + obj_prop["short_code"] + '</p>';
+                    popup_head = '<p class = "p_head">' + join(obj_prop[prop]," ") + "</p><hr/>";
+                    popup_head += '<p>' + obj_prop["entity_type"]  + ' <code class="p_short_code">' +
+                    obj_prop["short_code"] + '</code></p>';
                 }else if(prop === "geo_code"){
-                    popup_gps =   '<p class="p_geo_code">' + join(obj_prop[prop], ", ") +'<p />';
+                    popup_gps =   '<code class="p_geo_code">' + join(obj_prop[prop], ", ") +'</code><br/>';
                 }else if (prop === "entity_type" || prop === "short_code"){
                     //just a control
                 }else{

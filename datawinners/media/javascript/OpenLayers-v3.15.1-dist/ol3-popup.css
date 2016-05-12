@@ -70,3 +70,42 @@
 .ol-popup.marker {
     margin-bottom: 30px;
 }
+
+.ol-popup div .p_head{
+    font-size: 14px;
+    font-weight: bold;
+    color: #000000;
+}
+
+.ol-popup div .p_short_code{
+    font-weight: bold;
+    padding: 2px 4px;
+    font-size: 10px;
+    color: #ffffff;
+    background-color: #818A91;
+    border-radius: 4px;
+    width: auto;
+    margin-top: 2px;
+}
+
+.ol-popup div .p_geo_code{
+    font-weight: bold;
+    padding: 2px 4px;
+    font-size: 10px;
+    color: #ffffff;
+    background-color: #818A91;
+    border-radius: 4px;
+    width: auto;
+    margin-top: 2px;
+}
+
+.ol-popup div hr{
+    height: 2px;
+    border: 0;
+    background: #8F9A9E;
+    margin-bottom: 5px;
+}
+
+.ol-popup div p{
+    margin-top: 2px;
+}
