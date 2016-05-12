@@ -75,46 +75,89 @@ function init_map2() {
 
     var view = new ol.View({
       // make sure the view doesn't go beyond the 22 zoom levels of Google Maps
-      maxZoom: 21
+      maxZoom: 21,
+      minZoom : 2,
+      //maxResolution : 156543.0339,
+      //  maxExtent: [-20037508, -20037508, 20037508, 20037508],
+      //  units: "m",
+        zoom: 2
     });
     view.setCenter([0, 0]);
-    view.setZoom(1);
 
-    layers.push(new ol.layer.Tile({source: new ol.source.MapQuest({layer: 'osm'})}));
+    var Base_map = new ol.layer.Group({
+                'title': 'Maps',
+                layers: [
+                    new ol.layer.Tile({
+                        title: 'Water color',
+                        type: 'base',
+                        visible: false,
+                        source: new ol.source.Stamen({
+                            layer: 'watercolor'
+                        })
+                    }),
+                    new ol.layer.Tile({
+                        title: 'Toner',
+                        type: 'base',
+                        visible: false,
+                        source: new ol.source.Stamen({
+                            layer: 'toner'
+                        })
+                    }),
+                    //new ol.layer.Tile({
+                    //    title: 'OpenStreetMap',
+                    //    type: 'base',
+                    //    visible: true,
+                    //    source: new ol.source.OSM()
+                    //}),
+                    new ol.layer.Tile({
+                        title: 'OpenStreetMap',
+                        type: 'base',
+                        visible: true,
+                        source: new ol.source.MapQuest({layer: 'osm'})
+                    }),
+                    new ol.layer.Tile({
+                        title: 'Satellite',
+                        type: 'base',
+                        visible: false,
+                        source: new ol.source.MapQuest({layer: 'sat'})
+                    })
+                ]
+            });
+    layers.push(Base_map);
+
+    var layer_entity = [];
     for (var i = 0; i < entity_types.length; i++) {
         var entity_type = entity_types[i];
         var image_url = '/media/images/pin_entity_' + (i%10 + 1) + ".png";
-        layers.push(create_layer_vector(entity_type, image_url,geo_url + "/" + entity_type));
+        layer_entity.push(create_layer_vector(entity_type, image_url,geo_url + "/" + entity_type));
     }
-    layers.push(create_layer_vector(pgettext('datasender short','Data Senders'),"/media/images/pin_datasender.png",geo_url));
+    layers.push(new ol.layer.Group({
+                title: 'Entity',
+                layers: layer_entity
+            }));
+    layers.push(new ol.layer.Group({
+                title: 'Datasender',
+                layers: [create_layer_vector(pgettext('datasender short','Data Senders'),"/media/images/pin_datasender.png",geo_url)]
+            })
+        );
 
     var map = new ol.Map({
       target: 'map',
-      renderer: 'canvas',
+      //renderer: 'canvas',
       view: view,
       layers: layers
     });
 
-    var my_tooltip = $('<img src="/media/images/pin_entity_1.png">')
-        .css({marginTop: '-100%', marginLeft: '-30%', cursor: 'pointer'})//marginTop: '-200%', marginLeft: '-50%',
-            //.tooltip({title: 'Hello, world!', trigger: 'click'});
-            //
-            //;
-
-    var pin = new ol.Overlay({
-        position: exampleLoc,
-        element: my_tooltip[0]
-      });
-
-    var popup = new ol.Overlay.Popup({insertFirst: false});
-    map.addOverlay(popup);
-
-    my_tooltip.click(function(evt) {
-        var prettyCoord = ol.coordinate.toStringHDMS(ol.proj.transform(exampleLoc, 'EPSG:3857', 'EPSG:4326'), 2);
-        popup.show(exampleLoc, '<div><h2>Coordinates</h2><p>' + prettyCoord + '</p></div>');
+    var layerSwitcher = new ol.control.LayerSwitcher({
+        tipLabel: 'Switch' // Optional label for button
     });
+    map.addControl(layerSwitcher);
+    map.addControl(new ol.control.ScaleLine());
+    map.addControl(new ol.control.FullScreen());
+    map.addControl(new ol.control.ZoomSlider());
+    map.addControl(new ol.control.OverviewMap());
 
-    map.addOverlay(pin);
+
 
     //#### define pointer style
     var cursorHoverStyle = "pointer";
@@ -137,7 +180,6 @@ function init_map2() {
         name = '<img src="' + image + '">' + name;
         var really_ready = false;
         var source = new ol.source.Vector({
-            //features: new ol.format.GeoJSON().readFeatures(url)
                 url: url,
                 format: new ol.format.GeoJSON({
                     projection: "EPSG:3857"
@@ -145,6 +187,7 @@ function init_map2() {
             });
 
         var vector = new ol.layer.Vector({
+            title: name,
             name: name,
             source: source
         });
@@ -152,57 +195,66 @@ function init_map2() {
         source.on('change', function(evt){//Wait ajax is finished before getting features
             if(source.getState() === 'ready' && !really_ready){
                 really_ready = true;
-                console.debug("source ok : " + source.getFeatures());
                 var features = source.getFeatures();
-                console.debug("features.length : " + features.length);
 
                 var tooltip = [];
                 source.forEachFeature(function(currentFeature){
                     add_icon_toFeature(currentFeature, image);
-                    tooltip[currentFeature] = new ol.Overlay.Popup({insertFirst: false});
-                    map.addOverlay(tooltip[currentFeature]);
+                    currentFeature.setId(currentFeature.get('short_code'));//for comparison
+                    tooltip[currentFeature.get('short_code')] = new ol.Overlay.Popup({insertFirst: false});
+                    map.addOverlay(tooltip[currentFeature.get('short_code')]);
                 });
 
 
                 var selected_features = [];//manage multiple features
                     map.on("click", function(e) {
                         var listen_clicked_layer = false;
-                        //count_click_on_map++;
-                        //console.debug("click : " + count_click_on_map);
-                        //var is_first_layer = (count_click_on_map % nbr_listened_layer) == 0;//the last clicked layer is the top layer on the map
-                        //console.debug("click : " + count_click_on_map + "| " + is_first_layer);
+                        count_click_on_map++;
                         map.forEachFeatureAtPixel(e.pixel, function (feature, layer) {
                             if(layer.get("name") == name){//avoid to listen other layer
                                 listen_clicked_layer = true;
-                                count_click_on_map++;
-                                console.debug("click : " + count_click_on_map);
+
                                 selected_features.push(feature);
-                                //selected_layers.push(layer);
-                                console.debug("Layer : " + layer.get("name"));
+
                             }
                         });
+
 
                         if(listen_clicked_layer && selected_features.length > 0){
                             var one_feature = selected_features[0];
                             var type = one_feature.getGeometry().getType();
                             var coord = one_feature.getGeometry().getCoordinates();
+                            var obj_prop = one_feature.getProperties(), prop;
+                            var popup_container = "", popup_content = "", popup_head = "", popup_gps = "";
+                            for(prop in obj_prop){
+                                if(prop !== "geometry"){
+                                    if(prop === "name"){
+                                        popup_head = '<p class = "p_head">' + obj_prop[prop];
+                                        popup_head += '<br>' + obj_prop["entity_type"] + '[' +obj_prop["short_code"] + ']</p>';
+                                    }else if(prop === "geo_code"){
+                                        popup_gps =   '<p class="p_geo_code">' + obj_prop[prop]+'<p />';
+                                    }else if (prop === "entity_type" || prop === "short_code"){
+                                        //just a control
+                                    }else{
+                                        if(obj_prop[prop] !== false){//avoid false value (for reporter)
+                                            popup_content +=   obj_prop[prop] +'<br />';
+                                        }
+                                    }
+                                }
+                            }
+                            popup_content = popup_gps + popup_content;
+                            popup_container = '<div>'+ popup_head +
+                                    '<p>'+ popup_content +'</p></div>';
+                            tooltip[one_feature.get('short_code')].show(coord, popup_container);
 
-                            tooltip[one_feature].show(coord, '<div><h2>' + type + '</h2><p>Coord : ' + coord + '</p></div>');
                             selected_features = [];
+                        }else{
+                            selected_layers = [];
                         }
 
                     });
             }
         });
-
-
-        //for(var i=0; i< features.length; i++) {
-        //    var currentFeature = features[i];
-        //    add_icon_toFeature(currentFeature, image);
-        //
-        //}
-
-
 
         return vector;
     }
@@ -213,11 +265,19 @@ function init_map2() {
             anchor: [0.35, 0.7],//[0.35, 0.7]
             anchorXUnits: 'fraction',
             anchorYUnits: 'fraction',//or pixels
-            opacity: 0.75,
+            //opacity: 0.75,
             src: image
           }))
         });
 
         feature.setStyle(iconStyle);
+    }
+
+    function join(my_array, separator){//if we want to join array before
+        if(Array.isArray(my_array)){
+            return my_array.join(separator);
+        }else{
+            return my_array;
+        }
     }
 }
