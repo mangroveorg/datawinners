@@ -93,6 +93,7 @@
         <!--Map div-->
         {% if GOOGLE_MAPS_ENABLED %}
             {% include 'maps/entity_map.html'  %}
+            <label id="map_identification_number" style="display: none">{% trans "Identification Number" %}</label>
         {% endif %}
         <!--Questionnaire & DS div-->
         <div class="clear_both_width_100" id="questionnaire_and_DS">

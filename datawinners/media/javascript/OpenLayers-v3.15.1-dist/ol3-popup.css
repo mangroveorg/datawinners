@@ -7,6 +7,7 @@
     bottom: 12px;
     left: -50px;
     border-radius: 8px;
+    white-space: nowrap;
 }
 
 .ol-popup:after, .ol-popup:before {
@@ -34,8 +35,8 @@
 }
 
 .ol-popup-content {
-    /*min-width: 120px;*/
-    max-height: 200px;
+    min-width: 80px;
+    max-height: 400px;
     overflow-x: auto;
 }
 
@@ -46,7 +47,7 @@
     font-size: 150%;
     padding: 0 4px;
     color: gray;
-    text-decoration: none;
+    text-decoration: none !important;
 }
 
 .ol-popup-closer:after {

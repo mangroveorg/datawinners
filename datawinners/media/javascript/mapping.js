@@ -1,72 +1,8 @@
-function init_map() {
-    "use strict";
-    var project_id = $('#project_id').html();
-    var map = new OpenLayers.Map({
-        div: "map",
-        projection: new OpenLayers.Projection("EPSG:900913"),
-        displayProjection: new OpenLayers.Projection("EPSG:4326"),
-        units: "m",
-        maxResolution: 156543.0339,
-        theme: null,
-        maxExtent: new OpenLayers.Bounds(
-            -20037508, -20037508, 20037508, 20037508
-        ),
-        controls: [
-            new OpenLayers.Control.Navigation({dragPan: new OpenLayers.Control.DragPan()}),
-            new OpenLayers.Control.PanZoomBar()
-
-        ]
-    });
-    var layers = [];
-    layers.push(new OpenLayers.Layer.Google("Google Layer", {
-        sphericalMercator: true,
-        displayInLayerSwitcher: false
-    }));
-
-    function add_layer(name, image, url) {
-        name = '<img src="' + image + '">' + name;
-        layers.push(new OpenLayers.Layer.Vector(name, {
-            strategies: [new OpenLayers.Strategy.Fixed()],
-            projection: new OpenLayers.Projection("EPSG:4326"),
-            protocol: new OpenLayers.Protocol.HTTP({
-                url: url,
-                format: new OpenLayers.Format.GeoJSON()
-            }),
-            styleMap: new OpenLayers.StyleMap({
-                "default": {
-                    externalGraphic: image,
-                    graphicWidth: 48, graphicHeight: 43,
-                    graphicXOffset:-14, graphicYOffset:-37,  //tip of pin in icon is at 14,6 offset y is height - tipY
-                    pointRadius: 8}
-            })
-        }));
-    }
-    var geo_url = '/get_geojson/' + project_id;
-
-    for (var i = 0; i < entity_types.length; i++) {
-        var entity_type = entity_types[i];
-        var image_url = '/media/images/pin_entity_' + (i%10 + 1) + ".png";
-        add_layer(entity_type, image_url, geo_url + "/" + entity_type)
-    }
-
-    add_layer(pgettext('datasender short','Data Senders'), '/media/images/pin_datasender.png', geo_url);
-
-    var legends = new OpenLayers.Control.LayerSwitcher({ascending: false});
-    map.addControl(legends);
-    map.addLayers(layers);
-    var proj = new OpenLayers.Projection("EPSG:4326");
-    var point = new OpenLayers.LonLat(73.6962890625, 26.941659545381516);
-    point.transform(proj, map.getProjectionObject());
-    map.setCenter(point, 2);
-    legends.maximizeControl();
-
-}
-
-
 function init_map2() {
     "use strict";
-    var exampleLoc = ol.proj.transform([131.044922, -25.363882], 'EPSG:4326', 'EPSG:3857');
     var project_id = $('#project_id').html();
+    var label_idn = $('#map_identification_number').text();
+    console.debug("label " + label_idn);
     var geo_url = '/get_geojson/' + project_id;
     var layers = [];
     var count_click_on_map = 0;
@@ -132,14 +68,10 @@ function init_map2() {
         layer_entity.push(create_layer_vector(entity_type, image_url,geo_url + "/" + entity_type));
     }
     layers.push(new ol.layer.Group({
-                title: 'Entity',
+                title: label_idn,
                 layers: layer_entity
             }));
-    layers.push(new ol.layer.Group({
-                title: 'Datasender',
-                layers: [create_layer_vector(pgettext('datasender short','Data Senders'),"/media/images/pin_datasender.png",geo_url)]
-            })
-        );
+    layers.push(create_layer_vector(pgettext('datasender short','Data Senders'),"/media/images/pin_datasender.png",geo_url));
 
     var map = new ol.Map({
       target: 'map',
@@ -148,16 +80,11 @@ function init_map2() {
       layers: layers
     });
 
-    var layerSwitcher = new ol.control.LayerSwitcher({
-        tipLabel: 'Switch' // Optional label for button
-    });
-    map.addControl(layerSwitcher);
+    map.addControl(new ol.control.LayerSwitcher());
     map.addControl(new ol.control.ScaleLine());
     map.addControl(new ol.control.FullScreen());
     map.addControl(new ol.control.ZoomSlider());
     map.addControl(new ol.control.OverviewMap());
-
-
 
     //#### define pointer style
     var cursorHoverStyle = "pointer";
@@ -222,31 +149,9 @@ function init_map2() {
 
                         if(listen_clicked_layer && selected_features.length > 0){
                             var one_feature = selected_features[0];
-                            var type = one_feature.getGeometry().getType();
                             var coord = one_feature.getGeometry().getCoordinates();
-                            var obj_prop = one_feature.getProperties(), prop;
-                            var popup_container = "", popup_content = "", popup_head = "", popup_gps = "";
-                            for(prop in obj_prop){
-                                if(prop !== "geometry"){
-                                    if(prop === "name"){
-                                        popup_head = '<p class = "p_head">' + obj_prop[prop];
-                                        popup_head += '<br>' + obj_prop["entity_type"] + '[' +obj_prop["short_code"] + ']</p>';
-                                    }else if(prop === "geo_code"){
-                                        popup_gps =   '<p class="p_geo_code">' + obj_prop[prop]+'<p />';
-                                    }else if (prop === "entity_type" || prop === "short_code"){
-                                        //just a control
-                                    }else{
-                                        if(obj_prop[prop] !== false){//avoid false value (for reporter)
-                                            popup_content +=   obj_prop[prop] +'<br />';
-                                        }
-                                    }
-                                }
-                            }
-                            popup_content = popup_gps + popup_content;
-                            popup_container = '<div>'+ popup_head +
-                                    '<p>'+ popup_content +'</p></div>';
+                            var popup_container = get_tooltip_content_from(one_feature);
                             tooltip[one_feature.get('short_code')].show(coord, popup_container);
-
                             selected_features = [];
                         }else{
                             selected_layers = [];
@@ -273,6 +178,31 @@ function init_map2() {
         feature.setStyle(iconStyle);
     }
 
+    function get_tooltip_content_from(feature){
+        var type = feature.getGeometry().getType();
+        var obj_prop = feature.getProperties(), prop;
+        var popup_content = "", popup_head = "", popup_gps = "";
+        for(prop in obj_prop){
+            if(prop !== "geometry"){
+                if(prop === "name"){
+                    popup_head = '<p class = "p_head">' + join(obj_prop[prop], " ");
+                    popup_head += '<br>' + obj_prop["entity_type"]  + " " + obj_prop["short_code"] + '</p>';
+                }else if(prop === "geo_code"){
+                    popup_gps =   '<p class="p_geo_code">' + join(obj_prop[prop], ", ") +'<p />';
+                }else if (prop === "entity_type" || prop === "short_code"){
+                    //just a control
+                }else{
+                    if(obj_prop[prop] !== false){//avoid false value (for reporter)
+                        if(popup_content !== "")
+                            popup_content +=   '<br>';
+                        popup_content +=   join(obj_prop[prop], " ") ;
+                    }
+                }
+            }
+        }
+        popup_content = popup_gps + popup_content;
+        return ('<div>'+ popup_head + '<p>'+ popup_content +'</p></div>');
+    }
     function join(my_array, separator){//if we want to join array before
         if(Array.isArray(my_array)){
             return my_array.join(separator);
