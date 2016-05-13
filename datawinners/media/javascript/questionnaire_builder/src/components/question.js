@@ -1,6 +1,5 @@
 import React from 'react';
 import QuestionActions from '../actions/questionnaire-actions';
-import Toastr from 'toastr';
 import Card from 'material-ui/Card/Card';
 import CardHeader from 'material-ui/Card/CardHeader';
 import CardActions from 'material-ui/Card/CardActions';

@@ -3,9 +3,7 @@
 import AppDispatcher from '../dispatcher/app-dispatcher';
 import AppConstants from '../constants/app-constants';
 import QuestionnaireStore from '../store/questionnaire-store';
-import Toastr from 'toastr';
-
-// Toastr.options.preventDuplicates = true; // Extract into separate config
+import Toastr from '../components/toastr';
 
 var _persistData = (isDraft, callback) => {
 	$.ajax({

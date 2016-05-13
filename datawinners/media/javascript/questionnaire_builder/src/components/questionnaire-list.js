@@ -19,7 +19,7 @@ import FormFactory from './form-factory';
 import ChoicesTab from './choices-tab';
 import SurveyTab from './survey-tab';
 import _ from 'lodash';
-import Toastr from 'toastr';
+import Toastr from './toastr';
 
 const style = {
 	tabs: {
