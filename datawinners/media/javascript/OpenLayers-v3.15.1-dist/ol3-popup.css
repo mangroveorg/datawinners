@@ -2,7 +2,8 @@
     display: none;
     position: absolute;
     background-color: white;
-    padding: 15px 25px 15px 15px;
+    /*padding: 15px 25px 15px 15px;*/
+    padding: 10px 18px 10px 10px;
     border: 1px solid #cccccc;
     bottom: 12px;
     left: -50px;
@@ -35,8 +36,10 @@
 }
 
 .ol-popup-content {
-    min-width: 80px;
-    max-height: 400px;
+    /*min-width: 80px;*/
+    /*max-height: 400px;*/
+    width: 200px;
+    height: 160px;
     overflow-x: auto;
 }
 

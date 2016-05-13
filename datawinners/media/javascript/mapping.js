@@ -123,7 +123,6 @@ function init_map2() {
             if(source.getState() === 'ready' && !really_ready){
                 really_ready = true;
                 var features = source.getFeatures();
-
                 var tooltip = [];
                 source.forEachFeature(function(currentFeature){
                     add_icon_toFeature(currentFeature, image);
@@ -167,7 +166,7 @@ function init_map2() {
     function add_icon_toFeature(feature, image){
         var iconStyle = new ol.style.Style({
           image: new ol.style.Icon(/** @type {olx.style.IconOptions} */ ({
-            anchor: [0.35, 0.7],//[0.35, 0.7]
+            anchor: [0.55, 0.8],//[0.35, 0.7]
             anchorXUnits: 'fraction',
             anchorYUnits: 'fraction',//or pixels
             //opacity: 0.75,
@@ -185,18 +184,22 @@ function init_map2() {
         for(prop in obj_prop){
             if(prop !== "geometry"){
                 if(prop === "name"){
-                    popup_head = '<p class = "p_head">' + join(obj_prop[prop]," ") + "</p><hr/>";
-                    popup_head += '<p>' + obj_prop["entity_type"]  + ' <code class="p_short_code">' +
-                    obj_prop["short_code"] + '</code></p>';
+                    popup_head = ''
+                        +'<p class = "p_head" title="' + obj_prop[prop]['label']+'">'
+                        + join(obj_prop[prop]['value']," ") + "</p><hr/>";
+                    popup_head +=  '<p>' + obj_prop["entity_type"]['value']
+                        + ' <code class="p_short_code" title="'
+                        + obj_prop["short_code"]['label']+'">'
+                        + obj_prop["short_code"]['value'] + '</code></p>';
                 }else if(prop === "geo_code"){
-                    popup_gps =   '<code class="p_geo_code">' + join(obj_prop[prop], ", ") +'</code><br/>';
+                    popup_gps =   '<p><code class="p_geo_code" title="'+obj_prop[prop]['label']+'">'
+                        + join(obj_prop[prop]['value'], ", ") +'</code><p/>';
                 }else if (prop === "entity_type" || prop === "short_code"){
                     //just a control
                 }else{
                     if(obj_prop[prop] !== false){//avoid false value (for reporter)
-                        if(popup_content !== "")
-                            popup_content +=   '<br>';
-                        popup_content +=   join(obj_prop[prop], " ") ;
+                        popup_content +=   '<p title="'+obj_prop[prop]['label']+'">';
+                        popup_content +=   join(obj_prop[prop]['value'], " ") + "</p>" ;
                     }
                 }
             }
