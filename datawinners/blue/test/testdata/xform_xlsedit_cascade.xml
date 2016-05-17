@@ -15,7 +15,7 @@
                     </meta>
                 </tmpkWhV2m>
             </instance>
-            <bind calculate="concat(''uuid:'', uuid())" nodeset="/tmpkWhV2m/meta/instanceID" readonly="true()" type="string" />{bind_node_0}{bind_node_1}{cascade_instance_node_0}{cascade_instance_node_1}</model>
+            <bind calculate="concat(''uuid:'', uuid())" nodeset="/tmpkWhV2m/meta/instanceID" readonly="true()" type="string" />{bind_node_0}{cascade_instance_node_0}{bind_node_1}{cascade_instance_node_1}</model>
     </html:head>
     <html:body>
         <group ref="/tmpkWhV2m/group_outer">

@@ -260,7 +260,7 @@ class TestEditRule(unittest.TestCase):
         self.assertEqual(ET.tostring(ET.fromstring(old_questionnaire.xform)), ET.tostring(ET.fromstring(new_questionnaire.xform)))
 
     def test_should_update_xform_with_add_cascade_field_change(self):
-        remove_rule = AddRule()
+        add_rule = AddRule()
         self.maxDiff = None
 
         old_questionnaire = self._get_questionnaire_with_field_removed(field_type="cascade")
@@ -282,7 +282,7 @@ class TestEditRule(unittest.TestCase):
             }
         })
 
-        remove_rule.update_xform(old_questionnaire, new_questionnaire, {})
+        add_rule.update_xform(old_questionnaire, new_questionnaire, {})
         self.assertEqual(old_questionnaire.xform, new_questionnaire.xform)
 
     def test_should_update_xform_with_add_field_change(self):
