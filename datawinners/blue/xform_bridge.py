@@ -291,7 +291,8 @@ class XlsFormParser():
                 errors.extend(self._validate_choice_names(field['children']))
             choices = field.get('choices')
             if choices:
-                name_list = [choice['name'].lower() for choice in choices]
+                # name_list = [choice['name'].lower() for choice in choices]
+                name_list = [choice['name'] for choice in choices]
                 name_set = set(name_list)
                 name_list_without_duplicates = list(name_set)
                 self._validate_default_value(errors, field, name_set)

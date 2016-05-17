@@ -438,4 +438,3 @@ class TestAdvancedQuestionnaireEndToEnd(HeadlessRunnerTest):
         self.assertEquals("New Hint for Text Widget", web_submission_page.get_hint(1))
         self.assertEquals("New Integer Widget", web_submission_page.get_label(11))
 
-        pass
