@@ -40,7 +40,7 @@ class AddRule(Rule):
                     return
 
                 bind_node = new_xform.get_bind_node_by_name(new_field.code) if new_node is None else new_xform.bind_node(new_node)
-                instance_node = new_xform.instance_node_given_name(new_field.code) if new_node is None else new_xform.instance_node(new_node)
+                instance_node = new_xform.instance_node_given_name(new_field.code).next() if new_node is None else new_xform.instance_node(new_node)
                 self.add(old_parent_node, new_node, bind_node, instance_node, old_xform)
 
                 if isinstance(new_field, SelectField) and new_field.is_cascade:

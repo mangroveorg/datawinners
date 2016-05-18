@@ -15,8 +15,8 @@ XLSFORM_EXCLUDE_COLUMN_NAMES={
 def convert_excel_to_dict(file_name=None, file_content=None, file_type='xlsx'):
     book = pe.get_book(file_name=file_name, file_content=file_content, file_type=file_type)
     excel_as_dict = OrderedDict()
-    records = []
     for sheet in book:
+        records = []
         if len(sheet.array) > 0:
             sheet.name_columns_by_row(0)
             if sheet.name == 'survey':

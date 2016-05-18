@@ -14,7 +14,7 @@ import DropDownMenu from 'material-ui/DropDownMenu';
 import AppConstants from '../constants/app-constants';
 import LoaderDialog from './loader-dialog';
 import QuestionnaireStore from '../store/questionnaire-store';
-import Toastr from 'toastr';
+import Toastr from './toastr';
 
 export default class BuilderToolbar extends React.Component {
 

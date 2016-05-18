@@ -1,7 +1,6 @@
-from mangrove.form_model.field import FieldSet, SelectField
-from mangrove.form_model.xform import child_nodes, node_has_child, update_node, remove_node, add_child
-
 from datawinners.blue.rules.rule import Rule
+from mangrove.form_model.field import SelectField
+from mangrove.form_model.xform import child_nodes, node_has_child, update_node, remove_node, add_child
 
 
 class ChoiceRule(Rule):

@@ -407,3 +407,34 @@ class TestAdvancedQuestionnaireEndToEnd(HeadlessRunnerTest):
         self.assertTrue(web_submission_page.has_choice(9, "Bomi"))
         web_submission_page.select_choice(9, 0)
         self.assertTrue(web_submission_page.has_choice(10, "Klay"))
+
+    @attr('functional_test')
+    def test_should_edit_via_builder(self):
+        self.project_name = random_string()
+        self.client.login(username="rasitefa@mailinator.com", password="test123")
+        form_code = self._verify_questionnaire_creation(self.project_name, 'simple_advance_questionnaire.xls')
+        self.assertEqual(len(form_code), 3)
+        projects_page = self.global_navigation_page.navigate_to_view_all_project_page()
+        overview_page = projects_page.navigate_to_project_overview_page(self.project_name)
+        questionnaire_tab_page = overview_page.navigate_to_questionnaire_tab()
+
+        questionnaire_tab_page.select_question_in_builder(3)
+        questionnaire_tab_page.set_question_label_in_builder(0, 'New Text Widget')
+        questionnaire_tab_page.set_question_hint_in_builder(0, 'New Hint for Text Widget')
+
+        questionnaire_tab_page.add_question_in_builder_at(11)
+        questionnaire_tab_page.select_question_in_builder(11)
+        questionnaire_tab_page.select_question_type_in_builder(1)
+        questionnaire_tab_page.select_choice_for_question_in_builder(14, 2)
+        questionnaire_tab_page.set_question_label_in_builder(1, 'New Integer Widget')
+        questionnaire_tab_page.set_question_name_in_builder(1, 'new_integer')
+
+        questionnaire_tab_page.save_questionnaire_in_builder()
+        success_message = questionnaire_tab_page.get_save_success_message()
+        self.assertEqual(success_message, "Successfully updated", "Saving failed")
+
+        project_temp_name, web_submission_page = navigate_and_verify_advanced_web_submission_page_is_loaded(self.driver, self.global_navigation_page, self.project_name)
+        self.assertEquals("New Text Widget", web_submission_page.get_label(1))
+        self.assertEquals("New Hint for Text Widget", web_submission_page.get_hint(1))
+        self.assertEquals("New Integer Widget", web_submission_page.get_label(11))
+
