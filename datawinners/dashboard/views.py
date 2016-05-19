@@ -198,6 +198,7 @@ def start(request):
 #             all_fields[key] = "";
 #     return all_fields
 
+# retrieving label of all Reporter Fields
 def _get_all_reporter_fields():
     all_fields = {}
     all_fields['short_code'] = _("Unique ID")
@@ -207,6 +208,7 @@ def _get_all_reporter_fields():
     all_fields['location'] = _("Location")
     all_fields['geo_code'] = _("GPS Coordinates")
     all_fields['devices'] = _("Devices")
+    all_fields['is_data_sender'] = ""
     return all_fields
 
 def _get_all_field_labels(entity_all_fields):

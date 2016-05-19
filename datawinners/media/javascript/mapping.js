@@ -126,9 +126,9 @@ function init_map2() {
                 var tooltip = [];
                 source.forEachFeature(function(currentFeature){
                     add_icon_toFeature(currentFeature, image);
-                    currentFeature.setId(currentFeature.get('short_code'));//for comparison
-                    tooltip[currentFeature.get('short_code')] = new ol.Overlay.Popup({insertFirst: false});
-                    map.addOverlay(tooltip[currentFeature.get('short_code')]);
+                    currentFeature.setId(currentFeature.get('short_code')['value']);//for comparison
+                    tooltip[currentFeature.get('short_code')['value']] = new ol.Overlay.Popup({insertFirst: false});
+                    map.addOverlay(tooltip[currentFeature.get('short_code')['value']]);
                 });
 
 
@@ -150,7 +150,7 @@ function init_map2() {
                             var one_feature = selected_features[0];
                             var coord = one_feature.getGeometry().getCoordinates();
                             var popup_container = get_tooltip_content_from(one_feature);
-                            tooltip[one_feature.get('short_code')].show(coord, popup_container);
+                            tooltip[one_feature.get('short_code')['value']].show(coord, popup_container);
                             selected_features = [];
                         }else{
                             selected_layers = [];
