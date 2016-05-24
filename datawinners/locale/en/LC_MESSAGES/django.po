@@ -4261,13 +4261,16 @@ msgstr ""
 msgid "To reactivate it, subscribe to a monthly subscription by contacting your Project Manager or DW Support at <a href='mailto:support@datawinners.com'>support@datawinners.com</a>."
 msgstr ""
 
-msgid "Get the Most out of Datawinners!"
+msgid "Datawinners | Become a DataWinners Pro in Two Weeks"
 msgstr ""
 
-msgid "Find Out What Datawinners Can Do For You!"
+msgid "Datawinners | Authorize your DataWinners Data Senders to Submit Data"
 msgstr ""
 
-msgid "Datawinners | We're here to Help!"
+msgid "Datawinners | Use Advanced Logic and Collect Media Files with DataWinners"
+msgstr ""
+
+msgid "Datawinners | Collect and View Your Data with DataWinners"
 msgstr ""
 
 msgid "Datawinners | Join our Online Community!"
