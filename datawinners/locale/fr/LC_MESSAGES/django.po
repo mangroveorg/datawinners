@@ -4654,14 +4654,17 @@ msgstr "Votre compte DataWinners a été désactivé. "
 msgid "To reactivate it, subscribe to a monthly subscription by contacting your Project Manager or DW Support at <a href='mailto:support@datawinners.com'>support@datawinners.com</a>."
 msgstr "Pour le réactiver, veuillez adhérer à une souscription mensuelle en contactant votre Gestionnaire de Projet ou le support DW au <a href='mailto:support@datawinners.com'>support@datawinners.com</a>."
 
-msgid "Get the Most out of Datawinners!"
-msgstr "Tirez le meilleur parti de votre Compte Datawinners"
+msgid "Datawinners | Become a DataWinners Pro in Two Weeks"
+msgstr "Datawinners | Devenez un Expert DataWinners en deux semaines"
 
-msgid "Find Out What Datawinners Can Do For You!"
-msgstr "Découvrez ce que Datawinners peut faire pour vous!"
+msgid "Datawinners | Authorize your DataWinners Data Senders to Submit Data"
+msgstr "Datawinners | Autorisez vos Expéditeurs de Données à soumettre des Données"
 
-msgid "Datawinners | We're here to Help!"
-msgstr "DataWinners | Nous sommes là pour vous aider!"
+msgid "Datawinners | Collect and View Your Data with DataWinners"
+msgstr "DataWinners | Collectez et affichez vos Données"
+
+msgid "Datawinners | Use Advanced Logic and Collect Media Files with DataWinners"
+msgstr "Datawinners | Utilisez les logiques avancées et collectez des fichiers média"
 
 msgid "Datawinners | Join our Online Community!"
 msgstr "DataWinners | Rejoignez notre communauté en ligne!"
