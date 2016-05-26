@@ -4679,13 +4679,13 @@ msgid "Datawinners | Why is Data Collection Important to You?"
 msgstr "DataWinners | Pourquoi la Collecte de données est importante pour vous?"
 
 msgid "Datawinners | Share Your Experience!"
-msgstr "DataWinners | Partagez Votre Experience!"
+msgstr "DataWinners | Partagez votre experience!"
 
 msgid "Your Datawinners Subscription is About to End!"
 msgstr "Votre abonnement DataWinners touche à sa fin…"
 
 msgid "Your Free Subscription to Datawinners Ends Tomorrow - Download Your Data!"
-msgstr "Votre abonnement gratuit à DataWinners sera expiré demain - Télécharger vos données!"
+msgstr "Votre abonnement gratuit à DataWinners expire demain - Télécharger vos données!"
 
 msgid "Datawinners | Your Account Has Expired!"
 msgstr "DataWinners | Votre Compte a expiré!"
