@@ -2172,8 +2172,8 @@ msgstr "Tout le monde peut envoyer une réponse SMS"
 msgid "How Long Should the Poll be Active?"
 msgstr "Combien de temps le Sondage sera-t-il actif ?"
 
-msgid "Choose the number of days people can respond to this poll."
-msgstr "Choisissez le nombre de jours durant lequel les gens peuvent répondre au Sondage."
+msgid "End date?"
+msgstr "Quelle sera la date d'expiration du sondage?"
 
 msgid "Active for"
 msgstr "Actif pour"
