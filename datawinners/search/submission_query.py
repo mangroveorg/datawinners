@@ -227,14 +227,21 @@ Helper to design the display for repeat question and group questions.
 '''
 def format_fieldset_values_for_representation(entry, field_set, submission_id):
     formatted_value = ''
-    data_to_iterate = entry
-    if not isinstance(entry, list):
-        data_to_iterate = json.loads(entry)
-    if entry:
+    if entry is not None:
+        data_to_iterate = entry
+        if not isinstance(entry, list):
+            data_to_iterate = json.loads(entry)
         for value_dict in data_to_iterate:
             formatted_value = _format_values(field_set, formatted_value, [value_dict], submission_id)
             formatted_value += '<br><br>'
-        return '<span class="repeat_ans">' + formatted_value + '</span>'
+    else:
+        formatted_value = _format_values(field_set, formatted_value, [{}], submission_id)
+        formatted_value += '<br><br>'
+
+    return '<span class="repeat_ans">' + formatted_value + '</span>'
+
+
+
 
 
 def _append_to_(result, key, value):
