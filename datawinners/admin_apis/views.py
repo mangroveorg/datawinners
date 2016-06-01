@@ -75,8 +75,9 @@ def start_reindex(request):
         reindex_catalog['reindex_start_time'] = reindex_start_time
         list_of_indexes = reindex_catalog.get('list_of_indexes')
         for i, info in enumerate(list_of_indexes):
-            result = async_reindex.apply_async((info['db_name'], info['questionnaire_id']), countdown=5, retry=False)
-            info['async_result'] = result
+            if isinstance(info, dict) and info.get('questionnaire_id'):
+                result = async_reindex.apply_async((info['db_name'], info['questionnaire_id']), countdown=5, retry=False)
+                info['async_result'] = result
             list_of_indexes[i] = info
         _set_in_cache(reindex_in_progress_cache_key, reindex_in_progress_cache)
         _set_in_cache(reindex_in_cache_key, reindex_catalog)
@@ -168,32 +169,36 @@ def _is_questionnaire_details_in_progress(reindex_catalog):
     return any([result.ready() == False for result in results])
     
 def _compute_total_submissions(indexes):
-    return sum([index.get('no_of_submissions') for index in indexes])
+    try:
+        return sum([index.get('no_of_submissions') for index in indexes])
+    except:
+        return 0
                         
 def _display_format(indexes_out_of_sync):
     response_data = []
     completed_submissions = 0
     for reindex_info in indexes_out_of_sync:
-        record = dict(
-                      db_name=reindex_info['db_name'], 
-                      questionnaire_id=reindex_info['questionnaire_id'],
-                      name=reindex_info['name'],
-                      no_of_submissions=reindex_info['no_of_submissions'],
-                      )
-        async_result = reindex_info.get('async_result')
-        if async_result:
-            record['status'] = async_result.state
-            record['result'] = async_result.result.__str__() if async_result.failed() else ''
-            successful_result = async_result.result if async_result.successful() and async_result.result else {}
-            if successful_result.get('end_time'):
-                end_time = successful_result.get('end_time')
-                record['end_time_epoch'] = end_time
-                record['end_time'] = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(end_time))
-                completed_submissions += reindex_info['no_of_submissions']
-            record['time_taken'] = math.ceil(successful_result.get('end_time',0)) - math.ceil(successful_result.get('start_time',0))
-            
-            
-        response_data.append(record)
+        if isinstance(reindex_info, dict) and reindex_info.get('questionnaire_id'):
+            record = dict(
+                          db_name=reindex_info['db_name'], 
+                          questionnaire_id=reindex_info['questionnaire_id'],
+                          name=reindex_info['name'],
+                          no_of_submissions=reindex_info['no_of_submissions'],
+                          )
+            async_result = reindex_info.get('async_result')
+            if async_result:
+                record['status'] = async_result.state
+                record['result'] = async_result.result.__str__() if async_result.failed() else ''
+                successful_result = async_result.result if async_result.successful() and async_result.result else {}
+                if successful_result.get('end_time'):
+                    end_time = successful_result.get('end_time')
+                    record['end_time_epoch'] = end_time
+                    record['end_time'] = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(end_time))
+                    completed_submissions += reindex_info['no_of_submissions']
+                record['time_taken'] = math.ceil(successful_result.get('end_time',0)) - math.ceil(successful_result.get('start_time',0))
+                
+                
+            response_data.append(record)
     return response_data, completed_submissions
         
 def async_list_of_indexes_to_reindex(full_reindex=False):
