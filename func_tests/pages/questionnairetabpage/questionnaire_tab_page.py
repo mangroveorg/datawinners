@@ -718,4 +718,7 @@ class QuestionnaireTabPage(Page):
             '#questionnaire_builder > div > div > div:nth-child(1) > div:nth-child(2) > div:nth-child(3) > button > div > div')).click()
 
     def get_save_success_message(self):
-        return self.driver.wait_for_element(UI_TEST_TIMEOUT, by_css("#toast-container .toast-success")).text
+        return self.driver.wait_for_element(UI_TEST_TIMEOUT, by_css("#toast-container .toast-success .toast-title")).text
+
+    def close_save_success_message(self):
+        return self.driver.wait_for_element(UI_TEST_TIMEOUT, by_css("#toast-container .toast-success button")).click()

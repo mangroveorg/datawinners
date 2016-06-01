@@ -432,6 +432,7 @@ class TestAdvancedQuestionnaireEndToEnd(HeadlessRunnerTest):
         questionnaire_tab_page.save_questionnaire_in_builder()
         success_message = questionnaire_tab_page.get_save_success_message()
         self.assertEqual(success_message, "Successfully updated", "Saving failed")
+        questionnaire_tab_page.close_save_success_message()
 
         project_temp_name, web_submission_page = navigate_and_verify_advanced_web_submission_page_is_loaded(self.driver, self.global_navigation_page, self.project_name)
         self.assertEquals("New Text Widget", web_submission_page.get_label(1))
