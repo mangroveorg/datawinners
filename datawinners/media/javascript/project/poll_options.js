@@ -4,6 +4,7 @@ var PollOptionsViewModel = function() {
     var end_date;
     var END_TIME = "T23:59:00";
     var data = {};
+    self.endDate= ko.observable(new Date());
 
     var calculateDays = new CalculateDays(to_date, from_date);
 
@@ -35,12 +36,10 @@ var PollOptionsViewModel = function() {
                                 {"label":gettext('Group'), "code": "group"},
                                 {"label":gettext('Contacts linked to a Questionnaire'), "code": "linked"}
     ]);
-
-
     self.to_date_poll = ko.computed(function () {
         end_date = new Date();
         end_date.setDate(end_date.getDate() + self.number_of_days());
-        return calculateDays.get_formatted_date_for_poll(end_date);
+        return calculateDays.get_formatted_date_for_poll(self.endDate());
     });
 
 
@@ -123,7 +122,7 @@ var PollOptionsViewModel = function() {
 
     self.activate_poll = function() {
         data = {
-            'end_date': end_date.getFullYear() + "-" + (end_date.getMonth()+1) + "-" + end_date.getDate() + END_TIME
+            'end_date': self.endDate().getFullYear() + "-" + (self.endDate().getMonth()+1) + "-" + self.endDate().getDate() + END_TIME
         };
         $.blockUI({ message: '<h1><img src="/media/images/ajax-loader.gif"/><span class="loading">' + gettext("Just a moment") + '...</span></h1>', css: { width: '275px'}});
         $.post(activate_poll_url, data).done(function (response) {

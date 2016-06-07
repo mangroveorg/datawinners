@@ -62,6 +62,36 @@
         var message_text = "{{ message_text }}";
         DW.help_url = "https://www.datawinners.com/{% trans 'wp_language' %}/find-answers-app/category/createq/?template=help";
     </script>
+    <script type="text/javascript">
+    ko.bindingHandlers.datepicker = {
+    init: function(element, valueAccessor, allBindingsAccessor) {
+        //initialize datepicker with some optional options
+        var options = allBindingsAccessor().datepickerOptions || {};
+        $(element).datepicker(options);
+
+        //handle the field changing
+        ko.utils.registerEventHandler(element, "change", function () {
+            var observable = valueAccessor();
+            observable($(element).datepicker("getDate"));
+        });
+
+        //handle disposal (if KO removes by the template binding)
+        ko.utils.domNodeDisposal.addDisposeCallback(element, function() {
+            $(element).datepicker("destroy");
+        });
+
+    },
+    //update the control when the view model changes
+    update: function(element, valueAccessor) {
+        var value = ko.utils.unwrapObservable(valueAccessor()),
+            current = $(element).datepicker("getDate");
+
+        if (value - current !== 0) {
+            $(element).datepicker("setDate", value);
+        }
+    }
+};
+    </script>
     <script type="text/javascript" src="/media/javascript/ko-binding-extensions.js"></script>
     <script type="text/javascript" src="/media/javascript/dw-ko-validation-extensions.js"></script>
     <script type="text/javascript" src="/media/javascript/project/project_language.js"></script>
@@ -163,9 +193,11 @@
 
     <div id="activate_poll_dialog" class="none">
         <br>
-        <span>{% trans 'Active for' %}</span>&nbsp
-        <select data-bind="options: active_poll_days, value: number_of_days" class="dropdown_style dropdown_width"></select>&nbsp
-        <span> {% trans 'Days' %} </span><br><br>
+        <span>{% trans 'Active from' %}</span>&nbsp
+        <!--<select data-bind="options: active_poll_days, value: number_of_days" class="dropdown_style dropdown_width"></select>&nbsp -->
+        <span data-bind="text:from_date_poll" class="date_text"> </span>&nbsp; <span class="italic_grey">  <b>{% trans 'To : '%}</b> </span> <input data-bind="datepicker: endDate, datepickerOptions: { minDate: new Date(+new Date() + 86400000) }" />
+        <br><br>
+
         <span class="italic_grey"><b>{% trans 'From : '%} </b></span>
         <span data-bind="text:from_date_poll" class="date_text"> </span>&nbsp;
 
