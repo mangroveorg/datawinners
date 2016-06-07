@@ -21,6 +21,7 @@ from mangrove.form_model.project import Project
 from mangrove.utils.types import is_empty
 from datawinners.preferences.models import UserPreferences
 from mangrove.datastore.user_permission import get_questionnaires_for_user
+from datawinners.entity.forms import ReporterRegistrationForm
 
 def _find_reporter_name(dbm, row):
     try:
@@ -185,16 +186,45 @@ def start(request):
                                'help_url': help_url, 'is_pro_sms': get_organization(request).is_pro_sms},
                               context_instance=RequestContext(request))
 
+# def _get_all_reporter_fields(reporter_form):
+#     all_fields = {}
+#     for key,field in reporter_form.base_fields.iteritems():
+#         if field.label is not None :
+#             if key == "location" :
+#                 all_fields[key] = "Location " + unicode(field.label)
+#             else :
+#                 all_fields[key] = unicode(field.label)
+#         else :
+#             all_fields[key] = "";
+#     return all_fields
 
-def _get_first_geocode_field_for_entity_type(dbm, entity_type):
+# retrieving label of all Reporter Fields
+def _get_all_reporter_fields():
+    all_fields = {}
+    all_fields['short_code'] = _("Unique ID")
+    all_fields['name'] = _("Name")
+    all_fields['telephone_number'] = _("Mobile Number")
+    all_fields['email'] = _("Email Address")
+    all_fields['location'] = _("Location")
+    all_fields['geo_code'] = _("GPS Coordinates")
+    all_fields['devices'] = _("Devices")
+    all_fields['is_data_sender'] = ""
+    return all_fields
+
+def _get_all_field_labels(entity_all_fields):
+    dict_simplified = {}
+    for field in entity_all_fields :
+        dict_simplified[field['name']] = field['label']
+    return dict_simplified
+
+def _get_first_geocode_field_for_entity_type(dbm, entity_all_fields):
     geocode_fields = [f for f in
-                      dbm.view.registration_form_model_by_entity_type(key=[entity_type], include_docs=True)[0]["doc"][
-                          "json_fields"] if
+                      entity_all_fields if
                       f["type"] == "geocode"]
     return geocode_fields[0] if len(geocode_fields) > 0 else None
 
 
-def to_json_point(value):
+def to_json_point(value,data=None,entity_all_field_labels=None,entity_type=None):
     point_json = {"type": "Feature", "geometry":
         {
             "type": "Point",
@@ -202,18 +232,43 @@ def to_json_point(value):
                 value[1],
                 value[0]
             ]
-        }
+        },
+        "properties": simplify_field_data(data, entity_all_field_labels, entity_type)
     }
     return point_json
 
+# simplify the field Data to be displayed on the map
+# Just remove the key "value" in each field of data property
+def simplify_field_data(data,entity_all_field_labels=None, entity_type=None):
+    simple_data = {}
 
-def get_location_list_for_entities(first_geocode_field, unique_ids):
+    if(entity_type is not None):
+        simple_data['entity_type'] = {}
+        simple_data['entity_type']["value"] = entity_type
+        simple_data['entity_type']["label"] = ""
+
+    for key,value_field in data.items():
+        one_field_data = {}
+        one_field_data["value"]= value_field["value"]
+
+        if key != "entity_type":
+            if key == "mobile_number" and entity_type is None:
+                one_field_data["label"]= entity_all_field_labels["telephone_number"]
+            else:
+                one_field_data["label"]= entity_all_field_labels[key]
+        else:
+            one_field_data["label"] = ""
+
+        simple_data[key] = one_field_data
+    return simple_data
+
+def get_location_list_for_entities(entity_all_field_labels, first_geocode_field, unique_ids):
     location_list = []
     for entity in unique_ids:
         value_dict = entity.data.get(first_geocode_field["name"])
         if value_dict and value_dict.has_key('value'):
             value = value_dict["value"]
-            location_list.append(to_json_point(value))
+            location_list.append(to_json_point(value,entity.data, entity_all_field_labels, entity.type_string))
     return location_list
 
 
@@ -221,17 +276,22 @@ def get_location_list_for_entities(first_geocode_field, unique_ids):
 def geo_json_for_project(request, project_id, entity_type=None):
     dbm = get_database_manager(request.user)
     location_list = []
+    entity_all_field_labels = {}
 
     try:
         if entity_type:
-            first_geocode_field = _get_first_geocode_field_for_entity_type(dbm, entity_type)
+            entity_all_fields = dbm.view.registration_form_model_by_entity_type(key=[entity_type], include_docs=True)[0]["doc"][
+                          "json_fields"]
+            entity_all_field_labels = _get_all_field_labels(entity_all_fields)
+            first_geocode_field = _get_first_geocode_field_for_entity_type(dbm, entity_all_fields)
             if first_geocode_field:
                 unique_ids = get_all_entities(dbm, [entity_type], limit=1000)
-                location_list.extend(get_location_list_for_entities(first_geocode_field, unique_ids))
+                location_list.extend(get_location_list_for_entities(entity_all_field_labels,first_geocode_field, unique_ids))
         else:
+            entity_all_fields = _get_all_reporter_fields()
             questionnaire = Project.get(dbm, project_id)
             unique_ids = by_short_codes(dbm, questionnaire.data_senders, ["reporter"], limit=1000)
-            location_list.extend(get_location_list_for_datasenders(unique_ids))
+            location_list.extend(get_location_list_for_datasenders(entity_all_fields,unique_ids))
 
     except DataObjectNotFound:
         pass
@@ -246,11 +306,11 @@ def render_map(request):
                               context_instance=RequestContext(request))
 
 
-def get_location_list_for_datasenders(datasenders):
+def get_location_list_for_datasenders(entity_all_fields=None,datasenders=None):
     location_list = []
     for entity in datasenders:
         geocode = entity.geometry
         if geocode:
             value = (geocode["coordinates"][0], geocode["coordinates"][1])
-            location_list.append(to_json_point(value))
+            location_list.append(to_json_point(value,entity.data,entity_all_fields))
     return location_list
