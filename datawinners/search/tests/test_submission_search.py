@@ -113,6 +113,20 @@ class TestSubmissionResponseCreator(unittest.TestCase):
         result = '<span class="repeat_ans">"<span class="repeat_qtn_label">group</span>: ";<br><br></span>'
         self.assertEqual(formatted_values, result)
 
+    def test_should_format_skippable_repeat_question(self):
+        field1 = TextField(name='name', code='name', label='wat is ur name')
+        field2 = IntegerField(name='age', code='age', label='wat is ur age')
+        field3 = SelectField(name='languages', code='lang', label='wat languages do you kno',
+                             options=[("English US", "eng"), ("French", "fre"), ("German", "ger"), ("Spanish", "spa")],
+                             single_select_flag=False)
+        group_field = FieldSet('group', 'group', 'group', field_set=[field1, field2, field3])
+        multi_field = FieldSet('student_details', 'student_details', 'Enter Student details',
+                               field_set=[group_field])
+        entry = None
+        formatted_values = format_fieldset_values_for_representation(entry, multi_field, "id")
+        result = '<span class="repeat_ans">"<span class="repeat_qtn_label">group</span>: ";<br><br></span>'
+        self.assertEqual(formatted_values, result)
+
     def test_should_format_repeat_with_media_question(self):
         field1 = TextField(name='name', code='name', label='wat is ur name')
         field2 = PhotoField(name='img', code='img', label='wat is ur img')
