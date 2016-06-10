@@ -439,3 +439,17 @@ class TestAdvancedQuestionnaireEndToEnd(HeadlessRunnerTest):
         self.assertEquals("New Hint for Text Widget", web_submission_page.get_hint(1))
         self.assertEquals("New Integer Widget", web_submission_page.get_label(11))
 
+    @attr('functional_test')
+    def test_xlsform_with_inexesistent_question_name(self):
+        self.project_name = random_string()
+
+        file_name = 'ft_advanced_questionnaire_with_inexistent_question_name.xls'
+        response = self.client.post(
+            path='/xlsform/upload/?pname=' + self.project_name + '&qqfile='+file_name,
+            data=open(os.path.join(self.test_data, file_name), 'r').read(),
+            content_type='application/octet-stream')
+        self.assertEquals(response.status_code, 200)
+        response = json.loads(response._container[0])
+        self.assertFalse(response.get('success'))
+        expected_error_message = u"There is no question with name my_int1 for relevant in the question my_string"
+        self.assertEquals(response.get('error_msg')[0], expected_error_message)
