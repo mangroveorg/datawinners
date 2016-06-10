@@ -669,9 +669,11 @@ def _try_parse_xls(manager, request, questionnaire_name, excel_file=None):
             }))
 
     except BindError as e:
+        error_message = [(e.custom_message + ' for ' + e.attribute + ' in the question ' + e.field.name)]
         return HttpResponse(content_type='application/json', content=json.dumps({
                 'success': False,
                 'status': 'error',
+                'error_msg': error_message,
                 'errors': [
                     {
                         e.field.name: {
