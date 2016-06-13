@@ -299,40 +299,53 @@ class ProjectUpdate(View):
         return self._overwrite(project_id, request)
 
     def _overwrite(self, project_id, request):
-        manager = get_database_manager(request.user)
-        questionnaire = Project.get(manager, project_id)
-        xls_parser_response = _try_parse_xls(manager, request, questionnaire.name)
-        if isinstance(xls_parser_response, HttpResponse):
-            return xls_parser_response
-        send_email_if_unique_id_type_question_has_no_registered_unique_ids(xls_parser_response, request,
-                                                                           questionnaire.name)
-        mangrove_service = MangroveService(request, questionnaire_code=questionnaire.form_code,
-                                           project_name=questionnaire.name, xls_parser_response=xls_parser_response)
-        questionnaire.xform = mangrove_service.xform_with_form_code
-        QuestionnaireBuilder(questionnaire, manager).update_questionnaire_with_questions(
-            xls_parser_response.json_xform_data)
-        questionnaire.update_media_field_flag()
-        questionnaire.save(process_post_update=False)
-        UserActivityLog().log(self.request, action=EDITED_QUESTIONNAIRE, project=questionnaire.name,
-                              detail=questionnaire.name)
-        tmp_file = _temp_file(request)
-        base_name, extension = os.path.splitext(tmp_file.name)
-        questionnaire.update_attachments(tmp_file, 'questionnaire%s' % extension)
-        questionnaire.update_external_itemset(mangrove_service.itemsets_csv)
-        self._purge_submissions(manager, questionnaire)
-        self._purge_feed_documents(questionnaire, request)
-        self._purge_media_details_documents(manager, questionnaire)
-        self.recreate_submissions_mapping(manager, questionnaire)
-        excel_file = _temp_file(request)
-        excel_file.seek(0)
-        _save_questionnaire_as_dict_for_builder(questionnaire, excel_file=excel_file)
-        if xls_parser_response.info:
-            info_list = list(xls_parser_response.info)
-            logger.info("User: %s. Edit upload Errors: %s", request.user.username, json.dumps(info_list))
+        try:
+            manager = get_database_manager(request.user)
+            questionnaire = Project.get(manager, project_id)
+            xls_parser_response = _try_parse_xls(manager, request, questionnaire.name)
+            if isinstance(xls_parser_response, HttpResponse):
+                return xls_parser_response
+            send_email_if_unique_id_type_question_has_no_registered_unique_ids(xls_parser_response, request,
+                                                                               questionnaire.name)
+            mangrove_service = MangroveService(request, questionnaire_code=questionnaire.form_code,
+                                               project_name=questionnaire.name, xls_parser_response=xls_parser_response)
+            questionnaire.xform = mangrove_service.xform_with_form_code
+            QuestionnaireBuilder(questionnaire, manager).update_questionnaire_with_questions(
+                xls_parser_response.json_xform_data)
+            questionnaire.update_media_field_flag()
+            questionnaire.save(process_post_update=False)
+            UserActivityLog().log(self.request, action=EDITED_QUESTIONNAIRE, project=questionnaire.name,
+                                  detail=questionnaire.name)
+            tmp_file = _temp_file(request)
+            base_name, extension = os.path.splitext(tmp_file.name)
+            questionnaire.update_attachments(tmp_file, 'questionnaire%s' % extension)
+            questionnaire.update_external_itemset(mangrove_service.itemsets_csv)
+            self._purge_submissions(manager, questionnaire)
+            self._purge_feed_documents(questionnaire, request)
+            self._purge_media_details_documents(manager, questionnaire)
+            self.recreate_submissions_mapping(manager, questionnaire)
+            excel_file = _temp_file(request)
+            excel_file.seek(0)
+            _save_questionnaire_as_dict_for_builder(questionnaire, excel_file=excel_file)
+            if xls_parser_response.info:
+                info_list = list(xls_parser_response.info)
+                logger.info("User: %s. Edit upload Errors: %s", request.user.username, json.dumps(info_list))
+                return HttpResponse(content_type='application/json', content=json.dumps({
+                    'success': True,
+                    'information': info_list,
+                }))
+
+        except QuestionAlreadyExistsException as e:
             return HttpResponse(content_type='application/json', content=json.dumps({
-                'success': True,
-                'information': info_list,
+                'success': False,
+                'error_msg': [
+                    _(e.message)
+                ],
+                "status": "error",
+                'reason': "Save Failed", #TODO: i18n translation
+                'details': _(e.message)
             }))
+
         return HttpResponse(
             json.dumps(
                 {
