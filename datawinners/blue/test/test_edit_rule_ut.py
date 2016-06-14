@@ -314,9 +314,7 @@ class TestEditRule(unittest.TestCase):
         add_rule = ChoiceRule()
         self.maxDiff = None
 
-        old_questionnaire = self._get_questionnaire(field_name="hh_bottle_currency",
-                                                    field_choices=[{"text": "Dollar", "val": "dollar"},
-                                                                   {"text": "INR", "val": "rupee"}]
+        old_questionnaire = self._get_questionnaire(field_name="hh_bottle_currency"
                                                     )
         new_questionnaire = self._get_questionnaire(field_name="hh_bottle_currency",
                                                     field_choices=[{"text": "USD", "val": "dollar"},
