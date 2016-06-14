@@ -310,6 +310,21 @@ class TestEditRule(unittest.TestCase):
 
         add_rule.update_xform(old_questionnaire, new_questionnaire, {})
         self.assertEqual(old_questionnaire.xform, new_questionnaire.xform)
+    def test_should_ignore_type_change_for_choice_field(self):
+        add_rule = ChoiceRule()
+        self.maxDiff = None
+
+        old_questionnaire = self._get_questionnaire(field_name="hh_bottle_currency",
+                                                    field_choices=[{"text": "Dollar", "val": "dollar"},
+                                                                   {"text": "INR", "val": "rupee"}]
+                                                    )
+        new_questionnaire = self._get_questionnaire(field_name="hh_bottle_currency",
+                                                    field_choices=[{"text": "USD", "val": "dollar"},
+                                                                   {"text": "GBP", "val": "pound"}]
+                                                    )
+
+        add_rule.update_xform(old_questionnaire, new_questionnaire, {})
+        pass
 
     def test_should_edit_cascade_choice(self):
         add_rule = CascadeRule()

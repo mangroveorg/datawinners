@@ -8,7 +8,7 @@ class ChoiceRule(Rule):
         pass
 
     def edit(self, node, old_field, new_field, old_xform, new_xform, activity_log_detail):
-        if not isinstance(new_field, SelectField) or new_field.is_cascade:
+        if not isinstance(new_field, SelectField) or not isinstance(old_field, SelectField) or new_field.is_cascade:
             return
 
         for new_option in new_field.options:
