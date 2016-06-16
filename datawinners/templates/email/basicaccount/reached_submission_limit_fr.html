@@ -28,14 +28,14 @@
                                     <table>
                                         <tr>
                                             <td width="10"></td>
-                                            <td style="text-align: justify; color: #333333; ">
+                                            <td style="text-align: right; color: #333333; ">
                                                 <p>Bonjour {{ username }},</p>
                                                 <p>
                                                     Félicitations! Vous avez atteint la limite de 1000 Soumissions pour votre Compte basique DataWinners.  <br/>Vous pouvez toujours accéder à votre compte et consulter vos données jusqu'à la fin de la période de l'abonnement d'un an, mais vous ne pouvez pas recevoir de nouvelles Soumissions.
                                                 </p>
 
                                                 <p><strong>Devenez Pro</strong><br />
-                                                    <a href="http://{{ site.domain }}{% url upgrade_from_mail token %}" style="color: #4379A2;font-weight: normal;text-decoration: none;"><span style="color: #4379A2;font-weight: normal;text-decoration: none;">Passez au Compte Pro</span></a>
+                                                    <a href="https://{{ site.domain }}{% url upgrade_from_mail token %}" style="color: #4379A2;font-weight: normal;text-decoration: none;"><span style="color: #4379A2;font-weight: normal;text-decoration: none;">Passez au Compte Pro</span></a>
                                                      pour continuer à soumettre les données de votre compte DataWinners.<br />
                                                     Pas encore sûr? <a href="https://www.datawinners.com/fr/pricing" style="color: #4379A2;font-weight: normal;text-decoration: none;"><span style="color: #4379A2;font-weight: normal;text-decoration: none;">
                                                             Obtenez de plus amples informations</span></a> sur nos comptes Pro.
@@ -64,7 +64,7 @@
                                                     Si vous avez des questions ou avez besoin d'aide, n'hésitez pas à nous contacter à l'adresse
                                                     <a href="mailto:support@datawinners.com" style="text-decoration: none;color: #4379A2;font-weight: normal;">
                                                         <span style="color: #4379A2;font-weight: normal;text-decoration: none;">support@datawinners.com</span></a>
-                                                ou sur Skype: <a href="http://{{ site.domain }}{% url open_skype %}" style="border:none;text-decoration: none;color: #4379A2;font-weight: normal;"><span style="border:none;text-decoration: none;color: #4379A2;font-weight: normal;">datawinners</span></a>
+                                                ou sur Skype: <a href="https://{{ site.domain }}{% url open_skype %}" style="border:none;text-decoration: none;color: #4379A2;font-weight: normal;"><span style="border:none;text-decoration: none;color: #4379A2;font-weight: normal;">datawinners</span></a>
                                                 </p>
                                                 <p>
                                                 Votre équipe DataWinners<br />
