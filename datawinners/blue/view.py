@@ -461,7 +461,7 @@ def edit_xform_submission_post(request, survey_response_id):
                     for index, i in enumerate(value['new_data']):
                         for key, val in i.items():
                             if key in value['old_data'][index]:
-                                if value['new_data'][q] and val != value['old_data'][index][key]:
+                                if val and val != value['old_data'][index][key]:
                                     question = questionnaire.get_field_by_code(key).label
                                     edit_details.update({index: {'question': question, 'old': value['old_data'][index][key], 'new': val}})
 
@@ -470,12 +470,13 @@ def edit_xform_submission_post(request, survey_response_id):
                     for key, val in i.items():
                         try:
                             if key in value['old_data'][index]:
-                                if value['new_data'][q] and val != value['old_data'][index][key]:
+                                if val and val != value['old_data'][index][key]:
                                     question = questionnaire.get_field_by_code(key).label
                                     edit_details.update({index: {'question': question, 'old': value['old_data'][index][key], 'new': val}})
                         except IndexError:
-                            question = questionnaire.get_field_by_code(key).label
-                            edit_details.update({val: {'question': question, 'old': "", 'new': val}})
+                            if questionnaire.get_field_by_code(key):
+                                question = questionnaire.get_field_by_code(key).label
+                                edit_details.update({val: {'question': question, 'old': "", 'new': val}})
                             
             if len(value['new_data']) < len(value['old_data']):
                 for index, i in enumerate(value['old_data']):
@@ -486,8 +487,9 @@ def edit_xform_submission_post(request, survey_response_id):
                                     question = questionnaire.get_field_by_code(key).label
                                     edit_details.update({index: {'question': question, 'old': val, 'new': value['new_data'][index][key]}})
                         except IndexError:
-                            question = questionnaire.get_field_by_code(key).label
-                            edit_details.update({val: {'question': question, 'old': val, 'new': ""}})
+                            if questionnaire.get_field_by_code(key):
+                                question = questionnaire.get_field_by_code(key).label
+                                edit_details.update({val: {'question': question, 'old': val, 'new': ""}})
 
         else:
             edit_details.update({key: {'question':question, 'old': old_data[key], 'new': new_data_dict[key]}})
