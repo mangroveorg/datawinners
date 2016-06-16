@@ -450,8 +450,9 @@ def edit_xform_submission_post(request, survey_response_id):
                                 edit_details.update({question: {'question': question, 'old': value['old_data'][0][q], 'new': val}})
                     else:
                         for key, v in i.items():
-                            question = questionnaire.get_field_by_code(key).label
-                            edit_details.update({question: {'question': question, 'old': v, 'new': ""}})
+                            if questionnaire.get_field_by_code(key):
+                                question = questionnaire.get_field_by_code(key).label
+                                edit_details.update({question: {'question': question, 'old': v, 'new': ""}})
 
 
 
