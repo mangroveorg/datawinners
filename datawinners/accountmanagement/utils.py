@@ -1,8 +1,7 @@
 from django.utils.translation import ugettext as _
 from datawinners import settings
 
-RELATIVE_DELTA_BY_EMAIL_TYPE = {'three_days_after_activation': ({'days':3}, False),'fifteen_days_after_activation': ({'days':15}, False),
-                    'one_month_after_activation': ({'months':1}, False), 'two_months_after_activation': ({'months':2}, False),
+RELATIVE_DELTA_BY_EMAIL_TYPE = {'three_days_after_activation':({'days':3}, False),'five_days_after_activation':({'days':5}, False),'seven_days_after_activation':({'days':7}, False),'nine_days_after_activation':({'days':9}, False),'two_months_after_activation': ({'months':2}, False),
                     'four_months_after_activation': ({'months':4}, False), 'six_months_after_activation': ({'months':6}, False),
                     'nine_months_after_activation': ({'months':9}, False), 'eleven_months_after_activation': ({'months':11}, False),
                     'seven_days_before_deactivation': ({'years':1, 'days':-7}, True), 'one_day_before_deactivation': ({'years':1, 'days':-1}, True),
@@ -17,12 +16,14 @@ PRO_SMS_HALF_YEARLY_PRICING = 359
 PRO_SMS_YEARLY_PRICING = 299
 
 def get_email_detail_by_type(email_type):
-    mail_dict = {'three_days_after_activation': ("Get the Most out of Datawinners!",
-                                            "basicaccount/three_days_after_activation", settings.HNI_SUPPORT_EMAIL_ID),
-                 'fifteen_days_after_activation': ("Find Out What Datawinners Can Do For You!",
-                                              "basicaccount/fifteen_days_after_activation", None),
-                 'one_month_after_activation': ("Datawinners | We're here to Help!",
-                                              "basicaccount/one_month_after_activation", None),
+    mail_dict = {'three_days_after_activation':("Datawinners | Become a DataWinners Pro in Two Weeks",
+                                              "basicaccount/three_days_after_activation", None),
+                 'five_days_after_activation':("Datawinners | Authorize your DataWinners Data Senders to Submit Data",
+                                              "basicaccount/five_days_after_activation", None),
+                 'seven_days_after_activation':("Datawinners | Collect and View Your Data with DataWinners",
+                                              "basicaccount/seven_days_after_activation", None),
+                 'nine_days_after_activation':("Datawinners | Use Advanced Logic and Collect Media Files with DataWinners",
+                                              "basicaccount/nine_days_after_activation", None),
                  'two_months_after_activation': ("Datawinners | Join our Online Community!",
                                               "basicaccount/two_months_after_activation", None),
                  'four_months_after_activation': ("Datawinners | Send Us Your story!",
