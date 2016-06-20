@@ -36,7 +36,7 @@ def show_log(request):
         for key, value in filter.items():
             if value != "":
                 if key == "daterange":
-                    dates = value.split(" %s " % ugettext("to"))
+                    dates = value.split(" %s " % _("to"))
                     # args["log_date__gte"] = convert_dmy_to_ymd(dates[0])
                     args["log_date__gte"] = convert_local_to_utc(dates[0] + " 00:00:00", time_delta, "%d-%m-%Y %H:%M:%S")
                     try:
