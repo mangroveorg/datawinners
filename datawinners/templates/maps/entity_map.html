@@ -1,16 +1,31 @@
-{% block page_scss %}
+{% extends 'entity/subjects_header.html' %}
+{% load i18n %}
 
+{% block page_scss %}
+    {{ block.super }}
+    <link rel="stylesheet" href="/media/javascript/OpenLayers-v3.15.1-dist/ol.css" media="screen">
+    <link rel="stylesheet" href="/media/javascript/OpenLayers-v3.15.1-dist/ol3-popup.css" media="screen">
+    <link rel="stylesheet" href="/media/javascript/OpenLayers-v3.15.1-dist/ol3-layerswitcher.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="/media/css/scss/section_map.css" media="screen">
 {% endblock %}
-{% block uncompress %}
-    <script type="text/javascript" src="//maps.googleapis.com/maps/api/js?v=3.exp&amp;sensor=false&amp;key={{ map_api_key }}&amp;language=en"></script>
-{% endblock %}
+
+<script type="text/javascript" src="//maps.googleapis.com/maps/api/js?v=3.exp&amp;sensor=false&amp;key={{ map_api_key }}&amp;language=en"></script>
 
 {% block page_js %}
-
-
+    {{ block.super }}
+    <script type="text/javascript" src="/media/javascript/OpenLayers-v3.15.1-dist/ol.js"></script>
+    <script type="text/javascript" src="/media/javascript/OpenLayers-v3.15.1-dist/ol3-popup.js"></script>
+    <script type="text/javascript" src="/media/javascript/OpenLayers-v3.15.1-dist/ol3-layerswitcher.js"></script>
+    <script type="text/javascript" src="/media/javascript/mapping.js"></script>
+    <script type="text/javascript">
+        var entity_type = '{{ entity_type }}';
+        $(document).ready(function() {
+            $( "#how_to" ).accordion({ collapsible: true, active: 0 });
+            init_map2();
+        });
+    </script>
 {% endblock %}
 
-
-{% block content %}
+{% block page_content %}
     <div id="map" style="height:400px; margin-top:20px;" class="grid_23"> </div>
 {% endblock %}

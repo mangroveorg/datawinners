@@ -55,7 +55,7 @@ from datawinners.entity import import_data as import_module
 from mangrove.utils.types import is_empty
 from datawinners.submission.location import LocationBridge
 from datawinners.utils import get_organization, get_organization_country, \
-    get_changed_questions
+    get_changed_questions, get_map_key
 from datawinners.questionnaire.questionnaire_builder import QuestionnaireBuilder
 from mangrove.datastore.entity import get_by_short_code
 from mangrove.transport.player.parser import XlsOrderedParser
@@ -463,6 +463,18 @@ def edit_subject(request, entity_type, entity_id, project_id=None):
 
         return render_to_response(web_questionnaire_template, subject_context,
                                   context_instance=RequestContext(request))
+
+
+def map_subject(request, entity_type=None):
+    manager = get_database_manager(request.user)
+    form_model = get_form_model_by_entity_type(manager, [entity_type.lower()])
+    return render_to_response('maps/entity_map.html',
+                              {
+                                  "entity_type": entity_type,
+                                  "form_code": form_model.form_code,
+                                  "map_api_key": get_map_key(request.META['HTTP_HOST'])
+                               },
+                              context_instance=RequestContext(request))
 
 
 @valid_web_user

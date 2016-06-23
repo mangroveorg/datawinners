@@ -62,11 +62,8 @@ function init_map2() {
     layers.push(Base_map);
 
     var layer_entity = [];
-    for (var i = 0; i < entity_types.length; i++) {
-        var entity_type = entity_types[i];
-        var image_url = '/media/images/pin_entity_' + (i%10 + 1) + ".png";
-        layer_entity.push(create_layer_vector(entity_type, image_url,geo_url + "/" + entity_type));
-    }
+    var image_url = '/media/images/pin_entity_1.png';
+    layer_entity.push(create_layer_vector(entity_type, image_url,geo_url + "/" + entity_type));
     layers.push(new ol.layer.Group({
                 title: label_idn,
                 layers: layer_entity

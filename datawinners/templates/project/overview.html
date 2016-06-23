@@ -27,30 +27,10 @@
 	{% else %}
 	    <link href="/media/css/scss/section_application.css" rel="stylesheet"/>
 	{% endflag %}
-	    
-    {% if GOOGLE_MAPS_ENABLED %}
-        <link rel="stylesheet" href="/media/javascript/OpenLayers-v3.15.1-dist/ol.css" media="screen">
-        <link rel="stylesheet" href="/media/javascript/OpenLayers-v3.15.1-dist/ol3-popup.css" media="screen">
-        <link rel="stylesheet" href="/media/javascript/OpenLayers-v3.15.1-dist/ol3-layerswitcher.css" media="screen">
-        <link rel="stylesheet" type="text/css" href="/media/css/scss/section_map.css" media="screen">
-    {% endif %}
 {% endblock %}
 
 {% block page_js %}
   {{ block.super }}
-  {% if GOOGLE_MAPS_ENABLED %}
-    <script type="text/javascript" src="/media/javascript/OpenLayers-v3.15.1-dist/ol.js"></script>
-      <script type="text/javascript" src="/media/javascript/OpenLayers-v3.15.1-dist/ol3-popup.js"></script>
-      <script type="text/javascript" src="/media/javascript/OpenLayers-v3.15.1-dist/ol3-layerswitcher.js"></script>
-    <script type="text/javascript" src="/media/javascript/mapping.js"></script>
-    <script type="text/javascript">
-        var entity_types = {{ project.entity_type|safe }};
-        $(document).ready(function() {
-            $( "#how_to" ).accordion({ collapsible: true, active: 0 });
-            init_map2();
-        });
-    </script>
-  {% endif %}
     <script type="text/javascript">
         DW.help_url = "https://www.datawinners.com/{% trans 'wp_language' %}/find-answers-app/category/ov/?template=help";
         var isSmartPhoneUpgradeInfoFlagPresent = '{{ show_sp_upgrade_info }}';
@@ -90,11 +70,6 @@
             </b></p>
         </div>
 
-        <!--Map div-->
-        {% if GOOGLE_MAPS_ENABLED %}
-            {% include 'maps/entity_map.html'  %}
-            <label id="map_identification_number" style="display: none">{% trans "My Identification Numbers" %}:</label>
-        {% endif %}
         <!--Questionnaire & DS div-->
         <div class="clear_both_width_100" id="questionnaire_and_DS">
             {% include 'project/questionnaire_and_DS.html'%}
