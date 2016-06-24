@@ -20,10 +20,19 @@
     <script type="text/javascript">
         var entity_type = '{{ entity_type }}';
         $(document).ready(function() {
-            $( "#how_to" ).accordion({ collapsible: true, active: 0 });
+            $("#how_to").accordion({ collapsible: true, active: 0 });
+            $('.secondary_tab li').attr('class', 'inactive');
+            $('.secondary_tab li:nth-child(3)').attr('class', 'active');
             init_map2();
         });
     </script>
+{% endblock %}
+
+{% block secondary_navigation %}
+    <li class="float_left"><a href="{% url all_subject_type_page %}">
+        « {% trans "Back to Identification Number List" %}</a>
+    </li>
+    <br/>
 {% endblock %}
 
 {% block page_content %}
