@@ -3,7 +3,7 @@ function init_map2() {
     var project_id = $('#project_id').html();
     var label_idn = $('#map_identification_number').text();
     console.debug("label " + label_idn);
-    var geo_url = '/get_geojson/' + project_id;
+    var geo_url = '/get_geojson/';
     var layers = [];
     var count_click_on_map = 0;
     var nbr_listened_layer = 0;
@@ -61,18 +61,12 @@ function init_map2() {
             });
     layers.push(Base_map);
 
-    var layer_entity = [];
     var image_url = '/media/images/pin_entity_1.png';
-    layer_entity.push(create_layer_vector(entity_type, image_url,geo_url + "/" + entity_type));
-    layers.push(new ol.layer.Group({
-                title: label_idn,
-                layers: layer_entity
-            }));
-    layers.push(create_layer_vector(pgettext('datasender short','Data Senders'),"/media/images/pin_datasender.png",geo_url));
+    layers.push(create_layer_vector(entity_type, image_url,geo_url + entity_type));
 
     var map = new ol.Map({
       target: 'map',
-      //renderer: 'canvas',
+      renderer: 'canvas',
       view: view,
       layers: layers
     });

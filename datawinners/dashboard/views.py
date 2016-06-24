@@ -124,7 +124,7 @@ def dashboard(request):
                       extra_tags='error')
     user = request.user.id
     show_help = False if (UserPreferences.objects.filter(user=user)).count() > 0 else True
-    
+
 
     context = {
         "show_help":show_help,
@@ -174,7 +174,7 @@ def start(request):
                      'datasenders': 'https://www.datawinners.com/%s/find-answers-app/category/allds/?template=help',
                      'subjects': 'https://www.datawinners.com/%s/find-answers-app/category/idnos/?template=help',
                      'alldata': 'https://www.datawinners.com/%s/find-answers-app/category/proj/?template=help'}
-    
+
     page = request.GET['page']
     page = page.split('/')
     url_tokens = [each for each in page if each != '']
@@ -273,25 +273,17 @@ def get_location_list_for_entities(entity_all_field_labels, first_geocode_field,
 
 
 @valid_web_user
-def geo_json_for_project(request, project_id, entity_type=None):
+def geo_json_for_entity(request, entity_type):
     dbm = get_database_manager(request.user)
     location_list = []
-    entity_all_field_labels = {}
 
     try:
-        if entity_type:
-            entity_all_fields = dbm.view.registration_form_model_by_entity_type(key=[entity_type], include_docs=True)[0]["doc"][
-                          "json_fields"]
-            entity_all_field_labels = _get_all_field_labels(entity_all_fields)
-            first_geocode_field = _get_first_geocode_field_for_entity_type(dbm, entity_all_fields)
-            if first_geocode_field:
-                unique_ids = get_all_entities(dbm, [entity_type], limit=1000)
-                location_list.extend(get_location_list_for_entities(entity_all_field_labels,first_geocode_field, unique_ids))
-        else:
-            entity_all_fields = _get_all_reporter_fields()
-            questionnaire = Project.get(dbm, project_id)
-            unique_ids = by_short_codes(dbm, questionnaire.data_senders, ["reporter"], limit=1000)
-            location_list.extend(get_location_list_for_datasenders(entity_all_fields,unique_ids))
+        entity_all_fields = dbm.view.registration_form_model_by_entity_type(key=[entity_type], include_docs=True)[0]["doc"]["json_fields"]
+        entity_all_field_labels = _get_all_field_labels(entity_all_fields)
+        first_geocode_field = _get_first_geocode_field_for_entity_type(dbm, entity_all_fields)
+        if first_geocode_field:
+            unique_ids = get_all_entities(dbm, [entity_type], limit=1000)
+            location_list.extend(get_location_list_for_entities(entity_all_field_labels,first_geocode_field, unique_ids))
 
     except DataObjectNotFound:
         pass
