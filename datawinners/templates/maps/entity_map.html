@@ -25,7 +25,7 @@
             $('.secondary_tab li').attr('class', 'inactive');
             $('.secondary_tab li:nth-child(3)').attr('class', 'active');
             init_map2();
-            new DW.MappingEditor().init();
+            new DW.MappingEditor(entity_type).init();
         });
     </script>
 {% endblock %}

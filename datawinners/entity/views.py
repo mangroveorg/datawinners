@@ -245,6 +245,9 @@ def all_subjects_ajax(request, subject_type):
         raise
 
 
+def share_token(request, entity_type):
+    return HttpResponse(json.dumps({"token": "qweqwe123"}))
+
 
 @register.filter
 def get_element(h, key):
