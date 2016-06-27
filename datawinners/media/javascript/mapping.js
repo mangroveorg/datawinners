@@ -1,22 +1,14 @@
 function init_map2() {
-    "use strict";
-    var project_id = $('#project_id').html();
-    var label_idn = $('#map_identification_number').text();
-    console.debug("label " + label_idn);
     var geo_url = '/get_geojson/';
     var layers = [];
     var count_click_on_map = 0;
     var nbr_listened_layer = 0;
-    var selected_layers = [];//manage multiple layers
+    var selected_layers = [];
 
     var view = new ol.View({
-      // make sure the view doesn't go beyond the 22 zoom levels of Google Maps
       maxZoom: 21,
       minZoom : 2,
-      //maxResolution : 156543.0339,
-      //  maxExtent: [-20037508, -20037508, 20037508, 20037508],
-      //  units: "m",
-        zoom: 2
+      zoom: 2
     });
     view.setCenter([0, 0]);
 
@@ -39,12 +31,6 @@ function init_map2() {
                             layer: 'toner'
                         })
                     }),
-                    //new ol.layer.Tile({
-                    //    title: 'OpenStreetMap',
-                    //    type: 'base',
-                    //    visible: true,
-                    //    source: new ol.source.OSM()
-                    //}),
                     new ol.layer.Tile({
                         title: 'OpenStreetMap',
                         type: 'base',

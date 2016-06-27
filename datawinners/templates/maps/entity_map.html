@@ -17,13 +17,15 @@
     <script type="text/javascript" src="/media/javascript/OpenLayers-v3.15.1-dist/ol3-popup.js"></script>
     <script type="text/javascript" src="/media/javascript/OpenLayers-v3.15.1-dist/ol3-layerswitcher.js"></script>
     <script type="text/javascript" src="/media/javascript/mapping.js"></script>
+    <script type="text/javascript" src="/media/javascript/mapping_edit.js"></script>
+    <script type="text/javascript" src="/media/javascript/common/util.js"></script>
     <script type="text/javascript">
         var entity_type = '{{ entity_type }}';
         $(document).ready(function() {
-            $("#how_to").accordion({ collapsible: true, active: 0 });
             $('.secondary_tab li').attr('class', 'inactive');
             $('.secondary_tab li:nth-child(3)').attr('class', 'active');
             init_map2();
+            new DW.MappingEditor().init();
         });
     </script>
 {% endblock %}
@@ -37,22 +39,12 @@
 
 {% block page_content %}
     <div class="float_right" style="position: relative;">
-        <div class="hide share-widget"><input type="text" value="http://app.datawinners.com/share/awqsermpwcvbiopf" ></div>
-        <div class="hide share-widget-close" onclick="$(this).prev().toggle(); $(this).toggle(); $(this).parent().next().hide();"></div>
-        <div class="button" onclick="
-                    $(this).prev().prev().toggle();
-                    $(this).prev().toggle();
-                    overlayHeight = $('#container_header_application').outerHeight() + $('#container_content').outerHeight() + 30;
-                    if(overlayHeight > 970) {
-                        overlayHeight = overlayHeight + 5;
-                    } else {
-                        overlayHeight = 970;
-                    }
-                    $(this).parent().next().height(overlayHeight).show();
-                ">
-            Share
+        <div id= "share-widget" class="hide share-widget">
+            <input type="text" value="http://app.datawinners.com/share/awqsermpwcvbiopf" />
         </div>
+        <div id="share-widget-close" class="hide share-widget-close"></div>
+        <div id="share-button" class="button">Share</div>
     </div>
-    <div class="share-overlay"></div>
+    <div id="share-overlay" class="share-overlay"></div>
     <div id="map" style="height:400px; margin-top:20px;" class="grid_23"> </div>
 {% endblock %}
