@@ -15,3 +15,36 @@ div.dataLayersDiv input{
 .olControlLayerSwitcher .layersDiv{
   background-color: rgba(100, 100, 100, 0.8);
 }
+.share-overlay{
+  display: none;
+  top: 0;
+  left: 0;
+  min-width: 100%;
+  min-height: 100%;
+  opacity: 0.4;
+  filter: alpha(opacity=50);
+  position: absolute;
+  background: #000;
+  z-index: 100;
+}
+.share-widget{
+  position: absolute;
+  right: 0;
+  z-index: 101;
+  input {
+    padding: 8px;
+  }
+}
+.share-widget-close{
+  position: absolute;
+  right: 0;
+  background: url("/media/images/icons.png") no-repeat scroll -5px -170px;
+  float: right;
+  cursor: pointer;
+  width: 16px;
+  height: 16px;
+  z-index: 101;
+  &:hover {
+    opacity: 0.8;
+  }
+}

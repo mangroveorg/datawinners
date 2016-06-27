@@ -62,7 +62,7 @@ function init_map2() {
     layers.push(Base_map);
 
     var image_url = '/media/images/pin_entity_1.png';
-    layers.push(create_layer_vector(entity_type, image_url,geo_url + entity_type));
+    layers.push(create_layer_vector(entity_type, image_url, geo_url + entity_type));
 
     var map = new ol.Map({
       target: 'map',

@@ -36,5 +36,23 @@
 {% endblock %}
 
 {% block page_content %}
+    <div class="float_right" style="position: relative;">
+        <div class="hide share-widget"><input type="text" value="http://app.datawinners.com/share/awqsermpwcvbiopf" ></div>
+        <div class="hide share-widget-close" onclick="$(this).prev().toggle(); $(this).toggle(); $(this).parent().next().hide();"></div>
+        <div class="button" onclick="
+                    $(this).prev().prev().toggle();
+                    $(this).prev().toggle();
+                    customizationOverlayHeight = $('#container_header_application').outerHeight() + $('#container_content').outerHeight() + 30;
+                    if(customizationOverlayHeight > 970) {
+                        customizationOverlayHeight = customizationOverlayHeight + 5;
+                    } else {
+                        customizationOverlayHeight = 970;
+                    }
+                    $(this).parent().next().show();
+                ">
+            Share
+        </div>
+    </div>
+    <div class="share-overlay"></div>
     <div id="map" style="height:400px; margin-top:20px;" class="grid_23"> </div>
 {% endblock %}
