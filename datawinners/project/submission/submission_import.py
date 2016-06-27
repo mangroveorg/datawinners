@@ -4,6 +4,7 @@ import logging
 import os
 from django.utils.translation import gettext, ugettext
 import xlrd
+from datawinners.exceptions import ImportValidationError
 from datawinners.accountmanagement.helper import is_org_user
 from datawinners.accountmanagement.models import NGOUserProfile
 from datawinners.entity.entity_exceptions import InvalidFileFormatException
@@ -135,9 +136,7 @@ class SubmissionWorkbookValidator():
         return None
 
 
-class ImportValidationError(Exception):
-    def __init__(self, message):
-        super(Exception, self).__init__(message)
+
 
 
 def is_on_behalf_of_reporter_question(question_label):

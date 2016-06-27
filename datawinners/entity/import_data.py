@@ -45,6 +45,7 @@ from datawinners.accountmanagement.models import NGOUserProfile, DataSenderOnTri
 from datawinners.settings import HNI_SUPPORT_EMAIL_ID, EMAIL_HOST_USER
 from datawinners.questionnaire.helper import get_location_field_code
 from mangrove.transport.player.parser import XlsxParser
+from datawinners.exceptions import ImportValidationError
 from django.db import transaction
 
 
@@ -199,6 +200,10 @@ class FilePlayer(Player):
         except (InvalidEmailException, MangroveException, NameNotFoundException, ValidationError) as e:
             transaction.savepoint_rollback(sid)
             return self._appendFailedResponse(e.message, values=values)
+        except ImportValidationError as e:
+            raise
+
+
 
     def _get_registered_emails(self):
         if type(self.parser) in [XlsDatasenderParser, XlsxDataSenderParser]:
@@ -486,6 +491,8 @@ def import_data(request, manager, default_parser=None, form_code=None, is_datase
         error_message = _(
             u"We could not import your data ! You are using a document format we canʼt import. Please use the excel (.xlsx) template file!")
     except FormCodeDoesNotMatchException as e:
+        error_message = e.message
+    except ImportValidationError as e:
         error_message = e.message
 
     return error_message, failure_imports, response_message, imported_entities
