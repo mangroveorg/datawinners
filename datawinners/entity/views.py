@@ -1,73 +1,69 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
-from collections import OrderedDict
 import json
 import logging
 
+import elasticutils
+import jsonpickle
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.template.defaultfilters import register, lower
-from django.utils import translation
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponseServerError
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
+from django.template.defaultfilters import register, lower
+from django.utils import translation
+from django.utils.translation import ugettext as _, ugettext, get_language
 from django.views.decorators.csrf import csrf_view_exempt, csrf_response_exempt
 from django.views.decorators.http import require_http_methods
-from django.utils.translation import ugettext as _, ugettext, get_language
-import elasticutils
-import jsonpickle
-from django.contrib import messages
 
 from datawinners.accountmanagement.decorators import is_datasender, session_not_expired, is_not_expired, is_new_user, \
     valid_web_user
-from datawinners.accountmanagement.helper import create_web_users, validate_email_addresses, \
-    validate_and_create_web_users
-from datawinners.entity.entity_export_helper import get_subject_headers
+from datawinners.accountmanagement.helper import create_web_users, validate_email_addresses
+from datawinners.accountmanagement.localized_time import get_country_time_delta
+from datawinners.activitylog.models import UserActivityLog
+from datawinners.alldata.helper import get_visibility_settings_for
+from datawinners.common.constant import ADDED_IDENTIFICATION_NUMBER_TYPE, REGISTERED_IDENTIFICATION_NUMBER, \
+    EDITED_REGISTRATION_FORM, IMPORTED_IDENTIFICATION_NUMBER, DELETED_IDENTIFICATION_NUMBER
+from datawinners.custom_report_router.report_router import ReportRouter
+from datawinners.entity import import_data as import_module
+from datawinners.entity.forms import EntityTypeForm
 from datawinners.entity.group_helper import create_new_group
+from datawinners.entity.helper import create_registration_form, get_organization_telephone_number, set_email_for_contact
 from datawinners.entity.subjects import load_subject_type_with_projects, get_subjects_count
+from datawinners.location.LocationTree import get_location_tree, get_location_hierarchy
 from datawinners.main.database import get_database_manager
 from datawinners.main.utils import get_database_name
+from datawinners.messageprovider.message_handler import get_exception_message_for
+from datawinners.messageprovider.messages import exception_messages, WEB
+from datawinners.project.helper import create_request
+from datawinners.project.submission.exporter import SubmissionExporter
+from datawinners.project.web_questionnaire_form import SubjectRegistrationForm
+from datawinners.questionnaire.questionnaire_builder import QuestionnaireBuilder
 from datawinners.search.entity_search import SubjectQuery
 from datawinners.search.index_utils import delete_mapping, es_questionnaire_field_name
 from datawinners.search.submission_index import update_submission_search_for_subject_edition
 from datawinners.settings import ELASTIC_SEARCH_URL, ELASTIC_SEARCH_TIMEOUT
-from datawinners.workbook_utils import workbook_add_sheet, get_excel_sheet
-from mangrove.datastore.documents import EntityActionDocument, HARD_DELETE
-from mangrove.form_model.field import field_to_json, DateField
-from mangrove.transport import Channel
-from datawinners.alldata.helper import get_visibility_settings_for
-from datawinners.custom_report_router.report_router import ReportRouter
-from datawinners.entity.helper import create_registration_form, get_organization_telephone_number, set_email_for_contact
-from datawinners.location.LocationTree import get_location_tree, get_location_hierarchy
-from datawinners.messageprovider.message_handler import get_exception_message_for
-from datawinners.messageprovider.messages import exception_messages, WEB
-from mangrove.datastore.entity_type import define_type, delete_type, entity_type_already_defined,\
-    get_unique_id_types
-from mangrove.datastore.entity import get_all_entities_include_voided, delete_data_record, contact_by_short_code
-from mangrove.errors.MangroveException import EntityTypeAlreadyDefined, DataObjectAlreadyExists, \
-    QuestionCodeAlreadyExistsException, EntityQuestionAlreadyExistsException, DataObjectNotFound, \
-    QuestionAlreadyExistsException
-from datawinners.entity.forms import EntityTypeForm
-from mangrove.form_model.form_model import LOCATION_TYPE_FIELD_NAME, REGISTRATION_FORM_CODE, REPORTER, \
-    get_form_model_by_entity_type, get_form_model_by_code, GEO_CODE_FIELD_NAME, SHORT_CODE_FIELD, \
-    header_fields, get_field_by_attribute_value
-from mangrove.transport.player.player import WebPlayer
-from datawinners.entity import import_data as import_module
-from mangrove.utils.types import is_empty
 from datawinners.submission.location import LocationBridge
 from datawinners.utils import get_organization, get_organization_country, \
     get_changed_questions, get_map_key
-from datawinners.questionnaire.questionnaire_builder import QuestionnaireBuilder
+from datawinners.workbook_utils import workbook_add_sheet
+from mangrove.datastore.documents import EntityActionDocument, HARD_DELETE
+from mangrove.datastore.entity import get_all_entities_include_voided, delete_data_record, contact_by_short_code
 from mangrove.datastore.entity import get_by_short_code
+from mangrove.datastore.entity_share import get_entity_preference, save_entity_preference
+from mangrove.datastore.entity_type import define_type, delete_type, entity_type_already_defined,\
+    get_unique_id_types
+from mangrove.errors.MangroveException import EntityTypeAlreadyDefined, DataObjectAlreadyExists, \
+    QuestionCodeAlreadyExistsException, EntityQuestionAlreadyExistsException, DataObjectNotFound, \
+    QuestionAlreadyExistsException
+from mangrove.form_model.field import field_to_json, DateField
+from mangrove.form_model.form_model import LOCATION_TYPE_FIELD_NAME, REGISTRATION_FORM_CODE, REPORTER, \
+    get_form_model_by_entity_type, get_form_model_by_code, GEO_CODE_FIELD_NAME, SHORT_CODE_FIELD, \
+    header_fields, get_field_by_attribute_value
+from mangrove.transport import Channel
 from mangrove.transport.player.parser import XlsOrderedParser
-from datawinners.activitylog.models import UserActivityLog
-from datawinners.common.constant import ADDED_IDENTIFICATION_NUMBER_TYPE, REGISTERED_IDENTIFICATION_NUMBER, \
-    EDITED_REGISTRATION_FORM, IMPORTED_IDENTIFICATION_NUMBER, DELETED_IDENTIFICATION_NUMBER
-from datawinners.project.helper import create_request
-from datawinners.project.web_questionnaire_form import SubjectRegistrationForm
-from datawinners.project.submission.export import export_to_new_excel
-from datawinners.project.submission.exporter import SubmissionExporter
-from datawinners.accountmanagement.localized_time import get_country_time_delta
-
+from mangrove.transport.player.player import WebPlayer
+from mangrove.utils.types import is_empty
 
 websubmission_logger = logging.getLogger("websubmission")
 datawinners_logger = logging.getLogger("datawinners")
@@ -246,7 +242,13 @@ def all_subjects_ajax(request, subject_type):
 
 
 def share_token(request, entity_type):
-    return HttpResponse(json.dumps({"token": "qweqwe123"}))
+    org_id = request.user.get_profile().org_id
+    manager = get_database_manager(request.user)
+    entity_preference = get_entity_preference(manager, org_id, entity_type)
+    if entity_preference:
+        return HttpResponse(json.dumps({"token": entity_preference.share_token}))
+    entity_preference = save_entity_preference(manager, org_id, entity_type)
+    return HttpResponse(json.dumps({"token": entity_preference.share_token}))
 
 
 @register.filter
