@@ -241,16 +241,6 @@ def all_subjects_ajax(request, subject_type):
         raise
 
 
-def share_token(request, entity_type):
-    org_id = request.user.get_profile().org_id
-    manager = get_database_manager(request.user)
-    entity_preference = get_entity_preference(manager, org_id, entity_type)
-    if entity_preference:
-        return HttpResponse(json.dumps({"token": entity_preference.share_token}))
-    entity_preference = save_entity_preference(manager, org_id, entity_type)
-    return HttpResponse(json.dumps({"token": entity_preference.share_token}))
-
-
 @register.filter
 def get_element(h, key):
     return h.get(key) or '--'
@@ -470,6 +460,7 @@ def edit_subject(request, entity_type, entity_id, project_id=None):
                                   context_instance=RequestContext(request))
 
 
+@valid_web_user
 def map_subject(request, entity_type=None):
     manager = get_database_manager(request.user)
     form_model = get_form_model_by_entity_type(manager, [entity_type.lower()])
@@ -480,6 +471,17 @@ def map_subject(request, entity_type=None):
                                   "map_api_key": get_map_key(request.META['HTTP_HOST'])
                                },
                               context_instance=RequestContext(request))
+
+
+@valid_web_user
+def share_token(request, entity_type):
+    org_id = request.user.get_profile().org_id
+    manager = get_database_manager(request.user)
+    entity_preference = get_entity_preference(manager, org_id, entity_type)
+    if entity_preference:
+        return HttpResponse(json.dumps({"token": entity_preference.share_token}))
+    entity_preference = save_entity_preference(manager, org_id, entity_type)
+    return HttpResponse(json.dumps({"token": entity_preference.share_token}))
 
 
 @valid_web_user
