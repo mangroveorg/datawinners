@@ -7,7 +7,7 @@ DW.MappingEditor = function(entityType) {
 
     var onShare = function() {
         $.getJSON('/entity/' + entityType + '/sharetoken', function (result) {
-            shareWidget.find('input').val(window.location.origin + "/share/" + result.token)
+            shareWidget.find('input').val(window.location.origin + "/public/maps/" + result.token)
             shareWidget.show();
             shareWidgetCloseButton.show();
             shareOverlay.height(getOverlayHeight()).show();

@@ -31,7 +31,7 @@ from datawinners.entity.group_helper import create_new_group
 from datawinners.entity.helper import create_registration_form, get_organization_telephone_number, set_email_for_contact
 from datawinners.entity.subjects import load_subject_type_with_projects, get_subjects_count
 from datawinners.location.LocationTree import get_location_tree, get_location_hierarchy
-from datawinners.main.database import get_database_manager
+from datawinners.main.database import get_database_manager, get_db_manager
 from datawinners.main.utils import get_database_name
 from datawinners.messageprovider.message_handler import get_exception_message_for
 from datawinners.messageprovider.messages import exception_messages, WEB
@@ -464,11 +464,10 @@ def edit_subject(request, entity_type, entity_id, project_id=None):
 def map_subject(request, entity_type=None):
     manager = get_database_manager(request.user)
     form_model = get_form_model_by_entity_type(manager, [entity_type.lower()])
-    return render_to_response('maps/entity_map.html',
+    return render_to_response('entity/map_edit.html',
                               {
                                   "entity_type": entity_type,
-                                  "form_code": form_model.form_code,
-                                  "map_api_key": get_map_key(request.META['HTTP_HOST'])
+                                  "form_code": form_model.form_code
                                },
                               context_instance=RequestContext(request))
 
@@ -476,7 +475,7 @@ def map_subject(request, entity_type=None):
 @valid_web_user
 def share_token(request, entity_type):
     org_id = request.user.get_profile().org_id
-    manager = get_database_manager(request.user)
+    manager = get_db_manager("public")
     entity_preference = get_entity_preference(manager, org_id, entity_type)
     if entity_preference:
         return HttpResponse(json.dumps({"token": entity_preference.share_token}))

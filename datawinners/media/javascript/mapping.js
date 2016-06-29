@@ -1,5 +1,5 @@
 function init_map2() {
-    var geo_url = '/get_geojson/';
+    var geo_url = '/public/get_geojson/';
     var layers = [];
     var count_click_on_map = 0;
     var nbr_listened_layer = 0;
