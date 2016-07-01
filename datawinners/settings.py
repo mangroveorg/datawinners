@@ -180,6 +180,7 @@ INSTALLED_APPS = (
     'datawinners',
     'datawinners.main',
     'datawinners.project',
+    'datawinners.public',
     'datawinners.dashboard',
     'datawinners.location',
     'datawinners.entity',

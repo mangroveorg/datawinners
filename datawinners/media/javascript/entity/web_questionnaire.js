@@ -15,6 +15,6 @@ $(document).ready(function () {
         DW.edit_datasender = new DW.data_submission(options);
     }
 
-    $('.secondary_tab li:first-child').attr('class', 'inactive');
+    $('.secondary_tab li').attr('class', 'inactive');
     $('.secondary_tab li:nth-child(2)').attr('class', 'active');
 });

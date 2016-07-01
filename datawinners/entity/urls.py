@@ -9,8 +9,8 @@ from datawinners.entity.view.import_template import import_template
 from datawinners.entity.view.questionnaires import get_existing_questionnaires, get_questionnaires_and_polls
 from datawinners.entity.view.send_sms import SendSMS, get_all_mobile_numbers
 from datawinners.entity.view.unique_id import delete_subjects
-from datawinners.entity.views import create_multiple_web_users, edit_subject_questionnaire, save_questionnaire, edit_subject, get_questionnaire_details_ajax, \
-    create_group
+from datawinners.entity.views import create_multiple_web_users, edit_subject_questionnaire, save_questionnaire, edit_subject, get_questionnaire_details_ajax, create_group, map_subject, \
+    share_token
 from datawinners.entity.views import create_subject, subject_autocomplete
 from datawinners.entity.views import create_type
 from datawinners.entity.views import all_subject_types, all_subjects, all_subjects_ajax
@@ -23,8 +23,10 @@ urlpatterns = patterns('',
                        (r'datasender/edit/(?P<reporter_id>.+?)/$', EditDataSenderView.as_view()),
                        (r'webuser/create', create_multiple_web_users),
                        url(r'subject/create/(?P<entity_type>.+?)/$', create_subject, name='create_subject'),
+                       url(r'subject/map/(?P<entity_type>.+?)/$', map_subject, name='map_subject'),
                        url(r'subject/edit/(?P<entity_type>.+?)/(?P<entity_id>.+?)/$', edit_subject,
                            name="edit_subject"),
+                       (r'(?P<entity_type>.+?)/sharetoken$', share_token),
                        (r'type/create', create_type),
                        (r'group/create', create_group),
                        (r'subjects/delete/$', delete_subjects),
@@ -37,10 +39,8 @@ urlpatterns = patterns('',
                        url(r'(?P<entity_type>.+?)/autocomplete/$', subject_autocomplete),
                        (r'disassociate/$', DisassociateDataSendersView.as_view()),
                        (r'associate/$', AssociateDataSendersView.as_view()),
-                       url(r'subject/import/(?P<form_code>.+?)/$', import_subjects_from_project_wizard,
-                           name='import_subjects'),
-                       url(r'subject/edit/(?P<entity_type>.+?)/$', edit_subject_questionnaire,
-                           name="edit_subject_questionnaire"),
+                       url(r'subject/import/(?P<form_code>.+?)/$', import_subjects_from_project_wizard, name='import_subjects'),
+                       url(r'subject/edit/(?P<entity_type>.+?)/$', edit_subject_questionnaire, name="edit_subject_questionnaire"),
                        (r'subject/details/(?P<entity_type>.+?)/$', get_questionnaire_details_ajax),
                        (r'questionnaire/save$', save_questionnaire),
                        url(r'subject/export/', export_subject, name="export_subject"),

@@ -179,13 +179,7 @@ $(document).ready(function () {
                     self.submit();
                 } else {
                     self.$columnWidget.show();
-                    customizationOverlayHeight = self.$pageHeader.outerHeight() + self.$pageContent.outerHeight() + 30;
-                    if(customizationOverlayHeight > 970) {
-                        customizationOverlayHeight = customizationOverlayHeight + 5;
-                    } else {
-                        customizationOverlayHeight = 970;
-                    }
-                    self.$customizationOverlay.height(customizationOverlayHeight).show();
+                    self.$customizationOverlay.height(getOverlayHeight()).show();
                     self.$customizationIcon.addClass("active");
                 }
                 event.stopPropagation();
