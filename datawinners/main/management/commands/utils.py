@@ -13,7 +13,9 @@ def test_document_stores():
 
 
 def document_stores():
-    return [org.document_store for org in OrganizationSetting.objects.all()].append("public")
+    doc_stores = [org.document_store for org in OrganizationSetting.objects.all()]
+    doc_stores.append("public")
+    return doc_stores
 
 
 def document_stores_to_process(args):
