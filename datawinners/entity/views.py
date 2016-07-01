@@ -20,6 +20,7 @@ from datawinners.accountmanagement.decorators import is_datasender, session_not_
     valid_web_user
 from datawinners.accountmanagement.helper import create_web_users, validate_email_addresses
 from datawinners.accountmanagement.localized_time import get_country_time_delta
+from datawinners.accountmanagement.models import Organization, OrganizationSetting
 from datawinners.activitylog.models import UserActivityLog
 from datawinners.alldata.helper import get_visibility_settings_for
 from datawinners.common.constant import ADDED_IDENTIFICATION_NUMBER_TYPE, REGISTERED_IDENTIFICATION_NUMBER, \
@@ -27,6 +28,7 @@ from datawinners.common.constant import ADDED_IDENTIFICATION_NUMBER_TYPE, REGIST
 from datawinners.custom_report_router.report_router import ReportRouter
 from datawinners.entity import import_data as import_module
 from datawinners.entity.forms import EntityTypeForm
+from datawinners.entity.geo_data import geo_json
 from datawinners.entity.group_helper import create_new_group
 from datawinners.entity.helper import create_registration_form, get_organization_telephone_number, set_email_for_contact
 from datawinners.entity.subjects import load_subject_type_with_projects, get_subjects_count
@@ -45,7 +47,7 @@ from datawinners.search.submission_index import update_submission_search_for_sub
 from datawinners.settings import ELASTIC_SEARCH_URL, ELASTIC_SEARCH_TIMEOUT
 from datawinners.submission.location import LocationBridge
 from datawinners.utils import get_organization, get_organization_country, \
-    get_changed_questions, get_map_key
+    get_changed_questions
 from datawinners.workbook_utils import workbook_add_sheet
 from mangrove.datastore.documents import EntityActionDocument, HARD_DELETE
 from mangrove.datastore.entity import get_all_entities_include_voided, delete_data_record, contact_by_short_code
@@ -467,7 +469,8 @@ def map_subject(request, entity_type=None):
     return render_to_response('entity/map_edit.html',
                               {
                                   "entity_type": entity_type,
-                                  "form_code": form_model.form_code
+                                  "form_code": form_model.form_code,
+                                  "geo_json": geo_json(manager, entity_type)
                                },
                               context_instance=RequestContext(request))
 
@@ -475,11 +478,13 @@ def map_subject(request, entity_type=None):
 @valid_web_user
 def share_token(request, entity_type):
     org_id = request.user.get_profile().org_id
+    organization = Organization.objects.get(org_id=org_id)
+    org_settings = OrganizationSetting.objects.get(organization=organization)
     manager = get_db_manager("public")
-    entity_preference = get_entity_preference(manager, org_id, entity_type)
+    entity_preference = get_entity_preference(manager, org_settings.document_store, entity_type)
     if entity_preference:
         return HttpResponse(json.dumps({"token": entity_preference.share_token}))
-    entity_preference = save_entity_preference(manager, org_id, entity_type)
+    entity_preference = save_entity_preference(manager, org_settings.document_store, entity_type)
     return HttpResponse(json.dumps({"token": entity_preference.share_token}))
 
 

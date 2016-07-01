@@ -9,6 +9,7 @@
 <script type="text/javascript" src="/media/javascript/mapping.js"></script>
 <script type="text/javascript">
     var entity_type = '{{ entity_type }}';
+    var geo_json = {{ geo_json|safe }}
     $(document).ready(function() {
         init_map2();
     });
