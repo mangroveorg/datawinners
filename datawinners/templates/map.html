@@ -3,6 +3,9 @@
 <link rel="stylesheet" href="/media/javascript/OpenLayers-v3.15.1-dist/ol3-layerswitcher.css" media="screen">
 <link rel="stylesheet" type="text/css" href="/media/css/scss/section_map.css" media="screen">
 
+{% if is_public %}
+    <script type="text/javascript" src="/media/javascript/jquery.js"></script>
+{% endif %}
 <script type="text/javascript" src="/media/javascript/OpenLayers-v3.15.1-dist/ol.js"></script>
 <script type="text/javascript" src="/media/javascript/OpenLayers-v3.15.1-dist/ol3-popup.js"></script>
 <script type="text/javascript" src="/media/javascript/OpenLayers-v3.15.1-dist/ol3-layerswitcher.js"></script>

@@ -11,5 +11,5 @@ def render_map(request, share_token):
     entity_type = entity_preference.entity_type
     dbm = get_db_manager(entity_preference.org_id)
     return render_to_response('map.html',
-                              {'entity_type': entity_type, "geo_json": geo_json(dbm, entity_type)},
+                              {'entity_type': entity_type, "geo_json": geo_json(dbm, entity_type), "is_public": True},
                               context_instance=RequestContext(request))
