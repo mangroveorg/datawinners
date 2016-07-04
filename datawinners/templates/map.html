@@ -11,11 +11,18 @@
 <script type="text/javascript" src="/media/javascript/OpenLayers-v3.15.1-dist/ol3-layerswitcher.js"></script>
 <script type="text/javascript" src="/media/javascript/mapping.js"></script>
 <script type="text/javascript">
-    var entity_type = '{{ entity_type }}';
-    var geo_json = {{ geo_json|safe }}
     $(document).ready(function() {
-        init_map2();
+        new Map({{ geo_json|safe }}).init('{{ entity_type }}');
     });
 </script>
 
 <div id="map" style="height:400px; margin-top:20px;" class="grid_23"> </div>
+
+<div id="popup" class="hide">
+    <div>
+        <p class="p_head">{entity}</p>
+        <hr/>
+        <p>{entity_type} <code class="p_short_code">{entity_code}</code></p>
+        <p><code class="p_geo_code">{geo_code}</code></p>
+    </div>
+</div>
