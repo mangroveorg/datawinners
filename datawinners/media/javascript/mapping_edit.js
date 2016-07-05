@@ -10,6 +10,7 @@ DW.MappingEditor = function(entityType) {
             shareWidget.find('input').val(window.location.origin + "/public/maps/" + result.token)
             shareWidget.show();
             shareWidgetCloseButton.show();
+            shareWidget.find('input').select();
             shareOverlay.height(getOverlayHeight()).show();
         });
     }
