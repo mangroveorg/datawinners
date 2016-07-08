@@ -41,8 +41,8 @@ class QuestionnaireBuilder(object):
         max_code = None
         if not self.form_model.xform:
             max_code = get_max_code_in_question_set(origin_json_fields or question_set)
+            self.form_model.create_snapshot()
         new_fields = self._generate_fields_by_question_set(max_code, question_set)
-        self.form_model.create_snapshot()
         self.form_model.delete_all_fields()
         [self.form_model.add_field(each) for each in new_fields]
         self._update_unique_id_validator()
