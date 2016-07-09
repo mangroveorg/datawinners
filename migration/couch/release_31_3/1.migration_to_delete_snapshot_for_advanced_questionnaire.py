@@ -24,4 +24,4 @@ def delete_snapshot_for_db(database_name):
     mark_as_completed(database_name)
 
 
-migrate(all_db_names, delete_snapshot_for_db, version=(31, 3, 1), threads=5)
+migrate(all_db_names(), delete_snapshot_for_db, version=(31, 3, 1), threads=5)
