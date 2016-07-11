@@ -17,6 +17,13 @@ Map = function(geoJson) {
         panMapIfOutOfView: false
     });
 
+    var geocoder = new Geocoder('nominatim', {
+        provider: 'photon',
+        lang: 'en',
+        placeholder: 'Search for ...',
+        limit: 5
+    });
+
     self.init = function(entityType) {
         var baseLayer = new ol.layer.Group({
             'title': 'Maps',
@@ -48,6 +55,7 @@ Map = function(geoJson) {
         map.addControl(new ol.control.FullScreen());
         map.addControl(new ol.control.ZoomSlider());
         map.addControl(new ol.control.OverviewMap());
+        map.addControl(geocoder);
 
         map.on("pointermove", setCursor);
 
