@@ -16,8 +16,8 @@
     box-sizing: inherit; }
 
 .ol3-geocoder-search {
-  width: 26px;
-  height: 26px;
+  width: 2em;
+  height: 2em;
   overflow: hidden;
   -webkit-transition: width 200ms, height 200ms;
   transition: width 200ms, height 200ms; }

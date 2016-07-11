@@ -54,7 +54,6 @@ Map = function(geoJson) {
         map.addControl(new ol.control.ScaleLine());
         map.addControl(new ol.control.FullScreen());
         map.addControl(new ol.control.ZoomSlider());
-        map.addControl(new ol.control.OverviewMap());
         map.addControl(geocoder);
 
         map.on("pointermove", setCursor);
