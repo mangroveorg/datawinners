@@ -466,14 +466,17 @@ def edit_subject(request, entity_type, entity_id, project_id=None):
 def map_subject(request, entity_type=None):
     manager = get_database_manager(request.user)
     form_model = get_form_model_by_entity_type(manager, [entity_type.lower()])
+    filterable_field_types = ['select', 'select1']
+    filterable_fields = filter(lambda field: field.get('type') in filterable_field_types, form_model.form_fields)
+
     return render_to_response('entity/map_edit.html',
                               {
                                   "entity_type": entity_type,
                                   "form_code": form_model.form_code,
-                                  "geo_json": geo_json(manager, entity_type)
+                                  "geo_json": geo_json(manager, entity_type),
+                                  "filterable_fields": filterable_fields
                                },
                               context_instance=RequestContext(request))
-
 
 @valid_web_user
 def share_token(request, entity_type):
@@ -481,12 +484,13 @@ def share_token(request, entity_type):
     organization = Organization.objects.get(org_id=org_id)
     org_settings = OrganizationSetting.objects.get(organization=organization)
     manager = get_db_manager("public")
-    entity_preference = get_entity_preference(manager, org_settings.document_store, entity_type)
-    if entity_preference:
-        return HttpResponse(json.dumps({"token": entity_preference.share_token}))
-    entity_preference = save_entity_preference(manager, org_settings.document_store, entity_type)
-    return HttpResponse(json.dumps({"token": entity_preference.share_token}))
+    preferences = None
 
+    if request.method == 'POST':
+        preferences = {'filters': json.loads(request.POST['data'])}
+
+    entity_preference = save_entity_preference(manager, org_settings.document_store, entity_type, preferences)
+    return HttpResponse(json.dumps({"token": entity_preference.share_token, "filters": entity_preference.filters.list}))
 
 @valid_web_user
 def create_subject(request, entity_type=None):
@@ -597,7 +601,7 @@ def edit_subject_questionnaire(request, entity_type=None):
     fields = form_model.fields
 
     existing_questions = json.dumps(fields, default=field_to_json)
-    
+
     return render_to_response('entity/questionnaire.html',
                               {
                                   'existing_questions': repr(existing_questions),
@@ -692,7 +696,7 @@ def export_subject(request):
                     "order": "",
                     "filter":'identification_number',
                     }
-    
+
     return SubmissionExporter(form_model, project_name, manager, local_time_delta, current_language, None) \
         .create_excel_response('identification_number', query_params)
 
