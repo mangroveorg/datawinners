@@ -6,7 +6,8 @@ Map = function(geoJson) {
         renderer: 'canvas',
         view: new ol.View({
             maxZoom: 19,
-            zoom: 1,
+            minZoom: 2,
+            zoom: 2,
             center: [0, 0]
         })
     });
