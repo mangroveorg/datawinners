@@ -52,7 +52,7 @@ from datawinners.workbook_utils import workbook_add_sheet
 from mangrove.datastore.documents import EntityActionDocument, HARD_DELETE
 from mangrove.datastore.entity import get_all_entities_include_voided, delete_data_record, contact_by_short_code
 from mangrove.datastore.entity import get_by_short_code
-from mangrove.datastore.entity_share import get_entity_preference, save_entity_preference
+from mangrove.datastore.entity_share import save_entity_preference, get_entity_preference
 from mangrove.datastore.entity_type import define_type, delete_type, entity_type_already_defined,\
     get_unique_id_types
 from mangrove.errors.MangroveException import EntityTypeAlreadyDefined, DataObjectAlreadyExists, \
@@ -478,19 +478,54 @@ def map_subject(request, entity_type=None):
                                },
                               context_instance=RequestContext(request))
 
+
+def build_filterable_fields(manager, entity_type, filters_in_entity_preference):
+    form_model = get_form_model_by_entity_type(manager, [entity_type.lower()])
+    filterable_fields = filter(lambda field: field.get('type') in ['select', 'select1'], form_model.form_fields)
+    filters = map(lambda field: {'code': field['code'], 'label': field['label'], 'visibility': True if field['code'] in filters_in_entity_preference else False}, filterable_fields)
+    return filters
+
+
+@valid_web_user
+def get_preference(request, entity_type=None):
+    manager = get_database_manager(request.user)
+    public_db_manager = get_db_manager("public")
+    org_id = request.user.get_profile().org_id
+    organization = Organization.objects.get(org_id=org_id)
+    org_settings = OrganizationSetting.objects.get(organization=organization)
+    entity_preference = get_entity_preference(public_db_manager, org_settings.document_store, entity_type)
+
+    filters_in_entity_preference = []
+    if entity_preference is not None:
+        filters_in_entity_preference = entity_preference.filters
+    filterable_fields = build_filterable_fields(manager, entity_type, filters_in_entity_preference)
+
+    return HttpResponse(json.dumps({
+        "filters": filterable_fields
+    }))
+
+@valid_web_user
+def save_preference(request, entity_type=None):
+    if request.method == 'POST':
+        org_id = request.user.get_profile().org_id
+        organization = Organization.objects.get(org_id=org_id)
+        org_settings = OrganizationSetting.objects.get(organization=organization)
+        manager = get_db_manager("public")
+        data = json.loads(request.POST['data'])
+        save_entity_preference(manager, org_settings.document_store, entity_type, data['filters'])
+        return HttpResponse(json.dumps({'success': True}))
+
 @valid_web_user
 def share_token(request, entity_type):
     org_id = request.user.get_profile().org_id
     organization = Organization.objects.get(org_id=org_id)
     org_settings = OrganizationSetting.objects.get(organization=organization)
     manager = get_db_manager("public")
-    preferences = None
-
-    if request.method == 'POST':
-        preferences = {'filters': json.loads(request.POST['data'])}
-
-    entity_preference = save_entity_preference(manager, org_settings.document_store, entity_type, preferences)
-    return HttpResponse(json.dumps({"token": entity_preference.share_token, "filters": entity_preference.filters.list}))
+    entity_preference = get_entity_preference(manager, org_settings.document_store, entity_type)
+    if entity_preference:
+        return HttpResponse(json.dumps({"token": entity_preference.share_token}))
+    entity_preference = save_entity_preference(manager, org_settings.document_store, entity_type)
+    return HttpResponse(json.dumps({"token": entity_preference.share_token}))
 
 @valid_web_user
 def create_subject(request, entity_type=None):

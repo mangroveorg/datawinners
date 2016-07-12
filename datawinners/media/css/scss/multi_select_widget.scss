@@ -1,0 +1,33 @@
+.dw-multi-select-widget {
+
+    .header-area {
+        position: relative;
+        color: #0070ac;
+    }
+
+    .header-area:hover {
+        text-decoration: underline;
+        cursor: pointer;
+    }
+
+    .content-area {
+        position: absolute;
+        z-index: 1000;
+        background: white;
+        border-radius: 5px;
+        padding: 10px;
+        border: 1px solid #ccc;
+
+        .close-btn {
+            display: block;
+            padding: 1px;
+            text-align: right;
+        }
+    }
+
+    .hide {
+        display: none;
+    }
+
+}
+

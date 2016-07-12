@@ -4,11 +4,13 @@
 {% block page_scss %}
     {{ block.super }}
     <link rel="stylesheet" type="text/css" href="/media/css/scss/section_map_edit.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="/media/css/scss/multi_select_widget.css" media="screen">
 {% endblock %}
 
 {% block page_js %}
     {{ block.super }}
     <script type="text/javascript" src="/media/javascript/mapping_edit.js"></script>
+    <script type="text/javascript" src="/media/javascript/multi_select_widget.js"></script>
     <script type="text/javascript" src="/media/javascript/common/util.js"></script>
     <script type="text/javascript">
         $(document).ready(function() {
@@ -28,13 +30,9 @@
 
 {% block page_content %}
     <div id="filterable-questions" class="filterable-questions">
-        <select id="filter-fields" multiple>
-                <option value="select questions">select questions</option>
-            {{ filterable_fields }}
-            {% for field in filterable_fields %}
-                <option name="{{ field.code }}">{{ field.label }}</option>
-            {% endfor %}
-        </select>
+        <div id="filters-widget">
+            <span>{% trans "Choose Filters" %}</span>
+        </div>
     </div>
     <div class="float_right" style="position: relative;">
 
