@@ -5,9 +5,8 @@ Map = function(geoJson) {
         target: 'map',
         renderer: 'canvas',
         view: new ol.View({
-            maxZoom: 21,
-            minZoom : 2,
-            zoom: 2,
+            maxZoom: 19,
+            zoom: 1,
             center: [0, 0]
         })
     });
@@ -32,17 +31,7 @@ Map = function(geoJson) {
                     title: 'OpenStreetMap',
                     type: 'base',
                     visible: true,
-                    source: new ol.source.MapQuest({
-                        layer: 'osm'
-                    })
-                }),
-                new ol.layer.Tile({
-                    title: 'Satellite',
-                    type: 'base',
-                    visible: false,
-                    source: new ol.source.MapQuest({
-                        layer: 'sat'
-                    })
+                    source: new ol.source.OSM()
                 })
             ]
         });
