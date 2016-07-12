@@ -33,3 +33,12 @@
     opacity: 0.8;
   }
 }
+
+
+.filterable-questions {
+    width: auto;
+    float: left;
+    select {
+        height: 100px;
+    }
+}
