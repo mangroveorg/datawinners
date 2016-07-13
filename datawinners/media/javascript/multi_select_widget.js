@@ -108,7 +108,7 @@ DW.MultiSelectWidget = function (parentSelector, items) {
         dropdownDiv.className = 'content-area';
         dropdownDiv.appendChild(closeButton);
 
-        if (!!items) {
+        if (!items || !items.length) {
             var noItemsMessage = document.createTextNode('There is no item to select');
             dropdownDiv.appendChild(noItemsMessage);
             return;

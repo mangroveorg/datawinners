@@ -23,6 +23,11 @@
             padding: 1px;
             text-align: right;
         }
+
+        ul > li > label {
+            font-size: 13px;
+            font-weight: normal;
+        }
     }
 
     .hide {
