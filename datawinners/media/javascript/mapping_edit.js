@@ -35,17 +35,31 @@ DW.MappingEditor = function(entityType) {
         shareOverlay.hide();
     };
 
-    var saveEntityPreference = function(filters) {
-        $.post(SAVE_ENTITY_PREFERENCE_URL, { data: JSON.stringify({ filters: filters }) }).done(function(result){});
+
+    var saveEntityPreference = function(entityPreference) {
+        $.post(SAVE_ENTITY_PREFERENCE_URL, { data: JSON.stringify(entityPreference) }).done(function(result) {
+            console.log(result);
+       });
     };
 
+    var transformer = function(item) {
+        return { value: item.code, label: item.label, checked: item.visibility };
+    }
     var getEntityPreference = function() {
         $.getJSON(GET_ENTITY_PREFERENCE_URL).done(function(result) {
-            var multiSelectWidgetAdapter = new DW.MultiSelectWidgetAdapter(result);
-            var multiSelectWidget = new DW.MultiSelectWidget('#filters-widget', multiSelectWidgetAdapter.getFilters());
-            multiSelectWidget.on('close', function (event) {
-                saveEntityPreference(event.detail.selectedValues);
+
+            var transformedFilters = result.filters.map(transformer);
+            var filtersWidget = new DW.MultiSelectWidget('#filters-widget', transformedFilters);
+            filtersWidget.on('close', function (event) {
+                saveEntityPreference({filters: event.detail.selectedValues});
             });
+
+            var transformedDetails = result.details.map(transformer);
+            var customizeWidget = new DW.MultiSelectWidget('#customize-widget', transformedDetails);
+            customizeWidget.on('close', function (event) {
+                saveEntityPreference({details: event.detail.selectedValues});
+            });
+
         });
     };
 
@@ -56,22 +70,3 @@ DW.MappingEditor = function(entityType) {
     }
 }
 
-
-DW.MultiSelectWidgetAdapter = function (entityPreference) {
-    var _this = this;
-
-    this.transformedEntityPreference = {};
-
-    function transformFiltersForMultiSelectWidget(filters) {
-        var transformedFilters = [];
-        for(i in filters) {
-            var transformedFilter = { value: filters[i].code, label: filters[i].label, checked: filters[i].visibility };
-            transformedFilters.push(transformedFilter);
-        }
-        _this.transformedEntityPreference.filters = transformedFilters;
-    }
-
-    _this.getFilters = function () { return _this.transformedEntityPreference.filters; };
-
-    transformFiltersForMultiSelectWidget(entityPreference.filters);
-};
