@@ -504,6 +504,7 @@ def get_preference(request, entity_type=None):
         "filters": filterable_fields
     }))
 
+
 @valid_web_user
 def save_preference(request, entity_type=None):
     if request.method == 'POST':
@@ -514,6 +515,7 @@ def save_preference(request, entity_type=None):
         data = json.loads(request.POST['data'])
         save_entity_preference(manager, org_settings.document_store, entity_type, data['filters'])
         return HttpResponse(json.dumps({'success': True}))
+
 
 @valid_web_user
 def share_token(request, entity_type):
@@ -526,6 +528,7 @@ def share_token(request, entity_type):
         return HttpResponse(json.dumps({"token": entity_preference.share_token}))
     entity_preference = save_entity_preference(manager, org_settings.document_store, entity_type)
     return HttpResponse(json.dumps({"token": entity_preference.share_token}))
+
 
 @valid_web_user
 def create_subject(request, entity_type=None):

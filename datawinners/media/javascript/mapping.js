@@ -18,8 +18,8 @@ Map = function(geoJson) {
     });
 
     var geocoder = new Geocoder('nominatim', {
-        provider: 'photon',
-        lang: 'en',
+        provider: 'osm',
+        lang: 'km',
         placeholder: 'Search for ...',
         limit: 5
     });
