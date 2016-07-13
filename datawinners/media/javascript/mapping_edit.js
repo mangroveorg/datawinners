@@ -35,10 +35,8 @@ DW.MappingEditor = function(entityType) {
         shareOverlay.hide();
     };
 
-    var saveEntityPreference = function(entityPreference) {
-        $.post(SAVE_ENTITY_PREFERENCE_URL, { data: JSON.stringify({ filters: entityPreference.filters }) }).done(function(result) {
-            console.log(result);
-       });
+    var saveEntityPreference = function(filters) {
+        $.post(SAVE_ENTITY_PREFERENCE_URL, { data: JSON.stringify({ filters: filters }) }).done(function(result){});
     };
 
     var getEntityPreference = function() {
@@ -46,8 +44,7 @@ DW.MappingEditor = function(entityType) {
             var multiSelectWidgetAdapter = new DW.MultiSelectWidgetAdapter(result);
             var multiSelectWidget = new DW.MultiSelectWidget('#filters-widget', multiSelectWidgetAdapter.getFilters());
             multiSelectWidget.on('close', function (event) {
-                console.log('closed');
-                saveEntityPreference({ filters: event.detail.selectedValues });
+                saveEntityPreference(event.detail.selectedValues);
             });
         });
     };

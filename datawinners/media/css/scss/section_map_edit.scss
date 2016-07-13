@@ -36,8 +36,10 @@
 
 
 .filterable-questions {
-    width: auto;
-    float: left;
+    padding: 8px;
+    .content-area {
+        width: 167px;
+    }
     select {
         height: 100px;
     }

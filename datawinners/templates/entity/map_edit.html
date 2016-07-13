@@ -29,11 +29,6 @@
 {% endblock %}
 
 {% block page_content %}
-    <div id="filterable-questions" class="filterable-questions">
-        <div id="filters-widget">
-            <span>{% trans "Choose Filters" %}</span>
-        </div>
-    </div>
     <div class="float_right" style="position: relative;">
 
         <div id= "share-widget" class="hide share-widget">
@@ -41,6 +36,11 @@
         </div>
         <div id="share-widget-close" class="hide share-widget-close"></div>
         <div id="share-button" class="button">Share</div>
+    </div>
+    <div id="filterable-questions" class="float_right filterable-questions">
+        <div id="filters-widget">
+            <span>{% trans "Choose Filters" %}</span>
+        </div>
     </div>
     <div id="share-overlay" class="share-overlay"></div>
     {% include "map.html" %}

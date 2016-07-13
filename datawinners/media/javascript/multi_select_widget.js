@@ -118,7 +118,8 @@ DW.MultiSelectWidget = function (parentSelector, items) {
                 li = document.createElement('li'),
                 label = document.createElement('label'),
                 checkbox = document.createElement('input'),
-                text = document.createTextNode(item.label);
+                text = document.createElement('p');
+                text.innerHTML = item.label;
 
             checkbox.type = 'checkbox';
             checkbox.value = item.value;

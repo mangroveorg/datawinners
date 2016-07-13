@@ -15,18 +15,28 @@
         z-index: 1000;
         background: white;
         border-radius: 5px;
-        padding: 10px;
+        padding: 19px;
         border: 1px solid #ccc;
 
         .close-btn {
             display: block;
-            padding: 1px;
-            text-align: right;
+            padding: 0 6px;
+            font-weight: bold;
+            position: absolute;
+            text-decoration: none;
+            top: 0;
+            right: 0;
         }
 
         ul > li > label {
             font-size: 13px;
             font-weight: normal;
+            input {
+                position: absolute;
+            }
+            p {
+                padding-left: 18px;
+            }
         }
     }
 
