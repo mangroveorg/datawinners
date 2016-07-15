@@ -479,35 +479,34 @@ def map_subject(request, entity_type=None):
                               context_instance=RequestContext(request))
 
 
-def get_organization_id(request):
+def _get_organization_id(request):
     org_id = request.user.get_profile().org_id
     organization = Organization.objects.get(org_id=org_id)
     org_settings = OrganizationSetting.objects.get(organization=organization)
     return org_settings.document_store
 
 
-def build_filterable_fields(form_fields, filters_in_entity_preference):
+def _build_filterable_fields(form_fields, filters_in_entity_preference):
     filters = [
-                {'code': field['code'], 'label': field['label'], 'visibility': field['code'] in filters_in_entity_preference} for field
-                in form_fields
-                if field.get('type') in ['select', 'select1']
-                ]
+        {'code': field['code'], 'label': field['label'], 'visibility': field['code'] in filters_in_entity_preference}
+        for field in form_fields if field.get('type') in ['select', 'select1']
+    ]
     return filters
 
 
-def build_details(form_fields, details_in_entity_preference):
+def _build_details(form_fields, details_in_entity_preference):
     details = [
-                {'code': field['code'], 'label': field['label'], 'visibility': field['code'] in details_in_entity_preference} for field
-                in form_fields
-                if field['code'] != 'q2'
-                ]
+        {'code': field['code'], 'label': field['label'], 'visibility': field['code'] in details_in_entity_preference}
+        for field in form_fields if field['code'] != 'q2'
+    ]
     return details
+
 
 @valid_web_user
 def get_preference(request, entity_type=None):
     manager = get_database_manager(request.user)
     public_db_manager = get_db_manager("public")
-    entity_preference = get_entity_preference(public_db_manager, get_organization_id(request), entity_type)
+    entity_preference = get_entity_preference(public_db_manager, _get_organization_id(request), entity_type)
     form_model = get_form_model_by_entity_type(manager, [entity_type.lower()])
 
     filters_in_entity_preference = []
@@ -517,8 +516,8 @@ def get_preference(request, entity_type=None):
         filters_in_entity_preference = entity_preference.filters
         details_in_entity_preference = entity_preference.details
 
-    filterable_fields = build_filterable_fields(form_model.form_fields, filters_in_entity_preference)
-    details = build_details(form_model.form_fields, details_in_entity_preference)
+    filterable_fields = _build_filterable_fields(form_model.form_fields, filters_in_entity_preference)
+    details = _build_details(form_model.form_fields, details_in_entity_preference)
 
     return HttpResponse(json.dumps({
         "filters": filterable_fields,
@@ -532,7 +531,7 @@ def save_preference(request, entity_type=None):
         manager = get_db_manager("public")
         data = json.loads(request.POST['data'])
         save_entity_preference(manager,
-                               get_organization_id(request),
+                               _get_organization_id(request),
                                entity_type,
                                data.get('filters'),
                                data.get('details'))
@@ -542,7 +541,7 @@ def save_preference(request, entity_type=None):
 @valid_web_user
 def share_token(request, entity_type):
     manager = get_db_manager("public")
-    organization_id = get_organization_id(request)
+    organization_id = _get_organization_id(request)
     entity_preference = get_entity_preference(manager, organization_id, entity_type)
     if entity_preference:
         return HttpResponse(json.dumps({"token": entity_preference.share_token}))

@@ -16,8 +16,30 @@ div.dataLayersDiv input{
   background-color: rgba(100, 100, 100, 0.8);
 }
 .ol-zoom{
-  top: 3.5em;
+  bottom: 3.5em;
+  right: 0.5em;
+  top: initial;
+  left: initial;
 }
-.ol-zoomslider{
-  top: 7.5em;
+.filter-control{
+  top:3.5em;
+  left: 0.5em;
+  position: absolute;
+  width: 4em;
+  .title{
+    font-size: 100%;
+    width: 3.9em;
+    span{
+      font-size: 75%;
+    }
+  }
+  .filters{
+    width: 12em;
+    font-size: 100%;
+    background-color: white;
+    display: none;
+    h3{
+      padding: 0.3em 1.5em;
+    }
+  }
 }

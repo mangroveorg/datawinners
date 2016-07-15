@@ -17,15 +17,10 @@ Map = function(geoJson) {
         panMapIfOutOfView: false
     });
 
-    var geocoder = new Geocoder('nominatim', {
-        provider: 'osm',
-        lang: 'km',
-        placeholder: 'Search for ...',
-        limit: 5
-    });
-
     self.init = function(entityType) {
-        var baseLayer = new ol.layer.Group({
+        $("#filter-control>button").click(function() {$("#filters").toggle();$("#filters").accordion();});
+
+        map.addLayer(new ol.layer.Group({
             'title': 'Maps',
             layers: [
                 new ol.layer.Tile({
@@ -35,16 +30,22 @@ Map = function(geoJson) {
                     source: new ol.source.OSM()
                 })
             ]
-        });
-
-        map.addLayer(baseLayer);
+        }));
         map.addLayer(createVector(entityType));
 
         map.addControl(new ol.control.LayerSwitcher());
         map.addControl(new ol.control.ScaleLine());
         map.addControl(new ol.control.FullScreen());
-        map.addControl(new ol.control.ZoomSlider());
-        map.addControl(geocoder);
+        map.addControl(new ol.control.Zoom());
+        map.addControl(new Geocoder('nominatim', {
+            provider: 'osm',
+            lang: 'km',
+            placeholder: 'Search for ...',
+            limit: 5
+        }));
+        map.addControl(new ol.control.Control({
+            element: $("#filter-control")[0]
+        }));
 
         map.on("pointermove", setCursor);
 
