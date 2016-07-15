@@ -18,8 +18,6 @@ Map = function(geoJson) {
     });
 
     self.init = function(entityType) {
-        $("#filter-control>button").click(function() {$("#filters").toggle();$("#filters").accordion();});
-
         map.addLayer(new ol.layer.Group({
             'title': 'Maps',
             layers: [
@@ -55,6 +53,36 @@ Map = function(geoJson) {
             map.forEachFeatureAtPixel(e.pixel, function (feature, layer) {
                 showDetails(feature);
             });
+        });
+
+        loadFilters();
+
+        $("#filter-control>button").click(function() {
+            $("#filters").toggle();
+            $("#filters").accordion();
+        });
+
+        $("#filters input").click(applyFilters);
+    }
+
+    var applyFilters = function() {
+        var filters = [];
+        $("#filters .filter-choices").each(function(){
+            if($(this).find("input:checked").length > 0) {
+                var question = $(this).attr("id");
+                var answer = $(this).find("input:checked").attr("id");
+                filters.push(question + "=" + answer);
+            }
+        })
+        window.location.href = window.location.origin + window.location.pathname + "?" + filters.join("&");
+    }
+
+    var loadFilters = function() {
+        var filters = window.location.search.slice(1).split("&").filter(String);
+        $.each(filters, function(index, filter){
+            var question = filter.split("=")[0];
+            var answer = filter.split("=")[1];
+            $("#filters").find("#" + question).find("#" + answer).attr("checked", "checked");
         });
     }
 
