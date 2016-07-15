@@ -25,19 +25,19 @@ div.dataLayersDiv input{
   top:3.5em;
   left: 0.5em;
   position: absolute;
-  width: 4em;
   .title{
-    font-size: 100%;
-    width: 3.9em;
-    span{
-      font-size: 75%;
-    }
+    background-image: url('/media/images/filled-filter.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 80%;
   }
   .filters{
     width: 12em;
     font-size: 100%;
     background-color: white;
     display: none;
+    position:absolute;
+    top: 1.8em;
     h3{
       padding: 0.3em 1.5em;
     }
