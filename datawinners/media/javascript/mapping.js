@@ -59,10 +59,10 @@ Map = function(geoJson) {
 
         $("#filter-control>button").click(function() {
             $("#filters").toggle();
-            $("#filters").accordion();
+            $("#filters .content").accordion();
         });
 
-        $("#filters input").click(applyFilters);
+        $("#filters button.apply").click(applyFilters);
     }
 
     var applyFilters = function() {
@@ -70,8 +70,8 @@ Map = function(geoJson) {
         $("#filters .filter-choices").each(function(){
             if($(this).find("input:checked").length > 0) {
                 var question = $(this).attr("id");
-                var answer = $(this).find("input:checked").attr("id");
-                filters.push(question + "=" + answer);
+                var answers = $(this).find("input:checked").map(function(elem){return this.id});
+                filters.push(question + "=" + Array.prototype.join.call(answers));
             }
         })
         window.location.href = window.location.origin + window.location.pathname + "?" + filters.join("&");
@@ -81,8 +81,10 @@ Map = function(geoJson) {
         var filters = window.location.search.slice(1).split("&").filter(String);
         $.each(filters, function(index, filter){
             var question = filter.split("=")[0];
-            var answer = filter.split("=")[1];
-            $("#filters").find("#" + question).find("#" + answer).attr("checked", "checked");
+            var answers = filter.split("=")[1].split(",");
+            $.each(answers, function(index, answer){
+                $("#filters").find("#" + question).find("#" + answer).attr("checked", "checked");
+            });
         });
     }
 

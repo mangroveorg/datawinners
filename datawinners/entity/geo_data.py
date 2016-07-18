@@ -30,7 +30,7 @@ def _transform_filters(filters, entity_all_fields):
     entity_fields_dict = dict((field['code'], field) for field in entity_all_fields)
     return {
         entity_fields_dict[f]['name']: [
-            choice['text'] for choice in entity_fields_dict[f]['choices'] if choice['val'] == filters[f]
+            choice['text'] for choice in entity_fields_dict[f]['choices'] if choice['val'] in filters[f]
         ]
         for f in filters
     }

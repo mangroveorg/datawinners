@@ -24,14 +24,17 @@
 <div id="filter-control" class="ol-control filter-control">
     <button class="title"></button>
     <div id="filters" class="filters">
-        {% for filter in filters %}
-            <h3>{{ filter.label }}</h3>
-            <div id="{{ filter.code }}" class="filter-choices">
-                {% for choice in filter.choices %}
-                    <label><input type="radio" name="{{ filter.code }}" id="{{ choice.val }}">{{ choice.text }}</label>
-                {% endfor %}
-            </div>
-        {% endfor %}
+        <div class="content">
+            {% for filter in filters %}
+                <h3>{{ filter.label }}</h3>
+                <div id="{{ filter.code }}" class="filter-choices">
+                    {% for choice in filter.choices %}
+                        <label><input type="checkbox" name="{{ filter.code }}" id="{{ choice.val }}">{{ choice.text }}</label>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+        </div>
+        <div class="control"><button class="apply">Apply</button><button class="reset">Reset</button></div>
     </div>
 </div>
 
