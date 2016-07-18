@@ -4,14 +4,16 @@ from mangrove.datastore.entity import get_all_entities
 from mangrove.errors.MangroveException import DataObjectNotFound
 
 
-def geo_json(dbm, entity_type, filters):
+def geo_json(dbm, entity_type, filters=None):
     location_list = []
 
     try:
         entity_all_fields = dbm.view.registration_form_model_by_entity_type(key=[entity_type], include_docs=True)[0]["doc"]["json_fields"]
         first_geocode_field = _get_first_geocode_field_for_entity_type(entity_all_fields)
         if first_geocode_field:
-            unique_ids = get_all_entities(dbm, [entity_type], 1000, _transform_filters(filters, entity_all_fields))
+            unique_ids = get_all_entities(
+                dbm, [entity_type], 1000, None if filters is None else _transform_filters(filters, entity_all_fields)
+            )
             location_list.extend(get_location_list_for_entities(
                 _get_all_field_labels(entity_all_fields),
                 first_geocode_field,
