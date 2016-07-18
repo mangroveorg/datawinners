@@ -4,21 +4,34 @@ from mangrove.datastore.entity import get_all_entities
 from mangrove.errors.MangroveException import DataObjectNotFound
 
 
-def geo_json(dbm, entity_type):
+def geo_json(dbm, entity_type, filters):
     location_list = []
 
     try:
         entity_all_fields = dbm.view.registration_form_model_by_entity_type(key=[entity_type], include_docs=True)[0]["doc"]["json_fields"]
-        entity_all_field_labels = _get_all_field_labels(entity_all_fields)
         first_geocode_field = _get_first_geocode_field_for_entity_type(entity_all_fields)
         if first_geocode_field:
-            unique_ids = get_all_entities(dbm, [entity_type], limit=1000)
-            location_list.extend(get_location_list_for_entities(entity_all_field_labels,first_geocode_field, unique_ids))
+            unique_ids = get_all_entities(dbm, [entity_type], 1000, _transform_filters(filters, entity_all_fields))
+            location_list.extend(get_location_list_for_entities(
+                _get_all_field_labels(entity_all_fields),
+                first_geocode_field,
+                unique_ids
+            ))
 
     except DataObjectNotFound:
         pass
 
     return json.dumps({"type": "FeatureCollection", "features": location_list})
+
+
+def _transform_filters(filters, entity_all_fields):
+    entity_fields_dict = dict((field['code'], field) for field in entity_all_fields)
+    return {
+        entity_fields_dict[f]['name']: [
+            choice['text'] for choice in entity_fields_dict[f]['choices'] if choice['val'] == filters[f]
+        ]
+        for f in filters
+    }
 
 
 def _get_all_field_labels(entity_all_fields):
