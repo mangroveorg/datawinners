@@ -64,3 +64,75 @@ div.dataLayersDiv input{
     }
   }
 }
+
+.popup-row {
+    .question-icon {
+        background: rgba(0, 60, 136, 0.5);
+        border-radius: 50%;
+        text-align: center;
+        color: white;
+        font-size: 0.7em;
+        line-height: 14px;
+        height: 13px;
+        width: 13px;
+        cursor: default;
+        margin-top: -15px;
+        float: right;
+        margin-right: 10px;
+
+        &:hover {
+            background: rgba(0,60,136,1);
+
+            span.question {
+                display: block;
+            }
+        }
+
+        &:before {
+            content: '?';
+        }
+
+        .question {
+            display: none;
+            background-color: black;
+            color: #fff;
+            border-radius: 6px;
+            width: 130px;
+            height: auto;
+            white-space: pre-wrap;
+            margin-left: 21px;
+            position: absolute;
+            left: 84%;
+            margin-top: -11%;
+            z-index: 100;
+            padding: 5px;
+            text-align: left;
+            font-size: 1.3em;
+
+            &:after {
+                content: "";
+                position: absolute;
+                top: 50%;
+                right: 100%;
+                margin-top: -5px;
+                border-width: 5px;
+                border-style: solid;
+                border-color: transparent black transparent transparent;
+            }
+        }
+    }
+
+    .answer {
+        display: block;
+        white-space: pre-wrap;
+        margin-right: 5px;
+        word-break: break-word;
+        width: 160px;
+    }
+
+}
+
+.ol-popup-content {
+    margin: 5px;
+    overflow-y: auto;
+}

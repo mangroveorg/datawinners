@@ -497,7 +497,7 @@ def _build_filterable_fields(form_fields, filters_in_entity_preference):
 def _build_details(form_fields, details_in_entity_preference):
     details = [
         {'code': field['code'], 'label': field['label'], 'visibility': field['code'] in details_in_entity_preference}
-        for field in form_fields if field['code'] != 'q2'
+        for field in form_fields if field['code'] not in ['q2', 'q6']
     ]
     return details
 

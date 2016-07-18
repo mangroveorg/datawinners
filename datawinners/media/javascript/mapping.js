@@ -14,7 +14,7 @@ Map = function(geoJson) {
 
     var popup = new ol.Overlay.Popup({
         insertFirst: false,
-        panMapIfOutOfView: false
+        panMapIfOutOfView: true
     });
 
     self.init = function(entityType) {
@@ -89,13 +89,33 @@ Map = function(geoJson) {
     }
 
     var showDetails = function(feature) {
-        var html = $("#popup").html()
-            .replace("{entity}", feature.getProperties()["name"]["value"])
-            .replace("{entity_type}", feature.getProperties()["entity_type"]["value"])
-            .replace("{geo_code}", feature.getProperties()["geo_code"]["value"])
-            .replace("{entity_code}", feature.getProperties()["short_code"]["value"]);
-        popup.show(feature.getGeometry().getCoordinates(), html);
+        var newHtml = buildPopupContent(feature.getProperties()).html();
+        popup.show(feature.getGeometry().getCoordinates(), newHtml);
     }
+
+    var buildPopupContent = function(properties) {
+        var popupContent = $("#popup");
+        popupContent.empty();
+        var id = 1;
+        for(prop in properties) {
+            popupContent.append(buildPopupRow(properties[prop], id));
+            id++;
+        }
+        return popupContent;
+    }
+
+    var buildPopupRow = function(property, id) {
+        if (property.value && property.label) {
+            var row = $(".popup-row-template").clone();
+            row.removeClass("popup-row-template");
+            row.addClass("popup-row");
+            row.attr("id", id);
+            row.find("p.answer").text(property.value);
+            row.find("span.question").text(property.label);
+            row.css("display", "block");
+            return row;
+        }
+    };
 
     var createVector = function(name, iconStyle) {
         var source = new ol.source.Vector({
