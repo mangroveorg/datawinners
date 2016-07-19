@@ -16,7 +16,7 @@ def render_map(request, share_token):
         {
             "entity_type": entity_preference.entity_type,
             "filters": _get_filters(form_model, entity_preference.filters),
-            "geo_json": geo_json(dbm, entity_preference.entity_type, request.GET),
+            "geo_json": geo_json(dbm, entity_preference.entity_type, request.GET, entity_preference.details),
             "is_public": True
         },
         context_instance=RequestContext(request)
