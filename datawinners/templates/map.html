@@ -24,7 +24,7 @@
 <div id="filter-control" class="ol-control filter-control">
     <button class="title"></button>
     <div id="filters" class="filters">
-        <div class="content">
+        <div class="filters-content">
             {% for filter in filters %}
                 <h3>{{ filter.label }}</h3>
                 <div id="{{ filter.code }}" class="filter-choices">
@@ -34,7 +34,7 @@
                 </div>
             {% endfor %}
         </div>
-        <div class="control"><button class="apply">Apply</button><button class="reset">Reset</button></div>
+        <div class="filters-control"><button class="apply">Apply</button><button class="reset">Reset</button></div>
     </div>
 </div>
 

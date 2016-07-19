@@ -40,6 +40,7 @@ from datawinners.messageprovider.messages import exception_messages, WEB
 from datawinners.project.helper import create_request
 from datawinners.project.submission.exporter import SubmissionExporter
 from datawinners.project.web_questionnaire_form import SubjectRegistrationForm
+from datawinners.public.views import _get_filters
 from datawinners.questionnaire.questionnaire_builder import QuestionnaireBuilder
 from datawinners.search.entity_search import SubjectQuery
 from datawinners.search.index_utils import delete_mapping, es_questionnaire_field_name
@@ -466,14 +467,15 @@ def edit_subject(request, entity_type, entity_id, project_id=None):
 def map_subject(request, entity_type=None):
     manager = get_database_manager(request.user)
     form_model = get_form_model_by_entity_type(manager, [entity_type.lower()])
-    filterable_field_types = ['select', 'select1']
-    filterable_fields = filter(lambda field: field.get('type') in filterable_field_types, form_model.form_fields)
+    entity_preference = get_entity_preference(get_db_manager("public"), _get_organization_id(request), entity_type)
+    filterable_fields = filter(lambda field: field.get('type') in ['select', 'select1'], form_model.form_fields)
 
     return render_to_response('entity/map_edit.html',
                               {
                                   "entity_type": entity_type,
                                   "form_code": form_model.form_code,
-                                  "geo_json": geo_json(manager, entity_type),
+                                  "filters": [] if entity_preference is None else _get_filters(form_model, entity_preference.filters),
+                                  "geo_json": geo_json(manager, entity_type, request.GET),
                                   "filterable_fields": filterable_fields
                                },
                               context_instance=RequestContext(request))
@@ -504,10 +506,8 @@ def _build_details(form_fields, details_in_entity_preference):
 
 @valid_web_user
 def get_preference(request, entity_type=None):
-    manager = get_database_manager(request.user)
-    public_db_manager = get_db_manager("public")
-    entity_preference = get_entity_preference(public_db_manager, _get_organization_id(request), entity_type)
-    form_model = get_form_model_by_entity_type(manager, [entity_type.lower()])
+    entity_preference = get_entity_preference(get_db_manager("public"), _get_organization_id(request), entity_type)
+    form_model = get_form_model_by_entity_type(get_database_manager(request.user), [entity_type.lower()])
 
     filters_in_entity_preference = []
     details_in_entity_preference = []
@@ -528,9 +528,8 @@ def get_preference(request, entity_type=None):
 @valid_web_user
 def save_preference(request, entity_type=None):
     if request.method == 'POST':
-        manager = get_db_manager("public")
         data = json.loads(request.POST['data'])
-        save_entity_preference(manager,
+        save_entity_preference(get_db_manager("public"),
                                _get_organization_id(request),
                                entity_type,
                                data.get('filters'),

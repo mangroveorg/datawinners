@@ -36,11 +36,11 @@ div.dataLayersDiv input{
     position:absolute;
     top: 2em;
     background-color: rgba(255, 255, 255, 0.4);
-    .content{
+    .filters-content{
       width: 12em;
       font-size: 80%;
     }
-    .control{
+    .filters-control{
       text-align: center;
       margin: 2%;
       button{
@@ -54,12 +54,17 @@ div.dataLayersDiv input{
       padding: 0.3em 1.8em;
       border: none;
       margin: 0;
+      span{
+        display: block !important;
+      }
     }
     .filter-choices{
-      border: none;
-      padding: 0 2.2em;
+      border: none !important;
+      padding: 0 2.2em !important;
       label{
         display: block;
+        font-size: inherit;
+        font-weight: normal;
       }
     }
   }

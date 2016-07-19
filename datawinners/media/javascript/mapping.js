@@ -59,7 +59,7 @@ Map = function(geoJson) {
 
         $("#filter-control>button").click(function() {
             $("#filters").toggle();
-            $("#filters .content").accordion();
+            $("#filters .filters-content").accordion();
         });
 
         $("#filters button.apply").click(applyFilters);
