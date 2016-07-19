@@ -494,6 +494,43 @@ input [type=text] {
   color: white !important;
 }
 
+/* Accordian */
+.ui-accordion {
+  width: 100% !important;
+  label.example {
+    width: 300px;
+    font-weight: normal;
+    color: #666666;
+    font-style: italic;
+    font-size: 11px;
+  }
+  .button_blue {
+    margin-left: 10px;
+  }
+}
+
+.ui-accordion-header.ui-state-default {
+  background: none !important;
+  border: 0 !important;
+  a {
+    font-size: 12px !important;
+    font-weight: normal;
+  }
+}
+
+.ui-accordion-header.ui-state-active {
+  h3 {
+    border: 1px solid #ececec !important;
+  }
+  a {
+    color: black !important;
+  }
+}
+
+.ui-accordion-icons .ui-accordion-header a {
+  padding-left: 3px !important;
+}
+
 /* jQuery UI Stylings */
 .ui-widget-overlay {
   background: black !important;

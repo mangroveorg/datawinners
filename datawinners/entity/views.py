@@ -464,19 +464,29 @@ def edit_subject(request, entity_type, entity_id, project_id=None):
 
 
 @valid_web_user
-def map_subject(request, entity_type=None):
+def map_admin(request, entity_type=None):
     manager = get_database_manager(request.user)
     form_model = get_form_model_by_entity_type(manager, [entity_type.lower()])
-    entity_preference = get_entity_preference(get_db_manager("public"), _get_organization_id(request), entity_type)
     filterable_fields = filter(lambda field: field.get('type') in ['select', 'select1'], form_model.form_fields)
-
     return render_to_response('entity/map_edit.html',
                               {
                                   "entity_type": entity_type,
                                   "form_code": form_model.form_code,
-                                  "filters": [] if entity_preference is None else _get_filters(form_model, entity_preference.filters),
-                                  "geo_json": geo_json(manager, entity_type, request.GET),
                                   "filterable_fields": filterable_fields
+                               },
+                              context_instance=RequestContext(request))
+
+
+@valid_web_user
+def map_data(request, entity_type=None):
+    manager = get_database_manager(request.user)
+    form_model = get_form_model_by_entity_type(manager, [entity_type.lower()])
+    entity_preference = get_entity_preference(get_db_manager("public"), _get_organization_id(request), entity_type)
+    return render_to_response('map.html',
+                              {
+                                  "entity_type": entity_type,
+                                  "filters": [] if entity_preference is None else _get_filters(form_model, entity_preference.filters),
+                                  "geo_json": geo_json(manager, entity_type, request.GET)
                                },
                               context_instance=RequestContext(request))
 
