@@ -52,6 +52,7 @@ Map = function(geoJson) {
         map.on("click", function(e) {
             map.forEachFeatureAtPixel(e.pixel, function (feature, layer) {
                 showDetails(feature);
+                return true;
             });
         });
 
@@ -88,33 +89,42 @@ Map = function(geoJson) {
         });
     }
 
+    var transformFeatureToDetails = function(properties) {
+        return Object.keys(properties)
+                .map(function(value) {
+                    return properties[value];
+                })
+                .filter(function(property) {
+                   return property.value && property.label;
+                });
+        return items;
+    };
+
+    var buildPopupContent = function(items) {
+        var list = $("#popup ul");
+        $('#popup ul li').remove();
+        items.forEach(function(item){
+            addItem(list, item.value, item.label);
+        });
+        return list;
+    };
+
+    var addItem = function(list, answer, question) {
+        var template = list.contents()[1].nodeValue;
+        list.append(sprintf(template, answer, question));
+    };
+
+    var sprintf = function(text) {
+        var i=1, args=arguments;
+        return text.replace(/%s/g, function(pattern){
+            return (i < args.length) ? args[i++] : "";
+        });
+    };
+
     var showDetails = function(feature) {
-        var newHtml = buildPopupContent(feature.getProperties()).html();
-        popup.show(feature.getGeometry().getCoordinates(), newHtml);
-    }
-
-    var buildPopupContent = function(properties) {
-        var popupContent = $("#popup");
-        popupContent.empty();
-        var id = 1;
-        for(prop in properties) {
-            popupContent.append(buildPopupRow(properties[prop], id));
-            id++;
-        }
-        return popupContent;
-    }
-
-    var buildPopupRow = function(property, id) {
-        if (property.value && property.label) {
-            var row = $(".popup-row-template").clone();
-            row.removeClass("popup-row-template");
-            row.addClass("popup-row");
-            row.attr("id", id);
-            row.find("p.answer").text(property.value);
-            row.find("span.question").text(property.label);
-            row.css("display", "block");
-            return row;
-        }
+        var items = transformFeatureToDetails(feature.getProperties());
+        var html = buildPopupContent(items)[0].outerHTML;
+        popup.show(feature.getGeometry().getCoordinates(), html);
     };
 
     var createVector = function(name, iconStyle) {

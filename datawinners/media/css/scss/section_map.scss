@@ -65,31 +65,49 @@ div.dataLayersDiv input{
   }
 }
 
-.popup-row {
-    .question-icon {
-        background: rgba(0, 60, 136, 0.5);
-        border-radius: 50%;
-        text-align: center;
-        color: white;
-        font-size: 0.7em;
-        line-height: 14px;
-        height: 13px;
-        width: 13px;
-        cursor: default;
-        margin-top: -15px;
-        float: right;
-        margin-right: 10px;
+ul#pop-details {
+    margin: 0;
+    padding: 0;
+    font-family: Helvetica, Arial, sans-serif;
 
-        &:hover {
-            background: rgba(0,60,136,1);
+    li {
+        list-style-type: none;
+        font-size: 0.9em;
+        margin-bottom: 5px;
 
-            span.question {
-                display: block;
-            }
+        .answer {
+            display: inline-block;
+            white-space: pre-wrap;
+            margin-right: 5px;
+            word-break: break-word;
+            width: 80%;
+            font-size: 0.9em;
         }
 
-        &:before {
-            content: '?';
+        .question-icon {
+            background: rgba(0, 60, 136, 0.5);
+            border-radius: 50%;
+            text-align: center;
+            color: white;
+            font-size: 0.7em;
+            line-height: 14px;
+            height: 13px;
+            width: 13px;
+            cursor: default;
+            float: right;
+            margin-right: 10px;
+
+            &:before {
+                content: '?';
+            }
+
+            &:hover {
+                background: rgba(0,60,136,1);
+
+                + .question {
+                    display: block;
+                }
+            }
         }
 
         .question {
@@ -97,17 +115,17 @@ div.dataLayersDiv input{
             background-color: black;
             color: #fff;
             border-radius: 6px;
-            width: 130px;
+            width: 80%;
             height: auto;
             white-space: pre-wrap;
             margin-left: 21px;
             position: absolute;
             left: 84%;
-            margin-top: -11%;
+            margin-top: -12.5%;
             z-index: 100;
             padding: 5px;
             text-align: left;
-            font-size: 1.3em;
+            font-size: 1em;
 
             &:after {
                 content: "";
@@ -120,19 +138,14 @@ div.dataLayersDiv input{
                 border-color: transparent black transparent transparent;
             }
         }
-    }
 
-    .answer {
-        display: block;
-        white-space: pre-wrap;
-        margin-right: 5px;
-        word-break: break-word;
-        width: 160px;
     }
-
 }
 
 .ol-popup-content {
     margin: 5px;
-    overflow-y: auto;
+    height: auto;
+    padding-top: 8%;
+    font-family: sans-serif;
+    font-size: 12pt;
 }
