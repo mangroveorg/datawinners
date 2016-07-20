@@ -64,6 +64,9 @@ Map = function(geoJson) {
         });
 
         $("#filters button.apply").click(applyFilters);
+        $("#filters button.reset").click(function(){
+            window.location.href = window.location.origin + window.location.pathname;
+        });
     }
 
     var applyFilters = function() {
