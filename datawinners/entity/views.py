@@ -486,7 +486,7 @@ def map_data(request, entity_type=None):
                               {
                                   "entity_type": entity_type,
                                   "filters": [] if entity_preference is None else _get_filters(form_model, entity_preference.filters),
-                                  "geo_json": geo_json(manager, entity_type, request.GET)
+                                  "geo_json": geo_json(manager, entity_type, request.GET, entity_preference.details)
                                },
                               context_instance=RequestContext(request))
 
