@@ -92,15 +92,34 @@ Map = function(geoJson) {
         });
     }
 
+    var getPopupTitle = function(properties) {
+        return Object.keys(properties)
+                .filter(function(key) {
+                    return key === 'name';
+                })
+                .map(function(key) {
+                    return properties[key].value;
+                })[0];
+    };
+
     var transformFeatureToDetails = function(properties) {
         return Object.keys(properties)
-                .map(function(value) {
-                    return properties[value];
+                .filter(function(key) {
+                    return key !== 'name';
+                })
+                .map(function(key) {
+                    return properties[key];
                 })
                 .filter(function(property) {
                    return property.value && property.label;
                 });
-        return items;
+    };
+
+    var buildPopupHeader = function(title) {
+        var popup = $('#popup');
+        $('#popup h3').remove();
+        var headerTemplate = $('#popup').contents()[1].nodeValue;
+        return sprintf(headerTemplate, title);
     };
 
     var buildPopupContent = function(items) {
@@ -125,9 +144,12 @@ Map = function(geoJson) {
     };
 
     var showDetails = function(feature) {
+        var title = getPopupTitle(feature.getProperties());
+        var header = buildPopupHeader(title);
+
         var items = transformFeatureToDetails(feature.getProperties());
-        var html = buildPopupContent(items)[0].outerHTML;
-        popup.show(feature.getGeometry().getCoordinates(), html);
+        var content = buildPopupContent(items)[0].outerHTML;
+        popup.show(feature.getGeometry().getCoordinates(), header + content);
     };
 
     var createVector = function(name, iconStyle) {
