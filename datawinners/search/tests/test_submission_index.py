@@ -9,7 +9,7 @@ from mangrove.datastore.entity import Entity, Contact
 from mangrove.form_model.field import TextField, GeoCodeField, SelectField, DateField, UniqueIdField, FieldSet
 from mangrove.form_model.form_model import FormModel
 from datawinners.search.submission_index import _update_with_form_model_fields, \
-    update_submission_search_for_subject_edition, _lookup_contact_by_uid
+    update_submission_search_for_subject_edition, _lookup_contact_by_uid, process_by_chunk_questionnaire
 from mangrove.datastore.documents import SurveyResponseDocument, FormModelDocument
 
 
@@ -344,3 +344,7 @@ class TestSubmissionIndex(unittest.TestCase):
 
             self.assertEqual(datasender_dict['id'], "ds_short_code")
             self.assertEqual(datasender_dict['name'], "some_number")
+
+    def test_should_generate_exception_if_project_number_is_more_than_expected(self):
+        with self.assertRaises(AssertionError):
+            process_by_chunk_questionnaire(Mock(), range(150), Mock(), {})

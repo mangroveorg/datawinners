@@ -28,6 +28,7 @@ from mangrove.form_model.field import PhotoField, AudioField, VideoField
 
 logger = logging.getLogger("datawinners")
 UNKNOWN = "N/A"
+ES_NUMBER_OF_TYPES_SUPPORTED = 115
 
 
 def get_code_from_es_field_name(es_field_name, form_model_id):
@@ -242,7 +243,13 @@ def update_submission_search_for_datasender_edition(dbm, short_code, datasender_
     name = datasender_dict['name'] if datasender_dict['name'] else datasender_dict['mobile_number']
     fields_mapping = {SubmissionIndexConstants.DATASENDER_NAME_KEY: name, 'datasender': datasender_dict}
     project_form_model_ids = [project.id for project in get_all_projects(dbm, short_code)]
+    chunk, i = ES_NUMBER_OF_TYPES_SUPPORTED, 0
+    while i <= len(project_form_model_ids) / chunk:
+        process_by_chunk_questionnaire(dbm, project_form_model_ids[i*chunk: (i+1) * chunk - 1], fields_mapping, kwargs)
+        i += 1
 
+def process_by_chunk_questionnaire(dbm, project_form_model_ids, fields_mapping, kwargs):
+    assert len(project_form_model_ids) < ES_NUMBER_OF_TYPES_SUPPORTED
     query = elasticutils.S().es(urls=ELASTIC_SEARCH_URL, timeout=ELASTIC_SEARCH_TIMEOUT).indexes(
         dbm.database_name).doctypes(*project_form_model_ids)
     query = query[:query.count()].filter(**kwargs)

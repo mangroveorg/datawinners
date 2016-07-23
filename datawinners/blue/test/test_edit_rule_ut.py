@@ -364,7 +364,9 @@ class TestEditRule(unittest.TestCase):
         })
 
         add_rule.update_xform(old_questionnaire, new_questionnaire, {})
-        self.assertEqual(old_questionnaire.xform, new_questionnaire.xform)
+        filename = os.path.join(DIR, 'testdata', 'old_questionnaire.xml')
+        expected_old = open(filename, 'r')
+        self.assertEqual(old_questionnaire.xform, expected_old.read())
 
     def _get_cascade_questionnaire(self, cascades):
         fields = []
