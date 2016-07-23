@@ -11,6 +11,7 @@
          "constraint":"",
          "relevant":"",
          "default":"",
+         "choice_filter": "",
          "constraint_message":""
       },
       {
@@ -24,6 +25,7 @@
          "constraint":"",
          "relevant":"",
          "default":"",
+         "choice_filter": "",
          "constraint_message":""
       },
       {
@@ -37,6 +39,7 @@
          "constraint":"",
          "relevant":"",
          "default":"",
+         "choice_filter": "",
          "constraint_message":""
       },
       {
@@ -50,6 +53,7 @@
          "constraint":"",
          "relevant":"",
          "default":"",
+         "choice_filter": "",
          "constraint_message":""
       },
       {
@@ -63,6 +67,7 @@
          "constraint":"",
          "relevant":"",
          "default":"",
+         "choice_filter": "",
          "constraint_message":""
       },
       {
@@ -76,6 +81,7 @@
          "constraint":"",
          "relevant":"${result} = 'other'",
          "default":"",
+         "choice_filter": "",
          "constraint_message":""
       },
       {
@@ -89,6 +95,7 @@
          "constraint":". > ${visit}",
          "relevant":"${result} != 'completed'",
          "default":"",
+         "choice_filter": "",
          "constraint_message":""
       },
       {
@@ -102,6 +109,7 @@
          "constraint":"",
          "relevant":"${result} != 'completed'",
          "default":"",
+         "choice_filter": "",
          "constraint_message":""
       },
       {
@@ -115,6 +123,7 @@
          "constraint":"",
          "relevant":"",
          "default":"",
+         "choice_filter": "",
          "constraint_message":""
       },
       {
@@ -128,6 +137,7 @@
          "constraint":"",
          "relevant":"",
          "default":"",
+         "choice_filter": "",
          "constraint_message":""
       },
       {
@@ -141,6 +151,7 @@
          "constraint":"",
          "relevant":"${sex} = 'male'",
          "default":"",
+         "choice_filter": "",
          "constraint_message":""
       },
       {
@@ -154,6 +165,7 @@
          "constraint":"",
          "relevant":"",
          "default":"",
+         "choice_filter": "",
          "constraint_message":""
       },
       {
@@ -167,6 +179,7 @@
          "constraint":"",
          "relevant":"",
          "default":"",
+         "choice_filter": "",
          "constraint_message":""
       },
       {
@@ -180,6 +193,7 @@
          "constraint":"",
          "relevant":"",
          "default":"",
+         "choice_filter": "",
          "constraint_message":""
       },
       {
@@ -193,6 +207,7 @@
          "constraint":". >=0",
          "relevant":"",
          "default":"",
+         "choice_filter": "",
          "constraint_message":""
       },
       {
@@ -206,6 +221,7 @@
          "constraint":". <=${male_all}",
          "relevant":"",
          "default":"",
+         "choice_filter": "",
          "constraint_message":""
       },
       {
@@ -219,6 +235,7 @@
          "constraint":". <=${male_10_14}",
          "relevant":"",
          "default":"",
+         "choice_filter": "",
          "constraint_message":""
       },
       {
@@ -232,6 +249,7 @@
          "constraint":". <=${male_all} - ${male_10_14}",
          "relevant":"",
          "default":"",
+         "choice_filter": "",
          "constraint_message":""
       },
       {
@@ -245,6 +263,7 @@
          "constraint":". <=${male_15_29}",
          "relevant":"",
          "default":"",
+         "choice_filter": "",
          "constraint_message":""
       },
       {
@@ -258,6 +277,7 @@
          "constraint":". <=${male_all} - ${male_15_29}  - ${male_10_14}",
          "relevant":"",
          "default":"",
+         "choice_filter": "",
          "constraint_message":""
       },
       {
@@ -271,6 +291,7 @@
          "constraint":". <=${male_30}",
          "relevant":"",
          "default":"",
+         "choice_filter": "",
          "constraint_message":""
       },
       {
@@ -284,6 +305,7 @@
          "constraint":"",
          "relevant":"",
          "default":"",
+         "choice_filter": "",
          "constraint_message":""
       }
    ],

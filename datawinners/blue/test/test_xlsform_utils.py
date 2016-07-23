@@ -36,8 +36,9 @@ class TestXlsFormUtils(unittest.TestCase):
             excel_as_dict = convert_excel_to_dict(file_content=file_content, file_type='xlsx')
             with open(os.path.join(self.test_data, 'household_without_fieldset_MSI_expected.json'), 'r') as expected_file:
 #                 json.dump(excel_as_dict, expected_file)
+                excel_dump = json.dumps(excel_as_dict)
                 expected_json_as_obj = json.load(expected_file)
-                self.assertEqual(excel_as_dict, expected_json_as_obj)
+                self.assertEqual(json.loads(excel_dump), expected_json_as_obj)
         
 #     def test_stringio_features(self):
 #         str_io = io.StringIO()

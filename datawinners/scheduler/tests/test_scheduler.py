@@ -161,7 +161,8 @@ class TestScheduler(unittest.TestCase):
         def expected_side_effect(*args):
             reminder_message = args[3].message
             if reminder_message == "reminder4 message":
-                raise Exception()
+                return 0
+                #raise Exception()
             else:
                 return 1
 
