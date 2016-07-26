@@ -465,14 +465,29 @@ def edit_subject(request, entity_type, entity_id, project_id=None):
 
 @valid_web_user
 def map_admin(request, entity_type=None):
-    manager = get_database_manager(request.user)
-    form_model = get_form_model_by_entity_type(manager, [entity_type.lower()])
-    filterable_fields = filter(lambda field: field.get('type') in ['select', 'select1'], form_model.form_fields)
+    form_model = get_form_model_by_entity_type(get_database_manager(request.user), [entity_type.lower()])
+    entity_preference = get_entity_preference(get_db_manager("public"), _get_organization_id(request), entity_type)
+
+    filters_in_entity_preference = []
+    details_in_entity_preference = []
+    specials_in_entity_preference = []
+
+    if entity_preference is not None:
+        filters_in_entity_preference = entity_preference.filters
+        details_in_entity_preference = entity_preference.details
+        specials_in_entity_preference = entity_preference.specials
+
+    filters = _build_filterable_fields(form_model.form_fields, filters_in_entity_preference)
+    details = _build_details(form_model.form_fields, details_in_entity_preference)
+    specials = _build_specials(form_model.form_fields, specials_in_entity_preference)
+
     return render_to_response('entity/map_edit.html',
                               {
                                   "entity_type": entity_type,
                                   "form_code": form_model.form_code,
-                                  "filterable_fields": filterable_fields
+                                  "filters": json.dumps(filters),
+                                  "details": json.dumps(details),
+                                  "specials": json.dumps(specials)
                                },
                               context_instance=RequestContext(request))
 
@@ -486,7 +501,7 @@ def map_data(request, entity_type=None):
                               {
                                   "entity_type": entity_type,
                                   "filters": [] if entity_preference is None else _get_filters(form_model, entity_preference.filters),
-                                  "geo_json": geo_json(manager, entity_type, request.GET, entity_preference.details)
+                                  "geo_json": geo_json(manager, entity_type, request.GET, [] if entity_preference is None else entity_preference.details)
                                },
                               context_instance=RequestContext(request))
 
@@ -514,25 +529,13 @@ def _build_details(form_fields, details_in_entity_preference):
     return details
 
 
-@valid_web_user
-def get_preference(request, entity_type=None):
-    entity_preference = get_entity_preference(get_db_manager("public"), _get_organization_id(request), entity_type)
-    form_model = get_form_model_by_entity_type(get_database_manager(request.user), [entity_type.lower()])
-
-    filters_in_entity_preference = []
-    details_in_entity_preference = []
-
-    if entity_preference is not None:
-        filters_in_entity_preference = entity_preference.filters
-        details_in_entity_preference = entity_preference.details
-
-    filterable_fields = _build_filterable_fields(form_model.form_fields, filters_in_entity_preference)
-    details = _build_details(form_model.form_fields, details_in_entity_preference)
-
-    return HttpResponse(json.dumps({
-        "filters": filterable_fields,
-        "details": details
-    }))
+def _build_specials(form_fields, specials_in_entity_preference):
+    specials = [
+        {'code': field['code'], 'label': field['label'], 'visibility': field['code'] in specials_in_entity_preference,
+         'choices': field['choices']}
+        for field in form_fields if field.get('type') == 'select1'
+    ]
+    return specials
 
 
 @valid_web_user
@@ -543,7 +546,8 @@ def save_preference(request, entity_type=None):
                                _get_organization_id(request),
                                entity_type,
                                data.get('filters'),
-                               data.get('details'))
+                               data.get('details'),
+                               data.get('specials'))
         return HttpResponse(json.dumps({'success': True}))
 
 

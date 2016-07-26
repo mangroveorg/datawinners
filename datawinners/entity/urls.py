@@ -12,7 +12,7 @@ from datawinners.entity.view.send_sms import SendSMS, get_all_mobile_numbers
 from datawinners.entity.view.unique_id import delete_subjects
 from datawinners.entity.views import all_subject_types, all_subjects, all_subjects_ajax, map_data
 from datawinners.entity.views import create_multiple_web_users, edit_subject_questionnaire, save_questionnaire, edit_subject, get_questionnaire_details_ajax, create_group, \
-    share_token, get_preference, save_preference, map_admin
+    share_token, save_preference, map_admin
 from datawinners.entity.views import create_subject, subject_autocomplete
 from datawinners.entity.views import create_type
 from datawinners.entity.views import delete_subject_types
@@ -29,7 +29,6 @@ urlpatterns = patterns('',
                            name="edit_subject"),
                        (r'(?P<entity_type>.+?)/map$', map_data),
                        (r'(?P<entity_type>.+?)/sharetoken$', share_token),
-                       (r'(?P<entity_type>.+?)/get_preference$', get_preference),
                        (r'(?P<entity_type>.+?)/save_preference$', save_preference),
                        (r'type/create', create_type),
                        (r'group/create', create_group),

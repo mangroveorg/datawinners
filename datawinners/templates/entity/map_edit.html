@@ -16,7 +16,7 @@
         $(document).ready(function() {
             $('.secondary_tab li').attr('class', 'inactive');
             $('.secondary_tab li:nth-child(3)').attr('class', 'active');
-            new DW.MappingEditor('{{ entity_type }}').init();
+            new DW.MappingEditor('{{ entity_type }}', {{ filters|safe }}, {{ details|safe }}, {{ specials|safe }}).init();
         });
     </script>
 {% endblock %}
@@ -46,6 +46,14 @@
         <div id="customize-widget">
             <span>{% trans "Choose Questions" %}</span>
         </div>
+    </div>
+    <div id="special-idnrs" class="special-idnrs float_right">
+        <div id="special-idnrs-widget">
+            <span>{% trans "Configure Special" %} {{ entity_type }}</span>
+        </div>
+        <ul style="margin: 0 1em;" class="hide">
+            <!--<li><label><input type="radio" value="%s"><p>%s</p></label></li>-->
+        </ul>
     </div>
     <div id="share-overlay" class="share-overlay"></div>
     <iframe id="map-preview" height="428px" width="100%" src="/entity/{{ entity_type }}/map"></iframe>

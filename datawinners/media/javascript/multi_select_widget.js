@@ -66,16 +66,18 @@ DW.MultiSelectWidget = function (parentSelector, items) {
         return getSelectedValues().indexOf(value) !== -1;
     }
 
-    function toggleSelected(value) {
-        if(isSelected(value)) {
-            removeSelectedValue(value);
+    function toggleSelected(target) {
+        if(isSelected(target.value)) {
+            removeSelectedValue(target.value);
+            _this.parentElement.dispatchEvent(new CustomEvent('check', { detail: {show: false, value: target.value} }));
         } else {
-            addSelectedValue(value);
+            addSelectedValue(target.value);
+            _this.parentElement.dispatchEvent(new CustomEvent('check', { detail: {show: true, value: target.value} }));
         }
     }
 
     this.parentElement.addEventListener('change', function(event) {
-        toggleSelected(event.target.value);
+        toggleSelected(event.target);
     });
 
     this.parentElement.addEventListener('click', function(event) {
@@ -130,5 +132,6 @@ DW.MultiSelectWidget = function (parentSelector, items) {
             ul.appendChild(li);
         }
         dropdownDiv.appendChild(ul);
+        _this.parentElement.dispatchEvent(new CustomEvent('render', { detail: { items : items } }));
     }
 };
