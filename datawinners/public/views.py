@@ -1,7 +1,9 @@
+from django.http import Http404
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 
 from datawinners.entity.geo_data import geo_json
+from datawinners.feature_toggle.models import FeatureSubscription, Feature
 from datawinners.main.database import get_db_manager
 from mangrove.datastore.entity_share import get_entity_preference_by_share_token
 from mangrove.form_model.form_model import get_form_model_by_entity_type
@@ -10,6 +12,10 @@ from mangrove.form_model.form_model import get_form_model_by_entity_type
 def render_map(request, share_token):
     entity_preference = get_entity_preference_by_share_token(get_db_manager("public"), share_token)
     dbm = get_db_manager(entity_preference.org_id)
+    org_id = entity_preference.org_id.split('_')[-1].upper()
+    if not _flag_active("idnr_map", org_id):
+        raise Http404
+
     form_model = get_form_model_by_entity_type(dbm, [entity_preference.entity_type.lower()])
     return render_to_response(
         'map.html',
@@ -29,3 +35,9 @@ def _get_filters(form_model, filters):
         for field in form_model.form_fields if field['code'] in filters
     ]
     return filters
+
+def _flag_active(flag, org_id):
+    feature = Feature.objects.get(name=flag)
+    fs = FeatureSubscription.objects.get(feature=feature)
+    organizations = fs.organizations.filter(org_id=org_id)
+    return len(organizations) > 0

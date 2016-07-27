@@ -10,7 +10,7 @@ DW.MappingEditor = function(entityType, filters, details, specials) {
     var SAVE_ENTITY_PREFERENCE_URL = '/entity/' + entityType + '/save_preference';
 
     var displayShareLink = function (token) {
-        shareWidget.find('input').val(window.location.origin + "/public/maps/" + token)
+        shareWidget.find('input').val(window.location.origin + "/public/maps/" + token +"/")
         shareWidget.show();
         shareWidgetCloseButton.show();
         shareWidget.find('input').select();

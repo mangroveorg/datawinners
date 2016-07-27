@@ -2,6 +2,7 @@
 
 {% extends 'layout_application.html' %}
 {% load i18n %}
+{% load waffle_tags %}
 {% block page_title %}{{ entity_type|capfirst }}{% endblock %}
 
 {% block section_title %}{{ entity_type|capfirst }}
@@ -64,10 +65,12 @@
                 <a href="{% url create_subject entity_type %}" id="subject_registration_preview">
                     {% blocktrans with entity_type|capfirst as entity_type %}{{ entity_type }} Registration Form{% endblocktrans %}</a>
             </li>
+            {% flag "idnr_map"%}
             <li class="inactive">
                 <a href="{% url map_admin entity_type %}" id="map_admin">
                     {% blocktrans with entity_type|capfirst as entity_type %}{{ entity_type }} Map{% endblocktrans %}</a>
             </li>
+            {% endflag %}
         </ul>
         {% block help_accordian %}{% endblock %}
 

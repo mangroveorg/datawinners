@@ -15,6 +15,7 @@ from django.utils import translation
 from django.utils.translation import ugettext as _, ugettext, get_language
 from django.views.decorators.csrf import csrf_view_exempt, csrf_response_exempt
 from django.views.decorators.http import require_http_methods
+from waffle.decorators import waffle_flag
 
 from datawinners.accountmanagement.decorators import is_datasender, session_not_expired, is_not_expired, is_new_user, \
     valid_web_user
@@ -464,6 +465,7 @@ def edit_subject(request, entity_type, entity_id, project_id=None):
 
 
 @valid_web_user
+@waffle_flag('idnr_map', None)
 def map_admin(request, entity_type=None):
     form_model = get_form_model_by_entity_type(get_database_manager(request.user), [entity_type.lower()])
     entity_preference = get_entity_preference(get_db_manager("public"), _get_organization_id(request), entity_type)
@@ -493,6 +495,7 @@ def map_admin(request, entity_type=None):
 
 
 @valid_web_user
+@waffle_flag('idnr_map', None)
 def map_data(request, entity_type=None):
     manager = get_database_manager(request.user)
     form_model = get_form_model_by_entity_type(manager, [entity_type.lower()])
@@ -539,6 +542,7 @@ def _build_specials(form_fields, specials_in_entity_preference):
 
 
 @valid_web_user
+@waffle_flag('idnr_map', None)
 def save_preference(request, entity_type=None):
     if request.method == 'POST':
         data = json.loads(request.POST['data'])
@@ -552,6 +556,7 @@ def save_preference(request, entity_type=None):
 
 
 @valid_web_user
+@waffle_flag('idnr_map', None)
 def share_token(request, entity_type):
     manager = get_db_manager("public")
     organization_id = _get_organization_id(request)
