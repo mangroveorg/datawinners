@@ -37,7 +37,9 @@ DW.MappingEditor = function(entityType) {
 
 
     var saveEntityPreference = function(entityPreference) {
-        $.post(SAVE_ENTITY_PREFERENCE_URL, { data: JSON.stringify(entityPreference) }).done(function(result) {});
+        $.post(SAVE_ENTITY_PREFERENCE_URL, { data: JSON.stringify(entityPreference) }).done(function(result) {
+            $("#map-preview").attr('src', $("#map-preview").attr('src'));
+        });
     };
 
     var transformer = function(item) {
@@ -50,14 +52,12 @@ DW.MappingEditor = function(entityType) {
             var filtersWidget = new DW.MultiSelectWidget('#filters-widget', transformedFilters);
             filtersWidget.on('close', function (event) {
                 saveEntityPreference({filters: event.detail.selectedValues});
-                $("#map-preview").attr('src', $("#map-preview").attr('src'));
             });
 
             var transformedDetails = result.details.map(transformer);
             var customizeWidget = new DW.MultiSelectWidget('#customize-widget', transformedDetails);
             customizeWidget.on('close', function (event) {
                 saveEntityPreference({details: event.detail.selectedValues});
-                $("#map-preview").attr('src', $("#map-preview").attr('src'));
             });
 
         });
