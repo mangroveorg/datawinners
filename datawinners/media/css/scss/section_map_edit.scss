@@ -43,3 +43,20 @@
         height: 100px;
     }
 }
+
+.special-idnrs {
+    .choices {
+        margin: 0 1em;
+        input:checked {
+            background-color: black;
+            width: 12px;
+            height: 12px;
+            border-radius: 14px;
+            -webkit-appearance: none;
+        }
+    }
+    .colorpicker {
+        width: 96px;
+        margin: 0 auto;
+    }
+}

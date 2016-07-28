@@ -12,6 +12,7 @@
     <script type="text/javascript" src="/media/javascript/mapping_edit.js"></script>
     <script type="text/javascript" src="/media/javascript/multi_select_widget.js"></script>
     <script type="text/javascript" src="/media/javascript/common/util.js"></script>
+    <script type="text/javascript" src="/media/javascript/jquery.tinycolorpicker.js"></script>
     <script type="text/javascript">
         $(document).ready(function() {
             $('.secondary_tab li').attr('class', 'inactive');
@@ -51,9 +52,13 @@
         <div id="special-idnrs-widget">
             <span>{% trans "Configure Special" %} {{ entity_type }}</span>
         </div>
-        <ul style="margin: 0 1em;" class="hide">
-            <!--<li><label><input type="radio" value="%s"><p>%s</p></label></li>-->
+        <ul class="choices hide">
+            <!--<li><label><input type="radio" name="%s" value="%s"><p>%s</p></label></li>-->
         </ul>
+        <div class="colorpicker">
+            <div class="track hide"></div>
+            <input type="hidden" class="colorInput">
+        </div>
     </div>
     <div id="share-overlay" class="share-overlay"></div>
     <iframe id="map-preview" height="428px" width="100%" src="/entity/{{ entity_type }}/map"></iframe>

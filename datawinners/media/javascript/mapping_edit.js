@@ -43,16 +43,25 @@ DW.MappingEditor = function(entityType, filters, details, specials) {
     };
     
     var onSpecialQuestionCheck = function(widget, questionCode, showChoices, choices) {
-        var questionBox = $(widget).find('input[value=' + questionCode + ']');
-        var choiceButtons = $("#special-idnrs>ul").clone();
+        var questionLabel = $(widget).find('input[value=' + questionCode + ']').parent();
+        var choiceButtons = $("#special-idnrs>.choices").clone();
+        var colorpicker = $("#special-idnrs>.colorpicker").clone();
         if(showChoices) {
             choices.forEach(function(item) {
-                choiceButtons.append(sprintf(choiceButtons.contents()[1].nodeValue, item.val, item.text));
+                choiceButtons.append(sprintf(choiceButtons.contents()[1].nodeValue, questionCode, item.val, item.text));
             });
-            questionBox.next().after(choiceButtons);
+            questionLabel.after(choiceButtons);
             choiceButtons.show();
+            choiceButtons.after(colorpicker);
+            colorpicker.tinycolorpicker({backgroundUrl: '/media/images/text-color.png'});
+            choiceButtons.find("input").click(function() {
+                colorpicker.find('.track').show();
+            });
+            colorpicker.click(function() {
+                choiceButtons.find('input').css('background-color', $(this).find('input').val());
+            });
         } else {
-            questionBox.next().nextAll().remove();
+            questionLabel.nextAll().remove();
         }
     };
 
@@ -79,7 +88,7 @@ DW.MappingEditor = function(entityType, filters, details, specials) {
             saveEntityPreference({details: result});
         });
 
-        var specialIdnrsWidget = initWidget('#special-idnrs-widget', filters, function(result) {
+        var specialIdnrsWidget = initWidget('#special-idnrs-widget', specials, function(result) {
             saveEntityPreference({specials: result});
         });
 
@@ -96,7 +105,9 @@ DW.MappingEditor = function(entityType, filters, details, specials) {
         });
 
         specialIdnrsWidget.on('check', function(event) {
-            onSpecialQuestionCheck(this, event.detail.value, event.detail.show, specialsMap[event.detail.value].choices);
+            if(event.detail.value in specialsMap) {
+                onSpecialQuestionCheck(this, event.detail.value, event.detail.show, specialsMap[event.detail.value].choices);
+            }
         });
     }
 }
