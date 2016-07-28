@@ -187,16 +187,3 @@ def start(request):
                               {'text': text, 'title': title, 'active_tab': tabs_dict[url_tokens[-1]],
                                'help_url': help_url, 'is_pro_sms': get_organization(request).is_pro_sms},
                               context_instance=RequestContext(request))
-
-
-def _get_all_reporter_fields():
-    all_fields = {}
-    all_fields['short_code'] = _("Unique ID")
-    all_fields['name'] = _("Name")
-    all_fields['telephone_number'] = _("Mobile Number")
-    all_fields['email'] = _("Email Address")
-    all_fields['location'] = _("Location")
-    all_fields['geo_code'] = _("GPS Coordinates")
-    all_fields['devices'] = _("Devices")
-    all_fields['is_data_sender'] = ""
-    return all_fields

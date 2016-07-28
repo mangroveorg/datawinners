@@ -27,10 +27,29 @@
 	{% else %}
 	    <link href="/media/css/scss/section_application.css" rel="stylesheet"/>
 	{% endflag %}
+
+    {% if GOOGLE_MAPS_ENABLED %}
+        <link rel="stylesheet" href="/media/javascript/OpenLayers-2.13.1/theme/default/style.css" media="screen">
+        <link rel="stylesheet" type="text/css" href="/media/css/scss/section_map.css" media="screen">
+    {% endif %}
 {% endblock %}
 
 {% block page_js %}
   {{ block.super }}
+  {% if GOOGLE_MAPS_ENABLED %}
+    <script type="text/javascript" src="/media/javascript/OpenLayers-2.13.1/OpenLayers.js"></script>
+    <script>
+        OpenLayers.ImgPath = '/media/javascript/OpenLayers-2.13.1/img/';
+    </script>
+    <script type="text/javascript" src="/media/javascript/entity_mapping.js"></script>
+    <script type="text/javascript">
+        var entity_types = {{ project.entity_type|safe }};
+        $(document).ready(function() {
+            $( "#how_to" ).accordion({ collapsible: true, active: 0 });
+            init_map();
+        });
+    </script>
+  {% endif %}
     <script type="text/javascript">
         DW.help_url = "https://www.datawinners.com/{% trans 'wp_language' %}/find-answers-app/category/ov/?template=help";
         var isSmartPhoneUpgradeInfoFlagPresent = '{{ show_sp_upgrade_info }}';
@@ -70,6 +89,10 @@
             </b></p>
         </div>
 
+        <!--Map div-->
+        {% if GOOGLE_MAPS_ENABLED %}
+            {% include 'entity_map.html'  %}
+        {% endif %}
         <!--Questionnaire & DS div-->
         <div class="clear_both_width_100" id="questionnaire_and_DS">
             {% include 'project/questionnaire_and_DS.html'%}

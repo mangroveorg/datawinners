@@ -17,6 +17,8 @@ from django.views.decorators.http import require_http_methods
 from datawinners.alldata import views
 from datawinners.common.authorization import is_data_sender, is_data_sender_for_project
 from datawinners.common.urlextension import append_query_strings_to_url
+from datawinners.entity.geo_data import get_first_geocode_field_for_entity_type, get_location_list_for_entities, \
+    get_location_list_for_datasenders
 from datawinners.monitor.carbon_pusher import send_to_carbon
 from datawinners.monitor.metric_path import create_path
 from datawinners.project.send_message import get_data_sender_phone_numbers
@@ -24,7 +26,7 @@ from datawinners.search.all_datasender_search import get_all_data_senders_count
 from datawinners.search.datasender_index import update_datasender_index_by_id
 from datawinners.search.submission_index import update_submission_search_for_subject_edition, \
     get_unregistered_datasenders
-from mangrove.datastore.entity import get_by_short_code
+from mangrove.datastore.entity import get_by_short_code, get_all_entities, by_short_codes
 from mangrove.datastore.entity_type import get_unique_id_types
 from mangrove.datastore.queries import get_entity_count_for_type, get_non_voided_entity_count_for_type
 from mangrove.errors.MangroveException import DataObjectAlreadyExists, DataObjectNotFound
@@ -1027,3 +1029,33 @@ def change_ds_group(request):
     questionnaire.save()
     messages.success(request, ugettext("Changes saved successfully."))
     return HttpResponse(json.dumps({'success': True}))
+
+
+@valid_web_user
+def geo_json_for_project(request, project_id, entity_type=None):
+    dbm = get_database_manager(request.user)
+    location_list = []
+
+    try:
+        if entity_type:
+            entity_fields = dbm.view.registration_form_model_by_entity_type(key=[entity_type], include_docs=True)[0]["doc"]["json_fields"]
+            first_geocode_field = get_first_geocode_field_for_entity_type(entity_fields)
+            if first_geocode_field:
+                unique_ids = get_all_entities(dbm, [entity_type], limit=1000)
+                location_list.extend(get_location_list_for_entities(first_geocode_field, unique_ids))
+        else:
+            questionnaire = Project.get(dbm, project_id)
+            unique_ids = by_short_codes(dbm, questionnaire.data_senders, ["reporter"], limit=1000)
+            location_list.extend(get_location_list_for_datasenders(unique_ids))
+
+    except DataObjectNotFound:
+        pass
+
+    location_geojson = {"type": "FeatureCollection", "features": location_list}
+    return HttpResponse(json.dumps(location_geojson))
+
+
+def render_map(request):
+    map_api_key = get_map_key(request.META['HTTP_HOST'])
+    return render_to_response('maps/entity_map.html', {'map_api_key': map_api_key},
+                              context_instance=RequestContext(request))

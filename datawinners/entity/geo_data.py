@@ -8,15 +8,15 @@ def geo_json(dbm, entity_type, filters=None, details=[]):
     location_list = []
 
     try:
-        entity_all_fields = dbm.view.registration_form_model_by_entity_type(key=[entity_type], include_docs=True)[0]["doc"]["json_fields"]
-        first_geocode_field = _get_first_geocode_field_for_entity_type(entity_all_fields)
+        entity_fields = dbm.view.registration_form_model_by_entity_type(key=[entity_type], include_docs=True)[0]["doc"]["json_fields"]
+        first_geocode_field = get_first_geocode_field_for_entity_type(entity_fields)
         details.extend(['q2', 'q6'])
-        fields_to_show = filter(lambda field: field['code'] in details, entity_all_fields)
+        fields_to_show = filter(lambda field: field['code'] in details, entity_fields)
         if first_geocode_field:
             unique_ids = get_all_entities(
-                dbm, [entity_type], 1000, None if filters is None else _transform_filters(filters, entity_all_fields)
+                dbm, [entity_type], 1000, None if filters is None else _transform_filters(filters, entity_fields)
             )
-            location_list.extend(get_location_list_for_entities(
+            location_list.extend(get_detail_list_for_entities(
                 _get_field_labels(fields_to_show),
                 first_geocode_field,
                 unique_ids
@@ -45,33 +45,58 @@ def _get_field_labels(entity_fields):
     return dict_simplified
 
 
-def _get_first_geocode_field_for_entity_type(entity_all_fields):
+def get_first_geocode_field_for_entity_type(entity_all_fields):
     geocode_fields = [f for f in
                       entity_all_fields if
                       f["type"] == "geocode"]
     return geocode_fields[0] if len(geocode_fields) > 0 else None
 
 
-def get_location_list_for_entities(entity_field_labels, first_geocode_field, unique_ids):
+def get_detail_list_for_entities(entity_field_labels, first_geocode_field, unique_ids):
+    detail_list = []
+    for entity in unique_ids:
+        value_dict = entity.data.get(first_geocode_field["name"])
+        if value_dict and value_dict.has_key('value'):
+            value = value_dict["value"]
+            detail_list.append(to_json_detail(value, entity_field_labels, entity.data, entity.type_string))
+    return detail_list
+
+
+def get_location_list_for_entities(first_geocode_field, unique_ids):
     location_list = []
     for entity in unique_ids:
         value_dict = entity.data.get(first_geocode_field["name"])
         if value_dict and value_dict.has_key('value'):
             value = value_dict["value"]
-            location_list.append(to_json_point(value, entity_field_labels, entity.data, entity.type_string))
+            location_list.append(to_json_point(value))
     return location_list
 
 
-def to_json_point(value, entity_field_labels, data=None, entity_type=None):
-    point_json = {"type": "Feature", "geometry":
+def get_location_list_for_datasenders(datasenders):
+    location_list = []
+    for entity in datasenders:
+        geocode = entity.geometry
+        if geocode:
+            value = (geocode["coordinates"][0], geocode["coordinates"][1])
+            location_list.append(to_json_point(value))
+    return location_list
+
+
+def to_json_detail(value, entity_field_labels, data=None, entity_type=None):
+    detail_json = to_json_point(value)
+    detail_json['properties'] = simplify_field_data(data, entity_field_labels, entity_type)
+    return detail_json
+
+
+def to_json_point(value):
+    point_json = { "type": "Feature", "geometry":
         {
             "type": "Point",
             "coordinates": [
                 value[1],
                 value[0]
             ]
-        },
-        "properties": simplify_field_data(data, entity_field_labels, entity_type)
+        }
     }
     return point_json
 
