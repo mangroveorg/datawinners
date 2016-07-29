@@ -534,8 +534,18 @@ def _build_details(form_fields, details_in_entity_preference):
 
 def _build_specials(form_fields, specials_in_entity_preference):
     specials = [
-        {'code': field['code'], 'label': field['label'], 'visibility': field['code'] in specials_in_entity_preference,
-         'choices': field['choices']}
+        {
+            'code': field['code'], 'label': field['label'],
+            'visible': field["code"] in specials_in_entity_preference,
+            'color': specials_in_entity_preference[field["code"]]['color'] if field["code"] in specials_in_entity_preference else "#000000",
+            'choices': map(
+                lambda c: {
+                    'visible': field["code"] in specials_in_entity_preference and c['val'] == specials_in_entity_preference[field["code"]]['choice'],
+                    'choice': c
+                },
+                field["choices"]
+            )
+        }
         for field in form_fields if field.get('type') == 'select1'
     ]
     return specials
@@ -544,15 +554,20 @@ def _build_specials(form_fields, specials_in_entity_preference):
 @valid_web_user
 @waffle_flag('idnr_map', None)
 def save_preference(request, entity_type=None):
+    form_model = get_form_model_by_entity_type(get_database_manager(request.user), [entity_type.lower()])
     if request.method == 'POST':
         data = json.loads(request.POST['data'])
-        save_entity_preference(get_db_manager("public"),
+        entity_preference = save_entity_preference(get_db_manager("public"),
                                _get_organization_id(request),
                                entity_type,
                                data.get('filters'),
                                data.get('details'),
                                data.get('specials'))
-        return HttpResponse(json.dumps({'success': True}))
+        specials = _build_specials(form_model.form_fields, entity_preference.specials)
+        return HttpResponse(json.dumps({
+            'success': True,
+            'specials': specials
+        }))
 
 
 @valid_web_user

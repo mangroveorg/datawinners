@@ -6,8 +6,12 @@ DW.MappingEditor = function(entityType, filters, details, specials) {
     var shareOverlay = $("#share-overlay");
     var filterFields = {};
     var GET_SHARE_TOKEN_URL = '/entity/' + entityType + '/sharetoken';
-    var GET_ENTITY_PREFERENCE_URL = '/entity/' + entityType + '/get_preference';
     var SAVE_ENTITY_PREFERENCE_URL = '/entity/' + entityType + '/save_preference';
+
+    var specialsMap = specials.reduce(function(map, obj) {
+        map[obj.code] = obj;
+        return map;
+    }, {});
 
     var displayShareLink = function (token) {
         shareWidget.find('input').val(window.location.origin + "/public/maps/" + token +"/")
@@ -29,9 +33,10 @@ DW.MappingEditor = function(entityType, filters, details, specials) {
         shareOverlay.hide();
     };
 
-    var saveEntityPreference = function(entityPreference) {
+    var saveEntityPreference = function(entityPreference, saveCallback) {
         $.post(SAVE_ENTITY_PREFERENCE_URL, { data: JSON.stringify(entityPreference) }).done(function(result) {
             $("#map-preview").attr('src', $("#map-preview").attr('src'));
+            saveCallback(result);
         });
     };
 
@@ -41,72 +46,110 @@ DW.MappingEditor = function(entityType, filters, details, specials) {
             return (i < args.length) ? args[i++] : "";
         });
     };
-    
-    var onSpecialQuestionCheck = function(widget, questionCode, showChoices, choices) {
-        var questionLabel = $(widget).find('input[value=' + questionCode + ']').parent();
+
+    var createChoiceButtons = function(questionCode) {
         var choiceButtons = $("#special-idnrs>.choices").clone();
+
+        specialsMap[questionCode].choices.forEach(function(item) {
+            choiceButtons.append(
+                sprintf(
+                    choiceButtons.contents()[1].nodeValue,
+                    questionCode, item.choice.val, specialsMap[questionCode].color,
+                    item.visible?'checked':'', item.choice.text
+                )
+            );
+        });
+
+        return choiceButtons;
+    };
+
+    var createColorPicker = function() {
         var colorpicker = $("#special-idnrs>.colorpicker").clone();
+        colorpicker.tinycolorpicker({backgroundUrl: '/media/images/text-color.png'});
+        return colorpicker;
+    };
+
+    var onSpecialQuestionRender = function(widget, questionCode) {
+        var questionLabel = $(widget).find('input[value=' + questionCode + ']').parent();
+        var choiceButtons = createChoiceButtons(questionCode);
+        var colorpicker = createColorPicker();
+
+        questionLabel.after(choiceButtons);
+        choiceButtons.after(colorpicker);
+
+        choiceButtons.find("input").click(function() {
+            colorpicker.find('.track').show();
+        });
+
+        colorpicker.click(function() {
+            choiceButtons.find('input').css('background-color', $(this).find('input').val());
+        });
+    };
+
+    var onSpecialQuestionCheck = function(widget, questionCode, showChoices) {
+        var choiceButtons = $(widget).find('input[value=' + questionCode + ']').parent().next();
         if(showChoices) {
-            choices.forEach(function(item) {
-                choiceButtons.append(sprintf(choiceButtons.contents()[1].nodeValue, questionCode, item.val, item.text));
-            });
-            questionLabel.after(choiceButtons);
             choiceButtons.show();
-            choiceButtons.after(colorpicker);
-            colorpicker.tinycolorpicker({backgroundUrl: '/media/images/text-color.png'});
-            choiceButtons.find("input").click(function() {
-                colorpicker.find('.track').show();
-            });
-            colorpicker.click(function() {
-                choiceButtons.find('input').css('background-color', $(this).find('input').val());
-            });
         } else {
-            questionLabel.nextAll().remove();
+            choiceButtons.hide();
         }
     };
 
-    var initWidget = function(widgetSelector, data, saveCallback) {
-        var transformedData = data.map(function(item) {
-            return { value: item.code, label: item.label, checked: item.visibility };
-        });
-        var widget = new DW.MultiSelectWidget(widgetSelector, transformedData);
+    var initWidget = function(widgetSelector, data, closeCallback) {
+        var widget = new DW.MultiSelectWidget(widgetSelector, data);
         widget.on('close', function (event) {
-            saveCallback(event.detail.selectedValues);
+            closeCallback(this, widget, event.detail.selectedValues);
         });
         return widget;
+    };
+
+    var widgetDataTransformer = function(item) {
+        return { value: item.code, label: item.label, checked: item.visible };
     };
 
     self.init = function() {
         shareButton.click(onShare);
         shareWidgetCloseButton.click(onShareWidgetClose);
 
-        initWidget('#filters-widget', filters, function(result) {
+        initWidget('#filters-widget', filters.map(widgetDataTransformer), function(result) {
             saveEntityPreference({filters: result});
         });
 
-        initWidget('#customize-widget', details, function(result) {
+        initWidget('#customize-widget', details.map(widgetDataTransformer), function(result) {
             saveEntityPreference({details: result});
         });
 
-        var specialIdnrsWidget = initWidget('#special-idnrs-widget', specials, function(result) {
-            saveEntityPreference({specials: result});
-        });
-
-        var specialsMap = specials.reduce(function(map, obj) {
-            map[obj.code] = obj;
-            return map;
-        }, {});
+        var specialIdnrsWidget = initWidget('#special-idnrs-widget', specials.map(widgetDataTransformer),
+            function(widgetParentElement, widget, selectedValues) {
+                saveEntityPreference({
+                    specials: selectedValues.reduce(function(map, code) {
+                        var questionLabel = $(widgetParentElement).find('input[value=' + code + ']').parent();
+                        var choiceButtons = questionLabel.next();
+                        var colorpicker = choiceButtons.next();
+                        map[code] = {choice: choiceButtons.find('input:checked').val(), color: choiceButtons.find('input:checked').css('background-color')}
+                        return map;
+                    }, {})
+                }, function(result) {
+                    widget.setItems(JSON.parse(result).specials.map(widgetDataTransformer));
+                    specialsMap = JSON.parse(result).specials.reduce(function(map, obj) {
+                        map[obj.code] = obj;
+                        return map;
+                    }, {});
+                });
+            }
+        );
 
         specialIdnrsWidget.on('render', function(event) {
             var widget = this;
             event.detail.items.forEach(function(item) {
-                onSpecialQuestionCheck(widget, item.value, specialsMap[item.value].visibility, specialsMap[item.value].choices);
+                onSpecialQuestionRender(widget, item.value);
+                onSpecialQuestionCheck(widget, item.value, item.checked);
             })
         });
 
         specialIdnrsWidget.on('check', function(event) {
             if(event.detail.value in specialsMap) {
-                onSpecialQuestionCheck(this, event.detail.value, event.detail.show, specialsMap[event.detail.value].choices);
+                onSpecialQuestionCheck(this, event.detail.value, event.detail.show);
             }
         });
     }

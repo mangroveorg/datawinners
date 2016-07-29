@@ -22,6 +22,10 @@ DW.MultiSelectWidget = function (parentSelector, items) {
         _this.parentElement.removeEventListener(eventName);
     }
 
+    _this.setItems = function(items) {
+        setItems(items);
+    }
+
     function getWidgetData() {
         return _this.parentElement.widgetData || {};
     }
@@ -77,7 +81,9 @@ DW.MultiSelectWidget = function (parentSelector, items) {
     }
 
     this.parentElement.addEventListener('change', function(event) {
-        toggleSelected(event.target);
+        if(event.target.className == 'multiselect-checkbox') {
+            toggleSelected(event.target);
+        }
     });
 
     this.parentElement.addEventListener('click', function(event) {
@@ -86,9 +92,9 @@ DW.MultiSelectWidget = function (parentSelector, items) {
         if(dropdownDiv.children.length) {
 
             if(event.target === dropdownDiv.children[0]) {
+                _this.parentElement.dispatchEvent(new CustomEvent('close', { detail: { selectedValues : getSelectedValues() } }));
                 dropdownDiv.innerHTML = '';
                 dropdownDiv.className = 'content-area hide';
-                _this.parentElement.dispatchEvent(new CustomEvent('close', { detail: { selectedValues : getSelectedValues() } }));
             }
 
         } else {
@@ -125,7 +131,8 @@ DW.MultiSelectWidget = function (parentSelector, items) {
 
             checkbox.type = 'checkbox';
             checkbox.value = item.value;
-            checkbox.checked = isSelected(item.value);
+            checkbox.className = 'multiselect-checkbox'
+            checkbox.checked = item.checked;
             label.appendChild(checkbox);
             label.appendChild(text);
             li.appendChild(label);
