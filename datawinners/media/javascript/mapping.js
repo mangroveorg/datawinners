@@ -67,6 +67,20 @@ Map = function(geoJson) {
         $("#filters button.reset").click(function(){
             window.location.href = window.location.origin + window.location.pathname;
         });
+
+        var geolocation = new ol.Geolocation({
+            projection: 'EPSG:3857',
+            tracking: true
+        });
+
+        geolocation.once('change', function(evt) {
+            map.getView().setCenter(geolocation.getPosition());
+            var pan = ol.animation.pan({source:geolocation.getPosition(), duration:1000});
+            var zoom = ol.animation.zoom({resolution: map.getView().getResolution(), duration:3000});
+            map.beforeRender(pan);
+            map.beforeRender(zoom);
+            map.getView().setResolution(map.getView().getResolution() / 512);
+        });
     }
 
     var applyFilters = function() {
