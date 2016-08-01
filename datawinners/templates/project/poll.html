@@ -88,6 +88,7 @@
 
         if (value - current !== 0) {
             $(element).datepicker("setDate", value);
+            $(element).attr('readonly','readonly');
         }
     }
 };
