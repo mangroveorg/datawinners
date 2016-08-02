@@ -4918,6 +4918,9 @@ msgstr ""
 msgid "Activated Poll"
 msgstr ""
 
+msgid "Edited Poll"
+msgstr ""
+
 msgid "alert_message_for_project_manager"
 msgstr "If you revoke access to a Questionnaire or Poll, the person will also be removed as a Data Sender. You can add this person as a Data Sender to a Questionnaire or Poll on the Contacts page."
 

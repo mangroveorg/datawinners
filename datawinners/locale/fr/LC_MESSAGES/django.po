@@ -6197,6 +6197,9 @@ msgstr "Sondage désactivé"
 msgid "Activated Poll"
 msgstr "Sondage activé"
 
+msgid "Edited Poll"
+msgstr "Sondage édité"
+
 msgid "alert_message_for_project_manager"
 msgstr "Si vous retirez l’accès à un Questionnaire ou un Sondage, la personne sera également retirée de la liste des Expéditeurs de Données. Vous pouvez ajouter cette personne en tant qu’Expéditeur de Données à un Questionnaire ou un Sondage sur la page Contacts."
 
