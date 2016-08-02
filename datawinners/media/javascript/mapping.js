@@ -147,7 +147,7 @@ Map = function(geoJson) {
 
     var addItem = function(list, answer, question) {
         var template = list.contents()[1].nodeValue;
-        list.append(sprintf(template, answer, question));
+        list.append(sprintf(template, question, answer));
     };
 
     var sprintf = function(text) {

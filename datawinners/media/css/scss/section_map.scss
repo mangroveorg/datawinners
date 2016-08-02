@@ -1,3 +1,5 @@
+@charset "utf-8";
+
 .labelSpan{
   display: inline;
   text-transform: capitalize;
@@ -69,76 +71,37 @@ h3#header {
     white-space: pre-wrap;
     word-break: break-word;
     margin: 0 1em 0 0;
+    padding-bottom: 0.45em;
+    border-bottom: 1px solid #ccc;
+    width: 90%;
 }
 
 ul#pop-details {
     padding: 0;
     font-family: Helvetica, Arial, sans-serif;
+    height: 62%;
+    width: 100%;
+    overflow-x: auto;
     li {
         list-style-type: none;
         font-size: 0.9em;
         margin-bottom: 5px;
+        word-wrap: break-word;
+        white-space: pre-wrap;
+        word-break: break-word;
         .answer {
             display: inline-block;
             white-space: pre-wrap;
             word-break: break-word;
             width: 80%;
             font-size: 0.9em;
-        }
-        .question-icon {
-            background: rgba(0, 60, 136, 0.5);
-            border-radius: 50%;
-            text-align: center;
-            color: white;
-            font-size: 0.7em;
-            line-height: 14px;
-            height: 13px;
-            width: 13px;
-            cursor: default;
-            float: right;
-
-            &:before {
-                content: '?';
-            }
-
-            &:hover {
-                background: rgba(0,60,136,1);
-
-                + .question {
-                    display: block;
-                }
-            }
+            color: #888888;
         }
 
         .question {
-            display: none;
-            background-color: black;
-            color: #fff;
-            border-radius: 6px;
-            width: 80%;
-            height: auto;
-            white-space: pre-wrap;
-            margin-left: 21px;
-            position: absolute;
-            left: 87%;
-            margin-top: -17.5%;
-            z-index: 100;
-            padding: 5px;
-            text-align: left;
-            font-size: 0.8em;
-
-            &:after {
-                content: "";
-                position: absolute;
-                top: 50%;
-                right: 100%;
-                margin-top: -5px;
-                border-width: 5px;
-                border-style: solid;
-                border-color: transparent black transparent transparent;
-            }
+            margin: 0;
+            font-weight: bold;
         }
-
     }
 }
 
@@ -148,9 +111,15 @@ ul#pop-details {
 
 .ol-popup-closer{
     top: 8px;
+    &:after {
+        content: unquote("\"")+unquote(str-insert('2715',"\\", 1))+unquote("\"");
+        font-size: 0.6em;
+    }
+
 }
 
 .ol-popup-content {
     font-family: sans-serif;
     font-size: 12pt;
+    overflow: initial;
 }
