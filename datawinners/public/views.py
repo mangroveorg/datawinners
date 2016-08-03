@@ -23,7 +23,8 @@ def render_map(request, share_token):
         "color": "rgb(104, 174, 59)"
     }]
     for special in entity_preference.specials:
-        filters = dict(request.GET).update({special: entity_preference.specials[special]['choice']})
+        filters = dict(request.GET)
+        filters.update({special: entity_preference.specials[special]['choice']})
         geo_jsons.append({
             "data": geo_json(dbm, entity_preference.entity_type, filters, entity_preference.details),
             "color": entity_preference.specials[special]['color']
