@@ -37,7 +37,7 @@ DW.MappingEditor = function(entityType, filters, details, specials) {
         $.post(SAVE_ENTITY_PREFERENCE_URL, { data: JSON.stringify(entityPreference) }).done(function(result) {
             $("#map-preview").attr('src', $("#map-preview").attr('src'));
             widget.setItems(JSON.parse(result).specials.map(widgetDataTransformer));
-            saveCallback(result);
+            saveCallback && saveCallback(result);
         });
     };
 
