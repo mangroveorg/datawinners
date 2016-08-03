@@ -2,7 +2,7 @@ from django.http import Http404
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 
-from datawinners.entity.geo_data import geo_json
+from datawinners.entity.geo_data import geo_jsons
 from datawinners.feature_toggle.models import FeatureSubscription, Feature
 from datawinners.main.database import get_db_manager
 from mangrove.datastore.entity_share import get_entity_preference_by_share_token
@@ -18,24 +18,12 @@ def render_map(request, share_token):
 
     form_model = get_form_model_by_entity_type(dbm, [entity_preference.entity_type.lower()])
 
-    geo_jsons = [{
-        "data": geo_json(dbm, entity_preference.entity_type, request.GET, entity_preference.details),
-        "color": "rgb(104, 174, 59)"
-    }]
-    for special in entity_preference.specials:
-        filters = dict(request.GET)
-        filters.update({special: entity_preference.specials[special]['choice']})
-        geo_jsons.append({
-            "data": geo_json(dbm, entity_preference.entity_type, filters, entity_preference.details),
-            "color": entity_preference.specials[special]['color']
-        })
-
     return render_to_response(
         'map.html',
         {
             "entity_type": entity_preference.entity_type,
             "filters": _get_filters(form_model, entity_preference.filters),
-            "geo_jsons": geo_jsons
+            "geo_jsons": geo_jsons(dbm, entity_preference, request.GET)
         },
         context_instance=RequestContext(request)
     )

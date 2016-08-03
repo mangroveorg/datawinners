@@ -29,7 +29,7 @@ from datawinners.common.constant import ADDED_IDENTIFICATION_NUMBER_TYPE, REGIST
 from datawinners.custom_report_router.report_router import ReportRouter
 from datawinners.entity import import_data as import_module
 from datawinners.entity.forms import EntityTypeForm
-from datawinners.entity.geo_data import geo_json
+from datawinners.entity.geo_data import geo_jsons
 from datawinners.entity.group_helper import create_new_group
 from datawinners.entity.helper import create_registration_form, get_organization_telephone_number, set_email_for_contact
 from datawinners.entity.subjects import load_subject_type_with_projects, get_subjects_count
@@ -500,24 +500,11 @@ def map_data(request, entity_type=None):
     manager = get_database_manager(request.user)
     form_model = get_form_model_by_entity_type(manager, [entity_type.lower()])
     entity_preference = get_entity_preference(get_db_manager("public"), _get_organization_id(request), entity_type)
-
-    geo_jsons = [{
-        "data": geo_json(manager, entity_preference.entity_type, request.GET, entity_preference.details),
-        "color": "rgb(104, 174, 59)"
-    }]
-    for special in entity_preference.specials:
-        filters = dict(request.GET)
-        filters.update({special: entity_preference.specials[special]['choice']})
-        geo_jsons.append({
-            "data": geo_json(manager, entity_preference.entity_type, filters, entity_preference.details),
-            "color": entity_preference.specials[special]['color']
-        })
-
     return render_to_response('map.html',
                               {
                                   "entity_type": entity_type,
                                   "filters": [] if entity_preference is None else _get_filters(form_model, entity_preference.filters),
-                                  "geo_jsons": geo_jsons
+                                  "geo_jsons": geo_jsons(manager, entity_preference, request.GET)
                                },
                               context_instance=RequestContext(request))
 
@@ -550,7 +537,7 @@ def _build_specials(form_fields, specials_in_entity_preference):
         {
             'code': field['code'], 'label': field['label'],
             'visible': field["code"] in specials_in_entity_preference,
-            'color': specials_in_entity_preference[field["code"]]['color'] if field["code"] in specials_in_entity_preference else "#000000",
+            'color': specials_in_entity_preference[field["code"]]['color'] if field["code"] in specials_in_entity_preference else "rgb(0, 0, 0)",
             'choices': map(
                 lambda c: {
                     'visible': field["code"] in specials_in_entity_preference and c['val'] == specials_in_entity_preference[field["code"]]['choice'],

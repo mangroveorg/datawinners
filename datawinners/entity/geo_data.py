@@ -4,7 +4,50 @@ from mangrove.datastore.entity import get_all_entities
 from mangrove.errors.MangroveException import DataObjectNotFound
 
 
-def geo_json(dbm, entity_type, filters=None, details=[]):
+def geo_jsons(manager, entity_preference, filters):
+    details = [] if entity_preference.details is None else entity_preference.details
+    geo_jsons = [{
+        "data": _geo_json(manager, entity_preference.entity_type, filters, details),
+        "color": "rgb(104, 174, 59)"
+    }]
+    for special in entity_preference.specials:
+        filters = dict(filters)
+        filters.update({special: entity_preference.specials[special]['choice']})
+        geo_jsons.append({
+            "data": _geo_json(manager, entity_preference.entity_type, filters, details),
+            "color": entity_preference.specials[special]['color']
+        })
+    return json.dumps(geo_jsons)
+
+
+def get_first_geocode_field_for_entity_type(entity_all_fields):
+    geocode_fields = [f for f in
+                      entity_all_fields if
+                      f["type"] == "geocode"]
+    return geocode_fields[0] if len(geocode_fields) > 0 else None
+
+
+def get_location_list_for_entities(first_geocode_field, unique_ids):
+    location_list = []
+    for entity in unique_ids:
+        value_dict = entity.data.get(first_geocode_field["name"])
+        if value_dict and value_dict.has_key('value'):
+            value = value_dict["value"]
+            location_list.append(_to_json_point(value))
+    return location_list
+
+
+def get_location_list_for_datasenders(datasenders):
+    location_list = []
+    for entity in datasenders:
+        geocode = entity.geometry
+        if geocode:
+            value = (geocode["coordinates"][0], geocode["coordinates"][1])
+            location_list.append(_to_json_point(value))
+    return location_list
+
+
+def _geo_json(dbm, entity_type, filters, details):
     location_list = []
 
     try:
@@ -14,9 +57,9 @@ def geo_json(dbm, entity_type, filters=None, details=[]):
         fields_to_show = filter(lambda field: field['code'] in details, entity_fields)
         if first_geocode_field:
             unique_ids = get_all_entities(
-                dbm, [entity_type], 1000, None if filters is None else _transform_filters(filters, entity_fields)
+                dbm, [entity_type], 1000, _transform_filters(filters, entity_fields)
             )
-            location_list.extend(get_detail_list_for_entities(
+            location_list.extend(_get_detail_list_for_entities(
                 _get_field_labels(fields_to_show),
                 first_geocode_field,
                 unique_ids
@@ -25,7 +68,7 @@ def geo_json(dbm, entity_type, filters=None, details=[]):
     except DataObjectNotFound:
         pass
 
-    return json.dumps({"type": "FeatureCollection", "features": location_list})
+    return {"type": "FeatureCollection", "features": location_list}
 
 
 def _transform_filters(filters, entity_all_fields):
@@ -45,50 +88,23 @@ def _get_field_labels(entity_fields):
     return dict_simplified
 
 
-def get_first_geocode_field_for_entity_type(entity_all_fields):
-    geocode_fields = [f for f in
-                      entity_all_fields if
-                      f["type"] == "geocode"]
-    return geocode_fields[0] if len(geocode_fields) > 0 else None
-
-
-def get_detail_list_for_entities(entity_field_labels, first_geocode_field, unique_ids):
+def _get_detail_list_for_entities(entity_field_labels, first_geocode_field, unique_ids):
     detail_list = []
     for entity in unique_ids:
         value_dict = entity.data.get(first_geocode_field["name"])
         if value_dict and value_dict.has_key('value'):
             value = value_dict["value"]
-            detail_list.append(to_json_detail(value, entity_field_labels, entity.data, entity.type_string))
+            detail_list.append(_to_json_detail(value, entity_field_labels, entity.data, entity.type_string))
     return detail_list
 
 
-def get_location_list_for_entities(first_geocode_field, unique_ids):
-    location_list = []
-    for entity in unique_ids:
-        value_dict = entity.data.get(first_geocode_field["name"])
-        if value_dict and value_dict.has_key('value'):
-            value = value_dict["value"]
-            location_list.append(to_json_point(value))
-    return location_list
-
-
-def get_location_list_for_datasenders(datasenders):
-    location_list = []
-    for entity in datasenders:
-        geocode = entity.geometry
-        if geocode:
-            value = (geocode["coordinates"][0], geocode["coordinates"][1])
-            location_list.append(to_json_point(value))
-    return location_list
-
-
-def to_json_detail(value, entity_field_labels, data=None, entity_type=None):
-    detail_json = to_json_point(value)
-    detail_json['properties'] = simplify_field_data(data, entity_field_labels, entity_type)
+def _to_json_detail(value, entity_field_labels, data=None, entity_type=None):
+    detail_json = _to_json_point(value)
+    detail_json['properties'] = _simplify_field_data(data, entity_field_labels, entity_type)
     return detail_json
 
 
-def to_json_point(value):
+def _to_json_point(value):
     point_json = { "type": "Feature", "geometry":
         {
             "type": "Point",
@@ -101,7 +117,7 @@ def to_json_point(value):
     return point_json
 
 
-def simplify_field_data(data, entity_field_labels, entity_type=None):
+def _simplify_field_data(data, entity_field_labels, entity_type=None):
     simple_data = {}
 
     if entity_type is not None:
