@@ -500,11 +500,24 @@ def map_data(request, entity_type=None):
     manager = get_database_manager(request.user)
     form_model = get_form_model_by_entity_type(manager, [entity_type.lower()])
     entity_preference = get_entity_preference(get_db_manager("public"), _get_organization_id(request), entity_type)
+
+    geo_jsons = [{
+        "data": geo_json(manager, entity_preference.entity_type, request.GET, entity_preference.details),
+        "color": "rgb(104, 174, 59)"
+    }]
+    for special in entity_preference.specials:
+        filters = dict(request.GET)
+        filters.update({special: entity_preference.specials[special]['choice']})
+        geo_jsons.append({
+            "data": geo_json(manager, entity_preference.entity_type, filters, entity_preference.details),
+            "color": entity_preference.specials[special]['color']
+        })
+
     return render_to_response('map.html',
                               {
                                   "entity_type": entity_type,
                                   "filters": [] if entity_preference is None else _get_filters(form_model, entity_preference.filters),
-                                  "geo_json": geo_json(manager, entity_type, request.GET, [] if entity_preference is None else entity_preference.details)
+                                  "geo_jsons": geo_jsons
                                },
                               context_instance=RequestContext(request))
 
@@ -518,7 +531,7 @@ def _get_organization_id(request):
 
 def _build_filterable_fields(form_fields, filters_in_entity_preference):
     filters = [
-        {'code': field['code'], 'label': field['label'], 'visibility': field['code'] in filters_in_entity_preference}
+        {'code': field['code'], 'label': field['label'], 'visible': field['code'] in filters_in_entity_preference}
         for field in form_fields if field.get('type') in ['select', 'select1']
     ]
     return filters
@@ -526,7 +539,7 @@ def _build_filterable_fields(form_fields, filters_in_entity_preference):
 
 def _build_details(form_fields, details_in_entity_preference):
     details = [
-        {'code': field['code'], 'label': field['label'], 'visibility': field['code'] in details_in_entity_preference}
+        {'code': field['code'], 'label': field['label'], 'visible': field['code'] in details_in_entity_preference}
         for field in form_fields if field['code'] not in ['q2', 'q6']
     ]
     return details

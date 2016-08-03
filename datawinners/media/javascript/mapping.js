@@ -1,4 +1,4 @@
-Map = function(geoJson) {
+Map = function(geoJsons) {
     var self = this;
 
     var map = new ol.Map({
@@ -29,7 +29,10 @@ Map = function(geoJson) {
                 })
             ]
         }));
-        map.addLayer(createVector(entityType));
+
+        geoJsons.forEach(function(geoJson) {
+            map.addLayer(createVector(entityType, geoJson.data, geoJson.color));
+        });
 
         map.addControl(new ol.control.LayerSwitcher());
         map.addControl(new ol.control.ScaleLine());
@@ -66,20 +69,6 @@ Map = function(geoJson) {
         $("#filters button.apply").click(applyFilters);
         $("#filters button.reset").click(function(){
             window.location.href = window.location.origin + window.location.pathname;
-        });
-
-        var geolocation = new ol.Geolocation({
-            projection: 'EPSG:3857',
-            tracking: true
-        });
-
-        geolocation.once('change', function(evt) {
-            map.getView().setCenter(geolocation.getPosition());
-            var pan = ol.animation.pan({source:geolocation.getPosition(), duration:1000});
-            var zoom = ol.animation.zoom({resolution: map.getView().getResolution(), duration:3000});
-            map.beforeRender(pan);
-            map.beforeRender(zoom);
-            map.getView().setResolution(map.getView().getResolution() / 512);
         });
     }
 
@@ -166,27 +155,23 @@ Map = function(geoJson) {
         popup.show(feature.getGeometry().getCoordinates(), header + content);
     };
 
-    var createVector = function(name, iconStyle) {
+    var createVector = function(name, geoJson, color) {
         var source = new ol.source.Vector({
             features: (new ol.format.GeoJSON()).readFeatures(geoJson, {featureProjection: 'EPSG:3857'})
         });
 
-        var defaultIconSource = '/media/images/pin_entity_1.png';
-        var defaultIconStyle = new ol.style.Style({
+        var iconStyle = new ol.style.Style({
             image: new ol.style.Icon({
-                anchor: [0.55, 0.8],
-                anchorXUnits: 'fraction',
-                anchorYUnits: 'fraction',
-                src: defaultIconSource
+                src: '/media/images/map_marker.svg',
+                color: color
             })
         });
 
-        var iconSource = iconStyle ? iconStyle.getImage().getSrc() : defaultIconSource;
         return new ol.layer.Vector({
             name: name,
-            title: '<img src="' + iconSource  + '">' + name,
+            title: '<img src="' + iconStyle.getImage().getSrc()  + '">' + name,
             source: source,
-            style: iconStyle || defaultIconStyle
+            style: iconStyle
         });
     }
 

@@ -33,9 +33,10 @@ DW.MappingEditor = function(entityType, filters, details, specials) {
         shareOverlay.hide();
     };
 
-    var saveEntityPreference = function(entityPreference, saveCallback) {
+    var saveEntityPreference = function(entityPreference, widget, saveCallback) {
         $.post(SAVE_ENTITY_PREFERENCE_URL, { data: JSON.stringify(entityPreference) }).done(function(result) {
             $("#map-preview").attr('src', $("#map-preview").attr('src'));
+            widget.setItems(JSON.parse(result).specials.map(widgetDataTransformer));
             saveCallback(result);
         });
     };
@@ -98,7 +99,7 @@ DW.MappingEditor = function(entityType, filters, details, specials) {
     var initWidget = function(widgetSelector, data, closeCallback) {
         var widget = new DW.MultiSelectWidget(widgetSelector, data);
         widget.on('close', function (event) {
-            closeCallback(this, widget, event.detail.selectedValues);
+            closeCallback(event.detail.selectedValues, widget, this);
         });
         return widget;
     };
@@ -111,16 +112,16 @@ DW.MappingEditor = function(entityType, filters, details, specials) {
         shareButton.click(onShare);
         shareWidgetCloseButton.click(onShareWidgetClose);
 
-        initWidget('#filters-widget', filters.map(widgetDataTransformer), function(result) {
-            saveEntityPreference({filters: result});
+        initWidget('#filters-widget', filters.map(widgetDataTransformer), function(result, widget) {
+            saveEntityPreference({filters: result}, widget);
         });
 
-        initWidget('#customize-widget', details.map(widgetDataTransformer), function(result) {
-            saveEntityPreference({details: result});
+        initWidget('#customize-widget', details.map(widgetDataTransformer), function(result, widget) {
+            saveEntityPreference({details: result}, widget);
         });
 
         var specialIdnrsWidget = initWidget('#special-idnrs-widget', specials.map(widgetDataTransformer),
-            function(widgetParentElement, widget, selectedValues) {
+            function(selectedValues, widget, widgetParentElement) {
                 saveEntityPreference({
                     specials: selectedValues.reduce(function(map, code) {
                         var questionLabel = $(widgetParentElement).find('input[value=' + code + ']').parent();
@@ -129,8 +130,9 @@ DW.MappingEditor = function(entityType, filters, details, specials) {
                         map[code] = {choice: choiceButtons.find('input:checked').val(), color: choiceButtons.find('input:checked').css('background-color')}
                         return map;
                     }, {})
-                }, function(result) {
-                    widget.setItems(JSON.parse(result).specials.map(widgetDataTransformer));
+                },
+                widget,
+                function(result) {
                     specialsMap = JSON.parse(result).specials.reduce(function(map, obj) {
                         map[obj.code] = obj;
                         return map;
