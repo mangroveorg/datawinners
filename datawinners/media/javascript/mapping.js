@@ -31,12 +31,11 @@ Map = function(geoJsons) {
         }));
 
         geoJsons.forEach(function(geoJson) {
-            map.addLayer(createVector(entityType, geoJson.data, geoJson.color));
+            map.addLayer(createVector(geoJson.name, geoJson.data, geoJson.color));
         });
 
         map.addControl(new ol.control.LayerSwitcher());
         map.addControl(new ol.control.ScaleLine());
-        map.addControl(new ol.control.FullScreen());
         map.addControl(new ol.control.Zoom());
         map.addControl(new Geocoder('nominatim', {
             provider: 'osm',
@@ -181,9 +180,15 @@ Map = function(geoJsons) {
             })
         });
 
+        $.ajax({url: '/media/images/map_marker.svg', success: function(response) {
+            var layersTitle = $(".layer-switcher").find(".layer>label:contains(" + name + ")");
+            layersTitle.prepend(response.documentElement);
+            layersTitle.find("path").attr("fill", color);
+        }});
+
         return new ol.layer.Vector({
             name: name,
-            title: '<img src="' + iconStyle.getImage().getSrc()  + '">' + name,
+            title: name,
             source: source,
             style: iconStyle
         });

@@ -5,16 +5,21 @@ from mangrove.errors.MangroveException import DataObjectNotFound
 
 
 def geo_jsons(manager, entity_preference, filters):
+    entity_type = entity_preference.entity_type
+    entity_fields = manager.view.registration_form_model_by_entity_type(key=[entity_type], include_docs=True)[0]["doc"]["json_fields"]
     details = [] if entity_preference.details is None else entity_preference.details
+
     geo_jsons = [{
-        "data": _geo_json(manager, entity_preference.entity_type, filters, details),
+        "name": entity_type,
+        "data": _geo_json(manager, entity_type, entity_fields, filters, details),
         "color": "rgb(104, 174, 59)"
     }]
     for special in entity_preference.specials:
-        filters = dict(filters)
-        filters.update({special: entity_preference.specials[special]['choice']})
+        filters_with_special = dict(filters)
+        filters_with_special.update({special: entity_preference.specials[special]['choice']})
         geo_jsons.append({
-            "data": _geo_json(manager, entity_preference.entity_type, filters, details),
+            "name": [field['name'] for field in entity_fields if field['code'] == special][0],
+            "data": _geo_json(manager, entity_type, entity_fields, filters_with_special, details),
             "color": entity_preference.specials[special]['color']
         })
     return json.dumps(geo_jsons)
@@ -47,18 +52,18 @@ def get_location_list_for_datasenders(datasenders):
     return location_list
 
 
-def _geo_json(dbm, entity_type, filters, details):
+def _geo_json(dbm, entity_type, entity_fields, filters, details):
     location_list = []
 
     try:
-        entity_fields = dbm.view.registration_form_model_by_entity_type(key=[entity_type], include_docs=True)[0]["doc"]["json_fields"]
+        transformed_filters = _transform_filters(filters, entity_fields)
         first_geocode_field = get_first_geocode_field_for_entity_type(entity_fields)
-        details.extend(['q2', 'q6'])
-        fields_to_show = filter(lambda field: field['code'] in details, entity_fields)
         if first_geocode_field:
             unique_ids = get_all_entities(
-                dbm, [entity_type], 1000, _transform_filters(filters, entity_fields)
+                dbm, [entity_type], 1000, transformed_filters
             )
+            details.extend(['q2', 'q6'])
+            fields_to_show = filter(lambda field: field['code'] in details, entity_fields)
             location_list.extend(_get_detail_list_for_entities(
                 _get_field_labels(fields_to_show),
                 first_geocode_field,
