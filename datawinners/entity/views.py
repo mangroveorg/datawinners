@@ -563,10 +563,14 @@ def save_preference(request, entity_type=None):
                                data.get('filters'),
                                data.get('details'),
                                data.get('specials'))
+        filters = _build_filterable_fields(form_model.form_fields, entity_preference.filters)
         specials = _build_specials(form_model.form_fields, entity_preference.specials)
+        details = _build_details(form_model.form_fields, entity_preference.details)
         return HttpResponse(json.dumps({
             'success': True,
-            'specials': specials
+            'filters': filters,
+            'specials': specials,
+            'details': details
         }))
 
 
