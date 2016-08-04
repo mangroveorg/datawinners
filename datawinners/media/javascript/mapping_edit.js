@@ -33,11 +33,10 @@ DW.MappingEditor = function(entityType, filters, details, specials) {
         shareOverlay.hide();
     };
 
-    var saveEntityPreference = function(entityPreference, widget, saveCallback) {
+    var saveEntityPreference = function(entityPreference, saveCallback) {
         $.post(SAVE_ENTITY_PREFERENCE_URL, { data: JSON.stringify(entityPreference) }).done(function(result) {
             $("#map-preview").attr('src', $("#map-preview").attr('src'));
-            widget.setItems(JSON.parse(result).specials.map(widgetDataTransformer));
-            saveCallback && saveCallback(result);
+            saveCallback(result);
         });
     };
 
@@ -112,12 +111,16 @@ DW.MappingEditor = function(entityType, filters, details, specials) {
         shareButton.click(onShare);
         shareWidgetCloseButton.click(onShareWidgetClose);
 
-        initWidget('#filters-widget', filters.map(widgetDataTransformer), function(result, widget) {
-            saveEntityPreference({filters: result}, widget);
+        initWidget('#filters-widget', filters.map(widgetDataTransformer), function(selectedValues, widget) {
+            saveEntityPreference({filters: selectedValues}, function(result){
+                widget.setItems(JSON.parse(result).filters.map(widgetDataTransformer));
+            });
         });
 
-        initWidget('#customize-widget', details.map(widgetDataTransformer), function(result, widget) {
-            saveEntityPreference({details: result}, widget);
+        initWidget('#customize-widget', details.map(widgetDataTransformer), function(selectedValues, widget) {
+            saveEntityPreference({details: selectedValues}, function(result) {
+                widget.setItems(JSON.parse(result).details.map(widgetDataTransformer));
+            });
         });
 
         var specialIdnrsWidget = initWidget('#special-idnrs-widget', specials.map(widgetDataTransformer),
@@ -131,12 +134,12 @@ DW.MappingEditor = function(entityType, filters, details, specials) {
                         return map;
                     }, {})
                 },
-                widget,
                 function(result) {
                     specialsMap = JSON.parse(result).specials.reduce(function(map, obj) {
                         map[obj.code] = obj;
                         return map;
                     }, {});
+                    widget.setItems(JSON.parse(result).specials.map(widgetDataTransformer));
                 });
             }
         );
