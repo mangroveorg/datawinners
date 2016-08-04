@@ -31,33 +31,37 @@
 
 {% block page_content %}
     <div class="float_right" style="position: relative;">
-
         <div id= "share-widget" class="hide share-widget">
             <input type="text" readonly />
         </div>
         <div id="share-widget-close" class="hide share-widget-close"></div>
-        <div id="share-button" class="button">Share</div>
+        <a id="share-button">Share Map</a>
     </div>
-    <div id="filterable-questions" class="float_right filterable-questions">
-        <div id="filters-widget">
-            <span>{% trans "Choose Filters" %}</span>
+    <div class="float_right customize_section">
+        <div>Customize Map:</div>
+        <div id="customize" class="customize">
+            <div id="customize-widget">
+                <span>{{ entity_type }} {% trans "Details" %}</span>
+            </div>
         </div>
-    </div>
-    <div id="customize" class="customize float_right">
-        <div id="customize-widget">
-            <span>{% trans "Choose Questions" %}</span>
+        <div>|</div>
+        <div id="filterable-questions" class="filterable-questions">
+            <div id="filters-widget">
+                <span>{% trans "Filters" %}</span>
+            </div>
         </div>
-    </div>
-    <div id="special-idnrs" class="special-idnrs float_right">
-        <div id="special-idnrs-widget">
-            <span>{% trans "Configure Special" %} {{ entity_type }}</span>
-        </div>
-        <ul class="choices hide">
-            <!--<li><label><input type="radio" name="%s" value="%s" style="background-color:%s" %s><p>%s</p></label></li>-->
-        </ul>
-        <div class="colorpicker">
-            <div class="track hide"></div>
-            <input type="hidden" class="colorInput">
+        <div>|</div>
+        <div id="special-idnrs" class="special-idnrs">
+            <div id="special-idnrs-widget">
+                <span>{% trans "Special" %} {{ entity_type }}</span>
+            </div>
+            <ul class="choices hide">
+                <!--<li><label><input type="radio" name="%s" value="%s" style="background-color:%s" %s><p>%s</p></label></li>-->
+            </ul>
+            <div class="colorpicker">
+                <div class="track hide"></div>
+                <input type="hidden" class="colorInput">
+            </div>
         </div>
     </div>
     <div id="share-overlay" class="share-overlay"></div>

@@ -34,8 +34,12 @@
   }
 }
 
+.customize_section>div{
+    float: left;
+}
+
 .filterable-questions, .customize, .special-idnrs {
-    padding: 8px;
+    padding: 0 8px;
     .content-area {
         width: 167px;
     }

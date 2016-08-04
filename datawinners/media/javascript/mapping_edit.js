@@ -97,7 +97,11 @@ DW.MappingEditor = function(entityType, filters, details, specials) {
 
     var initWidget = function(widgetSelector, data, closeCallback) {
         var widget = new DW.MultiSelectWidget(widgetSelector, data);
+        widget.on('select', function () {
+            shareOverlay.height(getOverlayHeight()).show();
+        });
         widget.on('close', function (event) {
+            shareOverlay.hide();
             closeCallback(event.detail.selectedValues, widget, this);
         });
         return widget;

@@ -98,6 +98,7 @@ DW.MultiSelectWidget = function (parentSelector, items) {
             }
 
         } else {
+            _this.parentElement.dispatchEvent(new CustomEvent('select'));
             render();
         }
     });
