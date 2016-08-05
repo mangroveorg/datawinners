@@ -41,7 +41,7 @@
         <div>Customize Map:</div>
         <div id="customize" class="customize">
             <div id="customize-widget">
-                <span>{{ entity_type }} {% trans "Details" %}</span>
+                <span>{{ entity_type|title }} {% trans "Details" %}</span>
             </div>
         </div>
         <div>|</div>
@@ -53,7 +53,7 @@
         <div>|</div>
         <div id="special-idnrs" class="special-idnrs">
             <div id="special-idnrs-widget">
-                <span>{% trans "Special" %} {{ entity_type }}</span>
+                <span>{% trans "Special" %} {{ entity_type|title }}</span>
             </div>
             <ul class="choices hide">
                 <!--<li><label><input type="radio" name="%s" value="%s" style="background-color:%s" %s><p>%s</p></label></li>-->
