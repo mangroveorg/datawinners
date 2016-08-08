@@ -43,9 +43,6 @@ Map = function(geoJsons) {
             placeholder: 'Search for ...',
             limit: 5
         }));
-        map.addControl(new ol.control.Control({
-            element: $("#filter-control")[0]
-        }));
 
         map.on("pointermove", setCursor);
 
@@ -60,7 +57,7 @@ Map = function(geoJsons) {
 
         loadFilters();
 
-        $("#filter-control>button").click(function() {
+        $("#filter-control>.title").click(function() {
             $("#filters").toggle();
             $("#filters .filters-content").accordion();
         });

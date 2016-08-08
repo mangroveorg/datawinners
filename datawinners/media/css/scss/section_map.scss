@@ -1,5 +1,8 @@
 @charset "utf-8";
 
+body{
+  position: relative;
+}
 .labelSpan{
   display: inline;
   text-transform: capitalize;
@@ -24,22 +27,36 @@ div.dataLayersDiv input{
   left: initial;
 }
 .filter-control{
-  top:3.5em;
-  left: 0.5em;
-  position: absolute;
   .title{
-    background-image: url('/media/images/filled-filter.png');
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: 80%;
+    height: 0.2em;
+    width: 1em;
+    background-color: #000;
+    position: absolute;
+    top: 0.3em;
+    right: 0.5em;
+    &:before{
+      height: 0.2em;
+      width: 1em;
+      background-color: #000;
+      content: '';
+      display: block;
+      position: relative;
+      top: 0.3em;
+    }
+    &:after{
+      height: 0.2em;
+      width: 1em;
+      background-color: #000;
+      content: '';
+      display: block;
+      position: absolute;
+      top: 0.6em;
+    }
   }
   .filters{
     display: none;
-    position:absolute;
-    top: 2em;
     background-color: rgba(255, 255, 255, 0.4);
     .filters-content{
-      width: 12em;
       font-size: 80%;
     }
     .filters-control{
@@ -53,15 +70,15 @@ div.dataLayersDiv input{
       }
     }
     h3{
-      padding: 0.3em 1.8em;
+      padding: 0 1.8em;
       border: none;
       margin: 0;
     }
     .filter-choices{
       border: none;
-      padding: 0 2.2em;
+      padding: 0.4em 2.2em;
       label{
-        display: block;
+        margin: 0 0.5em;
       }
     }
   }
@@ -115,7 +132,6 @@ ul#pop-details {
         content: unquote("\"")+unquote(str-insert('2715',"\\", 1))+unquote("\"");
         font-size: 0.6em;
     }
-
 }
 
 .ol-popup-content {
