@@ -505,6 +505,7 @@ def map_data(request, entity_type=None):
     return render_to_response('map.html',
                               {
                                   "entity_type": entity_type,
+                                  "fallback_location": entity_preference.fallback_location,
                                   "filters": [] if entity_preference is None else _get_filters(form_model, entity_preference.filters),
                                   "geo_jsons": geo_jsons(manager, entity_type, request.GET, details, specials)
                                },
@@ -564,7 +565,8 @@ def save_preference(request, entity_type=None):
                                entity_type,
                                data.get('filters'),
                                data.get('details'),
-                               data.get('specials'))
+                               data.get('specials'),
+                               data.get('fallback_location'))
         filters = _build_filterable_fields(form_model.form_fields, entity_preference.filters)
         specials = _build_specials(form_model.form_fields, entity_preference.specials)
         details = _build_details(form_model.form_fields, entity_preference.details)

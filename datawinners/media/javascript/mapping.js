@@ -1,15 +1,23 @@
-Map = function(geoJsons) {
+Map = function(geoJsons, fallbackLocation) {
     var self = this;
-
-    var map = new ol.Map({
-        target: 'map',
-        renderer: 'canvas',
-        view: new ol.View({
+    var view = new ol.View({
             maxZoom: 19,
             minZoom: 2,
             zoom: 2,
             center: [0, 0]
-        })
+        });
+    view.on('change:center', function(event) {
+        $('#map-center').val(event.target.get(event.key));
+    });
+
+    view.on('change:resolution', function(event) {
+        $('#map-zoom').val(event.target.get(event.key));
+    });
+
+    var map = new ol.Map({
+        target: 'map',
+        renderer: 'canvas',
+        view: view
     });
 
     var popup = new ol.Overlay.Popup({
@@ -80,6 +88,13 @@ Map = function(geoJsons) {
             map.beforeRender(zoom);
             map.getView().setResolution(map.getView().getResolution() / 512);
         });
+
+        geolocation.on('error', function(error) {
+          console.log(fallbackLocation.center);
+          console.log(fallbackLocation.resolution);
+          view.setCenter(fallbackLocation.center);
+          map.getView().setResolution(fallbackLocation.resolution);
+        });
     }
 
     var applyFilters = function() {
@@ -104,6 +119,7 @@ Map = function(geoJsons) {
             });
         });
     }
+
 
     var getPopupTitle = function(properties) {
         return Object.keys(properties)

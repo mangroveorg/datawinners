@@ -35,7 +35,6 @@ DW.MappingEditor = function(entityType, filters, details, specials) {
 
     var saveEntityPreference = function(entityPreference, saveCallback) {
         $.post(SAVE_ENTITY_PREFERENCE_URL, { data: JSON.stringify(entityPreference) }).done(function(result) {
-            $("#map-preview").attr('src', $("#map-preview").attr('src'));
             saveCallback(result);
         });
     };
@@ -117,12 +116,14 @@ DW.MappingEditor = function(entityType, filters, details, specials) {
 
         initWidget('#filters-widget', filters.map(widgetDataTransformer), function(selectedValues, widget) {
             saveEntityPreference({filters: selectedValues}, function(result){
+                $("#map-preview").attr('src', $("#map-preview").attr('src'));
                 widget.setItems(JSON.parse(result).filters.map(widgetDataTransformer));
             });
         });
 
         initWidget('#customize-widget', details.map(widgetDataTransformer), function(selectedValues, widget) {
             saveEntityPreference({details: selectedValues}, function(result) {
+                $("#map-preview").attr('src', $("#map-preview").attr('src'));
                 widget.setItems(JSON.parse(result).details.map(widgetDataTransformer));
             });
         });
@@ -143,10 +144,29 @@ DW.MappingEditor = function(entityType, filters, details, specials) {
                         map[obj.code] = obj;
                         return map;
                     }, {});
+                    $("#map-preview").attr('src', $("#map-preview").attr('src'));
                     widget.setItems(JSON.parse(result).specials.map(widgetDataTransformer));
                 });
             }
         );
+
+        $('#freeze-map').click(function() {
+            var center = $('#map-preview').contents().find('#map-center').val().split(",");
+            var resolution = $('#map-preview').contents().find('#map-zoom').val();
+            playFreezeAnimation();
+            saveEntityPreference({ fallback_location: { center: center, resolution: resolution } }, function(result){
+                console.log(JSON.parse(result));
+            });
+        });
+
+        function playFreezeAnimation() {
+            $('#map-preview').addClass("do-freeze");
+            $('#map-preview').trigger("animationStarted", {duration: 500});
+        }
+
+        $('#map-preview').on("animationStarted", function(event, data) {
+            setTimeout(function() {$('#map-preview').removeClass("do-freeze");}, data.duration);
+        });
 
         specialIdnrsWidget.on('render', function(event) {
             var widget = this;
@@ -155,6 +175,7 @@ DW.MappingEditor = function(entityType, filters, details, specials) {
                 onSpecialQuestionCheck(widget, item.value, item.checked);
             })
         });
+
 
         specialIdnrsWidget.on('check', function(event) {
             if(event.detail.value in specialsMap) {

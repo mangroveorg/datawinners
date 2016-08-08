@@ -14,7 +14,7 @@
 <script type="text/javascript" src="/media/javascript/mapping.js"></script>
 <script type="text/javascript">
     $(document).ready(function() {
-        new Map({{ geo_jsons|safe }}).init('{{ entity_type }}');
+        new Map({{ geo_jsons|safe }}, {{fallback_location|safe}}).init('{{ entity_type }}');
     });
 </script>
 
@@ -37,6 +37,8 @@
 </div>
 
 <div id="map" class="grid_23"></div>
+<input type="text" value="" id="map-center" style="display:none" />
+<input type="text" value="" id="map-zoom" style="display:none" />
 
 <div id="popup" style="display:none;">
     <!--<h3 id="header">%s</h3>-->

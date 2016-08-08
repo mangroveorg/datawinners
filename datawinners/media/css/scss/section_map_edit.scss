@@ -64,3 +64,33 @@
         margin: 0 auto;
     }
 }
+
+.freeze-map {
+    cursor: pointer;
+
+    .icon {
+        background-image: url('/media/images/freeze.png');
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: 70%;
+        width: 24px;
+        height: 24px;
+        margin: auto;
+        background-color: rgba(0,60,136, 0.5);
+        border: none;
+        border-radius: 3px;
+
+        &:hover {
+            background-color: rgba(0,60,136, 1);
+        }
+
+        &:focus {
+            outline: 0;
+        }
+
+    }
+}
+
+.do-freeze {
+    border: 2px solid rgba(0,60,136, 1);
+}

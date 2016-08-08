@@ -64,6 +64,14 @@
             </div>
         </div>
     </div>
+
+    <div id="freeze-map" class="float-right freeze-map">
+        <button class="icon"></button>
+    </div>
+
+    <input type="text" value="" id="map-center" class="hide" />
+    <input type="text" value="" id="map-zoom" class="hide" />
+
     <div id="share-overlay" class="share-overlay"></div>
     <iframe id="map-preview" height="428px" width="100%" src="/entity/{{ entity_type }}/map"></iframe>
 {% endblock %}
