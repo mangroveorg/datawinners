@@ -4,24 +4,24 @@ from mangrove.datastore.entity import get_all_entities
 from mangrove.errors.MangroveException import DataObjectNotFound
 
 
-def geo_jsons(manager, entity_preference, filters):
-    entity_type = entity_preference.entity_type
+def geo_jsons(manager, entity_type, filters, details, specials):
     entity_fields = manager.view.registration_form_model_by_entity_type(key=[entity_type], include_docs=True)[0]["doc"]["json_fields"]
-    details = [] if entity_preference.details is None else entity_preference.details
 
     geo_jsons = [{
         "name": entity_type,
         "data": _geo_json(manager, entity_type, entity_fields, filters, details),
         "color": "rgb(104, 174, 59)"
     }]
-    for special in entity_preference.specials:
+
+    for special in specials:
         filters_with_special = dict(filters)
-        filters_with_special.update({special: entity_preference.specials[special]['choice']})
+        filters_with_special.update({special: specials[special]['choice']})
         geo_jsons.append({
             "name": [field['name'] for field in entity_fields if field['code'] == special][0],
             "data": _geo_json(manager, entity_type, entity_fields, filters_with_special, details),
-            "color": entity_preference.specials[special]['color']
+            "color": specials[special]['color']
         })
+
     return json.dumps(geo_jsons)
 
 

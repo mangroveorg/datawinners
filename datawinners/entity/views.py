@@ -500,11 +500,13 @@ def map_data(request, entity_type=None):
     manager = get_database_manager(request.user)
     form_model = get_form_model_by_entity_type(manager, [entity_type.lower()])
     entity_preference = get_entity_preference(get_db_manager("public"), _get_organization_id(request), entity_type)
+    details = entity_preference.details if entity_preference is not None else []
+    specials = entity_preference.specials if entity_preference is not None else []
     return render_to_response('map.html',
                               {
                                   "entity_type": entity_type,
                                   "filters": [] if entity_preference is None else _get_filters(form_model, entity_preference.filters),
-                                  "geo_jsons": geo_jsons(manager, entity_preference, request.GET)
+                                  "geo_jsons": geo_jsons(manager, entity_type, request.GET, details, specials)
                                },
                               context_instance=RequestContext(request))
 
