@@ -14,21 +14,54 @@
   position: absolute;
   right: 0;
   z-index: 101;
-  input {
-    padding: 8px;
-    font-size: 1em;
-    width: 550px;
+  padding: 19px 10px 27px 10px;
+  background: white;
+  border-radius: 5px;
+  width: 550px;
+  span {
+    color: grey;
   }
+  input {
+    padding: 4px;
+    font-size: 1em;
+    width: 520px;
+    border-radius: 5px;
+    border: 1px solid rgba(0,0,0,.2);
+    height: auto;
+    margin-bottom: 10px;
+  }
+
+  .done-btn {
+        position: absolute;
+        bottom: 0.5em;
+        right: 0.5em;
+   }
+
+  .blue-btn {
+        width: 62px;
+        height: 25px;
+        border: 1px solid #5087b4;
+        border-radius: 3px;
+        background: #cce3ee;
+        color: grey;
+        cursor: pointer;
+        font-weight: normal;
+        padding: 4px 15px 4px 15px;
+
+        &:hover {
+            color: black;
+        }
+    }
 }
 .share-widget-close{
   position: absolute;
   right: 0;
-  background: url("/media/images/icons.png") no-repeat scroll -5px -170px;
   float: right;
   cursor: pointer;
   width: 16px;
   height: 16px;
   z-index: 101;
+  color: grey;
   &:hover {
     opacity: 0.8;
   }
@@ -67,7 +100,8 @@
 
 .freeze-map {
     cursor: pointer;
-
+    float: left;
+    position: relative;
     .icon {
         background-image: url('/media/images/freeze.png');
         background-repeat: no-repeat;
@@ -82,13 +116,17 @@
 
         &:hover {
             background-color: rgba(0,60,136, 1);
+
+            & + .tooltip {
+                display: block;
+            }
         }
 
         &:focus {
             outline: 0;
         }
-
     }
+
 }
 
 .do-freeze {

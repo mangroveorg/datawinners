@@ -97,6 +97,12 @@ DW.MultiSelectWidget = function (parentSelector, items) {
                 dropdownDiv.className = 'content-area hide';
             }
 
+            if(event.target === dropdownDiv.querySelector(".done-btn")) {
+                _this.parentElement.dispatchEvent(new CustomEvent('done', { detail: { selectedValues : getSelectedValues() } }));
+                dropdownDiv.innerHTML = '';
+                dropdownDiv.className = 'content-area hide';
+            }
+
         } else {
             _this.parentElement.dispatchEvent(new CustomEvent('select'));
             render();
@@ -108,14 +114,20 @@ DW.MultiSelectWidget = function (parentSelector, items) {
     function render() {
         var dropdownDiv = _this.parentElement.children[1],
             closeButton = document.createElement('a'),
-            closeButtonText = document.createTextNode('x'),
+            doneButton = document.createElement('button'),
+            doneButtonText = document.createTextNode('Done');
+            closeButtonText = document.createTextNode('\u2715'),
             ul = document.createElement('ul'),
             items = getItems();
 
         closeButton.appendChild(closeButtonText);
         closeButton.className = 'close-btn';
+
+        doneButton.className = 'done-btn blue-btn';
+        doneButton.appendChild(doneButtonText);
         dropdownDiv.className = 'content-area';
         dropdownDiv.appendChild(closeButton);
+        dropdownDiv.appendChild(doneButton);
 
         if (!items || !items.length) {
             var noItemsMessage = document.createTextNode('There is no item to select');

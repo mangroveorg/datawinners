@@ -90,10 +90,10 @@ Map = function(geoJsons, fallbackLocation) {
         });
 
         geolocation.on('error', function(error) {
-          console.log(fallbackLocation.center);
-          console.log(fallbackLocation.resolution);
-          view.setCenter(fallbackLocation.center);
-          map.getView().setResolution(fallbackLocation.resolution);
+          if (fallbackLocation.center && fallbackLocation.resolution) {
+            view.setCenter(fallbackLocation.center);
+            map.getView().setResolution(fallbackLocation.resolution);
+          }
         });
     }
 

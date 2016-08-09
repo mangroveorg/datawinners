@@ -15,7 +15,7 @@
         z-index: 1000;
         background: white;
         border-radius: 5px;
-        padding: 19px;
+        padding: 19px 19px 35px 19px;
         border: 1px solid #ccc;
 
         .close-btn {
@@ -26,6 +26,13 @@
             text-decoration: none;
             top: 0;
             right: 0;
+            color: grey;
+        }
+
+        .done-btn {
+            position: absolute;
+            bottom: 0.5em;
+            right: 0.5em;
         }
 
         ul > li > label {
@@ -44,5 +51,20 @@
         display: none;
     }
 
+    .blue-btn {
+        width: 62px;
+        height: 25px;
+        border: 1px solid #5087b4;
+        border-radius: 3px;
+        background: #cce3ee;
+        color: grey;
+        cursor: pointer;
+        font-weight: normal;
+        padding: 4px 15px 4px 15px;
+
+        &:hover {
+            color: black;
+        }
+    }
 }
 

@@ -3,7 +3,10 @@ DW.MappingEditor = function(entityType, filters, details, specials) {
     var shareButton = $("#share-button");
     var shareWidget = $("#share-widget");
     var shareWidgetCloseButton = $("#share-widget-close");
+    var shareWidgetDoneButton = $("#share-widget-done");
     var shareOverlay = $("#share-overlay");
+    var freezeButton = $('#freeze-map');
+    var mapPreviewWindow = $('#map-preview');
     var filterFields = {};
     var GET_SHARE_TOKEN_URL = '/entity/' + entityType + '/sharetoken';
     var SAVE_ENTITY_PREFERENCE_URL = '/entity/' + entityType + '/save_preference';
@@ -37,6 +40,15 @@ DW.MappingEditor = function(entityType, filters, details, specials) {
         $.post(SAVE_ENTITY_PREFERENCE_URL, { data: JSON.stringify(entityPreference) }).done(function(result) {
             saveCallback(result);
         });
+    };
+
+    var reloadMapPreview = function() {
+        mapPreviewWindow.attr('src', mapPreviewWindow.attr('src'));
+    };
+
+    var saveEntityPreferenceAndReloadMapPreview = function(entityPreference, saveCallback) {
+        saveEntityPreference(entityPreference, saveCallback)
+        reloadMapPreview();
     };
 
     var sprintf = function(text) {
@@ -94,12 +106,26 @@ DW.MappingEditor = function(entityType, filters, details, specials) {
         }
     };
 
+    var onFreeze = function() {
+        var center = mapPreviewWindow.contents().find('#map-center').val().split(",");
+        var resolution = mapPreviewWindow.contents().find('#map-zoom').val();
+        mapPreviewWindow.addClass("do-freeze");
+        setTimeout(function() { mapPreviewWindow.removeClass("do-freeze"); }, 500);
+        if (!!resolution && !!center.toString()) {
+            saveEntityPreference({ fallback_location: { center: center, resolution: resolution } }, function(){});
+        }
+
+    };
+
     var initWidget = function(widgetSelector, data, closeCallback) {
         var widget = new DW.MultiSelectWidget(widgetSelector, data);
         widget.on('select', function () {
             shareOverlay.height(getOverlayHeight()).show();
         });
         widget.on('close', function (event) {
+            shareOverlay.hide();
+        });
+        widget.on('done', function (event) {
             shareOverlay.hide();
             closeCallback(event.detail.selectedValues, widget, this);
         });
@@ -113,24 +139,24 @@ DW.MappingEditor = function(entityType, filters, details, specials) {
     self.init = function() {
         shareButton.click(onShare);
         shareWidgetCloseButton.click(onShareWidgetClose);
+        shareWidgetDoneButton.click(onShareWidgetClose);
+        freezeButton.click(onFreeze);
 
         initWidget('#filters-widget', filters.map(widgetDataTransformer), function(selectedValues, widget) {
-            saveEntityPreference({filters: selectedValues}, function(result){
-                $("#map-preview").attr('src', $("#map-preview").attr('src'));
+            saveEntityPreferenceAndReloadMapPreview({filters: selectedValues}, function(result){
                 widget.setItems(JSON.parse(result).filters.map(widgetDataTransformer));
             });
         });
 
         initWidget('#customize-widget', details.map(widgetDataTransformer), function(selectedValues, widget) {
-            saveEntityPreference({details: selectedValues}, function(result) {
-                $("#map-preview").attr('src', $("#map-preview").attr('src'));
+            saveEntityPreferenceAndReloadMapPreview({details: selectedValues}, function(result) {
                 widget.setItems(JSON.parse(result).details.map(widgetDataTransformer));
             });
         });
 
         var specialIdnrsWidget = initWidget('#special-idnrs-widget', specials.map(widgetDataTransformer),
             function(selectedValues, widget, widgetParentElement) {
-                saveEntityPreference({
+                saveEntityPreferenceAndReloadMapPreview({
                     specials: selectedValues.reduce(function(map, code) {
                         var questionLabel = $(widgetParentElement).find('input[value=' + code + ']').parent();
                         var choiceButtons = questionLabel.next();
@@ -144,29 +170,10 @@ DW.MappingEditor = function(entityType, filters, details, specials) {
                         map[obj.code] = obj;
                         return map;
                     }, {});
-                    $("#map-preview").attr('src', $("#map-preview").attr('src'));
                     widget.setItems(JSON.parse(result).specials.map(widgetDataTransformer));
                 });
             }
         );
-
-        $('#freeze-map').click(function() {
-            var center = $('#map-preview').contents().find('#map-center').val().split(",");
-            var resolution = $('#map-preview').contents().find('#map-zoom').val();
-            playFreezeAnimation();
-            saveEntityPreference({ fallback_location: { center: center, resolution: resolution } }, function(result){
-                console.log(JSON.parse(result));
-            });
-        });
-
-        function playFreezeAnimation() {
-            $('#map-preview').addClass("do-freeze");
-            $('#map-preview').trigger("animationStarted", {duration: 500});
-        }
-
-        $('#map-preview').on("animationStarted", function(event, data) {
-            setTimeout(function() {$('#map-preview').removeClass("do-freeze");}, data.duration);
-        });
 
         specialIdnrsWidget.on('render', function(event) {
             var widget = this;
