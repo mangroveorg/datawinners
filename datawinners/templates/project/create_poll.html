@@ -59,7 +59,7 @@
                     <span id="from_date_poll" class="date_text"
                                      data-bind="text:from_date_poll"></span>&nbsp
                         <span class="bold-text italic_grey">{% trans 'To : '%} </span>
-                        <input data-bind="datepicker: new Date(+new Date() + 86400000), datepickerOptions: { minDate: new Date(+new Date() + 86400000) }" required="required"/>
+                        <input data-bind="datepicker: endDate, datepickerOptions: { minDate: new Date(+new Date() + 86400000) }" required="required"/>
                     <!--<span id="to_date_poll" class="date_text"
                                      data-bind="text:to_date_poll"></span>-->
 
