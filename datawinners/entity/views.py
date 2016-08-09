@@ -540,10 +540,12 @@ def _build_specials(form_fields, specials_in_entity_preference):
         {
             'code': field['code'], 'label': field['label'],
             'visible': field["code"] in specials_in_entity_preference,
-            'color': specials_in_entity_preference[field["code"]]['color'] if field["code"] in specials_in_entity_preference else "rgb(0, 0, 0)",
             'choices': map(
                 lambda c: {
-                    'visible': field["code"] in specials_in_entity_preference and c['val'] == specials_in_entity_preference[field["code"]]['choice'],
+                    'visible': field["code"] in specials_in_entity_preference and
+                        any(choice["value"] == c['val'] for choice in specials_in_entity_preference[field["code"]]),
+                    'color': [choice['color'] for choice in specials_in_entity_preference[field["code"]] if choice["value"] == c['val']][0]
+                        if field["code"] in specials_in_entity_preference else "rgb(0, 0, 0)",
                     'choice': c
                 },
                 field["choices"]

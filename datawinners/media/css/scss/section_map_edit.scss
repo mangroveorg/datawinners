@@ -83,13 +83,46 @@
 
 .special-idnrs {
     .choices {
-        margin: 0 1em;
+        margin: 1em;
         input:checked {
             background-color: black;
             width: 12px;
             height: 12px;
-            border-radius: 14px;
+            border-radius: 3px;
             -webkit-appearance: none;
+        }
+    }
+    .content-area>ul{
+        >li{
+            display: none;
+            >label{
+                >input{
+                    display: none;
+                }
+                >p{
+                    padding: 4px !important;
+                    border: 1px solid #ccc;
+                    border-radius: 4px;
+                    background-repeat: no-repeat;
+                    background-image: url('/media/images/arrow_dd_transparent.png');
+                    background-position: right;
+                }
+                >p.highlight{
+                    background-color: #ddd;
+                }
+                >input:not(:checked)+p{
+                    border-radius: 0;
+                    border-top: none;
+                    background-image: none;
+                }
+            }
+        }
+        >li:first-child>label>>input:not(:checked)+p{
+            border-top: 1px solid #ccc;
+            border-radius: 5px 5px 0 0;
+        }
+        >li:last-child>label>>input:not(:checked)+p{
+            border-radius: 0 0 5px 5px;
         }
     }
     .colorpicker {

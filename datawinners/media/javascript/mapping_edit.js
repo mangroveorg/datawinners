@@ -65,8 +65,7 @@ DW.MappingEditor = function(entityType, filters, details, specials) {
             choiceButtons.append(
                 sprintf(
                     choiceButtons.contents()[1].nodeValue,
-                    questionCode, item.choice.val, specialsMap[questionCode].color,
-                    item.visible?'checked':'', item.choice.text
+                    item.choice.val, item.color, item.visible?'checked':'', item.choice.text
                 )
             );
         });
@@ -89,20 +88,37 @@ DW.MappingEditor = function(entityType, filters, details, specials) {
         choiceButtons.after(colorpicker);
 
         choiceButtons.find("input").click(function() {
-            colorpicker.find('.track').show();
+            if($(this).is(':checked')) {
+                $(this).attr('checked', false);
+                $(this).attr('waiting', true);
+                colorpicker.find('.track').show();
+            }
         });
 
         colorpicker.click(function() {
-            choiceButtons.find('input').css('background-color', $(this).find('input').val());
+            choiceButtons.find('input[waiting="true"]').attr("checked", true);
+            choiceButtons.find('input[waiting="true"]').css('background-color', $(this).find('input').val());
+            choiceButtons.find('input[waiting="true"]').attr("waiting", false);
         });
     };
 
     var onSpecialQuestionCheck = function(widget, questionCode, showChoices) {
+        var input = $(widget).find('input[value=' + questionCode + ']')
         var choiceButtons = $(widget).find('input[value=' + questionCode + ']').parent().next();
+        input.parents("li").siblings().find("p").removeClass("highlight")
+        input.parents("li").find("p").addClass("highlight");
         if(showChoices) {
+            input.attr("checked", true);
+            input.parents("li").siblings().hide();
+            input.parents("li").show();
             choiceButtons.show();
         } else {
+            input.attr("checked", false);
+            input.parents("li").siblings().show();
             choiceButtons.hide();
+            choiceButtons.find('input').attr("checked", false);
+            choiceButtons.find('input').css("background-color", "none");
+            choiceButtons.next().find('.track').hide();
         }
     };
 
@@ -161,7 +177,9 @@ DW.MappingEditor = function(entityType, filters, details, specials) {
                         var questionLabel = $(widgetParentElement).find('input[value=' + code + ']').parent();
                         var choiceButtons = questionLabel.next();
                         var colorpicker = choiceButtons.next();
-                        map[code] = {choice: choiceButtons.find('input:checked').val(), color: choiceButtons.find('input:checked').css('background-color')}
+                        map[code] = choiceButtons.find('input:checked').map(function(i, e){
+                            return {value: $(e).val(), color: $(e).css('background-color')}
+                        }).get()
                         return map;
                     }, {})
                 },
@@ -177,10 +195,14 @@ DW.MappingEditor = function(entityType, filters, details, specials) {
 
         specialIdnrsWidget.on('render', function(event) {
             var widget = this;
+            var checkedItem = event.detail.items[0]
             event.detail.items.forEach(function(item) {
+                if(item.checked) {
+                    checkedItem = item
+                }
                 onSpecialQuestionRender(widget, item.value);
-                onSpecialQuestionCheck(widget, item.value, item.checked);
             })
+            onSpecialQuestionCheck(widget, checkedItem.value, true);
         });
 
 

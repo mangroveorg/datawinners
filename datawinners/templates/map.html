@@ -14,7 +14,7 @@
 <script type="text/javascript" src="/media/javascript/mapping.js"></script>
 <script type="text/javascript">
     $(document).ready(function() {
-        new Map({{ geo_jsons|safe }}, {{fallback_location|safe}}).init('{{ entity_type }}');
+        new Map({{fallback_location|safe}}).init('{{ entity_type }}', {{ geo_jsons|safe }});
     });
 </script>
 

@@ -14,13 +14,17 @@ def geo_jsons(manager, entity_type, filters, details, specials):
     }]
 
     for special in specials:
-        filters_with_special = dict(filters)
-        filters_with_special.update({special: specials[special]['choice']})
-        geo_jsons.append({
-            "name": [field['name'] for field in entity_fields if field['code'] == special][0],
-            "data": _geo_json(manager, entity_type, entity_fields, filters_with_special, details),
-            "color": specials[special]['color']
-        })
+        field = [field for field in entity_fields if field['code'] == special][0]
+        group = {"group": field['name'], "data": []}
+        for choice in specials[special]:
+            filters_with_special = dict(filters)
+            filters_with_special.update({special: choice['value']})
+            group["data"].append({
+                "name": [c['text'] for c in field['choices'] if c['val'] == choice['value']][0],
+                "data": _geo_json(manager, entity_type, entity_fields, filters_with_special, details),
+                "color": choice['color']
+            })
+        geo_jsons.append(group)
 
     return json.dumps(geo_jsons)
 

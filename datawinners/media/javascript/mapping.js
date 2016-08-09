@@ -1,4 +1,4 @@
-Map = function(geoJsons, fallbackLocation) {
+Map = function(fallbackLocation) {
     var self = this;
     var view = new ol.View({
             maxZoom: 19,
@@ -25,7 +25,30 @@ Map = function(geoJsons, fallbackLocation) {
         panMapIfOutOfView: true
     });
 
-    self.init = function(entityType) {
+    var layerGroup = function(title) {
+        this.olGroup = new ol.layer.Group({
+            'title': title
+        });
+        this.addLayer = function(layer) {
+            var layers = this.olGroup.getLayers();
+            layers.insertAt(layers.length, layer);
+            this.olGroup.setLayers(layers);
+        };
+    };
+
+    var addLayer = function(base, geoJsons) {
+        geoJsons.forEach(function(geoJson){
+            if (geoJson.group) {
+                var group = new layerGroup(geoJson.group);
+                base.addLayer(group.olGroup);
+                addLayer(group, geoJson.data);
+            } else {
+                base.addLayer(createVector(geoJson.name, geoJson.data, geoJson.color));
+            }
+        })
+    }
+
+    self.init = function(entityType, geoJsons) {
         map.addLayer(new ol.layer.Group({
             'title': 'Maps',
             layers: [
@@ -38,9 +61,7 @@ Map = function(geoJsons, fallbackLocation) {
             ]
         }));
 
-        geoJsons.forEach(function(geoJson) {
-            map.addLayer(createVector(geoJson.name, geoJson.data, geoJson.color));
-        });
+        addLayer(map, geoJsons);
 
         map.addControl(new ol.control.LayerSwitcher());
         map.addControl(new ol.control.ScaleLine());
