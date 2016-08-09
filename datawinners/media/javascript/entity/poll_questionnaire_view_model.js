@@ -3,7 +3,7 @@ function PollViewModel() {
     self.show_sms = ko.observable(gettext('Save/Create Poll'));
     self.number_of_days = ko.observable();
     self.to_date_poll = ko.observable();
-    self.endDate= ko.observable();
+    self.endDate= DW.ko.createValidatableObservable();
     self.show_sms.subscribe(function(){
        window.smsViewModel.clearSelection();
     });
@@ -48,9 +48,11 @@ function PollViewModel() {
         }
         return false;
     });
-
+     self.endDate.subscribe(function(){
+       DW.ko.mandatoryValidator(this.endDate);
+    }, self);
     self.validateCreatePoll = function(){
-        return (DW.ko.mandatoryValidator(window.questionnaireViewModel.projectName) && ((window.smsViewModel.validate() == 1) || self.show_sms() == 'Save Poll'));
+        return (self.validateEndDate() && DW.ko.mandatoryValidator(window.questionnaireViewModel.projectName) && ((window.smsViewModel.validate() == 1) || self.show_sms() == 'Save Poll'));
     };
 
     function get_questionnaire_or_group_names() {
@@ -72,7 +74,11 @@ function PollViewModel() {
             window.smsViewModel.sendSms(project_id)
         }
     }
-
+    self.validateEndDate= function(){
+        DW.ko.mandatoryValidator(self.endDate);
+        var isValid = self.endDate.valid();
+        return isValid;
+    };
     self.create_poll = function(){
         if(self.validateCreatePoll()) {
             var selected_option = {};
@@ -86,7 +92,6 @@ function PollViewModel() {
             else{
                 selected_option = get_questionnaire_or_group_names(selected_option);
             }
-
             var data = {
                 'poll_name': window.questionnaireViewModel.projectName().trim(),
                 'active_days': self.endDate(),
