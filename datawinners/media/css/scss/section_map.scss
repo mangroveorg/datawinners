@@ -65,6 +65,7 @@ h3#header {
     padding-bottom: 0.45em;
     border-bottom: 1px solid #ccc;
     width: 90%;
+    font-size: 0.95em;
 }
 
 ul#pop-details {
@@ -75,7 +76,7 @@ ul#pop-details {
     overflow-x: auto;
     li {
         list-style-type: none;
-        font-size: 0.9em;
+        font-size: 0.8em;
         margin-bottom: 5px;
         word-wrap: break-word;
         white-space: pre-wrap;
@@ -85,7 +86,6 @@ ul#pop-details {
             white-space: pre-wrap;
             word-break: break-word;
             width: 80%;
-            font-size: 0.9em;
             color: #888888;
         }
 
@@ -109,7 +109,7 @@ ul#pop-details {
 }
 
 .ol-popup-content {
-    font-family: sans-serif;
+    font-family: Helvetica, Arial, sans-serif;
     font-size: 12pt;
     overflow: initial;
 }
