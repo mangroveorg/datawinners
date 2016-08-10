@@ -8,7 +8,7 @@ def geo_jsons(manager, entity_type, filters, details, specials):
     entity_fields = manager.view.registration_form_model_by_entity_type(key=[entity_type], include_docs=True)[0]["doc"]["json_fields"]
 
     geo_jsons = [{
-        "name": entity_type,
+        "name": entity_type.capitalize(),
         "data": _geo_json(manager, entity_type, entity_fields, filters, details),
         "color": "rgb(104, 174, 59)"
     }]

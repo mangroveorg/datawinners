@@ -9,7 +9,7 @@
 }
 
 .layer-switcher .panel {
-    padding: 0.2em 0.2em 0.2em 0.2em;
+    padding: 1em;
     margin: 0;
     border: 4px solid #eee;
     border-radius: 4px;
@@ -24,12 +24,16 @@
     margin: 0;
 }
 
-.layer-switcher li.group {
+.layer-switcher .panel>ul>li:not(:first-child) {
     padding-top: 1em;
 }
 
 .layer-switcher li.group > label {
     font-weight: bold;
+}
+
+.layer-switcher li.group > ul {
+    padding-left: 1em;
 }
 
 .layer-switcher li.layer label, .layer-switcher li.layer input {

@@ -113,7 +113,7 @@
                 >input:not(:checked)+p{
                     border-radius: 0;
                     border-top: none;
-                    background-image: none;
+                    background-image: url('/media/images/arrow_select_transparent.png');
                 }
             }
         }
