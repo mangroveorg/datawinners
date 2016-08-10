@@ -30,25 +30,25 @@ div.dataLayersDiv input{
 }
 
 .filter-control{
-  height: 5em;
-  overflow: scroll;
   .filters{
     background-color: rgba(255, 255, 255, 0.4);
-    padding: 1em 0;
     .filters-content{
       font-size: 80%;
-    }
-    h3{
-      padding: 0 1.8em;
-      border: none;
-      margin: 0;
-    }
-    .filter-choices{
-      border: none;
-      padding: 0.4em 2.2em;
-      label{
-        margin: 0 0.5em;
+      h3{
+        padding: 0 1.8em;
+        border: none;
+        margin: 0;
       }
+      .filter-choices{
+        border: none;
+        padding: 0.4em 2.2em;
+        label{
+          margin: 0 0.5em;
+        }
+      }
+    }
+    .filters-content:not(:empty){
+      padding: 1em 0;
     }
   }
 }

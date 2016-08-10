@@ -20,16 +20,14 @@
 
 <div id="filter-control" class="filter-control">
     <div id="filters" class="filters">
-        <div class="filters-content">
-            {% for filter in filters %}
+        <div class="filters-content">{% for filter in filters %}
                 <h3>{{ filter.label }}</h3>
                 <div id="{{ filter.code }}" class="filter-choices">
                     {% for choice in filter.choices %}
                         <label><input type="checkbox" name="{{ filter.code }}" id="{{ choice.val }}">{{ choice.text }}</label>
                     {% endfor %}
                 </div>
-            {% endfor %}
-        </div>
+            {% endfor %}</div>
     </div>
 </div>
 
