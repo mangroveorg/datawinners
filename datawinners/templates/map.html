@@ -7,7 +7,7 @@
 
 <script type="text/javascript" src="/media/javascript/jquery.js"></script>
 <script type="text/javascript" src="/media/javascript/jqueryUI/jquery-ui-1.8.13.custom.min.js"></script>
-<script type="text/javascript" src="/media/javascript/OpenLayers-v3.17.1-dist/ol.js"></script>
+<script type="text/javascript" src="/media/javascript/OpenLayers-v3.17.1-dist/ol-debug.js"></script>
 <script type="text/javascript" src="/media/javascript/OpenLayers-v3.17.1-dist/ol3-popup.js"></script>
 <script type="text/javascript" src="/media/javascript/OpenLayers-v3.17.1-dist/ol3-geocoder.js"></script>
 <script type="text/javascript" src="/media/javascript/OpenLayers-v3.17.1-dist/ol3-layerswitcher.js"></script>
@@ -19,8 +19,6 @@
 </script>
 
 <div id="filter-control" class="filter-control">
-    <h3 style="margin: 0.5em 0;">Filters</h3>
-    <div class="title"></div>
     <div id="filters" class="filters">
         <div class="filters-content">
             {% for filter in filters %}
@@ -32,11 +30,10 @@
                 </div>
             {% endfor %}
         </div>
-        <div class="filters-control"><button class="apply">Apply</button><button class="reset">Reset</button></div>
     </div>
 </div>
 
-<div id="map" class="grid_23"></div>
+<div id="map" class="map-control"></div>
 <input type="text" value="" id="map-center" style="display:none" />
 <input type="text" value="" id="map-zoom" style="display:none" />
 

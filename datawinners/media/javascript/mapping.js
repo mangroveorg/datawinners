@@ -46,7 +46,7 @@ Map = function(fallbackLocation) {
                 base.addLayer(createVector(geoJson.name, geoJson.data, geoJson.color));
             }
         })
-    }
+    };
 
     self.init = function(entityType, geoJsons) {
         map.addLayer(new ol.layer.Group({
@@ -86,15 +86,7 @@ Map = function(fallbackLocation) {
 
         loadFilters();
 
-        $("#filter-control>.title").click(function() {
-            $("#filters").toggle();
-            $("#filters .filters-content").accordion();
-        });
-
-        $("#filters button.apply").click(applyFilters);
-        $("#filters button.reset").click(function(){
-            window.location.href = window.location.origin + window.location.pathname;
-        });
+        $("#filters input").click(applyFilters);
 
         var geolocation = new ol.Geolocation({
             projection: 'EPSG:3857',
@@ -116,7 +108,7 @@ Map = function(fallbackLocation) {
             map.getView().setResolution(fallbackLocation.resolution);
           }
         });
-    }
+    };
 
     var applyFilters = function() {
         var filters = [];
@@ -128,7 +120,7 @@ Map = function(fallbackLocation) {
             }
         })
         window.location.href = window.location.origin + window.location.pathname + "?" + filters.join("&");
-    }
+    };
 
     var loadFilters = function() {
         var filters = window.location.search.slice(1).split("&").filter(String);
@@ -139,8 +131,7 @@ Map = function(fallbackLocation) {
                 $("#filters").find("#" + question).find("#" + answer).attr("checked", "checked");
             });
         });
-    }
-
+    };
 
     var getPopupTitle = function(properties) {
         return Object.keys(properties)
@@ -226,8 +217,7 @@ Map = function(fallbackLocation) {
             source: source,
             style: iconStyle
         });
-    }
-
+    };
 
     var setCursor = function (event) {
         var jTarget = $("#" + map.getTarget());
@@ -236,5 +226,5 @@ Map = function(fallbackLocation) {
         } else {
             jTarget.css("cursor", "");
         }
-    }
+    };
 }

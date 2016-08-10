@@ -1,7 +1,9 @@
 @charset "utf-8";
 
 body{
-  position: relative;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
 }
 .labelSpan{
   display: inline;
@@ -26,48 +28,15 @@ div.dataLayersDiv input{
   top: initial;
   left: initial;
 }
+
 .filter-control{
-  .title{
-    height: 0.2em;
-    width: 1em;
-    background-color: #000;
-    position: absolute;
-    top: 0.3em;
-    right: 0.5em;
-    &:before{
-      height: 0.2em;
-      width: 1em;
-      background-color: #000;
-      content: '';
-      display: block;
-      position: relative;
-      top: 0.3em;
-    }
-    &:after{
-      height: 0.2em;
-      width: 1em;
-      background-color: #000;
-      content: '';
-      display: block;
-      position: absolute;
-      top: 0.6em;
-    }
-  }
+  height: 5em;
+  overflow: scroll;
   .filters{
-    display: none;
     background-color: rgba(255, 255, 255, 0.4);
+    padding: 1em 0;
     .filters-content{
       font-size: 80%;
-    }
-    .filters-control{
-      text-align: center;
-      margin: 2%;
-      button{
-        width: initial;
-        display: inline;
-        padding: 0.5em;
-        font-size: 79%;
-      }
     }
     h3{
       padding: 0 1.8em;
@@ -82,6 +51,11 @@ div.dataLayersDiv input{
       }
     }
   }
+}
+
+.map-control{
+  height: 0;
+  flex: 1;
 }
 
 h3#header {
