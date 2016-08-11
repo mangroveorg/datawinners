@@ -502,7 +502,7 @@ def map_data(request, entity_type=None):
     entity_preference = get_entity_preference(get_db_manager("public"), _get_organization_id(request), entity_type)
     details = entity_preference.details if entity_preference is not None else []
     specials = entity_preference.specials if entity_preference is not None else []
-    fallback_location = entity_preference.fallback_location if entity_preference is not None else None
+    fallback_location = entity_preference.fallback_location if entity_preference is not None else {}
     return render_to_response('map.html',
                               {
                                   "entity_type": entity_type,
