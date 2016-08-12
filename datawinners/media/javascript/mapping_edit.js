@@ -2,7 +2,6 @@ DW.MappingEditor = function(entityType, filters, details, specials) {
     var self = this;
     var shareButton = $("#share-button");
     var shareWidget = $("#share-widget");
-    var shareWidgetCloseButton = $("#share-widget-close");
     var shareWidgetDoneButton = $("#share-widget-done");
     var shareOverlay = $("#share-overlay");
     var freezeButton = $('#freeze-map');
@@ -22,7 +21,6 @@ DW.MappingEditor = function(entityType, filters, details, specials) {
     var displayShareLink = function (token) {
         shareWidget.find('input').val(window.location.origin + "/public/maps/" + token +"/")
         shareWidget.show();
-        shareWidgetCloseButton.show();
         shareWidget.find('input').select();
         shareOverlay.height(getOverlayHeight()).show();
         shareButton.addClass('highlight');
@@ -36,7 +34,6 @@ DW.MappingEditor = function(entityType, filters, details, specials) {
 
     var onShareWidgetClose = function() {
         shareWidget.hide();
-        shareWidgetCloseButton.hide();
         shareOverlay.hide();
         shareButton.removeClass('highlight');
     };
@@ -159,7 +156,6 @@ DW.MappingEditor = function(entityType, filters, details, specials) {
 
     self.init = function() {
         shareButton.click(onShare);
-        shareWidgetCloseButton.click(onShareWidgetClose);
         shareWidgetDoneButton.click(onShareWidgetClose);
         freezeButton.click(onFreeze);
 
