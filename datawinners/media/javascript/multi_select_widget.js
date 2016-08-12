@@ -95,15 +95,15 @@ DW.MultiSelectWidget = function (parentSelector, items, title) {
                 _this.parentElement.dispatchEvent(new CustomEvent('close', { detail: { selectedValues : getSelectedValues() } }));
                 dropdownDiv.innerHTML = '';
                 dropdownDiv.className = 'content-area hide';
+                headerDiv.className = 'header-area';
             }
 
             if(event.target === dropdownDiv.querySelector(".done-btn")) {
                 _this.parentElement.dispatchEvent(new CustomEvent('done', { detail: { selectedValues : getSelectedValues() } }));
                 dropdownDiv.innerHTML = '';
                 dropdownDiv.className = 'content-area hide';
+                headerDiv.className = 'header-area';
             }
-            headerDiv.className = 'header-area';
-
         } else {
             _this.parentElement.dispatchEvent(new CustomEvent('select'));
             headerDiv.className = 'header-area highlight';
