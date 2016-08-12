@@ -8,6 +8,9 @@ DW.MappingEditor = function(entityType, filters, details, specials) {
     var freezeButton = $('#freeze-map');
     var mapPreviewWindow = $('#map-preview');
     var filterFields = {};
+    var filterWidgetTitle = 'Choose which details to display for each ' + entityType;
+    var customizeWidgetTitle = 'Choose how to filter ' + entityType;
+    var specialIdnrsWidgetTitle = 'Choose how to color for each ' + entityType;
     var GET_SHARE_TOKEN_URL = '/entity/' + entityType + '/sharetoken';
     var SAVE_ENTITY_PREFERENCE_URL = '/entity/' + entityType + '/save_preference';
 
@@ -22,6 +25,7 @@ DW.MappingEditor = function(entityType, filters, details, specials) {
         shareWidgetCloseButton.show();
         shareWidget.find('input').select();
         shareOverlay.height(getOverlayHeight()).show();
+        shareButton.addClass('highlight');
     };
 
     var onShare = function() {
@@ -34,6 +38,7 @@ DW.MappingEditor = function(entityType, filters, details, specials) {
         shareWidget.hide();
         shareWidgetCloseButton.hide();
         shareOverlay.hide();
+        shareButton.removeClass('highlight');
     };
 
     var saveEntityPreference = function(entityPreference, saveCallback) {
@@ -133,8 +138,8 @@ DW.MappingEditor = function(entityType, filters, details, specials) {
 
     };
 
-    var initWidget = function(widgetSelector, data, closeCallback) {
-        var widget = new DW.MultiSelectWidget(widgetSelector, data);
+    var initWidget = function(widgetSelector, data, closeCallback, title) {
+        var widget = new DW.MultiSelectWidget(widgetSelector, data, title || 'Choose which details to display for each <ID NR Type>');
         widget.on('select', function () {
             shareOverlay.height(getOverlayHeight()).show();
         });
@@ -162,13 +167,13 @@ DW.MappingEditor = function(entityType, filters, details, specials) {
             saveEntityPreferenceAndReloadMapPreview({filters: selectedValues}, function(result){
                 widget.setItems(JSON.parse(result).filters.map(widgetDataTransformer));
             });
-        });
+        }, filterWidgetTitle);
 
         initWidget('#customize-widget', details.map(widgetDataTransformer), function(selectedValues, widget) {
             saveEntityPreferenceAndReloadMapPreview({details: selectedValues}, function(result) {
                 widget.setItems(JSON.parse(result).details.map(widgetDataTransformer));
             });
-        });
+        }, customizeWidgetTitle);
 
         var specialIdnrsWidget = initWidget('#special-idnrs-widget', specials.map(widgetDataTransformer),
             function(selectedValues, widget, widgetParentElement) {
@@ -191,7 +196,7 @@ DW.MappingEditor = function(entityType, filters, details, specials) {
                     widget.setItems(JSON.parse(result).specials.map(widgetDataTransformer));
                 });
             }
-        );
+        , specialIdnrsWidgetTitle);
 
         specialIdnrsWidget.on('render', function(event) {
             var widget = this;

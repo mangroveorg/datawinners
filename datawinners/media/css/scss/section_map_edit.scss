@@ -10,14 +10,30 @@
   background: #000;
   z-index: 100;
 }
+
+#share-button {
+    &.highlight {
+        background: #fff;
+        border: none;
+        padding: 3px;
+        border-radius: 3px 3px 0 0;
+        border: 1px solid #ccc;
+        border-bottom: none;
+        position: relative;
+        z-index: 1000;
+    }
+}
+
 .share-widget{
   position: absolute;
-  right: 0;
+  right: 1px;
   z-index: 101;
   padding: 19px 10px 27px 10px;
   background: white;
-  border-radius: 5px;
+  border-radius: 5px 0 5px 5px;
+  border: 1px solid #ccc;
   width: 550px;
+  top: 100%;
   span {
     color: grey;
   }
@@ -62,6 +78,7 @@
   height: 16px;
   z-index: 101;
   color: grey;
+  top: 100%;
   &:hover {
     opacity: 0.8;
   }
@@ -69,6 +86,9 @@
 
 .customize_section>div{
     float: left;
+    &:last-child {
+        margin-right: 50px;
+    }
 }
 
 .filterable-questions, .customize, .special-idnrs {

@@ -1,4 +1,4 @@
-DW.MultiSelectWidget = function (parentSelector, items) {
+DW.MultiSelectWidget = function (parentSelector, items, title) {
     var _this = this,
         parentElement = document.querySelector(parentSelector),
         headerDiv = document.createElement('div'),
@@ -102,9 +102,11 @@ DW.MultiSelectWidget = function (parentSelector, items) {
                 dropdownDiv.innerHTML = '';
                 dropdownDiv.className = 'content-area hide';
             }
+            headerDiv.className = 'header-area';
 
         } else {
             _this.parentElement.dispatchEvent(new CustomEvent('select'));
+            headerDiv.className = 'header-area highlight';
             render();
         }
     });
@@ -113,6 +115,8 @@ DW.MultiSelectWidget = function (parentSelector, items) {
 
     function render() {
         var dropdownDiv = _this.parentElement.children[1],
+            titleSpan = document.createElement('span'),
+            titleText = document.createTextNode(title || ''),
             closeButton = document.createElement('a'),
             doneButton = document.createElement('button'),
             doneButtonText = document.createTextNode('Done');
@@ -120,14 +124,18 @@ DW.MultiSelectWidget = function (parentSelector, items) {
             ul = document.createElement('ul'),
             items = getItems();
 
+        titleSpan.appendChild(titleText);
+
         closeButton.appendChild(closeButtonText);
         closeButton.className = 'close-btn';
 
         doneButton.className = 'done-btn blue-btn';
         doneButton.appendChild(doneButtonText);
+
         dropdownDiv.className = 'content-area';
         dropdownDiv.appendChild(closeButton);
         dropdownDiv.appendChild(doneButton);
+        dropdownDiv.appendChild(titleSpan);
 
         if (!items || !items.length) {
             var noItemsMessage = document.createTextNode('There is no item to select');

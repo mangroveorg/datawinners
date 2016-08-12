@@ -3,6 +3,15 @@
     .header-area {
         position: relative;
         color: #0070ac;
+
+        &.highlight {
+            z-index: 1000;
+            background: white;
+            border-radius: 4px 4px 0 0;
+            padding: 0 5px;
+            border: 1px solid #ccc;
+            border-bottom: none;
+        }
     }
 
     .header-area:hover {
@@ -14,9 +23,16 @@
         position: absolute;
         z-index: 1000;
         background: white;
-        border-radius: 5px;
         padding: 19px 19px 35px 19px;
         border: 1px solid #ccc;
+        border-top: none;
+        border-radius: 0 5px 5px 5px;
+
+        span {
+            color: grey;
+            display: block;
+            padding-bottom: 5px;
+        }
 
         .close-btn {
             display: block;
