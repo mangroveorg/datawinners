@@ -6,6 +6,7 @@ DW.MappingEditor = function(entityType, filters, details, specials) {
     var shareOverlay = $("#share-overlay");
     var freezeButton = $('#freeze-map');
     var mapPreviewWindow = $('#map-preview');
+    var successMessage = $('#success-message');
     var filterFields = {};
     var filterWidgetTitle = 'Choose how to filter ' + entityType;
     var customizeWidgetTitle = 'Choose which details to display for each ' + entityType;
@@ -48,9 +49,16 @@ DW.MappingEditor = function(entityType, filters, details, specials) {
         mapPreviewWindow.attr('src', mapPreviewWindow.attr('src'));
     };
 
+    var showSuccessMessage = function(message) {
+         successMessage.text(message)
+         successMessage.show()
+         setTimeout(function() { successMessage.hide(); },4000)
+    };
+
     var saveEntityPreferenceAndReloadMapPreview = function(entityPreference, saveCallback) {
         saveEntityPreference(entityPreference, saveCallback)
         reloadMapPreview();
+        showSuccessMessage("Your changes have been saved.")
     };
 
     var sprintf = function(text) {
