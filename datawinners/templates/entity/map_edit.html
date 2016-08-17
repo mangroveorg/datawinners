@@ -65,14 +65,14 @@
                 <input type="hidden" class="colorInput">
             </div>
         </div>
-    </div>
-
-    <div id="freeze-map" class="float-right freeze-map">
-        <button class="icon"></button>
-        <div class="tooltip bottom" style="visibility: visible;position: absolute;opacity: 0.8;left: 19px;">
-            <p>
-                You can capture the location that will be shared with the user who doesn’t have GPS Coordinates
-            </p>
+        <div>|</div>
+        <div id="freeze-map" class="freeze-map">
+            <span>{% trans "Default Map" %}</span>
+            <div class="tooltip" style="visibility: visible;position: absolute;opacity: 0.8; left: 25px; bottom: 20px;">
+                <p>
+                    {% trans "You can click to capture the location to be used as preview for users without location tracking." %}
+                </p>
+            </div>
         </div>
     </div>
 
