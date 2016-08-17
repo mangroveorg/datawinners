@@ -24,20 +24,17 @@
     margin: 0;
 }
 
-.layer-switcher .panel>ul>li:not(:first-child) {
-    padding-top: 1em;
-}
-
 .layer-switcher li.group > label {
     font-weight: bold;
 }
 
 .layer-switcher li.group > ul {
-    padding-left: 1em;
+    padding-left: 1.5em;
 }
 
-.layer-switcher li.layer label, .layer-switcher li.layer input {
+.layer-switcher li.layer label, .layer-switcher li.layer svg, .layer-switcher li.layer input {
     display: inline;
+    vertical-align: middle;
 }
 
 .layer-switcher input {

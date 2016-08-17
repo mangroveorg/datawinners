@@ -2,8 +2,8 @@ Map = function(fallbackLocation) {
     var self = this;
     var view = new ol.View({
             maxZoom: 19,
-            minZoom: 2,
-            zoom: 2,
+            minZoom: 3,
+            zoom: 1,
             center: [0, 0]
         });
     view.on('change:center', function(event) {
@@ -201,7 +201,8 @@ Map = function(fallbackLocation) {
         var iconStyle = new ol.style.Style({
             image: new ol.style.Icon({
                 src: '/media/images/map_marker.svg',
-                color: color
+                color: color,
+                anchor: [0.2, 0.7]
             })
         });
 
