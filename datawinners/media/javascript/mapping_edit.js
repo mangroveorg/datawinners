@@ -57,8 +57,8 @@ DW.MappingEditor = function(entityType, filters, details, specials) {
     };
 
     var saveEntityPreferenceAndReloadMapPreview = function(entityPreference, saveCallback) {
-        saveEntityPreference(entityPreference, function() {
-            saveCallback();
+        saveEntityPreference(entityPreference, function(result) {
+            saveCallback(result);
             reloadMapPreview();
         })
     };
@@ -214,7 +214,6 @@ DW.MappingEditor = function(entityType, filters, details, specials) {
             })
             onSpecialQuestionCheck(widget, checkedItem.value, true);
         });
-
 
         specialIdnrsWidget.on('check', function(event) {
             if(event.detail.value in specialsMap) {
