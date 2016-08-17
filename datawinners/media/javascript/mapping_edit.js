@@ -42,6 +42,7 @@ DW.MappingEditor = function(entityType, filters, details, specials) {
     var saveEntityPreference = function(entityPreference, saveCallback) {
         $.post(SAVE_ENTITY_PREFERENCE_URL, { data: JSON.stringify(entityPreference) }).done(function(result) {
             saveCallback(result);
+            showSuccessMessage("Your changes have been saved.");
         });
     };
 
@@ -52,13 +53,14 @@ DW.MappingEditor = function(entityType, filters, details, specials) {
     var showSuccessMessage = function(message) {
          successMessage.text(message)
          successMessage.show()
-         setTimeout(function() { successMessage.hide(); },4000)
+         setTimeout(function() { successMessage.hide(); }, 4000);
     };
 
     var saveEntityPreferenceAndReloadMapPreview = function(entityPreference, saveCallback) {
-        saveEntityPreference(entityPreference, saveCallback)
-        reloadMapPreview();
-        showSuccessMessage("Your changes have been saved.")
+        saveEntityPreference(entityPreference, function() {
+            saveCallback();
+            reloadMapPreview();
+        })
     };
 
     var sprintf = function(text) {
@@ -140,7 +142,6 @@ DW.MappingEditor = function(entityType, filters, details, specials) {
         if (!!resolution && !!center.toString()) {
             saveEntityPreference({ fallback_location: { center: center, resolution: resolution } }, function(){});
         }
-
     };
 
     var initWidget = function(widgetSelector, data, closeCallback, title) {
