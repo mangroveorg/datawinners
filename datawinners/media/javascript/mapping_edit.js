@@ -42,7 +42,6 @@ DW.MappingEditor = function(entityType, filters, details, specials) {
     var saveEntityPreference = function(entityPreference, saveCallback) {
         $.post(SAVE_ENTITY_PREFERENCE_URL, { data: JSON.stringify(entityPreference) }).done(function(result) {
             saveCallback(result);
-            showSuccessMessage("Your changes have been saved.");
         });
     };
 
@@ -59,6 +58,7 @@ DW.MappingEditor = function(entityType, filters, details, specials) {
     var saveEntityPreferenceAndReloadMapPreview = function(entityPreference, saveCallback) {
         saveEntityPreference(entityPreference, function(result) {
             saveCallback(result);
+            showSuccessMessage("Your changes have been saved.");
             reloadMapPreview();
         })
     };
