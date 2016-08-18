@@ -106,12 +106,15 @@
                     display: none;
                 }
                 >p{
-                    padding: 4px !important;
+                    padding: 2px 19px 4px 8px !important;
                     border: 1px solid #ccc;
                     border-radius: 4px;
                     background-repeat: no-repeat;
                     background-image: url('/media/images/arrow_dd_transparent.png');
                     background-position: right;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
                 }
                 >p.highlight{
                     background-color: #ddd;
