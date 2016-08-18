@@ -158,6 +158,13 @@ def get_map_key(host):
     except :
         return ""
 
+
+def get_mapbox_api_key(host):
+    try:
+        return settings.MAPBOX_API_KEYS.get(host)
+    except :
+        return ""
+
 def random_string(length=6):
     return ''.join(random.sample('abcdefghijklmnopqrs', length))
 

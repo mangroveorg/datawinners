@@ -49,7 +49,7 @@ from datawinners.search.submission_index import update_submission_search_for_sub
 from datawinners.settings import ELASTIC_SEARCH_URL, ELASTIC_SEARCH_TIMEOUT
 from datawinners.submission.location import LocationBridge
 from datawinners.utils import get_organization, get_organization_country, \
-    get_changed_questions
+    get_changed_questions, get_mapbox_api_key
 from datawinners.workbook_utils import workbook_add_sheet
 from mangrove.datastore.documents import EntityActionDocument, HARD_DELETE
 from mangrove.datastore.entity import get_all_entities_include_voided, delete_data_record, contact_by_short_code
@@ -508,7 +508,8 @@ def map_data(request, entity_type=None):
                                   "entity_type": entity_type,
                                   "fallback_location": fallback_location,
                                   "filters": [] if entity_preference is None else _get_filters(form_model, entity_preference.filters),
-                                  "geo_jsons": geo_jsons(manager, entity_type, request.GET, details, specials)
+                                  "geo_jsons": geo_jsons(manager, entity_type, request.GET, details, specials),
+                                  "mapbox_api_key": get_mapbox_api_key(request.META['HTTP_HOST'])
                                },
                               context_instance=RequestContext(request))
 

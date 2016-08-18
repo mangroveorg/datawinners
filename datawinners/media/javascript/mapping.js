@@ -48,10 +48,20 @@ Map = function(fallbackLocation) {
         })
     };
 
-    self.init = function(entityType, geoJsons) {
+    self.init = function(entityType, geoJsons, mapboxApiKey) {
         map.addLayer(new ol.layer.Group({
             'title': 'Maps',
             layers: [
+                new ol.layer.Tile({
+                     title: 'Satellite',
+                      type: 'base',
+                      source: new ol.source.XYZ({
+                        url: 'https://api.mapbox.com/styles/v1/mapbox/satellite-streets-v9/tiles/256/{z}/{x}/{y}?access_token=' + mapboxApiKey,
+                        attributions: [new ol.Attribution({
+                            html: '© <a href=\'https://www.mapbox.com/about/maps/\'>Mapbox</a> © <a href=\'http://www.openstreetmap.org/copyright\'>OpenStreetMap</a>'
+                        })]
+                      })
+                }),
                 new ol.layer.Tile({
                     title: 'OpenStreetMap',
                     type: 'base',
