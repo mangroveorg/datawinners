@@ -15,7 +15,7 @@ def geo_jsons(manager, entity_type, filters, details, specials):
 
     for special in specials:
         field = [field for field in entity_fields if field['code'] == special][0]
-        group = {"group": field['name'], "data": []}
+        group = {"group": field['label'], "data": []}
         for choice in specials[special]:
             filters_with_special = dict(filters)
             filters_with_special.update({special: choice['value']})
