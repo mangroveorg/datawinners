@@ -96,11 +96,6 @@ DW.MappingEditor = function(entityType, filters, details, specials) {
         questionLabel.find("p").attr("data-toggle", "tooltip");
         questionLabel.find("p").attr("title", questionLabel.find("p")[0].innerHTML);
         var choiceButtons = createChoiceButtons(questionCode);
-        choiceButtons.find("p").attr("data-toggle", "tooltip");
-        var choiceButtonArray = choiceButtons.find("p");
-        for(i=0; i<choiceButtonArray.length; i++){
-            choiceButtonArray[i].title = choiceButtonArray[i].innerHTML;
-        }
         var colorpicker = createColorPicker();
 
         questionLabel.after(choiceButtons);
