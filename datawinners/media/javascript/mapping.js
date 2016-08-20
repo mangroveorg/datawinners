@@ -217,7 +217,7 @@ Map = function(fallbackLocation) {
         });
 
         $.ajax({url: '/media/images/map_marker.svg', success: function(response) {
-            var layersTitle = $(".layer-switcher").find(".layer>label:contains(" + name + ")");
+            var layersTitle = $(".layer-switcher").find(".layer>label").filter(function() { return $(this).text().trim() == name });
             layersTitle.prepend(response.documentElement);
             layersTitle.find("path").attr("fill", color);
         }});
