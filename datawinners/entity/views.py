@@ -559,7 +559,9 @@ def _build_specials(form_fields, specials_in_entity_preference):
 
 
 def _trim_empty_specials(specials):
-    return dict(filter(itemgetter(1), specials.items()))
+    if specials:
+        return dict(filter(itemgetter(1), specials.items()))
+    return specials
 
 
 @valid_web_user
