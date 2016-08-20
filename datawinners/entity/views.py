@@ -1,6 +1,7 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 import json
 import logging
+from operator import itemgetter
 
 import elasticutils
 import jsonpickle
@@ -557,6 +558,10 @@ def _build_specials(form_fields, specials_in_entity_preference):
     return specials
 
 
+def _trim_empty_specials(specials):
+    return dict(filter(itemgetter(1), specials.items()))
+
+
 @valid_web_user
 @waffle_flag('idnr_map', None)
 def save_preference(request, entity_type=None):
@@ -568,7 +573,7 @@ def save_preference(request, entity_type=None):
                                entity_type,
                                data.get('filters'),
                                data.get('details'),
-                               data.get('specials'),
+                               _trim_empty_specials(data.get('specials')),
                                data.get('fallback_location'))
         filters = _build_filterable_fields(form_model.form_fields, entity_preference.filters)
         specials = _build_specials(form_model.form_fields, entity_preference.specials)
