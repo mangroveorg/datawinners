@@ -118,6 +118,9 @@ Map = function(fallbackLocation) {
             map.getView().setResolution(fallbackLocation.resolution);
           }
         });
+
+        $("#map").offset({top: $("#filter-control").height(), bottom: 0})
+        map.updateSize();
     };
 
     var applyFilters = function() {
