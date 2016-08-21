@@ -146,7 +146,7 @@ DW.MappingEditor = function(entityType, filters, details, specials) {
         }
     };
 
-    var initWidget = function(widgetSelector, data, closeCallback, title) {
+    var initWidget = function(widgetSelector, data, doneCallback, title) {
         var widget = new DW.MultiSelectWidget(widgetSelector, data, title || 'Choose which details to display for each <ID NR Type>');
         widget.on('select', function () {
             shareOverlay.height(getOverlayHeight()).show();
@@ -156,7 +156,7 @@ DW.MappingEditor = function(entityType, filters, details, specials) {
         });
         widget.on('done', function (event) {
             shareOverlay.hide();
-            closeCallback(event.detail.selectedValues, widget, this);
+            doneCallback(event.detail.selectedValues, widget, this);
         });
         return widget;
     };
@@ -184,8 +184,12 @@ DW.MappingEditor = function(entityType, filters, details, specials) {
 
         var specialIdnrsWidget = initWidget('#special-idnrs-widget', specials.map(widgetDataTransformer),
             function(selectedValues, widget, widgetParentElement) {
+                var checkedQuestions = $(widgetParentElement).find('.content-area>ul>li>label>input:checked');
+                var checkedValues = checkedQuestions.map(function(i, e){
+                    return $(e).val();
+                }).get();
                 saveEntityPreferenceAndReloadMapPreview({
-                    specials: selectedValues.reduce(function(map, code) {
+                    specials: checkedValues.reduce(function(map, code) {
                         var questionLabel = $(widgetParentElement).find('input[value=' + code + ']').parent();
                         var choiceButtons = questionLabel.next();
                         var colorpicker = choiceButtons.next();
