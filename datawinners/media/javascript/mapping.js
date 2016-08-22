@@ -128,8 +128,10 @@ Map = function(fallbackLocation) {
         $("#filters .filter-choices").each(function(){
             if($(this).find("input:checked").length > 0) {
                 var question = $(this).attr("id");
-                var answers = $(this).find("input:checked").map(function(elem){return this.id});
-                filters.push(question + "=" + Array.prototype.join.call(answers));
+                var answers = $(this).find("input:checked").map(function(elem){return this.id}).get();
+                answers.forEach(function(answer){
+                    filters.push(question + "=" + answer);
+                });
             }
         })
         window.location.href = window.location.origin + window.location.pathname + "?" + filters.join("&");
