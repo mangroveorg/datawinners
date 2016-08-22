@@ -8,11 +8,14 @@ DW.MappingEditor = function(entityType, filters, details, specials) {
     var mapPreviewWindow = $('#map-preview');
     var successMessage = $('#success-message');
     var filterFields = {};
-    var filterWidgetTitle = 'Choose how to filter ' + entityType;
-    var customizeWidgetTitle = 'Choose which details to display for each ' + entityType;
-    var specialIdnrsWidgetTitle = 'Choose how to color for each ' + entityType;
+
     var GET_SHARE_TOKEN_URL = '/entity/' + entityType + '/sharetoken';
     var SAVE_ENTITY_PREFERENCE_URL = '/entity/' + entityType + '/save_preference';
+
+    var capitalizedEntityType = capitalize(entityType);
+    var filterWidgetTitle = 'Choose how to filter ' + capitalizedEntityType;
+    var customizeWidgetTitle = 'Choose which details to display for each ' + capitalizedEntityType;
+    var specialIdnrsWidgetTitle = 'By default every '+ capitalizedEntityType +' has the same color. Use colors to differentiate between '+ capitalizedEntityType +' types';
 
     var specialsMap = specials.reduce(function(map, obj) {
         map[obj.code] = obj;
