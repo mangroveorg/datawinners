@@ -223,7 +223,8 @@ DW.MappingEditor = function(entityType, filters, details, specials) {
 
         specialIdnrsWidget.on('check', function(event) {
             if(event.detail.value in specialsMap) {
-                onSpecialQuestionCheck(this, event.detail.value, event.detail.show);
+                var isChecked = $(this).find('input[value=' + event.detail.value + ']').is(":checked");
+                onSpecialQuestionCheck(this, event.detail.value, isChecked);
             }
         });
     }
