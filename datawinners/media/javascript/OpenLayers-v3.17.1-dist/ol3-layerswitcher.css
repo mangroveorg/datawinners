@@ -26,6 +26,9 @@
 
 .layer-switcher li.group > label {
     font-weight: bold;
+    word-wrap: break-word;
+    max-width: 15em;
+    display: block;
 }
 
 .layer-switcher li.group > ul {
