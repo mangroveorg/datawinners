@@ -160,3 +160,11 @@
 .do-freeze {
     border: 2px solid rgba(0,60,136, 1);
 }
+
+.fixed-top-center {
+    position: fixed;
+    left: 35%;
+    z-index: 100;
+    width: 30%;
+    top: 80px;
+}

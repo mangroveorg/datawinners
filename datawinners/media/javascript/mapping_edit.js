@@ -25,8 +25,23 @@ DW.MappingEditor = function(entityType, filters, details, specials) {
         setTimeout(function () {
             $.unblockUI();
             setTimeout(function(){ showSuccessMessage("Your changes have been saved."); });
-        }, 2000);
+        }, 4000);
     };
+
+    var postNavigationCallback = function() {
+        console.log('navigation done');
+        hideLoader();
+    }
+
+    var postNavigationDone = function (navigationDoneCallback) {
+        setTimeout(function() {
+            if (navigator.geolocation) {
+               navigator.geolocation.getCurrentPosition(navigationDoneCallback);
+            } else {
+                navigationDoneCallback();
+            }
+        }, 1000);
+    }
 
     var specialsMap = specials.reduce(function(map, obj) {
         map[obj.code] = obj;
@@ -61,7 +76,7 @@ DW.MappingEditor = function(entityType, filters, details, specials) {
 
     var reloadMapPreview = function() {
         mapPreviewWindow.attr('src', mapPreviewWindow.attr('src'));
-        hideLoader();
+        postNavigationDone(postNavigationCallback);
     };
 
     var showSuccessMessage = function(message) {
