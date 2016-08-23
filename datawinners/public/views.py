@@ -8,6 +8,8 @@ from datawinners.main.database import get_db_manager
 from mangrove.datastore.entity_share import get_entity_preference_by_share_token
 from mangrove.form_model.form_model import get_form_model_by_entity_type
 
+from datawinners.utils import get_mapbox_api_key
+
 
 def render_map(request, share_token):
     entity_preference = get_entity_preference_by_share_token(get_db_manager("public"), share_token)
@@ -24,7 +26,8 @@ def render_map(request, share_token):
             "entity_type": entity_preference.entity_type,
             "filters": _get_filters(form_model, entity_preference.filters),
             "geo_jsons": geo_jsons(dbm, entity_preference.entity_type, request.GET, entity_preference.details, entity_preference.specials),
-            "fallback_location": entity_preference.fallback_location
+            "fallback_location": entity_preference.fallback_location,
+            "mapbox_api_key": get_mapbox_api_key(request.META['HTTP_HOST'])
         },
         context_instance=RequestContext(request)
     )

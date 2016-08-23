@@ -21,6 +21,11 @@ API_KEYS = {
     'uat.datawinners.com': 'AIzaSyCr4DDqoKgR5MzPci7GHWaXms8bYNprY-g'
 }
 
+
+MAPBOX_API_KEYS = {
+    'uat.datawinners.com': 'pk.eyJ1IjoicmFqYnNhaGFqIiwiYSI6ImNpcnlpcDI2NTAxeGMyenFmYjdwZmd6Z2MifQ.86zQkw3aBlHuVkUBdSi4Ag'
+}
+
 HNI_SUPPORT_EMAIL_ID = 'hery.imiary@gmail.com'
 
 EMAIL_USE_TLS = True
