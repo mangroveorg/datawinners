@@ -6,7 +6,6 @@ DW.MappingEditor = function(entityType, filters, details, specials) {
     var shareOverlay = $("#share-overlay");
     var freezeButton = $('#freeze-map');
     var mapPreviewWindow = $('#map-preview');
-    var successMessage = $('#success-message');
     var filterFields = {};
 
     var GET_SHARE_TOKEN_URL = '/entity/' + entityType + '/sharetoken';
@@ -29,7 +28,6 @@ DW.MappingEditor = function(entityType, filters, details, specials) {
     };
 
     var postNavigationCallback = function() {
-        console.log('navigation done');
         hideLoader();
     }
 
@@ -79,10 +77,14 @@ DW.MappingEditor = function(entityType, filters, details, specials) {
         postNavigationDone(postNavigationCallback);
     };
 
-    var showSuccessMessage = function(message) {
-         successMessage.text(message)
-         successMessage.show()
-         setTimeout(function() { successMessage.hide(); }, 2000);
+    var showSuccessMessage = function(text) {
+        $.blockUI({
+                    message: '<div class="success-message-box"><span class="loading">' + text + '</span></div>',
+                    css: { width: '22%', top: '49%', left: '39%', background: 'none', border: 'none', "text-align": 'left'}
+                   });
+        setTimeout(function() {
+            $.unblockUI();
+        }, 2000);
     };
 
     var saveEntityPreferenceAndReloadMapPreview = function(entityPreference, saveCallback) {
