@@ -3,7 +3,7 @@ function PollViewModel() {
     self.show_sms = ko.observable(gettext('Save/Create Poll'));
     self.number_of_days = ko.observable();
     self.to_date_poll = ko.observable();
-    self.endDate= ko.observable();
+    self.endDate= ko.observable(new Date());
     self.show_sms.subscribe(function(){
        window.smsViewModel.clearSelection();
     });

@@ -27,7 +27,7 @@ action_list = (
     (_('Poll'),(
         (CREATED_POLL, _(CREATED_POLL)),
         (ACTIVATE_POLL, _(ACTIVATE_POLL)),
-        (EDITED_POLL, _(EDITED_POLL)),
+        (EDITED_END_DATE_POLL, _(EDITED_END_DATE_POLL)),
         (DEACTIVATE_POLL, _(DEACTIVATE_POLL)),
         (DELETED_POLL, _(DELETED_POLL))
     )),

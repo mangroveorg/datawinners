@@ -96,6 +96,7 @@
     <script type="text/javascript" src="/media/javascript/ko-binding-extensions.js"></script>
     <script type="text/javascript" src="/media/javascript/dw-ko-validation-extensions.js"></script>
     <script type="text/javascript" src="/media/javascript/project/project_language.js"></script>
+    <script type="text/javascript" src="/media/javascript/datepicker.{% trans "en" %}.js"></script>
     <script type="text/javascript" src="/media/javascript/entity/questionnaire_view_model.js"></script>
     <script type="text/javascript" src="/media/javascript/entity/send_sms.js"></script>
     <script type="text/javascript" src="/media/javascript/entity/send_sms_more_people.js"></script>
@@ -134,7 +135,7 @@
 
             <div>
                 <p>
-                    {%  trans 'Poll is' %} <strong><span id="poll_status"  data-bind="text:status"> </span> </strong>:
+                    {%  trans 'Poll is' %} <strong><span id="poll_status"  data-bind="text:status"> </span> </strong>
                     <a id="deactivate_link" data-bind="text:deactivation, click:deactivate" class="cancel_link" > </a>
                     <a id="activate_link" data-bind="text:activation, click:activate" class="cancel_link"> </a>
                 </p>
@@ -142,7 +143,7 @@
                     <br/>
                     <span data-bind="html:active_dates_poll"> </span>
                     <span>
-                        &nbsp<a id="change_poll" data-bind="text:change_days, click:activate" class="cancel_link"> {% trans "Change" %}</a>
+                        &nbsp<a id="change_poll" data-bind="text:change_days, click:edit" class="cancel_link"> {% trans "Change" %}</a>
                     </span>
                 </p>
             </div>
@@ -153,7 +154,9 @@
             <div data-bind="dialog: {autoOpen: false, width: 475, height: 'auto', title:'Activate Poll?', dialogClass:'no-close'},
                     dialogVisible: activationDialogVisible, open: activate, dialogContent: activatePollDialog">
             </div>
-
+            <div data-bind="dialog: {autoOpen: false, width: 450, height: 170, title:'Edit Poll', dialogClass:'no-close'},
+                    dialogVisible: editDialogVisible, open: edit, dialogContent: editPollDialog">
+            </div>
             <div id="deactivate_poll_dialog" class="none">
                 <br>
                 <p> {% trans 'Are you sure want to deactivate this Poll?' %}</p>
@@ -166,7 +169,7 @@
         </div>
          <div id="automatic_reply" class="questionnaire_type_header">
 
-             <span class="header" >{% trans "Automatic Reply SMS"%} :
+             <span class="header" >{% trans "Automatic Reply SMS"%}:
              {% if  project.is_outgoing_sms_replies_enabled %}
                  On
              {% else %}
@@ -196,17 +199,34 @@
         <br>
         <span>{% trans 'Active from' %}</span>&nbsp
         <!--<select data-bind="options: active_poll_days, value: number_of_days" class="dropdown_style dropdown_width"></select>&nbsp -->
-        <span data-bind="text:from_date_poll" class="date_text"> </span>&nbsp; <span class="italic_grey">  <b>{% trans 'To : '%}</b> </span> <input data-bind="datepicker: endDate, datepickerOptions: { minDate: new Date(+new Date() + 86400000) }" />
+        <span data-bind="text:from_date_poll" class=""> </span>&nbsp; <span class="">  {% trans 'To : '%} </span> <input data-bind="datepicker: endDate, datepickerOptions: { minDate: new Date(+new Date() + 86400000),dateFormat: 'dd MM yy' }" />
         <br><br>
 
-        <span class="italic_grey"><b>{% trans 'From : '%} </b></span>
+        <!--<span class="italic_grey"><b>{% trans 'From : '%} </b></span>
         <span data-bind="text:from_date_poll" class="date_text"> </span>&nbsp;
 
         <span class="italic_grey">  <b>{% trans 'To : '%}</b> </span>
-        <span data-bind="text:to_date_poll" class="date_text"></span>
+        <span data-bind="text:to_date_poll" class="date_text"></span> -->
         <div class="float_right margin_top_20">
               <a id="close_activate_link" class="cancel_link" data-bind="click: close_activation_popup">{%trans "Cancel"%}</a>
               <button id="activate_button" class="button" type="button" data-bind="click: activate_poll"> {% trans "Activate"%}</button>
+        </div>
+    </div>
+    <div id="edit_poll_dialog" class="none">
+        <br>
+        <span>{% trans 'Active from' %}</span>&nbsp
+        <!--<select data-bind="options: active_poll_days, value: number_of_days" class="dropdown_style dropdown_width"></select>&nbsp -->
+        <span data-bind="text:from_date_poll" class=""> </span>&nbsp; <span class="">  {% trans 'To : '%}</span> <input data-bind="datepicker: endDate, datepickerOptions: { minDate: new Date(+new Date() + 86400000), dateFormat: 'dd MM yy' }" />
+        <br><br>
+
+        <!--<span class="italic_grey"><b>{% trans 'From : '%} </b></span>
+        <span data-bind="text:from_date_poll" class="date_text"> </span>&nbsp;
+
+        <span class="italic_grey">  <b>{% trans 'To : '%}</b> </span>
+        <span data-bind="text:to_date_poll" class="date_text"></span> -->
+        <div class="float_right margin_top_20">
+              <a id="close_activate_link" class="cancel_link" data-bind="click: close_edit_popup">{%trans "Cancel"%}</a>
+              <button id="activate_button" class="button" type="button" data-bind="click: edit_poll"> {% trans "Change_button"%}</button>
         </div>
     </div>
     </div>

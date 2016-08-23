@@ -7,7 +7,7 @@ from django.http import HttpResponse
 from django.shortcuts import render_to_response
 from django.views.decorators.csrf import csrf_exempt
 from datawinners.activitylog.models import UserActivityLog
-from datawinners.common.constant import DEACTIVATE_POLL, ACTIVATE_POLL, EDITED_POLL
+from datawinners.common.constant import DEACTIVATE_POLL, ACTIVATE_POLL, EDITED_END_DATE_POLL
 from datawinners.sent_message.models import PollInfo
 from django.utils.translation import ugettext as _
 from datawinners.utils import get_organization
@@ -141,7 +141,7 @@ def _create_reponse_for_activated_poll(manager, questionnaire, request):
     end_date = datetime.strptime(request.POST.get('end_date'), '%Y-%m-%dT%H:%M:%S')
     if is_current_active:
         _change_questionnaire_end_date(questionnaire, end_date)
-        UserActivityLog().log(request, action=EDITED_POLL, project=questionnaire.name,
+        UserActivityLog().log(request, action=EDITED_END_DATE_POLL, project=questionnaire.name,
                               detail=questionnaire.name)
         return {'success': True}
     elif not is_active and not is_current_active:

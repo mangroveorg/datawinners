@@ -4723,6 +4723,9 @@ msgstr ""
 msgid "Change"
 msgstr ""
 
+msgid "Change_button"
+msgstr "Change"
+
 msgid "You decide who has permission to submit data using SMS for this Questionnaire:"
 msgstr ""
 
