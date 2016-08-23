@@ -17,6 +17,17 @@ DW.MappingEditor = function(entityType, filters, details, specials) {
     var customizeWidgetTitle = 'Choose which details to display for each ' + capitalizedEntityType;
     var specialIdnrsWidgetTitle = 'By default every '+ capitalizedEntityType +' has the same color. Use colors to differentiate between '+ capitalizedEntityType +' types';
 
+    var showLoader = function () {
+        setTimeout(function() {$.blockUI({ message: '<h1><img src="/media/images/ajax-loader.gif"/><span class="loading">' + gettext("Just a moment") + '...</span></h1>', css: { width: '20%', top: '50%', left: '40%'}});});
+    };
+
+    var hideLoader = function () {
+        setTimeout(function () {
+            $.unblockUI();
+            setTimeout(function(){ showSuccessMessage("Your changes have been saved."); });
+        }, 2000);
+    };
+
     var specialsMap = specials.reduce(function(map, obj) {
         map[obj.code] = obj;
         return map;
@@ -50,18 +61,20 @@ DW.MappingEditor = function(entityType, filters, details, specials) {
 
     var reloadMapPreview = function() {
         mapPreviewWindow.attr('src', mapPreviewWindow.attr('src'));
+        hideLoader();
     };
 
     var showSuccessMessage = function(message) {
          successMessage.text(message)
          successMessage.show()
-         setTimeout(function() { successMessage.hide(); }, 4000);
+         setTimeout(function() { successMessage.hide(); }, 2000);
     };
 
     var saveEntityPreferenceAndReloadMapPreview = function(entityPreference, saveCallback) {
+        $.ajaxSetup({async: false});
+        showLoader();
         saveEntityPreference(entityPreference, function(result) {
             saveCallback(result);
-            showSuccessMessage("Your changes have been saved.");
             reloadMapPreview();
         })
     };
