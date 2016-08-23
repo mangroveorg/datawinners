@@ -9,7 +9,7 @@ def geo_jsons(manager, entity_type, filters, details, specials):
 
     geo_jsons = [{
         "name": entity_type.capitalize(),
-        "data": _geo_json(manager, entity_type, entity_fields, filters, details),
+        "data": _geo_json(manager, entity_type, entity_fields, dict(filters), details),
         "color": "rgb(104, 174, 59)"
     }]
 
