@@ -27,20 +27,6 @@ DW.MappingEditor = function(entityType, filters, details, specials) {
         }, 4000);
     };
 
-    var postNavigationCallback = function() {
-        hideLoader();
-    }
-
-    var postNavigationDone = function (navigationDoneCallback) {
-        setTimeout(function() {
-            if (navigator.geolocation) {
-               navigator.geolocation.getCurrentPosition(navigationDoneCallback);
-            } else {
-                navigationDoneCallback();
-            }
-        }, 1000);
-    }
-
     var specialsMap = specials.reduce(function(map, obj) {
         map[obj.code] = obj;
         return map;
@@ -74,7 +60,7 @@ DW.MappingEditor = function(entityType, filters, details, specials) {
 
     var reloadMapPreview = function() {
         mapPreviewWindow.attr('src', mapPreviewWindow.attr('src'));
-        postNavigationDone(postNavigationCallback);
+        hideLoader();
     };
 
     var showSuccessMessage = function(text) {
