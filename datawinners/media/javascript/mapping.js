@@ -36,14 +36,14 @@ Map = function(fallbackLocation) {
         };
     };
 
-    var addLayer = function(base, geoJsons) {
+    var addLayer = function(base, geoJsons, entityType) {
         geoJsons.forEach(function(geoJson){
             if (geoJson.group) {
                 var group = new layerGroup(geoJson.group);
                 base.addLayer(group.olGroup);
-                addLayer(group, geoJson.data);
+                addLayer(group, geoJson.data, entityType);
             } else {
-                base.addLayer(createVector(geoJson.name, geoJson.data, geoJson.color));
+                base.addLayer(createVector(geoJson.name, geoJson.data, geoJson.color, entityType));
             }
         })
     };
@@ -71,7 +71,7 @@ Map = function(fallbackLocation) {
             ]
         }));
 
-        addLayer(map, geoJsons);
+        addLayer(map, geoJsons, entityType);
 
         map.addControl(new ol.control.LayerSwitcher());
         map.addControl(new ol.control.ScaleLine());
@@ -208,7 +208,7 @@ Map = function(fallbackLocation) {
         popup.show(feature.getGeometry().getCoordinates(), header + content);
     };
 
-    var createVector = function(name, geoJson, color) {
+    var createVector = function(name, geoJson, color, entityType) {
         var source = new ol.source.Vector({
             features: (new ol.format.GeoJSON()).readFeatures(geoJson, {featureProjection: 'EPSG:3857'})
         });
@@ -227,11 +227,19 @@ Map = function(fallbackLocation) {
             layersTitle.find("path").attr("fill", color);
         }});
 
+        var displayInLayerSwitcher = true;
+        if (typeof(name) != "undefined"){
+           if(name.toUpperCase() === entityType.toUpperCase()){
+                displayInLayerSwitcher = false;
+           }
+        }
+
         return new ol.layer.Vector({
             name: name,
             title: name,
             source: source,
-            style: iconStyle
+            style: iconStyle,
+            displayInLayerSwitcher: displayInLayerSwitcher
         });
     };
 

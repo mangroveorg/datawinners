@@ -216,7 +216,7 @@ ol.control.LayerSwitcher.prototype.renderLayers_ = function(lyr, elm) {
     var lyrs = lyr.getLayers().getArray().slice().reverse();
     for (var i = 0, l; i < lyrs.length; i++) {
         l = lyrs[i];
-        if (l.get('title')) {
+        if (l.get('title') && l.get('displayInLayerSwitcher')!=false) {
             elm.appendChild(this.renderLayer_(l, i));
         }
     }
