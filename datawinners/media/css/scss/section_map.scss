@@ -74,9 +74,10 @@ h3#header {
 ul#pop-details {
     padding: 0;
     font-family: Helvetica, Arial, sans-serif;
-    height: 62%;
+    height: 75%;
     width: 100%;
     overflow-x: auto;
+    margin-bottom: 0;
     li {
         list-style-type: none;
         font-size: 0.8em;

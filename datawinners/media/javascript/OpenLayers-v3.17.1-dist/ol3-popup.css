@@ -5,8 +5,8 @@
     /*padding: 15px 25px 15px 15px;*/
     padding: 10px 18px 10px 10px;
     border: 1px solid #cccccc;
-    bottom: 12px;
-    left: -50px;
+    bottom: 25px;
+    left: -45px;
     border-radius: 8px;
     white-space: nowrap;
 }
@@ -38,8 +38,8 @@
 .ol-popup-content {
     /*min-width: 80px;*/
     /*max-height: 400px;*/
-    width: 200px;
-    height: 160px;
+    width: 15em;
+    height: 13em;
     overflow-x: auto;
 }
 
