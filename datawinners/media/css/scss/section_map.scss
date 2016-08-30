@@ -121,4 +121,10 @@ ul#pop-details {
 .layer-switcher {
     font-family: Helvetica, Arial, sans-serif;
     font-size: 0.8em;
+    max-height: none;
+
+    .panel {
+        max-height: 20em;
+        width: 15em;
+    }
 }
