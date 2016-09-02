@@ -187,6 +187,7 @@ class TestSMSTester(HeadlessRunnerTest):
 
         message = fetch_(SMS, from_(test_data))
         test_data.update({SMS: message.replace("wrcode", "cli002")})
+        test_data.update({SENDER: "1234567892"})
         count_before_submission = (self._get_test_paid_org_message_tracker(paid_test_org)).incoming_sms_count
         self.assertEqual(send_sms_with(test_data),
                          "Error. You are not authorized to submit data for this Questionnaire. Please contact your supervisor.")
@@ -213,7 +214,7 @@ class TestSMSTester(HeadlessRunnerTest):
                          "Error. Incorrect answer for question 3. Please review printed Questionnaire and resend entire SMS.")
 
         message = fetch_(SMS, from_(test_data))
-        test_data.update({SMS: message.replace("age", "56")})
+        test_data.update({SMS: message.replace("age", "56").replace("ade","ADE")})
         count_before_submission = (self._get_test_paid_org_message_tracker(paid_test_org)).incoming_sms_count
         self.assertEqual(send_sms_with(test_data),
                          "Thank you Shweta. We received your SMS.")
