@@ -1,6 +1,5 @@
 Map = function(fallbackLocation) {
     var self = this;
-    var popupShownAtleastOnce = false;
     var view = new ol.View({
             maxZoom: 19,
             minZoom: 3,
@@ -201,17 +200,13 @@ Map = function(fallbackLocation) {
         var items = transformFeatureToDetails(feature.getProperties());
         var content = buildPopupContent(items)[0].outerHTML;
         popup.show(feature.getGeometry().getCoordinates(), header + content);
-        if (!popupShownAtleastOnce) {
-            //disable scrolling for outer element
-            $('.ol-popup-content').on('touchstart', function(event) { event.preventDefault();});
-            $('.ol-popup-content').on('touchmove', function(event) { event.preventDefault();});
+        //disable scrolling for outer element
+        $('.ol-popup-content').on('touchstart', function(event) { event.preventDefault();});
+        $('.ol-popup-content').on('touchmove', function(event) { event.preventDefault();});
 
-            //stop scrolling event propagation from inner to outer element
-            $('#pop-details').on('touchstart', function(event) { event.stopPropagation(); } );
-            $('#pop-details').on('touchmove', function(event) { event.stopPropagation(); } );
-
-            popupShownAtleastOnce = true;
-        }
+        //stop scrolling event propagation from inner to outer element
+        $('#pop-details').on('touchstart', function(event) { event.stopPropagation(); } );
+        $('#pop-details').on('touchmove', function(event) { event.stopPropagation(); } );
     };
 
     var createVector = function(name, geoJson, color, entityType) {
