@@ -77,12 +77,6 @@ Map = function(fallbackLocation) {
         map.addControl(new ol.control.LayerSwitcher());
         map.addControl(new ol.control.ScaleLine());
         map.addControl(new ol.control.Zoom());
-        map.addControl(new Geocoder('nominatim', {
-            provider: 'osm',
-            lang: 'km',
-            placeholder: 'Search for ...',
-            limit: 5
-        }));
 
         map.on("pointermove", setCursor);
 
