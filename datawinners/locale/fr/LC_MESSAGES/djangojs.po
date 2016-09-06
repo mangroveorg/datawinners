@@ -1576,14 +1576,17 @@ msgstr "Supprimer ce Sondage"
 msgid "Delete this Poll?"
 msgstr "Supprimer ce Sondage?"
 
-msgid " active From : "
+msgid " active from "
 msgstr " actif du  "
 
-msgid "To : "
+msgid " to "
 msgstr " au "
 
 msgid "Response"
 msgstr "Réponse"
+
+msgid "deactivated"
+msgstr "désactivé"
 
 msgid "Deactivated"
 msgstr "désactivé"
@@ -1594,8 +1597,8 @@ msgstr "Changer"
 msgid "Activate"
 msgstr "Activer"
 
-msgid "Active"
-msgstr "Actif"
+msgid "active"
+msgstr "actif"
 
 msgid "The list of your Poll Recipients is empty."
 msgstr "La liste des destinataires de votre Sondage est vide."
@@ -1613,14 +1616,17 @@ msgstr "Désactiver le Sondage?"
 msgid "Activate Poll?"
 msgstr "Activer le Sondage?"
 
+msgid "Edit Poll"
+msgstr "Modifier le Sondage"
+
 msgid "Remove from Poll"
 msgstr "Retirer du Sondage"
 
-msgid "From : "
-msgstr "Du : "
+msgid "From: "
+msgstr "Du: "
 
-msgid " To : "
-msgstr " Au : "
+msgid " To: "
+msgstr " Au: "
 
 
 msgid " inactive"
