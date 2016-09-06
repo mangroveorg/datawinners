@@ -182,19 +182,18 @@ ol.control.LayerSwitcher.prototype.renderLayer_ = function(lyr, idx) {
     } else {
 
         li.className = 'layer';
-        var input = document.createElement('input');
+
         if (lyr.get('type') === 'base') {
+            var input = document.createElement('input');
             input.type = 'radio';
             input.name = 'base';
-        } else {
-            input.type = 'checkbox';
+            input.id = lyrId;
+            input.checked = lyr.get('visible');
+            input.onchange = function(e) {
+                this_.setVisible_(lyr, e.target.checked);
+            };
+            li.appendChild(input);
         }
-        input.id = lyrId;
-        input.checked = lyr.get('visible');
-        input.onchange = function(e) {
-            this_.setVisible_(lyr, e.target.checked);
-        };
-        li.appendChild(input);
 
         label.htmlFor = lyrId;
         label.innerHTML = lyrTitle;
