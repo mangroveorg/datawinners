@@ -20,11 +20,8 @@ def geo_jsons(manager, entity_type, filters, details, specials):
             filters_with_special = dict(filters)
             filters_with_special.update({special: choice['value']})
             is_geojson_for_special_required = True
-            if special in filters.keys():
-                if choice['value'] in dict(filters).get(special):
-                    is_geojson_for_special_required = True
-                else:
-                    is_geojson_for_special_required = False
+            if special in filters.keys() and choice['value'] not in dict(filters).get(special):
+                is_geojson_for_special_required = False
             matched_choices = [c['text'] for c in field['choices'] if c['val'] == choice['value']]
             if matched_choices:
                 data = _geo_json(manager, entity_type, entity_fields, filters_with_special,
