@@ -2172,17 +2172,22 @@ msgstr "Tout le monde peut envoyer une réponse SMS"
 msgid "How Long Should the Poll be Active?"
 msgstr "Combien de temps le Sondage sera-t-il actif ?"
 
-msgid "Choose the number of days people can respond to this poll."
-msgstr "Choisissez le nombre de jours durant lequel les gens peuvent répondre au Sondage."
+msgid "Select an end date for your poll.The poll will be active from the moment you've create the poll.You can deactivate it before the end date if needed."
+msgstr "Sélectionnez une date de fin. Le sondage sera actif à compter du moment où vous le sauvegardez jusqu’à cette date."
 
 msgid "Active for"
 msgstr "Actif pour"
 
-msgid "From : "
-msgstr "Du : "
+msgid "Active from"
+msgstr "Actif du"
 
-msgid "To : "
-msgstr "Au : "
+
+
+msgid "From "
+msgstr "Du "
+
+msgid "to "
+msgstr "au "
 
 msgid "Poll is"
 msgstr "Le Sondage est"
@@ -2267,6 +2272,9 @@ msgstr "Supprimer le Sondage"
 
 msgid "Text:"
 msgstr "Texte:"
+
+msgid "To : "
+msgstr " Au: "
 
 msgid "To:"
 msgstr "Pour:"
@@ -5769,6 +5777,10 @@ msgstr "Personne autorisée à soumettre des données via SMS"
 msgid "Change"
 msgstr "Changement"
 
+msgid "Change_button"
+msgstr "Modifier"
+
+
 msgid "You decide who has permission to submit data using SMS for this Questionnaire:"
 msgstr "Vous décidez qui a la permission de soumettre des données via SMS pour ce Questionnaire :"
 
@@ -6199,6 +6211,9 @@ msgstr "Sondage désactivé"
 
 msgid "Activated Poll"
 msgstr "Sondage activé"
+
+msgid "Changed End Date"
+msgstr "A changé la date de fin"
 
 msgid "alert_message_for_project_manager"
 msgstr "Si vous retirez l’accès à un Questionnaire ou un Sondage, la personne sera également retirée de la liste des Expéditeurs de Données. Vous pouvez ajouter cette personne en tant qu’Expéditeur de Données à un Questionnaire ou un Sondage sur la page Contacts."

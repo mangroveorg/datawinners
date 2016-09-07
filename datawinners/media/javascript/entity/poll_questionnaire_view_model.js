@@ -3,7 +3,7 @@ function PollViewModel() {
     self.show_sms = ko.observable(gettext('Save/Create Poll'));
     self.number_of_days = ko.observable();
     self.to_date_poll = ko.observable();
-
+    self.endDate= ko.observable(new Date());
     self.show_sms.subscribe(function(){
        window.smsViewModel.clearSelection();
     });
@@ -48,7 +48,6 @@ function PollViewModel() {
         }
         return false;
     });
-
     self.validateCreatePoll = function(){
         return (DW.ko.mandatoryValidator(window.questionnaireViewModel.projectName) && ((window.smsViewModel.validate() == 1) || self.show_sms() == 'Save Poll'));
     };
@@ -72,7 +71,6 @@ function PollViewModel() {
             window.smsViewModel.sendSms(project_id)
         }
     }
-
     self.create_poll = function(){
         if(self.validateCreatePoll()) {
             var selected_option = {};
@@ -86,14 +84,13 @@ function PollViewModel() {
             else{
                 selected_option = get_questionnaire_or_group_names(selected_option);
             }
-
             var data = {
                 'poll_name': window.questionnaireViewModel.projectName().trim(),
-                'active_days': self.to_date_poll,
+                'active_days': self.endDate(),
                 'question': question,
                 'selected_option' : JSON.stringify(selected_option),
                 'csrfmiddlewaretoken': $("#poll_form input[name=csrfmiddlewaretoken]").val(),
-                'end_date' : end_date.getFullYear() +"-"+ (end_date.getMonth()+1)+"-" + end_date.getDate()+"T" + end_date.getHours() +":"+ end_date.getMinutes() +":"+ end_date.getSeconds()
+                'end_date' : self.endDate().getFullYear() +"-"+ (self.endDate().getMonth()+1)+"-" + self.endDate().getDate()+"T" + self.endDate().getHours() +":"+ self.endDate().getMinutes() +":"+ self.endDate().getSeconds()
             };
             $.blockUI({ message: '<h1><img src="/media/images/ajax-loader.gif"/><span class="loading">' + gettext("Just a moment") + '...</span></h1>', css: { width: '275px'}});
             $.post(create_poll_url, data).done(function (response) {
