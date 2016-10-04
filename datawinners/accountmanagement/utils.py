@@ -17,13 +17,13 @@ PRO_SMS_YEARLY_PRICING = 299
 
 def get_email_detail_by_type(email_type):
     mail_dict = {'three_days_after_activation':("Datawinners | Become a DataWinners Pro in Two Weeks",
-                                              "basicaccount/three_days_after_activation", None),
+                                              "basicaccount/three_days_after_activation", settings.HNI_SUPPORT_EMAIL_ID),
                  'five_days_after_activation':("Datawinners | Authorize your DataWinners Data Senders to Submit Data",
-                                              "basicaccount/five_days_after_activation", None),
+                                              "basicaccount/five_days_after_activation", settings.HNI_SUPPORT_EMAIL_ID),
                  'seven_days_after_activation':("Datawinners | Collect and View Your Data with DataWinners",
-                                              "basicaccount/seven_days_after_activation", None),
+                                              "basicaccount/seven_days_after_activation", settings.HNI_SUPPORT_EMAIL_ID),
                  'nine_days_after_activation':("Datawinners | Use Advanced Logic and Collect Media Files with DataWinners",
-                                              "basicaccount/nine_days_after_activation", None),
+                                              "basicaccount/nine_days_after_activation", settings.HNI_SUPPORT_EMAIL_ID),
                  'two_months_after_activation': ("Datawinners | Join our Online Community!",
                                               "basicaccount/two_months_after_activation", None),
                  'four_months_after_activation': ("Datawinners | Send Us Your story!",
