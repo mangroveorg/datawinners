@@ -11,7 +11,9 @@ from datawinners.main.management.sync_changed_views import SyncOnlyChangedViews
 from datawinners.settings import ELASTIC_SEARCH_URL, ELASTIC_SEARCH_TIMEOUT
 from mangrove.errors.MangroveException import DataObjectAlreadyExists
 from mangrove.datastore.entity import create_contact
-from mangrove.form_model.form_model import REPORTER, MOBILE_NUMBER_FIELD, NAME_FIELD, EMAIL_FIELD, LOCATION_TYPE_FIELD_NAME
+from mangrove.form_model.form_model import REPORTER, MOBILE_NUMBER_FIELD, NAME_FIELD, EMAIL_FIELD, \
+    LOCATION_TYPE_FIELD_NAME, \
+    ENTITY_TYPE_FIELD_NAME, SHORT_CODE_FIELD
 from mangrove.datastore.queries import get_entity_count_for_type
 
 
@@ -76,9 +78,9 @@ def active_organization(org):
         org.save()
 
 
-def _create_entity_data(current_user_name, email, location, mobile_number):
-    data = [(MOBILE_NUMBER_FIELD, mobile_number), (NAME_FIELD, current_user_name),
-            (LOCATION_TYPE_FIELD_NAME, location)]
+def _create_entity_data(current_user_name, email, location, mobile_number, short_code):
+    data = [(MOBILE_NUMBER_FIELD, mobile_number), (NAME_FIELD, current_user_name), (SHORT_CODE_FIELD, short_code),
+            (LOCATION_TYPE_FIELD_NAME, location), (ENTITY_TYPE_FIELD_NAME, [REPORTER])]
     if email:
         data.append((EMAIL_FIELD, email))
     return data
@@ -93,12 +95,12 @@ def make_user_as_a_datasender(manager, organization, current_user_name, mobile_n
         reporter_short_code = 'rep' + str(total_entity + offset)
         try:
             entity = create_contact(dbm=manager, short_code=reporter_short_code,
-                                   location=location)
+                                    location=location)
             reporter_id = entity.short_code
         except DataObjectAlreadyExists:
             offset += 1
 
-    data = _create_entity_data(current_user_name, email, location, mobile_number)
+    data = _create_entity_data(current_user_name, email, location, mobile_number, reporter_id)
     entity.add_data(data=data, submission={"form_code": "reg"})
     entity.save()
 
@@ -106,5 +108,3 @@ def make_user_as_a_datasender(manager, organization, current_user_name, mobile_n
         data_sender = DataSenderOnTrialAccount.objects.model(mobile_number=mobile_number, organization=organization)
         data_sender.save(force_insert=True)
     return entity.short_code
-
-
