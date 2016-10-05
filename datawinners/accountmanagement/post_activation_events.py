@@ -10,8 +10,7 @@ from datawinners.feeds.database import get_feed_db_from_main_db_name
 from datawinners.main.management.sync_changed_views import SyncOnlyChangedViews
 from datawinners.settings import ELASTIC_SEARCH_URL, ELASTIC_SEARCH_TIMEOUT
 from mangrove.errors.MangroveException import DataObjectAlreadyExists
-from mangrove.transport.repository.reporters import REPORTER_ENTITY_TYPE
-from mangrove.datastore.entity import create_entity, create_contact
+from mangrove.datastore.entity import create_contact
 from mangrove.form_model.form_model import REPORTER, MOBILE_NUMBER_FIELD, NAME_FIELD, EMAIL_FIELD, LOCATION_TYPE_FIELD_NAME
 from mangrove.datastore.queries import get_entity_count_for_type
 
@@ -77,11 +76,11 @@ def active_organization(org):
         org.save()
 
 
-def _create_entity_data(manager, current_user_name, email, location, mobile_number):
+def _create_entity_data(current_user_name, email, location, mobile_number):
     data = [(MOBILE_NUMBER_FIELD, mobile_number), (NAME_FIELD, current_user_name),
             (LOCATION_TYPE_FIELD_NAME, location)]
     if email:
-        data.append((EMAIL_FIELD, email ))
+        data.append((EMAIL_FIELD, email))
     return data
 
 
@@ -99,8 +98,8 @@ def make_user_as_a_datasender(manager, organization, current_user_name, mobile_n
         except DataObjectAlreadyExists:
             offset += 1
 
-    data = _create_entity_data(manager, current_user_name, email, location, mobile_number)
-    entity.add_data(data=data)
+    data = _create_entity_data(current_user_name, email, location, mobile_number)
+    entity.add_data(data=data, submission={"form_code": "reg"})
     entity.save()
 
     if organization.in_trial_mode:
