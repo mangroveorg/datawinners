@@ -151,6 +151,7 @@ var PollOptionsViewModel = function() {
 
                 $('#send_sms').removeClass('link_color disable_link');
                  DW.trackEvent('Poll', 'Activation');
+                self.number_of_days(self.calculate_difference_from_today());
 
             }
             else {
@@ -161,6 +162,12 @@ var PollOptionsViewModel = function() {
             }
         });
         self.close_activation_popup();
+    };
+    self.calculate_difference_from_today= function() {
+        var end = poll_options.endDate();
+        var from = new Date();
+        var calculate_days = new CalculateDays(end,from);
+        return calculate_days.get_difference_between_dates();
     };
     self.edit_poll = function() {
         data = {
@@ -180,7 +187,8 @@ var PollOptionsViewModel = function() {
                 $('<div class="success-message-box" id="poll-success-message">' + gettext('Your changes have been saved.') +'</div>').insertBefore($("#poll_options"));
 
                 $('#send_sms').removeClass('link_color disable_link');
-                 DW.trackEvent('Poll', 'Activation');
+                 DW.trackEvent('Poll', 'Edit');
+                self.number_of_days(self.calculate_difference_from_today());
 
             }
             else {
