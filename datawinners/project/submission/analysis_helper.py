@@ -30,6 +30,8 @@ def enrich_analysis_data(record, questionnaire, submission_id, is_export=False):
             record_as_dict = record.to_dict()   
                 
         for key, value in record_as_dict.iteritems():
+            del record[key]
+            record[key.replace("."," ")] = value
             if isinstance(value, basestring):
                 try:
                     value_obj = json.loads(value)
@@ -112,4 +114,3 @@ def get_field_set_fields(form_model_id, fields, parent_field_code=None):
             group_field_code = field.code if field.is_group() else None
             field_set_field_dict.update(get_field_set_fields(form_model_id, field.fields, group_field_code))
     return field_set_field_dict
-    
