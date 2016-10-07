@@ -31,7 +31,7 @@ class SubmissionHeader(object):
         entity_question_dict = dict((self._get_entity_question_path(field), field) for field in entity_questions)
         headers = header_fields(self.form_model, key_attribute)
         for field_code, val in headers.items():
-            key = es_questionnaire_field_name(field_code.replace(".", " "), self.form_model.id)
+            key = es_questionnaire_field_name(field_code, self.form_model.id)
             if field_code in entity_question_dict.keys():
                 self.add_unique_id_field(entity_question_dict.get(field_code), header_dict)
             else:
@@ -92,7 +92,7 @@ class SubmissionAnalysisHeader(SubmissionHeader):
             elif isinstance(field, FieldSet) and field.is_group():
                 self._update_header_dict_from_fields(field.fields, header_dict, field.code)
             else:
-                key = es_questionnaire_field_name(field.code.replace(".", " "), self.form_model.id, parent_field_code=parent_field_code)
+                key = es_questionnaire_field_name(field.code, self.form_model.id, parent_field_code=parent_field_code)
                 header_dict.update({key: field.label})
 
 
