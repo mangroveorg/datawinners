@@ -164,7 +164,8 @@ class SubmissionQueryResponseCreator(object):
                 return _format_media_value(submission_id, safe_getattr(res, key))
 
         else:
-            return safe_getattr(res, ugettext(key))
+            temp_dict = {code.replace(".", " "):res[code] for code in res}
+            return temp_dict.get(ugettext(key))
 
     def create_aggregate_response(self, search_results, search_parameters):
         aggr_result = []
