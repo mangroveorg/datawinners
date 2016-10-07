@@ -1,5 +1,4 @@
 from collections import OrderedDict
-from datetime import datetime
 import json
 import os
 from tempfile import TemporaryFile, mkdtemp
@@ -19,7 +18,6 @@ from datawinners.project.submission.formatter import SubmissionFormatter, GEOCOD
 from datawinners.project.submission.submission_search import get_scrolling_submissions_query
 from datawinners.search.submission_index_constants import SubmissionIndexConstants
 from mangrove.datastore.documents import SurveyResponseDocument
-from mangrove.form_model.field import ExcelDate, DateField
 from datawinners.project.submission.analysis_helper import enrich_analysis_data
 from datawinners.project.submission.util import AccessFriendlyDict
 import logging
@@ -274,7 +272,7 @@ class AdvancedQuestionnaireSubmissionExporter():
                                     
                             
                 else:
-                    column_header = self._check_and_return_column_header(key, self.columns.get(key).get('label'))
+                    column_header = self._check_and_return_column_header(key, preference.get("title"))
                     dict_extend_list_value(excel_headers, 'main', column_header)
         return excel_headers
 
