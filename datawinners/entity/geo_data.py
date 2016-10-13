@@ -1,4 +1,5 @@
 import json
+from collections import OrderedDict
 
 from mangrove.datastore.entity import get_all_entities
 from mangrove.errors.MangroveException import DataObjectNotFound
@@ -77,7 +78,7 @@ def _geo_json(dbm, entity_type, entity_fields, filters, details):
             details.extend(['q2'])
             fields_to_show = filter(lambda field: field['code'] in details, entity_fields)
             location_list.extend(_get_detail_list_for_entities(
-                _get_field_labels(fields_to_show),
+                _get_field_labels(sorted(fields_to_show, key=lambda f: (f['code'] == 'q6', int(f['code'].split("q")[-1])))),
                 first_geocode_field,
                 unique_ids
             ))
@@ -99,7 +100,7 @@ def _transform_filters(filters, entity_all_fields):
 
 
 def _get_field_labels(entity_fields):
-    dict_simplified = {}
+    dict_simplified = OrderedDict()
     for field in entity_fields :
         dict_simplified[field['name']] = field['label']
     return dict_simplified
@@ -135,14 +136,14 @@ def _to_json_point(value):
 
 
 def _simplify_field_data(data, entity_field_labels, entity_type=None):
-    simple_data = {}
+    simple_data = OrderedDict()
 
     if entity_type is not None:
         simple_data['entity_type'] = {}
         simple_data['entity_type']["value"] = entity_type
         simple_data['entity_type']["label"] = ""
 
-    entity_details = [item for item in data.items() if item[0] in entity_field_labels.keys()]
+    entity_details = [(key, data.get(key)) for key in entity_field_labels if key in data.keys()]
 
     for key, value_field in entity_details:
         one_field_data = {}
@@ -157,4 +158,5 @@ def _simplify_field_data(data, entity_field_labels, entity_type=None):
             one_field_data["label"] = ""
 
         simple_data[key] = one_field_data
+
     return simple_data
