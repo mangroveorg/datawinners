@@ -1,6 +1,6 @@
 from mangrove.datastore.documents import SurveyResponseDocument
 
-from datawinners.search.submission_index_task import async_reindex
+from mangrove.transport.contract.survey_response import SurveyResponse
 
 
 class Submission(object):
@@ -13,13 +13,11 @@ class Submission(object):
         rows = self.manager.database.iterview("surveyresponse/surveyresponse", 1000, reduce=False, include_docs=False,
                                               startkey=[questionnaire.id], endkey=[questionnaire.id, {}])
 
-        success = False
         for row in rows:
+            success = False
             submission = SurveyResponseDocument._wrap_row(row)
             for rule in self.rules:
                 success = success or rule.update_submission(submission)
-                if success:
-                    submission.store(self.manager.database)
-
-        if success:
-            async_reindex.apply_async((self.dbname, questionnaire.id), countdown=5, retry=False)
+            if success:
+                survey_response = SurveyResponse.new_from_doc(self.manager, submission)
+                survey_response.save()
