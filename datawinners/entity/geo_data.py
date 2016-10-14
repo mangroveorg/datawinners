@@ -78,7 +78,7 @@ def _geo_json(dbm, entity_type, entity_fields, filters, details):
             details.extend(['q2'])
             fields_to_show = filter(lambda field: field['code'] in details, entity_fields)
             location_list.extend(_get_detail_list_for_entities(
-                _get_field_labels(sorted(fields_to_show, key=lambda f: (f['code'] == 'q6', int(f['code'].split("q")[-1])))),
+                _get_field_labels(fields_to_show),
                 first_geocode_field,
                 unique_ids
             ))
