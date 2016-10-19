@@ -1,3 +1,4 @@
+import logging
 from datawinners.main.database import get_db_manager
 from datawinners.tasks import app
 from mangrove.datastore.documents import SurveyResponseDocument
@@ -11,8 +12,11 @@ def update_all(database_name, rules, questionnaire_id):
     rows = manager.database.iterview("surveyresponse/surveyresponse", 1000, reduce=False, include_docs=False,
                                           startkey=[questionnaire_id], endkey=[questionnaire_id, {}])
 
+    logger = logging.getLogger(database_name)
+
     for row in rows:
         success = False
+        logger.info('Entering update for row')
         submission = SurveyResponseDocument._wrap_row(row)
         for rule in rules:
             success = success or rule.update_submission(submission)
