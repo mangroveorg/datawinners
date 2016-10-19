@@ -40,7 +40,6 @@ from datawinners.blue.rules.factory import get_all_rules
 from datawinners.blue.xform_bridge import MangroveService, XlsFormParser, XFormTransformer, XFormSubmissionProcessor, \
     get_generated_xform_id_name, XFormImageProcessor
 from datawinners.blue.xform_edit.questionnaire import Questionnaire
-from datawinners.blue.xform_edit.submission import Submission
 from datawinners.blue.xform_edit.validator import Validator
 from datawinners.blue.xform_editor import XFormEditor, UnsupportedXformEditException
 from datawinners.blue.xform_web_submission_handler import XFormWebSubmissionHandler
@@ -241,7 +240,7 @@ def _edit_questionnaire(request, project_id, excel_file=None, excel_as_dict=None
             excel_file.seek(0)
         questionnaire_wrapper = Questionnaire(excel_file)
         activity_log_detail = {}
-        XFormEditor(Submission(manager, get_database_name(request.user), xform_rules), Validator(xform_rules),
+        XFormEditor(get_database_name(request.user), xform_rules, Validator(xform_rules),
                     questionnaire_wrapper).edit(new_questionnaire, questionnaire, activity_log_detail)
         questionnaire = Project.get(manager, project_id)
         _save_questionnaire_as_dict_for_builder(questionnaire, excel_as_dict, excel_file)
