@@ -5,7 +5,7 @@ from mangrove.datastore.documents import SurveyResponseDocument
 from mangrove.transport.contract.survey_response import SurveyResponse
 
 
-@app.task(max_retries=1, throw=False, track_started=True)
+@app.task(max_retries=3, throw=False, track_started=True)
 def update_all(database_name, rules, questionnaire_id):
     manager = get_db_manager(database_name)
     rows = manager.database.iterview("surveyresponse/surveyresponse", 1000, reduce=False, include_docs=False,
