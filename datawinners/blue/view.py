@@ -19,6 +19,7 @@ from django.utils.translation import ugettext
 from django.utils.translation import ugettext as _
 from django.views.decorators.csrf import csrf_view_exempt, csrf_response_exempt, csrf_exempt
 from django.views.generic.base import View
+from datawinners.blue.xform_edit.submission import Submission
 from mangrove.datastore.entity_type import get_unique_id_types
 
 from pyxform.errors import PyXFormError, BindError
@@ -240,7 +241,7 @@ def _edit_questionnaire(request, project_id, excel_file=None, excel_as_dict=None
             excel_file.seek(0)
         questionnaire_wrapper = Questionnaire(excel_file)
         activity_log_detail = {}
-        XFormEditor(get_database_name(request.user), xform_rules, Validator(xform_rules),
+        XFormEditor(Submission(manager, get_database_name(request.user), xform_rules), Validator(xform_rules),
                     questionnaire_wrapper).edit(new_questionnaire, questionnaire, activity_log_detail)
         questionnaire = Project.get(manager, project_id)
         _save_questionnaire_as_dict_for_builder(questionnaire, excel_as_dict, excel_file)
