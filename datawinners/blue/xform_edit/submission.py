@@ -12,7 +12,7 @@ class Submission(object):
         self.dbname = dbname
         self.rules = rules
 
-    def update_all(self,questionnaire_id):
+    def update_all(self, questionnaire_id):
         rows = self.manager.database.iterview("surveyresponse/surveyresponse", 1000, reduce=False, include_docs=False,
                                               startkey=[questionnaire_id], endkey=[questionnaire_id, {}])
     

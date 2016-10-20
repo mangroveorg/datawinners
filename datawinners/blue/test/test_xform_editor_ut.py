@@ -33,4 +33,4 @@ class TestXformEditor(unittest.TestCase):
 
         XFormEditor(submission, validator, questionnaire).edit(new_questionnaire, old_questionnaire, {})
         questionnaire.save.assert_called_once_with(new_questionnaire)
-        submission.update_all.assert_called_once_with(new_questionnaire)
+        submission.update_all.assert_called_once_with(new_questionnaire.id)
