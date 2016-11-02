@@ -1,0 +1,22 @@
+{% extends 'layout_application.html' %}
+
+{% load i18n %}
+{% load dw_tabs %}
+
+{% block page_title %}{% trans "Reports" %}{% endblock %}
+{% block section_title %}{% trans "Reports" %}{% endblock %}
+{% block section_help %}{% endblock %}
+{% block body %}
+    {% activetab "main_nav" "reports" %}
+    {{ block.super }}
+{% endblock %}
+
+{% block navigation %}
+    <div class="tab_navigation">
+        <ul>
+            <li class="active">Rep1</li>
+            <li>Rep2</li>
+        </ul>
+    </div>
+{% endblock %}
+{% block content %}<div>Hello World</div>{% endblock %}
