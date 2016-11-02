@@ -672,10 +672,13 @@ def _get_field_to_sort_on(post_dict, form_model, filter_type):
 def get_analysis_data(request, form_code):
     dbm, questionnaire, pagination_params, \
     local_time_delta, sort_params, search_parameters = _get_all_criterias_from_request(request, form_code)
-    
+
+    logger.info("Fetching search results")
     search_results = get_submissions_paginated_simple(dbm, questionnaire, pagination_params, local_time_delta,
                                                       sort_params, search_parameters)
+    logger.info("Search results obtained")
     data = _create_analysis_response(dbm, local_time_delta, search_results, questionnaire)
+    logger.info("Post processing of search results done")
     return HttpResponse(
         jsonpickle.encode(
             {
@@ -724,7 +727,9 @@ def _create_analysis_response(dbm, local_time_delta, search_results, questionnai
 
 def _transform_elastic_to_analysis_view(dbm, local_time_delta, record, questionnaire):
     record.date = convert_to_localized_date_time(record.date, local_time_delta)
+    logger.info("Triggering enrich of one row analysis data for linked id")
     record = enrich_analysis_data(record, questionnaire, record.meta.id)
+    logger.info("Completed enrich of one row analysis data for linked id")
     return record
 
 @csrf_view_exempt
