@@ -10,6 +10,9 @@ import time
 from mangrove.form_model.form_model import FormModel
 from django.conf import settings
 
+from mangrove.transport.contract.survey_response import get_survey_responses_by_form_model_id
+
+
 def populate_submission_index(dbm, form_model_id=None):
     logger = logging.getLogger()
     if form_model_id is None:
@@ -19,9 +22,7 @@ def populate_submission_index(dbm, form_model_id=None):
             populate_submission_index(dbm, q.key)
     else:
         start = time.time()
-        start_key = [form_model_id] if form_model_id else []
-        end_key = [form_model_id, {}] if form_model_id else [{}, {}]
-        rows = dbm.database.iterview("surveyresponse/surveyresponse", 1000, reduce=False, include_docs=False, startkey=start_key, endkey=end_key)
+        rows = get_survey_responses_by_form_model_id(dbm, form_model_id)
         form_model = FormModel.get(dbm, form_model_id)
         logger = logging.getLogger(form_model.name)
         ignored = 0
