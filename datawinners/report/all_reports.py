@@ -8,7 +8,6 @@ from mangrove.datastore.report_config import get_report_configs, get_report_conf
 
 
 class AllReportsView(TemplateView):
-    BATCH_SIZE = 25
     template_name = 'report/index.html'
 
     def get(self, request, *args, **kwargs):

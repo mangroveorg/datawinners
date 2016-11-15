@@ -419,116 +419,111 @@ def _update_repeat_fields_with_choice_values(repeat_entries, repeat_field):
                 _update_choice_value(entry, field)
 
 
-def _update_search_dict(dbm, form_model, fields, search_dict, submission_doc, submission_values,
-                        parent_field_name=None):
+def _update_search_dict(dbm, form_model, fields, search_dict, submission_doc, submission_values, parent_field_name=None):
     for field in fields:
-        field_code = field.code
-        entry = submission_values.get(field_code)
-        if field.is_entity_field:
-            if entry:
-                original_field = form_model.get_field_by_code_and_rev(field.code, submission_doc.form_model_revision)
+        entry = submission_values.get(field.code)
+        label_to_be_displayed = get_label_to_be_displayed(entry, field, form_model, submission_doc)
+        es_field_name = es_questionnaire_field_name(field.code, form_model.id, parent_field_name)
 
-                if is_original_question_changed_from_choice_answer_type(original_field, field):
-                    entry = convert_choice_options_to_options_text(original_field, entry)
-                entity = lookup_entity(dbm, entry, [field.unique_id_type])
-                search_dict.update({})
-                entity_name = entity.get('q2')
-                entry_code = entry
-                search_dict.update(
-                    {es_unique_id_details_field_name(
-                        es_questionnaire_field_name(field.code, form_model.id,
-                                                    parent_field_name)): entity})
-                search_dict.update(
-                    {es_unique_id_code_field_name(
-                        es_questionnaire_field_name(field.code, form_model.id,
-                                                    parent_field_name)): entry_code or UNKNOWN})
-                entry = entity_name
-        elif field.type == "select":
-            field = _get_select_field_by_revision(field, form_model, submission_doc)
-            if field.type == "select":
-                entry = field.get_option_value_list(entry)
-            elif field.type == "select1":
-                entry = ",".join(field.get_option_value_list(entry))
-        elif field.type == "select_one_external":
-            field = _get_select_field_by_revision(field, form_model, submission_doc)
-            if isinstance(field, SelectOneExternalField):
-                itemsets_data = form_model.get_attachments('itemsets.csv')
-                entry = field.get_option_value_list(entry, itemsets_data)
-        elif field.type == "select1":
-            field = _get_select_field_by_revision(field, form_model, submission_doc)
-            if field.type == "select":
-                entry = field.get_option_value_list(entry)
-            elif field.type == "select1":
-                entry = ",".join(field.get_option_value_list(entry))
-        elif field.type == 'text':
-            field_for_revision = form_model.get_field_by_code_and_rev(field.code, submission_doc.form_model_revision)
-            if isinstance(field_for_revision, SelectField):
-                entry = _get_select_field_answer_from_snapshot(entry, field_for_revision)
-        elif field.type == "date":
-            try:
-                if form_model.revision != submission_doc.form_model_revision:
-                    old_submission_value = entry
-                    to_format = field.date_format
-                    field_for_revision = form_model.get_field_by_code_and_rev(field.code,
-                                                                              submission_doc.form_model_revision)
-                    if isinstance(field_for_revision, DateField):
-                        current_date = field_for_revision.__date__(entry)
-                        entry = current_date.strftime(DateField.DATE_DICTIONARY.get(to_format))
-                    elif isinstance(field_for_revision, SelectField):
-                        entry = _get_select_field_answer_from_snapshot(entry, field_for_revision)
-                    logger.info("Converting old date submission from %s to %s" % (old_submission_value, entry))
-            except Exception as ignore_conversion_errors:
-                pass
-        if entry:
+        if label_to_be_displayed:
             if 'media' not in search_dict.keys():
                 search_dict.update({'media': {}})
 
-            submission_id = submission_doc.id
-            value = submission_values[field_code]
             if isinstance(field, PhotoField):
-                search_dict['media'].update({es_questionnaire_field_name(field.code,
-                                                                         form_model.id, parent_field_name):
+                search_dict['media'].update({es_field_name:
                     {
                         'type': 'image',
-                        'value': value,
-                        'download_link': '/download/attachment/' + submission_id + '/' + value,
-                        'preview_link': '/download/attachment/' + submission_id + '/preview_' + value,
+                        'value': entry,
+                        'download_link': '/download/attachment/' + submission_doc.id + '/' + entry,
+                        'preview_link': '/download/attachment/' + submission_doc.id + '/preview_' + entry,
                     }
                 })
+
             if isinstance(field, AudioField):
-                search_dict['media'].update({es_questionnaire_field_name(field.code,
-                                                                         form_model.id, parent_field_name):
+                search_dict['media'].update({es_field_name:
                     {
                         'type': 'audio',
-                        'value': value,
-                        'download_link': '/download/attachment/' + submission_id + '/' + value,
+                        'value': entry,
+                        'download_link': '/download/attachment/' + submission_doc.id + '/' + entry,
                     }
                 })
+
             if isinstance(field, VideoField):
-                search_dict['media'].update({es_questionnaire_field_name(field.code,
-                                                                         form_model.id, parent_field_name):
+                search_dict['media'].update({es_field_name:
                     {
                         'type': 'video',
-                        'value': value,
-                        'download_link': '/download/attachment/' + submission_id + '/' + value,
+                        'value': entry,
+                        'download_link': '/download/attachment/' + submission_doc.id + '/' + entry,
                     }
                 })
 
             if isinstance(field, FieldSet):
                 if field.is_group():
-                    for value in submission_values[field_code]:
-                        _update_search_dict(dbm, form_model, field.fields, search_dict, submission_doc, value,
-                                            field.code)
+                    for value in entry:
+                        _update_search_dict(dbm, form_model, field.fields, search_dict, submission_doc, value, field.code)
                 else:
-                    _update_repeat_fields_with_choice_values(entry, field)
-                    _update_name_unique_code(dbm, entry, field)
-                    search_dict.update(
-                        {es_questionnaire_field_name(field_code, form_model.id, parent_field_name): json.dumps(entry)})
+                    _update_repeat_fields_with_choice_values(label_to_be_displayed, field)
+                    _update_name_unique_code(dbm, label_to_be_displayed, field)
+                    search_dict.update({es_field_name: json.dumps(label_to_be_displayed)})
+            elif field.is_entity_field:
+                entity, choice_to_entity_entry = get_entity(dbm, entry, field, form_model, submission_doc)
+                if entry:
+                    search_dict.update({es_unique_id_details_field_name(es_field_name): entity})
+                    search_dict.update({es_unique_id_code_field_name(es_field_name): choice_to_entity_entry or UNKNOWN})
+                search_dict.update({es_field_name: entry and entity.get('q2')})
             else:
-                search_dict.update({es_questionnaire_field_name(field.code, form_model.id, parent_field_name): entry})
+                search_dict.update({es_field_name: label_to_be_displayed})
 
     search_dict.update({'void': submission_doc.void})
     search_dict.update({'is_anonymous': submission_doc.is_anonymous_submission})
+
+
+def get_label_to_be_displayed(entry, field, form_model, submission_doc):
+    if field.type == "select":
+        old_field = _get_select_field_by_revision(field, form_model, submission_doc)
+        if old_field.type == "select":
+            entry = old_field.get_option_value_list(entry)
+        elif old_field.type == "select1":
+            entry = ",".join(old_field.get_option_value_list(entry))
+    elif field.type == "select_one_external":
+        old_field = _get_select_field_by_revision(field, form_model, submission_doc)
+        if isinstance(old_field, SelectOneExternalField):
+            itemsets_data = form_model.get_attachments('itemsets.csv')
+            entry = old_field.get_option_value_list(entry, itemsets_data)
+    elif field.type == "select1":
+        old_field = _get_select_field_by_revision(field, form_model, submission_doc)
+        if old_field.type == "select":
+            entry = old_field.get_option_value_list(entry)
+        elif old_field.type == "select1":
+            entry = ",".join(old_field.get_option_value_list(entry))
+    elif field.type == 'text':
+        field_for_revision = form_model.get_field_by_code_and_rev(field.code, submission_doc.form_model_revision)
+        if isinstance(field_for_revision, SelectField):
+            entry = _get_select_field_answer_from_snapshot(entry, field_for_revision)
+    elif field.type == "date":
+        try:
+            if form_model.revision != submission_doc.form_model_revision:
+                old_submission_value = entry
+                to_format = field.date_format
+                field_for_revision = form_model.get_field_by_code_and_rev(field.code,
+                                                                          submission_doc.form_model_revision)
+                if isinstance(field_for_revision, DateField):
+                    current_date = field_for_revision.__date__(entry)
+                    entry = current_date.strftime(DateField.DATE_DICTIONARY.get(to_format))
+                elif isinstance(field_for_revision, SelectField):
+                    entry = _get_select_field_answer_from_snapshot(entry, field_for_revision)
+                logger.info("Converting old date submission from %s to %s" % (old_submission_value, entry))
+        except Exception:
+            pass
+    return entry
+
+
+def get_entity(dbm, entry, field, form_model, submission_doc):
+    choice_to_entity_entry = entry
+    original_field = form_model.get_field_by_code_and_rev(field.code, submission_doc.form_model_revision)
+    if is_original_question_changed_from_choice_answer_type(original_field, field):
+        choice_to_entity_entry = convert_choice_options_to_options_text(original_field, entry)
+    return lookup_entity(dbm, choice_to_entity_entry, [field.unique_id_type]), choice_to_entity_entry
 
 
 def _update_name_unique_code(dbm, repeat_entries, fieldset_field):
