@@ -1,4 +1,4 @@
-from datawinners.search.submission_index import get_label_to_be_displayed, get_entity
+from datawinners.search.submission_index import get_label_to_be_displayed, get_entity, get_datasender_info
 from mangrove.datastore.documents import SurveyResponseDocument
 from mangrove.form_model.field import FieldSet, UniqueIdField, SelectField
 from mangrove.form_model.form_model import FormModel
@@ -36,6 +36,8 @@ def _enrich_questions(dbm, row, questionnaire):
     for question in enrichable_questions["choice_questions"]:
         parent = _get_parent(question, row)
         parent[question.code] = get_label_to_be_displayed(parent[question.code], question, questionnaire, SurveyResponseDocument._wrap_row(row))
+
+    row.value["created_by"] = get_datasender_info(dbm,  SurveyResponseDocument._wrap_row(row)).get('name', '')
 
     return row
 

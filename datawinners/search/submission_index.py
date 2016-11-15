@@ -306,7 +306,7 @@ def status_message(status):
 
 
 # TODO manage_index
-def _get_datasender_info(dbm, submission_doc):
+def get_datasender_info(dbm, submission_doc):
     datasender_dict = {}
     if submission_doc.owner_uid:
         datasender_dict = _lookup_contact_by_uid(dbm, submission_doc.owner_uid)
@@ -323,7 +323,7 @@ def _get_datasender_info(dbm, submission_doc):
 
 def _meta_fields(submission_doc, dbm):
     search_dict = {}
-    datasender_dict = _get_datasender_info(dbm, submission_doc)
+    datasender_dict = get_datasender_info(dbm, submission_doc)
     search_dict.update({"status": status_message(submission_doc.status)})
     search_dict.update({"date": format_datetime(submission_doc.submitted_on, "MMM. dd, yyyy, hh:mm a", locale="en")})
     search_dict.update({"ds_id": datasender_dict.get('id', '')})
