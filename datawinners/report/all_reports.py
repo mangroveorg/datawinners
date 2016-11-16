@@ -13,15 +13,17 @@ class AllReportsView(TemplateView):
     def get(self, request, *args, **kwargs):
         dbm = get_database_manager(request.user)
         configs = get_report_configs(dbm)
-        report_data = get_report_data(dbm, configs[0])
         return self.render_to_response(RequestContext(request, {
             "configs": configs,
-            "content": Template(configs[0].template()).render(RequestContext(request, {"report_data": report_data}))
+            "content": configs or '' and _get_content(dbm, configs[0], request)
         }))
 
 
 def report_content(request, report_id):
     dbm = get_database_manager(request.user)
     config = get_report_config(dbm, report_id)
-    report_data = get_report_data(dbm, config)
-    return HttpResponse(Template(config.template()).render(RequestContext(request, {"report_data": report_data})))
+    return HttpResponse(_get_content(dbm, config, request))
+
+
+def _get_content(dbm, config, request):
+    return Template(config.template()).render(RequestContext(request, {"report_data": get_report_data(dbm, config)}))
