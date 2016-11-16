@@ -15,7 +15,7 @@ class AllReportsView(TemplateView):
         configs = get_report_configs(dbm)
         return self.render_to_response(RequestContext(request, {
             "configs": configs,
-            "content": configs or '' and _get_content(dbm, configs[0], request)
+            "content": (configs or '') and _get_content(dbm, configs[0], request)
         }))
 
 
@@ -26,4 +26,5 @@ def report_content(request, report_id):
 
 
 def _get_content(dbm, config, request):
-    return Template(config.template()).render(RequestContext(request, {"report_data": get_report_data(dbm, config)}))
+    page_number = request.GET.get("page_number") or "1"
+    return Template(config.template()).render(RequestContext(request, {"report_data": get_report_data(dbm, config, int(page_number))}))

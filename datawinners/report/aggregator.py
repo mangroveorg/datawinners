@@ -5,7 +5,7 @@ from mangrove.form_model.form_model import FormModel
 from mangrove.transport.contract.survey_response import get_survey_responses_by_form_model_id
 
 
-BATCH_SIZE = 25
+BATCH_SIZE = 1
 
 
 def _build_enrichable_questions(fields, path):
@@ -47,7 +47,7 @@ def _get_parent(question, row):
     return reduce(lambda prev_values, comp: prev_values[comp][0], path_components, row.value["values"])
 
 
-def get_report_data(dbm, config):
+def get_report_data(dbm, config, page_number):
     questionnaire = FormModel.get(dbm, config.questionnaires[0]["id"])
-    rows = get_survey_responses_by_form_model_id(dbm, config.questionnaires[0]["id"], BATCH_SIZE)
+    rows = get_survey_responses_by_form_model_id(dbm, config.questionnaires[0]["id"], BATCH_SIZE, BATCH_SIZE*page_number-1)
     return [{config.questionnaires[0]["alias"]: _enrich_questions(dbm, row, questionnaire)} for index, row in enumerate(rows) if index < BATCH_SIZE]
