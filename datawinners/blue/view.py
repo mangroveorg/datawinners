@@ -56,13 +56,14 @@ from datawinners.questionnaire.questionnaire_builder import QuestionnaireBuilder
 from datawinners.search.submission_index import SubmissionSearchStore
 from datawinners.settings import EMAIL_HOST_USER, HNI_SUPPORT_EMAIL_ID
 from collections import OrderedDict
-from datawinners.blue.xlsform_utils import convert_excel_to_dict,\
+from datawinners.blue.xlsform_utils import convert_excel_to_dict, \
     convert_json_to_excel
 from xmldict import xml_to_dict
 
 logger = logging.getLogger("datawinners.xls-questionnaire")
 
 QUESTIONNAIRE_AS_DICT_FOR_BUILDER = 'questionnaire_as_dict_for_builder'
+
 
 class ProjectUpload(View):
     @method_decorator(csrf_view_exempt)
@@ -123,25 +124,25 @@ class ProjectUpload(View):
 
 
 class ProjectBuilder(View):
-
     def _get_pre_computed_questionnaire_as_dict(self, questionnaire):
         try:
-            return json.loads(questionnaire.get_attachments(QUESTIONNAIRE_AS_DICT_FOR_BUILDER), object_pairs_hook=OrderedDict)
-        except Exception as e: 
-            #Expected exception, if file not exist
+            return json.loads(questionnaire.get_attachments(QUESTIONNAIRE_AS_DICT_FOR_BUILDER),
+                              object_pairs_hook=OrderedDict)
+        except Exception as e:
+            # Expected exception, if file not exist
             logger.info(e.message)
         return None
-    
+
     def _reload_required(self, request):
         reload = request.GET.get("reload", 'false').lower().strip()
         return reload == 'true'
-        
+
     def get(self, request, project_id):
         manager = get_database_manager(request.user)
         questionnaire = Project.get(manager, project_id)
         excel_as_dict = None
         try:
-            if not self._reload_required(request): #Switch to handle unexpected failures
+            if not self._reload_required(request):  # Switch to handle unexpected failures
                 excel_as_dict = self._get_pre_computed_questionnaire_as_dict(questionnaire)
             raw_excel, file_type = questionnaire.has_questionnaire_attachment()[1:]
             if excel_as_dict is None:
@@ -152,8 +153,8 @@ class ProjectBuilder(View):
                 json.dumps(
                     {
                         "project_id": project_id,
-                        "questionnaire" : excel_as_dict,
-                        "file_type" : file_type,
+                        "questionnaire": excel_as_dict,
+                        "file_type": file_type,
                         "unique_id_types": get_unique_id_types(manager)
                     }),
                 content_type='application/json')
@@ -170,7 +171,7 @@ class ProjectBuilder(View):
                     }),
                 content_type='application/json')
 
-    def post(self,request, project_id):
+    def post(self, request, project_id):
         data = request.POST['data']
         file_type = request.POST['file_type']
         is_draft = request.POST['is_draft']
@@ -186,15 +187,15 @@ class ProjectBuilder(View):
                             "status": "success",
                             "project_id": project_id,
                             'reason': 'Successfully updated',
-                            'details':''
-     
+                            'details': ''
+
                         }),
                     content_type='application/json')
-            
+
             excel_raw_stream = convert_json_to_excel(excel_as_dict, file_type)
             excel_file = _temp_file(request, excel_raw_stream, file_type)
             return _edit_questionnaire(request, project_id, excel_file, excel_as_dict)
- 
+
         except Exception as e:
             logger.exception('Unable to save questionnaire from builder')
             return HttpResponse(
@@ -202,11 +203,12 @@ class ProjectBuilder(View):
                     {
                         "status": "error",
                         "project_id": project_id,
-                        'reason': 'Unable to save', #TODO: i18n translation
+                        'reason': 'Unable to save',  # TODO: i18n translation
                         'details': e.message
 
                     }),
                 content_type='application/json')
+
 
 def _save_questionnaire_as_dict_for_builder(questionnaire, excel_as_dict=None, excel_file=None):
     try:
@@ -215,7 +217,7 @@ def _save_questionnaire_as_dict_for_builder(questionnaire, excel_as_dict=None, e
             if excel_as_dict is None:
                 excel_file.seek(0)
                 excel_as_dict = convert_excel_to_dict(file_content=excel_file.read(), file_type=extension[1:])
-    
+
         questionnaire.update_attachments(excel_as_dict, attachment_name=QUESTIONNAIRE_AS_DICT_FOR_BUILDER)
     except:
         logger.exception('Unable to pre compute excel as json for Builder')
@@ -231,9 +233,11 @@ def _edit_questionnaire(request, project_id, excel_file=None, excel_as_dict=None
             return xls_parser_response
 
         doc = deepcopy(questionnaire._doc)
-        doc.xform = MangroveService(request, questionnaire_code=questionnaire.form_code, xls_parser_response=xls_parser_response).xform_with_form_code
+        doc.xform = MangroveService(request, questionnaire_code=questionnaire.form_code,
+                                    xls_parser_response=xls_parser_response).xform_with_form_code
         new_questionnaire = Project.new_from_doc(manager, doc)
-        QuestionnaireBuilder(new_questionnaire, manager).update_questionnaire_with_questions(xls_parser_response.json_xform_data)
+        QuestionnaireBuilder(new_questionnaire, manager).update_questionnaire_with_questions(
+            xls_parser_response.json_xform_data)
         xform_rules = get_all_rules()
         if excel_file is None:
             excel_file = _temp_file(request)
@@ -256,7 +260,7 @@ def _edit_questionnaire(request, project_id, excel_file=None, excel_as_dict=None
                 _("Unsupported edit operation")
             ],
             "status": "error",
-            'reason': "Unsupported edit operation", #TODO: i18n translation
+            'reason': "Unsupported edit operation",  # TODO: i18n translation
             'details': e.message
         }))
     except QuestionAlreadyExistsException as e:
@@ -266,14 +270,14 @@ def _edit_questionnaire(request, project_id, excel_file=None, excel_as_dict=None
                 _(e.message)
             ],
             "status": "error",
-            'reason': "Save Failed", #TODO: i18n translation
+            'reason': "Save Failed",  # TODO: i18n translation
             'details': _(e.message)
         }))
     return HttpResponse(
         json.dumps({
             "success": True,
             "status": "success",
-            'reason': 'Successfully updated' #TODO: i18n translation
+            'reason': 'Successfully updated'  # TODO: i18n translation
         }),
         content_type='application/json'
     )
@@ -342,7 +346,7 @@ class ProjectUpdate(View):
                     _(e.message)
                 ],
                 "status": "error",
-                'reason': "Save Failed", #TODO: i18n translation
+                'reason': "Save Failed",  # TODO: i18n translation
                 'details': _(e.message)
             }))
 
@@ -414,91 +418,18 @@ def edit_xform_submission_post(request, survey_response_id):
     activity_log = UserActivityLog()
     questionnaire = Project.get(manager, survey_response.form_model_id)
     old_data = survey_response._doc.values
-    new_data = (xml_to_dict(str(request.POST['form_data'])))
-    new_data_dict = new_data.values()[0]
-    details = dict()
-    question = ''
-    from datawinners.utils import convert_dmy_to_ymd
-    for key, value in new_data_dict.iteritems():
-        if key in old_data and key not in {"intro", "meta", "form_code"}:
-            if new_data_dict[key] != old_data[key]:
-                if questionnaire.get_field_by_code(key).type == 'date':
-                    formated_date = old_data[key].replace(".", "-")
-                    converted_date = convert_dmy_to_ymd(formated_date)
-                    if converted_date != new_data_dict[key]:
-                        details.update({key: {'old_data': converted_date, 'new_data': new_data_dict[key]}})
-                        
-                elif questionnaire.get_field_by_code(key).type == 'geocode':
-                    formated_geopoint = new_data_dict[key].replace(" ", ",")
-                    if formated_geopoint != old_data[key]:
-                        details.update({key: {'old_data': formated_geopoint, 'new_data': new_data_dict[key]}})
+    new_data = (xml_to_dict(str(request.POST['form_data']))).values()[0]
 
-                else:
-                    details.update({key: {'old_data': old_data[key], 'new_data': new_data_dict[key]}})
-
-    edit_details = dict()
-    for key, value in details.iteritems():
-        question = questionnaire.get_field_by_code(key).label
-       
-        if isinstance(value['new_data'],dict) and isinstance(value['old_data'],list):
-
-                for index, i in enumerate(value['old_data']):
-                    if index == 0:
-                        for q, val in value['new_data'].items():
-                            if value['new_data'][q] and value['new_data'][q] != value['old_data'][index][q]:
-                                question = questionnaire.get_field_by_code(q).label
-                                edit_details.update({question: {'question': question, 'old': value['old_data'][0][q], 'new': val}})
-                    else:
-                        for key, v in i.items():
-                            if questionnaire.get_field_by_code(key):
-                                question = questionnaire.get_field_by_code(key).label
-                                edit_details.update({question: {'question': question, 'old': v, 'new': ""}})
-
-
-
-        elif isinstance(value['new_data'],list): #if repeat with more than 1 node
-            if len(value['new_data']) == len(value['old_data']):
-                if value['old_data'] != value['new_data']:
-                    for index, i in enumerate(value['new_data']):
-                        for key, val in i.items():
-                            if key in value['old_data'][index]:
-                                if val and val != value['old_data'][index][key]:
-                                    question = questionnaire.get_field_by_code(key).label
-                                    edit_details.update({index: {'question': question, 'old': value['old_data'][index][key], 'new': val}})
-
-            if len(value['new_data']) > len(value['old_data']):
-                for index, i in enumerate(value['new_data']):
-                    for key, val in i.items():
-                        try:
-                            if key in value['old_data'][index]:
-                                if val and val != value['old_data'][index][key]:
-                                    question = questionnaire.get_field_by_code(key).label
-                                    edit_details.update({index: {'question': question, 'old': value['old_data'][index][key], 'new': val}})
-                        except IndexError:
-                            if questionnaire.get_field_by_code(key):
-                                question = questionnaire.get_field_by_code(key).label
-                                edit_details.update({val: {'question': question, 'old': "", 'new': val}})
-                            
-            if len(value['new_data']) < len(value['old_data']):
-                for index, i in enumerate(value['old_data']):
-                    for key, val in i.items():
-                        try:
-                            if key in value['new_data'][index]:
-                                if val != value['new_data'][index][key]:
-                                    question = questionnaire.get_field_by_code(key).label
-                                    edit_details.update({index: {'question': question, 'old': val, 'new': value['new_data'][index][key]}})
-                        except IndexError:
-                            if questionnaire.get_field_by_code(key):
-                                question = questionnaire.get_field_by_code(key).label
-                                edit_details.update({val: {'question': question, 'old': val, 'new': ""}})
-
-        else:
-            edit_details.update({key: {'question':question, 'old': old_data[key], 'new': new_data_dict[key]}})
-
-    activity_log.log(request, action=EDITED_DATA_SUBMISSION_ADV_QUEST,  project=questionnaire.name, detail=json.dumps(edit_details))
     try:
-        return XFormWebSubmissionHandler(request=request). \
+        response = XFormWebSubmissionHandler(request=request). \
             update_submission_response(survey_response_id)
+
+        edit_details = _details_for_activity_log(new_data, old_data, questionnaire)
+        activity_log.log(request, action=EDITED_DATA_SUBMISSION_ADV_QUEST, project=questionnaire.name,
+                         detail=json.dumps(edit_details))
+
+        return response
+
     except Exception as e:
         logger.exception("Exception in submission : \n%s" % e)
         send_email_on_exception(request.user, "Edit Web Submission", traceback.format_exc(),
@@ -506,6 +437,103 @@ def edit_xform_submission_post(request, survey_response_id):
                                                     'submitted-data': request.POST['form_data']
                                                     })
         return HttpResponseBadRequest()
+
+
+def _create_details_for_edit_info(new_data_dict, old_data, questionnaire):
+    details = dict()
+    from datawinners.utils import convert_dmy_to_ymd
+    for key, value in new_data_dict.iteritems():
+        if key in old_data and key not in {"intro", "meta", "form_code"}:
+            if new_data_dict[key] != old_data[key]:
+                if questionnaire.get_field_by_code(key).type == 'date':
+                    formatted_date = old_data[key].replace(".", "-")
+                    converted_date = convert_dmy_to_ymd(formatted_date)
+                    if converted_date != new_data_dict[key]:
+                        details.update({key: {'old_data': converted_date, 'new_data': new_data_dict[key]}})
+
+                elif questionnaire.get_field_by_code(key).type == 'geocode':
+                    formatted_geo_point = new_data_dict[key].replace(" ", ",")
+                    if formatted_geo_point != old_data[key]:
+                        details.update({key: {'old_data': formatted_geo_point, 'new_data': new_data_dict[key]}})
+
+                else:
+                    details.update({key: {'old_data': old_data[key], 'new_data': new_data_dict[key]}})
+    return details
+
+
+def _details_for_activity_log(new_data_dict, old_data, questionnaire):
+    try:
+        details = _create_details_for_edit_info(new_data_dict, old_data, questionnaire)
+        edit_details = dict()
+        for key, value in details.iteritems():
+            question = questionnaire.get_field_by_code(key).label
+
+            if isinstance(value['new_data'], dict) and isinstance(value['old_data'], list):
+
+                for index, i in enumerate(value['old_data']):
+                    if index == 0:
+                        for q, val in value['new_data'].items():
+                            if q in value['old_data'][index]:
+                                if value['new_data'][q] and value['new_data'][q] != value['old_data'][index][q]:
+                                    question = questionnaire.get_field_by_code(q).label
+                                    edit_details.update(
+                                        {question: {'question': question, 'old': value['old_data'][0][q], 'new': val}})
+                            else:
+                                if value['new_data'][q]:
+                                    question = questionnaire.get_field_by_code(q).label
+                                    edit_details.update({question: {'question': question, 'old': "", 'new': val}})
+
+                    else:
+                        for key, v in i.items():
+                            if questionnaire.get_field_by_code(key):
+                                question = questionnaire.get_field_by_code(key).label
+                                edit_details.update({question: {'question': question, 'old': v, 'new': ""}})
+
+            elif isinstance(value['new_data'], list):   # if repeat with more than 1 node
+                if len(value['new_data']) == len(value['old_data']):
+                    if value['old_data'] != value['new_data']:
+                        for index, i in enumerate(value['new_data']):
+                            for key, val in i.items():
+                                if key in value['old_data'][index]:
+                                    if val and val != value['old_data'][index][key]:
+                                        question = questionnaire.get_field_by_code(key).label
+                                        edit_details.update({index: {'question': question,
+                                                                     'old': value['old_data'][index][key], 'new': val}})
+
+                if len(value['new_data']) > len(value['old_data']):
+                    for index, i in enumerate(value['new_data']):
+                        for key, val in i.items():
+                            try:
+                                if key in value['old_data'][index]:
+                                    if val and val != value['old_data'][index][key]:
+                                        question = questionnaire.get_field_by_code(key).label
+                                        edit_details.update({index: {'question': question,
+                                                                     'old': value['old_data'][index][key], 'new': val}})
+                            except IndexError:
+                                if questionnaire.get_field_by_code(key):
+                                    question = questionnaire.get_field_by_code(key).label
+                                    edit_details.update({val: {'question': question, 'old': "", 'new': val}})
+
+                if len(value['new_data']) < len(value['old_data']):
+                    for index, i in enumerate(value['old_data']):
+                        for key, val in i.items():
+                            try:
+                                if key in value['new_data'][index]:
+                                    if val != value['new_data'][index][key]:
+                                        question = questionnaire.get_field_by_code(key).label
+                                        edit_details.update({index: {'question': question, 'old': val,
+                                                                     'new': value['new_data'][index][key]}})
+                            except IndexError:
+                                if questionnaire.get_field_by_code(key):
+                                    question = questionnaire.get_field_by_code(key).label
+                                    edit_details.update({val: {'question': question, 'old': val, 'new': ""}})
+
+            else:
+                edit_details.update({key: {'question': question, 'old': old_data[key], 'new': new_data_dict[key]}})
+        return edit_details
+    except Exception as e:
+        logger.exception("Exception in preparing activity log details : \n%s" % e)
+        return ()
 
 
 @login_required
@@ -600,7 +628,7 @@ def send_email_on_exception(user, error_type, stack_trace, additional_details=No
 
 def send_no_registered_unique_id_for_type_email(user, questionnaire_name):
     email_message = "Questionnaire '%s' created by '%s' has one or more unique-id question(s) with no registered unique-ids." % (
-    questionnaire_name, user.email)
+        questionnaire_name, user.email)
     profile = user.get_profile()
     organization = Organization.objects.get(org_id=profile.org_id)
     email = EmailMessage(subject="[INFO - No regd. unique-ids] : %s" % organization.name,
@@ -624,16 +652,17 @@ def _perform_file_validations(request):
 
     if request.META.get('CONTENT_LENGTH') and int(request.META.get('CONTENT_LENGTH')) > EXCEL_UPLOAD_FILE_SIZE:
         errors.append(_("larger files than 10MB."))
-        
+
     if errors:
         logger.info("User: %s. Edit upload File validation failed: %s. File name: %s, size: %d",
                     request.user.username,
                     json.dumps(errors), request.GET.get("qqfile"), int(request.META.get('CONTENT_LENGTH')))
-    
+
         return HttpResponse(content_type='application/json', content=json.dumps({
             'success': False,
             'error_msg': errors
         }))
+
 
 def _file_extension(request):
     return os.path.splitext(request.GET["qqfile"])[1]
@@ -646,10 +675,10 @@ def _temp_file(request, input_stream=None, file_type=None):
         tmp_file.write(request.raw_post_data)
         tmp_file.seek(0)
     if input_stream:
-        tmp_file = NamedTemporaryFile(delete=True, suffix='.'+file_type)
+        tmp_file = NamedTemporaryFile(delete=True, suffix='.' + file_type)
         tmp_file.write(input_stream.getvalue())
         tmp_file.seek(0)
-        
+
     return tmp_file
 
 
@@ -660,7 +689,7 @@ def _try_parse_xls(manager, request, questionnaire_name, excel_file=None):
             return file_validation_results
 
         if excel_file:
-            tmp_file=excel_file
+            tmp_file = excel_file
         else:
             tmp_file = _temp_file(request)
 
@@ -687,19 +716,19 @@ def _try_parse_xls(manager, request, questionnaire_name, excel_file=None):
     except BindError as e:
         error_message = [(e.custom_message + ' for ' + e.attribute + ' in the question ' + e.field.name)]
         return HttpResponse(content_type='application/json', content=json.dumps({
-                'success': False,
-                'status': 'error',
-                'error_msg': error_message,
-                'errors': [
-                    {
-                        e.field.name: {
-                            e.attribute: e.custom_message
-                        }
+            'success': False,
+            'status': 'error',
+            'error_msg': error_message,
+            'errors': [
+                {
+                    e.field.name: {
+                        e.attribute: e.custom_message
                     }
-                ],
-                'reason': 'Save Failed', #TODO: i18n translation
-                'details': ''
-            }))
+                }
+            ],
+            'reason': 'Save Failed',  # TODO: i18n translation
+            'details': ''
+        }))
 
     except PyXFormError as e:
         logger.info("User: %s. Upload Error: %s", request.user.username, e.message)
@@ -760,7 +789,7 @@ def _try_parse_xls(manager, request, questionnaire_name, excel_file=None):
         message = odk_message if odk_message else message
         return HttpResponse(content_type='application/json', content=json.dumps({
             'error_msg': [message], 'success': False, 'status': 'error', 'details': message,
-                'reason': 'Save Failed'
+            'reason': 'Save Failed'
         }))
 
     return xls_parser_response
