@@ -30,9 +30,18 @@ class RemoveRule(Rule):
             return False
 
         for field in self.fields:
-            if hasattr(submission.values, field.code):
-                del submission.values[field.code]
+            _check_and_remove_field_from_submission(submission.values, field)
         return True
 
     def edit(self, node, old_field, new_field, old_xform, new_xform, activity_log_detail):
         pass
+
+
+def _check_and_remove_field_from_submission(submission_values, field):
+    if field.parent_field_code and field.parent_field_code in submission_values:
+        _check_and_remove_field_from_submission(submission_values[field.parent_field_code], field)
+    elif isinstance(submission_values, list):
+        for submission in submission_values:
+            _check_and_remove_field_from_submission(submission, field)
+    elif field.code in submission_values:
+        del submission_values[field.code]
