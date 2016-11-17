@@ -5,7 +5,7 @@ from mangrove.form_model.form_model import FormModel
 from mangrove.transport.contract.survey_response import get_survey_responses_by_form_model_id
 
 
-BATCH_SIZE = 1
+BATCH_SIZE = 25
 
 
 def _build_enrichable_questions(fields, path):

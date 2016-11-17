@@ -13,6 +13,7 @@
 
 {% block page_js %}
     <script type="text/javascript" src="/media/javascript/report.js"></script>
+    <script type="text/javascript" src="/media/javascript/pagination_widget.js"></script>
 {% endblock %}
 
 {% block navigation %}
@@ -28,10 +29,7 @@
 {% endblock %}
 {% block content %}
     <div id="report_container">
-        {{ content }}
-    </div>
-    <div style="text-align:center;">
-        <a><</a>
-        <a>></a>
+        <div class="report_content">{{ content }}</div>
+        <div style="text-align:center;" class="pagination_container"></div>
     </div>
 {% endblock %}
