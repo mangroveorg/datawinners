@@ -418,7 +418,7 @@ def edit_xform_submission_post(request, survey_response_id):
     activity_log = UserActivityLog()
     questionnaire = Project.get(manager, survey_response.form_model_id)
     old_data = survey_response._doc.values
-    new_data = (xml_to_dict(str(request.POST['form_data']))).values()[0]
+    new_data = (xml_to_dict(str(request.POST['form_data'].encode('UTF-16')))).values()[0]
 
     try:
         response = XFormWebSubmissionHandler(request=request). \
