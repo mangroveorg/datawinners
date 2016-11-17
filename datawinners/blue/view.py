@@ -469,64 +469,10 @@ def _details_for_activity_log(new_data_dict, old_data, questionnaire):
             question = questionnaire.get_field_by_code(key).label
 
             if isinstance(value['new_data'], dict) and isinstance(value['old_data'], list):
-
-                for index, i in enumerate(value['old_data']):
-                    if index == 0:
-                        for q, val in value['new_data'].items():
-                            if q in value['old_data'][index]:
-                                if value['new_data'][q] and value['new_data'][q] != value['old_data'][index][q]:
-                                    question = questionnaire.get_field_by_code(q).label
-                                    edit_details.update(
-                                        {question: {'question': question, 'old': value['old_data'][0][q], 'new': val}})
-                            else:
-                                if value['new_data'][q]:
-                                    question = questionnaire.get_field_by_code(q).label
-                                    edit_details.update({question: {'question': question, 'old': "", 'new': val}})
-
-                    else:
-                        for key, v in i.items():
-                            if questionnaire.get_field_by_code(key):
-                                question = questionnaire.get_field_by_code(key).label
-                                edit_details.update({question: {'question': question, 'old': v, 'new': ""}})
+                get_edited_details_for_group(edit_details, questionnaire, value)
 
             elif isinstance(value['new_data'], list):   # if repeat with more than 1 node
-                if len(value['new_data']) == len(value['old_data']):
-                    if value['old_data'] != value['new_data']:
-                        for index, i in enumerate(value['new_data']):
-                            for key, val in i.items():
-                                if key in value['old_data'][index]:
-                                    if val and val != value['old_data'][index][key]:
-                                        question = questionnaire.get_field_by_code(key).label
-                                        edit_details.update({index: {'question': question,
-                                                                     'old': value['old_data'][index][key], 'new': val}})
-
-                if len(value['new_data']) > len(value['old_data']):
-                    for index, i in enumerate(value['new_data']):
-                        for key, val in i.items():
-                            try:
-                                if key in value['old_data'][index]:
-                                    if val and val != value['old_data'][index][key]:
-                                        question = questionnaire.get_field_by_code(key).label
-                                        edit_details.update({index: {'question': question,
-                                                                     'old': value['old_data'][index][key], 'new': val}})
-                            except IndexError:
-                                if questionnaire.get_field_by_code(key):
-                                    question = questionnaire.get_field_by_code(key).label
-                                    edit_details.update({val: {'question': question, 'old': "", 'new': val}})
-
-                if len(value['new_data']) < len(value['old_data']):
-                    for index, i in enumerate(value['old_data']):
-                        for key, val in i.items():
-                            try:
-                                if key in value['new_data'][index]:
-                                    if val != value['new_data'][index][key]:
-                                        question = questionnaire.get_field_by_code(key).label
-                                        edit_details.update({index: {'question': question, 'old': val,
-                                                                     'new': value['new_data'][index][key]}})
-                            except IndexError:
-                                if questionnaire.get_field_by_code(key):
-                                    question = questionnaire.get_field_by_code(key).label
-                                    edit_details.update({val: {'question': question, 'old': val, 'new': ""}})
+                get_edited_details_for_repeat(edit_details, questionnaire, value)
 
             else:
                 edit_details.update({key: {'question': question, 'old': old_data[key], 'new': new_data_dict[key]}})
@@ -534,6 +480,65 @@ def _details_for_activity_log(new_data_dict, old_data, questionnaire):
     except Exception as e:
         logger.exception("Exception in preparing activity log details : \n%s" % e)
         return ()
+
+
+def get_edited_details_for_repeat(edit_details, questionnaire, value):
+    if len(value['new_data']) == len(value['old_data']):
+        if value['old_data'] != value['new_data']:
+            for index, i in enumerate(value['new_data']):
+                for key, val in i.items():
+                    if key in value['old_data'][index]:
+                        if val and val != value['old_data'][index][key]:
+                            question = questionnaire.get_field_by_code(key).label
+                            edit_details.update({index: {'question': question,
+                                                         'old': value['old_data'][index][key], 'new': val}})
+    if len(value['new_data']) > len(value['old_data']):
+        for index, i in enumerate(value['new_data']):
+            for key, val in i.items():
+                try:
+                    if key in value['old_data'][index]:
+                        if val and val != value['old_data'][index][key]:
+                            question = questionnaire.get_field_by_code(key).label
+                            edit_details.update({index: {'question': question,
+                                                         'old': value['old_data'][index][key], 'new': val}})
+                except IndexError:
+                    if questionnaire.get_field_by_code(key):
+                        question = questionnaire.get_field_by_code(key).label
+                        edit_details.update({val: {'question': question, 'old': "", 'new': val}})
+    if len(value['new_data']) < len(value['old_data']):
+        for index, i in enumerate(value['old_data']):
+            for key, val in i.items():
+                try:
+                    if key in value['new_data'][index]:
+                        if val != value['new_data'][index][key]:
+                            question = questionnaire.get_field_by_code(key).label
+                            edit_details.update({index: {'question': question, 'old': val,
+                                                         'new': value['new_data'][index][key]}})
+                except IndexError:
+                    if questionnaire.get_field_by_code(key):
+                        question = questionnaire.get_field_by_code(key).label
+                        edit_details.update({val: {'question': question, 'old': val, 'new': ""}})
+
+
+def get_edited_details_for_group(edit_details, questionnaire, details):
+    for index, i in enumerate(details['old_data']):
+        if index == 0:
+            for q, val in details['new_data'].items():
+                if q in details['old_data'][index]:
+                    if details['new_data'][q] and details['new_data'][q] != details['old_data'][index][q]:
+                        question = questionnaire.get_field_by_code(q).label
+                        edit_details.update(
+                            {question: {'question': question, 'old': details['old_data'][0][q], 'new': val}})
+                else:
+                    if details['new_data'][q]:
+                        question = questionnaire.get_field_by_code(q).label
+                        edit_details.update({question: {'question': question, 'old': "", 'new': val}})
+
+        else:
+            for key, v in i.items():
+                if questionnaire.get_field_by_code(key):
+                    question = questionnaire.get_field_by_code(key).label
+                    edit_details.update({question: {'question': question, 'old': v, 'new': ""}})
 
 
 @login_required
