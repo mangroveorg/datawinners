@@ -49,5 +49,5 @@ def _get_parent(question, row):
 
 def get_report_data(dbm, config, page_number):
     questionnaire = FormModel.get(dbm, config.questionnaires[0]["id"])
-    rows = get_survey_responses_by_form_model_id(dbm, config.questionnaires[0]["id"], BATCH_SIZE, BATCH_SIZE*page_number-1)
+    rows = get_survey_responses_by_form_model_id(dbm, config.questionnaires[0]["id"], BATCH_SIZE, BATCH_SIZE*(page_number-1))
     return [{config.questionnaires[0]["alias"]: _enrich_questions(dbm, row, questionnaire)} for index, row in enumerate(rows) if index < BATCH_SIZE]
