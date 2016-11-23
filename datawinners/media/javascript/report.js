@@ -27,4 +27,6 @@ $(function(){
     });
 
     initPaginationWidget($('#report_navigation li.active a'));
+
+    $('#report_container>.report_content select').chosen({width: "20%"});
 });
