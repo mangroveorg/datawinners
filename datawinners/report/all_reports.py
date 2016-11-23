@@ -30,7 +30,7 @@ def report_content(request, report_id):
 def report_stylesheet(request, report_id):
     dbm = get_database_manager(request.user)
     config = get_report_config(dbm, report_id)
-    style = config.stylesheet().replace("{{report_id}}", "report_"+report_id)
+    style = config.stylesheet().replace("{{report_id}}", report_id)
     return HttpResponse(mimetype="text/css", content=style)
 
 
