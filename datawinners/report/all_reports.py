@@ -59,8 +59,3 @@ def _get_content(dbm, config, request):
         "report_filters": get_report_filters(dbm, config),
         "report_id": "report_" + config.id
     }))
-
-
-def _get_config(request, report_id):
-    dbm = get_database_manager(request.user)
-    return get_report_config(dbm, report_id)
