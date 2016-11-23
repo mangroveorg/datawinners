@@ -3,7 +3,7 @@ from django.template import RequestContext, Template
 from django.views.generic import TemplateView
 
 from datawinners.main.database import get_database_manager
-from datawinners.report.aggregator import get_report_data
+from datawinners.report.aggregator import get_report_data, get_report_filters
 from mangrove.datastore.report_config import get_report_configs, get_report_config
 
 
@@ -28,13 +28,15 @@ def report_content(request, report_id):
 
 
 def report_stylesheet(request, report_id):
-    config = _get_config(request, report_id)
+    dbm = get_database_manager(request.user)
+    config = get_report_config(dbm, report_id)
     style = config.stylesheet().replace("{{report_id}}", "report_"+report_id)
     return HttpResponse(mimetype="text/css", content=style)
 
 
 def report_font_file(request, report_id, font_file_name):
-    config = _get_config(request, report_id)
+    dbm = get_database_manager(request.user)
+    config = get_report_config(dbm, report_id)
     font_file = config.font_file(font_file_name)
     return HttpResponse(mimetype="font/opentype", content=font_file)
 
@@ -47,18 +49,18 @@ def _build_report_content(dbm, config, request):
 
 
 def _get_style_content(config):
-    style = '<link rel="stylesheet" href="/reports/' + config.id + '/stylesheet/" />'
-    return style
+    return '<link rel="stylesheet" href="/reports/' + config.id + '/stylesheet/" />'
 
 
 def _get_content(dbm, config, request):
     page_number = request.GET.get("page_number") or "1"
-    return Template(config.template()).render(
-        RequestContext(request,
-                       {"report_data": get_report_data(dbm, config, int(page_number)), "report_id": "report_"+config.id}))
+    return Template(config.template()).render(RequestContext(request, {
+        "report_data": get_report_data(dbm, config, int(page_number)),
+        "report_filters": get_report_filters(dbm, config),
+        "report_id": "report_" + config.id
+    }))
 
 
 def _get_config(request, report_id):
     dbm = get_database_manager(request.user)
-    config = get_report_config(dbm, report_id)
-    return config
+    return get_report_config(dbm, report_id)

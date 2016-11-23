@@ -1,0 +1,7 @@
+{% for filter in filters %}
+    <select>
+        {% for option in filter.options %}
+            <option value="{{ option.0 }}"> {{ option.1 }} </option>
+        {% endfor %}
+    </select>
+{% endfor %}

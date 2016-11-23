@@ -1,6 +1,6 @@
 from datawinners.search.submission_index import get_label_to_be_displayed, get_entity, get_datasender_info
 from mangrove.datastore.documents import SurveyResponseDocument
-from mangrove.form_model.field import FieldSet, UniqueIdField, SelectField
+from mangrove.form_model.field import FieldSet, UniqueIdField, SelectField, UniqueIdUIField
 from mangrove.form_model.form_model import FormModel
 from mangrove.transport.contract.survey_response import get_survey_responses_by_form_model_id
 
@@ -51,3 +51,10 @@ def get_report_data(dbm, config, page_number):
     questionnaire = FormModel.get(dbm, config.questionnaires[0]["id"])
     rows = get_survey_responses_by_form_model_id(dbm, config.questionnaires[0]["id"], BATCH_SIZE, BATCH_SIZE*(page_number-1))
     return [{config.questionnaires[0]["alias"]: _enrich_questions(dbm, row, questionnaire)} for index, row in enumerate(rows) if index < BATCH_SIZE]
+
+
+def get_report_filters(dbm, config):
+    questionnaire = FormModel.get(dbm, config.questionnaires[0]["id"])
+    if not hasattr(config, "filters") or not config.filters:
+        return []
+    return [UniqueIdUIField(entity_question, dbm) for entity_question in _build_enrichable_questions(questionnaire.fields, "")["entity_questions"] if entity_question.code in config.filters]

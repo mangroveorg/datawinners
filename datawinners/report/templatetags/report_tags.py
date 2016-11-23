@@ -12,6 +12,11 @@ def loop(parser, token):
     return LoopNode(nodelist)
 
 
+@register.inclusion_tag('report/filters.html', takes_context=True)
+def filters(context):
+    return {"filters": context.get("report_filters")}
+
+
 @register.simple_tag
 def dist(qn):
     return "hello world"
