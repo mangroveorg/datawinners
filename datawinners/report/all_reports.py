@@ -66,9 +66,14 @@ def create_report_view(request, report_id):
     dbm = get_database_manager(request.user)
     config = get_report_config(dbm, report_id)
     sort_fields = [_form_key_for_couch_view(field) for field in config.sort_fields]
+    questionnaire_ids = [questionnaire['id'] for questionnaire in config.questionnaires]
+    questionnaire_ids_string = '"{0}"'.format('", "'.join(questionnaire_ids))
+
+    if len(sort_fields) == 0:
+        sort_fields = ['doc._id']
     combined_view_key = ",".join(sort_fields)
     dbm.create_view(_report_view_name(report_id),
-                    "function(doc) { if(doc.document_type == 'SurveyResponse') {  emit([%s], 1) } }" % (combined_view_key),
+                    "function(doc) { if(doc.document_type == 'SurveyResponse' && [%s].indexOf(doc.form_model_id) > -1) {  emit([%s], 1) } }" % (questionnaire_ids_string, combined_view_key),
                     "")
     return HttpResponse("Created")
 

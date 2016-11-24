@@ -39,7 +39,7 @@ def _enrich_questions(dbm, row, questionnaire):
         parent = _get_parent(question, row)
         parent[question.code] = get_label_to_be_displayed(parent[question.code], question, questionnaire, SurveyResponseDocument._wrap_row(row))
 
-    row.doc["created_by"] = get_datasender_info(dbm,  SurveyResponseDocument._wrap_row(row)).get('name', '')
+    row["doc"]["created_by"] = get_datasender_info(dbm,  SurveyResponseDocument._wrap_row(row)).get('name', '')
 
     return row
 
