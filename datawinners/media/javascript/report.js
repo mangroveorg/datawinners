@@ -15,6 +15,7 @@ $(function(){
         $("#report_navigation li.active").removeClass("active");
         anchorElement.parent().addClass("active");
         initPaginationWidget(anchorElement);
+        $('#report_container>.report_content select').chosen({width: "20%"});
     };
 
     $("#report_navigation a").click(function(){
