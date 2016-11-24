@@ -39,14 +39,14 @@ def _enrich_questions(dbm, row, questionnaire):
         parent = _get_parent(question, row)
         parent[question.code] = get_label_to_be_displayed(parent[question.code], question, questionnaire, SurveyResponseDocument._wrap_row(row))
 
-    row.value["created_by"] = get_datasender_info(dbm,  SurveyResponseDocument._wrap_row(row)).get('name', '')
+    row.doc["created_by"] = get_datasender_info(dbm,  SurveyResponseDocument._wrap_row(row)).get('name', '')
 
     return row
 
 
 def _get_parent(question, row):
     path_components = question.path and question.path.split(".")
-    return reduce(lambda prev_values, comp: prev_values[comp][0], path_components, row.value["values"])
+    return reduce(lambda prev_values, comp: prev_values[comp][0], path_components, row.doc["values"])
 
 
 def get_report_data(dbm, config, page_number):

@@ -11,14 +11,14 @@ def resolve_data(variables, data):
 def _resolve_meta_data(data, resolved_data, variable):
     for index, datum in enumerate(data):
         len(resolved_data) > index or resolved_data.append({})
-        resolved_data[index][variable] = datum[variable.split(".")[1]].value[variable.split(".")[2]]
+        resolved_data[index][variable] = datum[variable.split(".")[1]].doc[variable.split(".")[2]]
 
 
 def _resolve_data(data, resolved_data, variable):
     questionnaire_alias = variable.split(".")[0]
     question_path_components = variable.split(".")[1:]
     for index, datum in enumerate(data):
-        value = _get_value(datum[questionnaire_alias].value["values"], question_path_components)
+        value = _get_value(datum[questionnaire_alias].doc["values"], question_path_components)
         len(resolved_data) > index or resolved_data.append({})
         resolved_data[index][variable] = value
 
