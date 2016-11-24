@@ -1,13 +1,13 @@
-from datawinners.project.submission.analysis_helper import _get_linked_id_details
-from datawinners.search.submission_index import get_label_to_be_displayed, get_entity, get_datasender_info
 from mangrove.datastore.documents import SurveyResponseDocument
 from mangrove.form_model.field import FieldSet, UniqueIdField, SelectField, UniqueIdUIField
 from mangrove.form_model.form_model import FormModel
 from mangrove.transport.contract.survey_response import get_survey_response_by_report_view_name
 
+from datawinners.project.submission.analysis_helper import _get_linked_id_details
+from datawinners.report.utils import get_report_view_name
 from datawinners.search.submission_index import get_label_to_be_displayed, get_entity, get_datasender_info
 
-BATCH_SIZE = 25
+BATCH_SIZE = 1
 
 
 def _build_enrichable_questions(fields, path):
@@ -51,8 +51,7 @@ def _get_parent(question, row):
 
 def get_report_data(dbm, config, page_number):
     questionnaire = FormModel.get(dbm, config.questionnaires[0]["id"])
-    # rows = get_survey_responses_by_form_model_id(dbm, config.questionnaires[0]["id"], BATCH_SIZE, BATCH_SIZE*(page_number-1))
-    rows = get_survey_response_by_report_view_name(dbm, "report_"+config.id, BATCH_SIZE, BATCH_SIZE*(page_number-1))
+    rows = get_survey_response_by_report_view_name(dbm, get_report_view_name(config.id), BATCH_SIZE, BATCH_SIZE * (page_number - 1))
     return [{config.questionnaires[0]["alias"]: _enrich_questions(dbm, row, questionnaire)} for index, row in enumerate(rows) if index < BATCH_SIZE]
 
 
