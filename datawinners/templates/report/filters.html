@@ -1,5 +1,5 @@
 {% for filter in filters %}
-    <select data-placeholder="Select a {{ filter.xform_constraint }}">
+    <select data-placeholder="Select a {{ filter.unique_id_type }}">
         <option value=""></option>
         {% for option in filter.options %}
             <option value="{{ option.0 }}"> {{ option.1 }} </option>

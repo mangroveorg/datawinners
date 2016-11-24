@@ -1,3 +1,4 @@
+from datawinners.project.submission.analysis_helper import _get_linked_id_details
 from datawinners.search.submission_index import get_label_to_be_displayed, get_entity, get_datasender_info
 from mangrove.datastore.documents import SurveyResponseDocument
 from mangrove.form_model.field import FieldSet, UniqueIdField, SelectField, UniqueIdUIField
@@ -19,7 +20,7 @@ def _build_enrichable_questions(fields, path):
             setattr(field, "path", path[:-1])
             temp_enrichable_questions["choice_questions"].append(field)
         elif isinstance(field, FieldSet):
-            temp_path += field.code + ","
+            temp_path += field.code + "."
             intermediate_questions = _build_enrichable_questions(field.fields, temp_path)
             temp_enrichable_questions["entity_questions"].extend(intermediate_questions["entity_questions"])
             temp_enrichable_questions["choice_questions"].extend(intermediate_questions["choice_questions"])
@@ -43,7 +44,7 @@ def _enrich_questions(dbm, row, questionnaire):
 
 
 def _get_parent(question, row):
-    path_components = question.path and question.path.split(",")
+    path_components = question.path and question.path.split(".")
     return reduce(lambda prev_values, comp: prev_values[comp][0], path_components, row.value["values"])
 
 
@@ -53,8 +54,25 @@ def get_report_data(dbm, config, page_number):
     return [{config.questionnaires[0]["alias"]: _enrich_questions(dbm, row, questionnaire)} for index, row in enumerate(rows) if index < BATCH_SIZE]
 
 
+def _linked_id_handler(field, linked_id_field, children, linked_id_details):
+    setattr(linked_id_field, "path", field.path + "." + field.code)
+    linked_id_details.append(linked_id_field)
+
+
+def _get_path(alias, question):
+    return alias + "." + question.path + "." + question.code
+
+
+def _get_linked_idnr_qns(dbm, entity_qns):
+    linked_idnrs = []
+    [_get_linked_id_details(dbm, field, _linked_id_handler, [], linked_idnrs) for field in entity_qns]
+    return linked_idnrs
+
+
 def get_report_filters(dbm, config):
     questionnaire = FormModel.get(dbm, config.questionnaires[0]["id"])
     if not hasattr(config, "filters") or not config.filters:
         return []
-    return [UniqueIdUIField(entity_question, dbm) for entity_question in _build_enrichable_questions(questionnaire.fields, "")["entity_questions"] if entity_question.code in config.filters]
+    entity_qns = _build_enrichable_questions(questionnaire.fields, "")["entity_questions"]
+    entity_qns.extend(_get_linked_idnr_qns(dbm, entity_qns))
+    return [UniqueIdUIField(qn, dbm) for qn in entity_qns if _get_path(config.questionnaires[0]["alias"], qn) in config.filters]
