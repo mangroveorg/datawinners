@@ -30,7 +30,7 @@ class RemoveRule(Rule):
             return False
 
         for field in self.fields:
-            _check_and_remove_field_from_submission(submission.values, field)
+            _check_and_remove_field_from_submission(submission.values, field.code)
         return True
 
     def edit(self, node, old_field, new_field, old_xform, new_xform, activity_log_detail):
