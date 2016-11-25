@@ -15,7 +15,7 @@ class Submission(object):
     def update_all(self, questionnaire_id):
         rows = self.manager.database.iterview("surveyresponse/surveyresponse", 1000, reduce=False, include_docs=False,
                                               startkey=[questionnaire_id], endkey=[questionnaire_id, {}])
-    
+
         jobs = group(process_submission.s(self.dbname, self.rules, row) for row in rows)
         jobs.apply_async()
 
