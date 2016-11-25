@@ -37,11 +37,12 @@ class RemoveRule(Rule):
         pass
 
 
-def _check_and_remove_field_from_submission(submission_values, field):
-    if field.parent_field_code and field.parent_field_code in submission_values:
-        _check_and_remove_field_from_submission(submission_values[field.parent_field_code], field)
+def _check_and_remove_field_from_submission(submission_values, field_code):
+    if field_code in submission_values:
+        del submission_values[field_code]
     elif isinstance(submission_values, list):
         for submission in submission_values:
-            _check_and_remove_field_from_submission(submission, field)
-    elif field.code in submission_values:
-        del submission_values[field.code]
+            _check_and_remove_field_from_submission(submission, field_code)
+    elif isinstance(submission_values, dict):
+        for key, submission in submission_values.items():
+            _check_and_remove_field_from_submission(submission, field_code)
