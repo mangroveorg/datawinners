@@ -146,6 +146,7 @@ var PollOptionsViewModel = function() {
                 self.duration(gettext(' active from ') + self.from_date_poll() + gettext(' to ') + self.to_date_poll());
                 self.active_dates_poll('<b> '+gettext('From : ')+'</b> '+ self.from_date_poll() + ' <b>&nbsp'+gettext(' To : ')+'</b>' + self.to_date_poll() );
                 self.change_days(gettext('Change'));
+                self.number_of_days(Math.round(Math.abs((self.endDate().getTime() - from_date.getTime())/(24*60*60*1000)))); //24*60*60*1000 : oneday on time format
                 DW.trackEvent('poll-deactivation-method', 'poll-deactivate-success');
                 $('<div class="success-message-box" id="poll-success-message">' + gettext('Your changes have been saved.') +'</div>').insertBefore($("#poll_options"));
 
@@ -176,6 +177,7 @@ var PollOptionsViewModel = function() {
                 self.duration(gettext(' active from ') + self.from_date_poll() + gettext(' to ') + self.to_date_poll());
                 self.active_dates_poll('<b> '+gettext('From : ')+'</b> '+ self.from_date_poll() + ' <b>&nbsp'+gettext(' To : ')+'</b>' + self.to_date_poll() );
                 self.change_days(gettext('Change'));
+                self.number_of_days(Math.round(Math.abs((self.endDate().getTime() - from_date.getTime())/(24*60*60*1000)))); //24*60*60*1000 : oneday on time format
                 DW.trackEvent('poll-deactivation-method', 'poll-deactivate-success');
                 $('<div class="success-message-box" id="poll-success-message">' + gettext('Your changes have been saved.') +'</div>').insertBefore($("#poll_options"));
 

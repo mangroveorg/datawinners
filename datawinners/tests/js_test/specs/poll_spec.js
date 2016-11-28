@@ -35,7 +35,7 @@ describe("Deactivate Poll", function() {
 describe("Activate Poll", function() {
 
     it('should activate poll which is deactivated', function () {
-        is_active = "False"
+        is_active = "False";
         window.pollOptions = new PollOptionsViewModel();
         var poll_options = window.pollOptions;
         var current_date = new Date();
@@ -50,12 +50,11 @@ describe("Activate Poll", function() {
         expect(poll_options.status()).toBe('Deactivated');
         expect(poll_options.number_of_days()).toBe(1);
 
-        poll_options.number_of_days(3);
         expected_date.setDate(current_date.getDate()+3);
         var expected_end_date = expected_date.getFullYear() +"-"+(expected_date.getMonth()+1) +"-"+ expected_date.getDate();
         poll_options.endDate(expected_date);
         poll_options.activate_poll();
-
+        poll_options.number_of_days(3);
         var calculateDays = new CalculateDays(expected_date, current_date);
 
         expect($.ajax.mostRecentCall.args[0]['url']).toEqual("http://activate_poll_url.com");
@@ -89,12 +88,12 @@ describe("Activate Poll", function() {
         });
         expect(poll_options.status()).toBe('active');
 
-        poll_options.number_of_days(5);
+
         expected_date.setDate(current_date.getDate()+5);
         var expected_end_date = expected_date.getFullYear() + "-" + (expected_date.getMonth() + 1) + "-" + expected_date.getDate();
         poll_options.endDate(expected_date);
         poll_options.edit_poll();
-
+        poll_options.number_of_days(5);
         var calculateDays = new CalculateDays(expected_date, current_date);
 
         expect($.ajax.mostRecentCall.args[0]['url']).toEqual("http://activate_poll_url.com");
