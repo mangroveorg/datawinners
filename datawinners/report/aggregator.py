@@ -3,10 +3,10 @@ from datawinners.search.submission_index import get_label_to_be_displayed, get_e
 from mangrove.datastore.documents import SurveyResponseDocument
 from mangrove.form_model.field import FieldSet, UniqueIdField, SelectField, UniqueIdUIField
 from mangrove.form_model.form_model import FormModel
-from mangrove.transport.contract.survey_response import get_survey_responses_by_form_model_id
+from mangrove.transport.contract.survey_response import get_survey_responses_by_form_model_id, \
+    get_total_number_of_survey_reponse_by_form_model_id
 
-
-BATCH_SIZE = 25
+BATCH_SIZE = 4
 
 
 def _build_enrichable_questions(fields, path):
@@ -52,6 +52,11 @@ def get_report_data(dbm, config, page_number):
     questionnaire = FormModel.get(dbm, config.questionnaires[0]["id"])
     rows = get_survey_responses_by_form_model_id(dbm, config.questionnaires[0]["id"], BATCH_SIZE, BATCH_SIZE*(page_number-1))
     return [{config.questionnaires[0]["alias"]: _enrich_questions(dbm, row, questionnaire)} for index, row in enumerate(rows) if index < BATCH_SIZE]
+
+
+def get_total_count(dbm, config):
+    questionnaire = FormModel.get(dbm, config.questionnaires[0]["id"])
+    return get_total_number_of_survey_reponse_by_form_model_id(dbm, questionnaire.id).next().value['count']
 
 
 def _linked_id_handler(field, linked_id_field, children, linked_id_details):

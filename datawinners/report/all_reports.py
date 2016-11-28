@@ -1,10 +1,12 @@
+import json
+
 from django.http import HttpResponse
 from django.template import RequestContext, Template
 from django.views.generic import TemplateView
+from mangrove.datastore.report_config import get_report_configs, get_report_config
 
 from datawinners.main.database import get_database_manager
-from datawinners.report.aggregator import get_report_data, get_report_filters
-from mangrove.datastore.report_config import get_report_configs, get_report_config
+from datawinners.report.aggregator import get_report_data, get_report_filters, get_total_count, BATCH_SIZE
 
 
 class AllReportsView(TemplateView):
@@ -14,17 +16,23 @@ class AllReportsView(TemplateView):
         dbm = get_database_manager(request.user)
         configs = get_report_configs(dbm)
         return self.render_to_response(RequestContext(request, {
-            "configs": configs,
-            "content": (configs or '') and Template(_build_report_content(dbm, configs[0], request)).render(
-                RequestContext(request))
+            "configs": configs
         }))
 
 
 def report_content(request, report_id):
     dbm = get_database_manager(request.user)
     config = get_report_config(dbm, report_id)
-    content = _build_report_content(dbm, config, request)
-    return HttpResponse(content)
+    content, count = _build_report_content(dbm, config, request)
+    return HttpResponse(
+        json.dumps(
+            {
+                "content": content,
+                "totalCount": get_total_count(dbm, config),
+                "count": count,
+                "pageSize": BATCH_SIZE
+            }),
+        content_type='application/json')
 
 
 def report_stylesheet(request, report_id):
@@ -44,8 +52,9 @@ def report_font_file(request, report_id, font_file_name):
 def _build_report_content(dbm, config, request):
     content = ""
     content += _get_style_content(config)
-    content += _get_content(dbm, config, request)
-    return content
+    data_content, data_count = _get_content(dbm, config, request)
+    content += data_content
+    return content, data_count
 
 
 def _get_style_content(config):
@@ -54,8 +63,9 @@ def _get_style_content(config):
 
 def _get_content(dbm, config, request):
     page_number = request.GET.get("page_number") or "1"
+    data = get_report_data(dbm, config, int(page_number))
     return Template(config.template()).render(RequestContext(request, {
-        "report_data": get_report_data(dbm, config, int(page_number)),
+        "report_data": data,
         "report_filters": get_report_filters(dbm, config),
         "report_id": "report_" + config.id
-    }))
+    })), len(data)
