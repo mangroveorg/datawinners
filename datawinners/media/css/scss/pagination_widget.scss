@@ -1,0 +1,29 @@
+.pagination-widget {
+    position: absolute;
+    left: 48%;
+    text-align: left;
+    #prev, #next {
+        padding: 5px
+    }
+
+    #quick-links-container {
+        border: 1px #ccc solid;
+        padding: 10px;
+    }
+
+    #page-number {
+        user-select: none;
+        cursor: pointer;
+        padding: 4px;
+        &:hover {
+            text-decoration: underline;
+            color: #0070ac;
+        }
+    }
+
+    .disabled {
+        pointer-events: none;
+        cursor: default;
+        color: #ccc;
+    }
+}
