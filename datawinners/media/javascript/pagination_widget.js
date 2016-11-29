@@ -7,8 +7,17 @@ function PaginationWidget(containerSelector, prevCallback, nextCallback, pageSiz
     var containerDiv = document.querySelector(containerSelector),
         prevLink = document.createElement('a'),
         prevText = document.createTextNode('< '),
+
         pageNumberSpan = document.createElement('span'),
-        pageNumberText = document.createTextNode(getText(count)),
+        pageNumberStartSpan = document.createElement('span'),
+        pageNumberStartText = document.createTextNode(getStartNumber()),
+        pageNumberEndSpan = document.createElement('span'),
+        pageNumberEndText = document.createTextNode(getEndNumber(count)),
+        pageNumberTotalSpan = document.createElement('span'),
+        pageNumberTotalText = document.createTextNode(_this.totalCount),
+        hyphenText = document.createTextNode(" - "),
+        ofText = document.createTextNode(" of "),
+
         nextLink = document.createElement('a'),
         nextText = document.createTextNode(' >'),
         firstLastLinkContainer = document.createElement('div'),
@@ -37,8 +46,14 @@ function PaginationWidget(containerSelector, prevCallback, nextCallback, pageSiz
     firstLastLinkContainer.className = 'hide';
     containerDiv.className = 'pagination-widget';
 
+    pageNumberStartSpan.id = 'page-start';
+    pageNumberEndSpan.id = 'page-end';
+    pageNumberTotalSpan.id = 'page-total';
+    pageNumberStartSpan.className = 'digit';
+    pageNumberEndSpan.className = 'digit';
+    pageNumberTotalSpan.className = 'digit';
+
     prevLink.appendChild(prevText);
-    pageNumberSpan.appendChild(pageNumberText);
     nextLink.appendChild(nextText);
 
     firstLink.appendChild(firstLinkText);
@@ -51,6 +66,15 @@ function PaginationWidget(containerSelector, prevCallback, nextCallback, pageSiz
     firstLastLinkList.appendChild(lastLinkListItem);
     firstLastLinkContainer.appendChild(firstLastLinkList);
 
+    pageNumberStartSpan.appendChild(pageNumberStartText);
+    pageNumberEndSpan.appendChild(pageNumberEndText);
+    pageNumberTotalSpan.appendChild(pageNumberTotalText);
+
+    pageNumberSpan.appendChild(pageNumberStartSpan);
+    pageNumberSpan.appendChild(hyphenText);
+    pageNumberSpan.appendChild(pageNumberEndSpan);
+    pageNumberSpan.appendChild(ofText);
+    pageNumberSpan.appendChild(pageNumberTotalSpan);
     containerDiv.appendChild(pageNumberSpan);
     containerDiv.appendChild(prevLink);
     containerDiv.appendChild(nextLink);
@@ -94,27 +118,26 @@ function PaginationWidget(containerSelector, prevCallback, nextCallback, pageSiz
     renderNext(count);
 
     function updatePageNumber(count) {
-        var startPageNumber = _this.pageSize * (_this.currentPageNumber - 1);
-        var endPageNumber = startPageNumber + count;
-        startPageNumber += 1;
         renderPrev();
-        renderNext(endPageNumber, _this.totalCount);
-        _this.containerDiv.querySelector('#page-number').textContent = getText(count);
+        renderNext();
+        _this.containerDiv.querySelector('#page-start').textContent =  getStartNumber();
+        _this.containerDiv.querySelector('#page-end').textContent =  getEndNumber(count);
     }
 
     function renderPrev() {
          _this.containerDiv.querySelector('#prev').className = (_this.currentPageNumber == 1) ? 'disabled' : '';
     }
 
-    function renderNext(endPageNumber) {
-        _this.containerDiv.querySelector('#next').className =  (endPageNumber == _this.totalCount) ? 'disabled' : '';
+    function renderNext() {
+        _this.containerDiv.querySelector('#next').className =  (getEndNumber() == _this.totalCount) ? 'disabled' : '';
     }
 
-    function getText(count) {
-        var startPageNumber = _this.pageSize * (_this.currentPageNumber - 1);
-        var endPageNumber = startPageNumber + count;
-        startPageNumber += 1;
-        return startPageNumber + " - " + endPageNumber + " of " + _this.totalCount;
+    function getStartNumber() {
+        return _this.pageSize * (_this.currentPageNumber - 1) + 1;
+    }
+
+    function getEndNumber() {
+        return _this.pageSize * (_this.currentPageNumber - 1) + count;
     }
 
     return _this;
