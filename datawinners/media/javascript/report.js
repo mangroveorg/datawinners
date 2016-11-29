@@ -29,5 +29,11 @@ $(function(){
 
     initPaginationWidget($('#report_navigation li.active a'));
 
-    $('#report_container>.report_content select').chosen({width: "20%"});
+    $('#report_container>.report_content select').chosen();
+
+    $('input.filter').daterangepicker({
+        rangeSplitter: 'to',
+        presets: {dateRange: 'Date Range'},
+        dateFormat:'dd-mm-yy'
+    });
 });

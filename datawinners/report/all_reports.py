@@ -54,8 +54,10 @@ def _get_style_content(config):
 
 def _get_content(dbm, config, request):
     page_number = request.GET.get("page_number") or "1"
+    filters = get_report_filters(dbm, config)
     return Template(config.template()).render(RequestContext(request, {
         "report_data": get_report_data(dbm, config, int(page_number)),
-        "report_filters": get_report_filters(dbm, config),
+        "idnr_filters": filters["idnr_filters"],
+        "date_filters": filters["date_filters"],
         "report_id": "report_" + config.id
     }))
