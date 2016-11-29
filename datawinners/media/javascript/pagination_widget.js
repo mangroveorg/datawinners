@@ -43,6 +43,8 @@ function PaginationWidget(containerSelector, prevCallback, nextCallback, pageSiz
     pageNumberSpan.id = 'page-number';
     nextLink.id = 'next';
     firstLastLinkContainer.id = 'quick-links-container';
+    firstLink.id = 'first';
+    lastLink.id = 'last';
     firstLastLinkContainer.className = 'hide';
     containerDiv.className = 'pagination-widget';
 
@@ -116,10 +118,13 @@ function PaginationWidget(containerSelector, prevCallback, nextCallback, pageSiz
 
     renderPrev();
     renderNext(count);
-
+    renderFirst();
+    renderLast();
     function updatePageNumber(count) {
         renderPrev();
         renderNext();
+        renderFirst();
+        renderLast();
         _this.containerDiv.querySelector('#page-start').textContent =  getStartNumber();
         _this.containerDiv.querySelector('#page-end').textContent =  getEndNumber(count);
     }
@@ -138,6 +143,14 @@ function PaginationWidget(containerSelector, prevCallback, nextCallback, pageSiz
 
     function getEndNumber() {
         return _this.pageSize * (_this.currentPageNumber - 1) + count;
+    }
+
+    function renderFirst() {
+        _this.containerDiv.querySelector('#first').className =  (_this.currentPageNumber == 1) ? 'disabled' : '';
+    }
+
+    function renderLast() {
+        _this.containerDiv.querySelector('#last').className =  (_this.currentPageNumber == Math.ceil(_this.totalCount/_this.pageSize)) ? 'disabled' : '';
     }
 
     return _this;
