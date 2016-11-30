@@ -4,7 +4,7 @@ from mangrove.datastore.documents import SurveyResponseDocument
 from mangrove.form_model.field import FieldSet, UniqueIdField, SelectField, UniqueIdUIField, DateField
 from mangrove.form_model.form_model import FormModel, get_form_model_by_entity_type
 from mangrove.transport.contract.survey_response import get_survey_responses_by_form_model_id, \
-    get_total_number_of_survey_reponse_by_form_model_id
+    get_total_number_of_survey_reponse_by_form_model_id, get_survey_response_by_report_view_name
 
 BATCH_SIZE = 2
 
@@ -42,19 +42,19 @@ def _enrich_questions(dbm, row, questionnaire):
         parent = _get_parent(question, row)
         parent[question.code] = get_label_to_be_displayed(parent[question.code], question, questionnaire, SurveyResponseDocument._wrap_row(row))
 
-    row.value["created_by"] = get_datasender_info(dbm,  SurveyResponseDocument._wrap_row(row)).get('name', '')
+    row["doc"]["created_by"] = get_datasender_info(dbm,  SurveyResponseDocument._wrap_row(row)).get('name', '')
 
     return row
 
 
 def _get_parent(question, row):
     path_components = question.path and question.path.split(".")
-    return reduce(lambda prev_values, comp: prev_values[comp][0], path_components, row.value["values"])
+    return reduce(lambda prev_values, comp: prev_values[comp][0], path_components, row["doc"]["values"])
 
 
-def get_report_data(dbm, config, page_number):
+def get_report_data(dbm, config, page_number, filter_values):
     questionnaire = FormModel.get(dbm, config.questionnaires[0]["id"])
-    rows = get_survey_responses_by_form_model_id(dbm, config.questionnaires[0]["id"], BATCH_SIZE, BATCH_SIZE*(page_number-1))
+    rows = get_survey_response_by_report_view_name(dbm, "report_"+config.id, BATCH_SIZE, BATCH_SIZE*(page_number-1), filter_values, filter_values)
     return [{config.questionnaires[0]["alias"]: _enrich_questions(dbm, row, questionnaire)} for index, row in enumerate(rows) if index < BATCH_SIZE]
 
 
@@ -89,6 +89,12 @@ def _get_linked_idnr_date_qns(dbm, entity_qns):
     return date_qns
 
 
+def _unique_id_with_options(qn, dbm):
+    field = UniqueIdUIField(qn, dbm)
+    setattr(field, "path", qn.path)
+    return field
+
+
 def get_report_filters(dbm, config):
     if not hasattr(config, "filters") or not config.filters:
         return []
@@ -97,7 +103,7 @@ def get_report_filters(dbm, config):
 
     entity_qns = enrichable_questions["entity_questions"]
     entity_qns.extend(_get_linked_idnr_qns(dbm, entity_qns))
-    idnrFilters = [UniqueIdUIField(qn, dbm) for qn in entity_qns if _get_path(config.questionnaires[0]["alias"], qn) in config.filters]
+    idnrFilters = [_unique_id_with_options(qn, dbm) for qn in entity_qns if _get_path(config.questionnaires[0]["alias"], qn) in config.filters]
 
     date_qns = enrichable_questions["date_questions"]
     date_qns.extend(_get_linked_idnr_date_qns(dbm, entity_qns))

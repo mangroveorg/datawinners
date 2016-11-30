@@ -64,10 +64,14 @@ def _get_style_content(config):
 def _get_content(dbm, config, request):
     filters = get_report_filters(dbm, config)
     page_number = request.GET.get("page_number") or "1"
-    data = get_report_data(dbm, config, int(page_number))
+    data = get_report_data(dbm, config, int(page_number), _filter_values(request, config))
     return Template(config.template()).render(RequestContext(request, {
         "report_data": data,
         "idnr_filters": filters["idnr_filters"],
         "date_filters": filters["date_filters"],
         "report_id": "report_" + config.id
     })), len(data)
+
+
+def _filter_values(request, config):
+    return [request.GET.get(filter.replace(config.questionnaires[0]["alias"] + ".", "")) for filter in config.filters if request.GET.get(filter.replace(config.questionnaires[0]["alias"] + ".", ""))]

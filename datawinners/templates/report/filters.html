@@ -1,5 +1,5 @@
 {% for filter in idnr_filters %}
-    <select style="width: 20%;" data-placeholder="Select a {{ filter.unique_id_type }}">
+    <select id="{{filter.path}}.{{filter.code}}" class="filter" style="width: 20%;" data-placeholder="Select a {{ filter.unique_id_type }}">
         <option value=""></option>
         {% for option in filter.options %}
             <option value="{{ option.0 }}"> {{ option.1 }} </option>
@@ -7,5 +7,6 @@
     </select>
 {% endfor %}
 {% for filter in date_filters %}
-    <input class="filter" placeholder="Select {{ filter.label }}" style="width: 20%; height: 20px;" type="text" />
+    <input id="{{filter.path}}.{{filter.code}}" class="filter date_filter" placeholder="Select {{ filter.label }}" style="width: 20%; height: 20px;" type="text" />
 {% endfor %}
+<input type="submit" class="button_blue" value="Filter" id="filter_button">

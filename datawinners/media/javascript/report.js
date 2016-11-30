@@ -3,12 +3,7 @@ $(function(){
         var loadData = function (pageNumber, callback) {
             $.get(anchorElement.attr("id"), {page_number: pageNumber}).done(function(response) {
                 $("#report_container>.report_content").html(response.content);
-                $('#report_container>.report_content select').chosen();
-                $('input.filter').daterangepicker({
-                    rangeSplitter: 'to',
-                    presets: {dateRange: 'Date Range'},
-                    dateFormat:'dd-mm-yy'
-                });
+                initFilters(anchorElement);//this should be retired if possible
                 callback && callback(response.count);
             });
         };
@@ -17,17 +12,33 @@ $(function(){
         new PaginationWidget('#pagination-' + anchorElement.attr("id"), loadData, loadData, pageSize, count, totalCount);
     };
 
+    var initFilters = function(anchorElement) {
+        $('#report_container>.report_content select').chosen();
+        if($('#report_container>.report_content input.date_filter').length) {
+            $('#report_container>.report_content input.date_filter').daterangepicker({
+                rangeSplitter: 'to',
+                presets: {dateRange: 'Date Range'},
+                dateFormat:'dd-mm-yy'
+            });
+        }
+        $("#filter_button").click(function() {
+            var values = $("#report_container>.report_content .filter").get().reduce(function(map, elem) {
+                map[elem.id] = $(elem).val();
+                return map;
+            }, {});
+            $.get(anchorElement.attr("id"), values).done(function(response) {
+                $("#report_container>.report_content").html(response.content);
+                initFilters(anchorElement);
+            });
+        });
+    }
+
     var loadReportTabCallback = function(anchorElement, pageSize, count, totalCount) {
         $("#report_navigation li.active").addClass("inactive");
         $("#report_navigation li.active").removeClass("active");
         anchorElement.parent().addClass("active");
         initPaginationWidget(anchorElement, pageSize, count, totalCount);
-        $('#report_container>.report_content select').chosen();
-        $('input.filter').daterangepicker({
-            rangeSplitter: 'to',
-            presets: {dateRange: 'Date Range'},
-            dateFormat:'dd-mm-yy'
-        });
+        initFilters(anchorElement);
     };
 
     $("#report_navigation a").click(function(){
