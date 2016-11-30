@@ -2,8 +2,14 @@ $(function(){
     var initPaginationWidget = function(anchorElement, pageSize, count, totalCount) {
         var loadData = function (pageNumber, callback) {
             $.get(anchorElement.attr("id"), {page_number: pageNumber}).done(function(response) {
-              $("#report_container>.report_content").html(response.content);
-              callback && callback(response.count);
+                $("#report_container>.report_content").html(response.content);
+                $('#report_container>.report_content select').chosen();
+                $('input.filter').daterangepicker({
+                    rangeSplitter: 'to',
+                    presets: {dateRange: 'Date Range'},
+                    dateFormat:'dd-mm-yy'
+                });
+                callback && callback(response.count);
             });
         };
 
@@ -21,12 +27,6 @@ $(function(){
             rangeSplitter: 'to',
             presets: {dateRange: 'Date Range'},
             dateFormat:'dd-mm-yy'
-        });
-    };
-
-    var loadReportData = function (page) {
-        $.get(anchorElement.attr("id")).done(function(response) {
-          $("#report_container>.report_content").html(response.content);
         });
     };
 
