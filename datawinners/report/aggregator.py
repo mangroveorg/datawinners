@@ -97,7 +97,10 @@ def _unique_id_with_options(qn, dbm):
 
 def get_report_filters(dbm, config):
     if not hasattr(config, "filters") or not config.filters:
-        return []
+        return {
+            "idnr_filters": [],
+            "date_filters": []
+        }
 
     enrichable_questions = _build_enrichable_questions(FormModel.get(dbm, config.questionnaires[0]["id"]).fields, "")
 

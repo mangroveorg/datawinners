@@ -28,7 +28,7 @@ $(function(){
             }, {});
             $.get(anchorElement.attr("id"), values).done(function(response) {
                 $("#report_container>.report_content").html(response.content);
-                initFilters(anchorElement);
+                initFilters(anchorElement);//this should be retired if possible
             });
         });
     }
