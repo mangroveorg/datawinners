@@ -6,7 +6,7 @@ from mangrove.form_model.form_model import FormModel, get_form_model_by_entity_t
 from mangrove.transport.contract.survey_response import get_survey_responses_by_form_model_id, \
     get_total_number_of_survey_reponse_by_form_model_id, get_survey_response_by_report_view_name
 
-BATCH_SIZE = 2
+BATCH_SIZE = 25
 
 
 def _build_enrichable_questions(fields, path):
