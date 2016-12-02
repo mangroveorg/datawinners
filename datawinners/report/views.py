@@ -3,10 +3,12 @@ import json
 from django.http import HttpResponse
 from django.template import RequestContext, Template
 from django.views.generic import TemplateView
+
+from datawinners.report.filter import get_report_filters
 from mangrove.datastore.report_config import get_report_configs, get_report_config
 
 from datawinners.main.database import get_database_manager
-from datawinners.report.aggregator import get_report_data, get_report_filters, get_total_count, BATCH_SIZE
+from datawinners.report.aggregator import get_report_data, get_total_count, BATCH_SIZE
 
 
 class AllReportsView(TemplateView):
@@ -74,4 +76,4 @@ def _get_content(dbm, config, request):
 
 
 def _filter_values(request, config):
-    return [request.GET.get(filter.replace(config.questionnaires[0]["alias"] + ".", "")) for filter in config.filters if request.GET.get(filter.replace(config.questionnaires[0]["alias"] + ".", ""))]
+    return filter(None, [request.GET.get(f.replace(config.questionnaires[0]["alias"] + ".", "")) for f in config.filters])
