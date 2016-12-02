@@ -7,8 +7,9 @@ BATCH_SIZE = 25
 
 
 def get_report_data(dbm, config, page_number, filter_values):
+    startkey = filter(None, filter_values)
     questionnaire = FormModel.get(dbm, config.questionnaires[0]["id"])
-    rows = get_survey_response_by_report_view_name(dbm, "report_"+config.id, BATCH_SIZE, BATCH_SIZE*(page_number-1), filter_values, filter_values)
+    rows = get_survey_response_by_report_view_name(dbm, "report_"+config.id, BATCH_SIZE, BATCH_SIZE*(page_number-1), startkey, filter_values)
     return [{config.questionnaires[0]["alias"]: _enrich_questions(dbm, row, questionnaire)} for index, row in enumerate(rows) if index < BATCH_SIZE]
 
 

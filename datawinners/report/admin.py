@@ -1,13 +1,14 @@
 from django.http import HttpResponse
 
 from datawinners.main.database import get_database_manager
+from datawinners.report.helper import not_idnr_filter
 from mangrove.datastore.report_config import get_report_config
 
 
 def create_report_view(request, report_id):
     dbm = get_database_manager(request.user)
     config = get_report_config(dbm, report_id)
-    fields = [_form_key_for_couch_view(field) for field in config.filters]
+    fields = [_form_key_for_couch_view(qn) for qn in config.filters if not_idnr_filter(qn)]
     questionnaire_ids = '"{0}"'.format('", "'.join([questionnaire['id'] for questionnaire in config.questionnaires]))
     dbm.create_view(get_report_view_name(report_id), _get_map_function(questionnaire_ids, _combined_view_key(fields)), "")
     return HttpResponse()
