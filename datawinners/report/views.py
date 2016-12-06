@@ -4,11 +4,10 @@ from django.http import HttpResponse
 from django.template import RequestContext, Template
 from django.views.generic import TemplateView
 
-from datawinners.report.filter import get_report_filters, filter_values
-from mangrove.datastore.report_config import get_report_configs, get_report_config
-
 from datawinners.main.database import get_database_manager
 from datawinners.report.aggregator import get_report_data, get_total_count, BATCH_SIZE
+from datawinners.report.filter import get_report_filters, filter_values
+from mangrove.datastore.report_config import get_report_configs, get_report_config
 
 
 class AllReportsView(TemplateView):
@@ -66,7 +65,8 @@ def _get_style_content(config):
 def _get_content(dbm, config, request):
     filters = get_report_filters(dbm, config)
     page_number = request.GET.get("page_number") or "1"
-    data = get_report_data(dbm, config, int(page_number), filter_values(request, config))
+    values = filter_values(dbm, config, request.GET)
+    data = get_report_data(dbm, config, int(page_number), values[0], values[1])
     return Template(config.template()).render(RequestContext(request, {
         "report_data": data,
         "idnr_filters": filters["idnr_filters"],

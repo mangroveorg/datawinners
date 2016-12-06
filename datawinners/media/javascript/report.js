@@ -23,7 +23,7 @@ $(function(){
         }
         $("#filter_button").click(function() {
             var values = $("#report_container>.report_content .filter").get().reduce(function(map, elem) {
-                map[elem.id] = $(elem).val();
+                map[elem.id] = $(elem).attr("idnr-type") + ";" + $(elem).val()
                 return map;
             }, {});
             $.get(anchorElement.attr("id"), values).done(function(response) {
