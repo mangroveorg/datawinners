@@ -13,13 +13,13 @@ $(function(){
 
     var initFilters = function(anchorElement) {
         $('#report_container>.filter_container select').chosen();
-        if($('#report_container>.filter_container input.date_filter').length) {
-            $('#report_container>.filter_container input.date_filter').daterangepicker({
+        $('#report_container>.filter_container input.date_filter').each(function() {
+            $(this).daterangepicker({
                 rangeSplitter: 'to',
                 presets: {dateRange: 'Date Range'},
                 dateFormat:'dd-mm-yy'
             });
-        }
+        });
         $("#filter_button").click(function() {
             var values = $("#report_container>.filter_container .filter").get().reduce(function(map, elem) {
                 map[elem.id] = $(elem).attr("idnr-type") + ";" + $(elem).val()
