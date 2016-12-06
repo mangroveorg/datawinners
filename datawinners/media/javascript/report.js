@@ -3,7 +3,6 @@ $(function(){
         var loadData = function (pageNumber, callback) {
             $.get(anchorElement.attr("id"), {page_number: pageNumber}).done(function(response) {
                 $("#report_container>.report_content").html(response.content);
-                initFilters(anchorElement);//this should be retired if possible
                 callback && callback(response.count);
             });
         };
@@ -13,22 +12,21 @@ $(function(){
     };
 
     var initFilters = function(anchorElement) {
-        $('#report_container>.report_content select').chosen();
-        if($('#report_container>.report_content input.date_filter').length) {
-            $('#report_container>.report_content input.date_filter').daterangepicker({
+        $('#report_container>.filter_container select').chosen();
+        if($('#report_container>.filter_container input.date_filter').length) {
+            $('#report_container>.filter_container input.date_filter').daterangepicker({
                 rangeSplitter: 'to',
                 presets: {dateRange: 'Date Range'},
                 dateFormat:'dd-mm-yy'
             });
         }
         $("#filter_button").click(function() {
-            var values = $("#report_container>.report_content .filter").get().reduce(function(map, elem) {
+            var values = $("#report_container>.filter_container .filter").get().reduce(function(map, elem) {
                 map[elem.id] = $(elem).attr("idnr-type") + ";" + $(elem).val()
                 return map;
             }, {});
             $.get(anchorElement.attr("id"), values).done(function(response) {
                 $("#report_container>.report_content").html(response.content);
-                initFilters(anchorElement);//this should be retired if possible
             });
         });
     }
@@ -38,12 +36,14 @@ $(function(){
         $("#report_navigation li.active").removeClass("active");
         anchorElement.parent().addClass("active");
         initPaginationWidget(anchorElement, pageSize, count, totalCount);
-        initFilters(anchorElement);
     };
 
     $("#report_navigation a").click(function(){
         var anchorElement = $(this);
         $("#report_container>.pagination_container").empty();
+        $("#report_container>.filter_container").load(anchorElement.attr("id") + "/filters/", function(){
+            initFilters(anchorElement);
+        });
         $.get(anchorElement.attr("id")).done(function(response) {
           $("#report_container>.report_content").html(response.content);
           loadReportTabCallback(anchorElement, response.pageSize, response.count, response.totalCount);

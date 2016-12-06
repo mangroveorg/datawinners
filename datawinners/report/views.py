@@ -1,6 +1,7 @@
 import json
 
 from django.http import HttpResponse
+from django.shortcuts import render_to_response
 from django.template import RequestContext, Template
 from django.views.generic import TemplateView
 
@@ -50,6 +51,16 @@ def report_font_file(request, report_id, font_file_name):
     return HttpResponse(mimetype="font/opentype", content=font_file)
 
 
+def report_filters(request, report_id):
+    dbm = get_database_manager(request.user)
+    config = get_report_config(dbm, report_id)
+    filters = get_report_filters(dbm, config)
+    return render_to_response("report/filters.html", {
+        "idnr_filters": filters["idnr_filters"],
+        "date_filters": filters["date_filters"]
+    }, context_instance=RequestContext(request))
+
+
 def _build_report_content(dbm, config, request):
     content = ""
     content += _get_style_content(config)
@@ -63,13 +74,10 @@ def _get_style_content(config):
 
 
 def _get_content(dbm, config, request):
-    filters = get_report_filters(dbm, config)
     page_number = request.GET.get("page_number") or "1"
     values = filter_values(dbm, config, request.GET)
     data = get_report_data(dbm, config, int(page_number), values[0], values[1])
     return Template(config.template()).render(RequestContext(request, {
         "report_data": data,
-        "idnr_filters": filters["idnr_filters"],
-        "date_filters": filters["date_filters"],
         "report_id": "report_" + config.id
     })), len(data)
