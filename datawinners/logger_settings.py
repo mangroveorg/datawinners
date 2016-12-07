@@ -149,7 +149,7 @@ LOGGING = {
             'propagate': True,
         },
         'datawinners': {
-            'level': 'ERROR',
+            'level': 'INFO',
             'handlers': ['log-file'],
             'propagate': True,
         },

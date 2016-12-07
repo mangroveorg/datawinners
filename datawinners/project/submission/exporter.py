@@ -1,8 +1,10 @@
+import logging
 from datawinners.project.Header import SubmissionExcelHeader
 from datawinners.project.submission.export import export_filename, export_to_new_excel
 from datawinners.project.submission.formatter import SubmissionFormatter
 from datawinners.project.submission.submission_search import get_scrolling_submissions_query
 
+datawinners_logger = logging.getLogger("datawinners")
 
 class SubmissionExporter:
     def __init__(self, form_model, project_name, dbm, local_time_delta, current_language='en', preferences=None):
@@ -25,10 +27,16 @@ class SubmissionExporter:
         return columns, search_results
 
     def create_excel_response(self, submission_type, query_params, hide_codes_sheet=False):
+        datawinners_logger.info("EXPORT SUBJECT ----------------------- Trigger fetching columns and search results")
+
         columns, search_results = self.get_columns_and_search_results(query_params, submission_type)
+
+        datawinners_logger.info("EXPORT SUBJECT ----------------------- Completed fetching columns and search results")
         return self._create_response(columns, search_results, submission_type, hide_codes_sheet)
 
     def _create_response(self, columns, submission_list, submission_type, hide_codes_sheet=False):
+        datawinners_logger.info("EXPORT SUBJECT ----------------------- Trigger fetching header details")
         header_list, submission_formatter = self._get_header_list(columns)
+        datawinners_logger.info("EXPORT SUBJECT ----------------------- Completed fetching header details")
         return export_to_new_excel(header_list, submission_list, export_filename(submission_type, self.project_name),
                                    submission_formatter, hide_codes_sheet, questionnaire=self.form_model)

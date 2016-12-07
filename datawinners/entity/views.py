@@ -805,6 +805,8 @@ def export_subject(request):
                     "filter":'identification_number',
                     }
 
+    datawinners_logger.info("EXPORT SUBJECT ----------------------- Triggering create for excel response "+subject_type)
+
     return SubmissionExporter(form_model, project_name, manager, local_time_delta, current_language, None) \
         .create_excel_response('identification_number', query_params)
 

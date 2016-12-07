@@ -1,5 +1,6 @@
 import tempfile
 import math
+import logging
 
 import xlsxwriter
 
@@ -15,13 +16,16 @@ from datawinners.workbook_utils import worksheet_add_header
 from mangrove.form_model.field import ExcelDate
 from datawinners.project.submission.analysis_helper import enrich_analysis_data
 
+datawinners_logger = logging.getLogger("datawinners")
 
 def add_sheet_with_data(raw_data, headers, workbook, formatter=None, sheet_name_prefix=None, browser=None, questionnaire=None):
+    datawinners_logger.info("EXPORT SUBJECT ----------------------- Adding new sheet to excel " + sheet_name_prefix)
     ws = workbook.add_worksheet(name=sheet_name_prefix)
     worksheet_add_header(ws, headers, workbook, browser)
     date_formats = {}
 
     for row_number, row in enumerate(raw_data):
+        datawinners_logger.info("EXPORT SUBJECT ----------------------- Processing raw row data --- Row number " + row_number)
         if questionnaire and formatter:
             #For advanced transformation
             row = enrich_analysis_data(row['_source'], questionnaire, row['_id'], is_export=True)
@@ -40,6 +44,7 @@ def add_sheet_with_data(raw_data, headers, workbook, formatter=None, sheet_name_
                 ws.write_number(row_number + 1, column, val)
             else:
                 ws.write(row_number + 1, column, val)
+    datawinners_logger.info("EXPORT SUBJECT ----------------------- Complete adding new sheet to excel " + sheet_name_prefix)
 
 
 def get_header_style(workbook):
@@ -103,6 +108,7 @@ def create_excel_response(headers, raw_data_list, file_name):
     return response
 
 def export_to_new_excel(headers, raw_data, file_name, formatter=None, hide_codes_sheet=False, browser=None, questionnaire=None):
+    datawinners_logger.info("EXPORT SUBJECT ----------------------- Initiating export to new excel process")
     file_name_normalized = slugify(file_name)
     output = tempfile.TemporaryFile()
     workbook = xlsxwriter.Workbook(output, {'constant_memory': True})
@@ -117,6 +123,7 @@ def export_to_new_excel(headers, raw_data, file_name, formatter=None, hide_codes
         codes_sheet.hide()
     workbook.close()
     output.seek(0)
+    datawinners_logger.info("EXPORT SUBJECT ----------------------- Completing export to new excel process")
     response = HttpResponse(FileWrapper(output), mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
 
     response['Content-Disposition'] = "attachment; filename=%s.xlsx" % file_name_normalized
