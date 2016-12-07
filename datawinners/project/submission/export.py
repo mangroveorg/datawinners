@@ -19,7 +19,7 @@ from datawinners.project.submission.analysis_helper import enrich_analysis_data
 datawinners_logger = logging.getLogger("datawinners")
 
 def add_sheet_with_data(raw_data, headers, workbook, formatter=None, sheet_name_prefix=None, browser=None, questionnaire=None):
-    datawinners_logger.info("EXPORT SUBJECT ----------------------- Adding new sheet to excel " + sheet_name_prefix)
+    datawinners_logger.info("EXPORT SUBJECT ----------------------- Adding new sheet to excel ")
     ws = workbook.add_worksheet(name=sheet_name_prefix)
     worksheet_add_header(ws, headers, workbook, browser)
     date_formats = {}
@@ -44,7 +44,7 @@ def add_sheet_with_data(raw_data, headers, workbook, formatter=None, sheet_name_
                 ws.write_number(row_number + 1, column, val)
             else:
                 ws.write(row_number + 1, column, val)
-    datawinners_logger.info("EXPORT SUBJECT ----------------------- Complete adding new sheet to excel " + sheet_name_prefix)
+    datawinners_logger.info("EXPORT SUBJECT ----------------------- Complete adding new sheet to excel ")
 
 
 def get_header_style(workbook):
