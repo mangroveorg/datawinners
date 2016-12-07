@@ -1,5 +1,5 @@
 from datawinners.project.submission.analysis_helper import _get_linked_id_details
-from datawinners.report.helper import idnr_question, get_indexable_question
+from datawinners.report.helper import idnr_question, get_indexable_question, distinct, strip_alias
 from mangrove.datastore.entity import get_short_codes_by_entity_type
 from mangrove.form_model.field import DateField, UniqueIdUIField
 from mangrove.form_model.form_model import get_form_model_by_entity_type, FormModel
@@ -29,47 +29,54 @@ def get_report_filters(dbm, config):
 
 
 def filter_values(dbm, config, filters):
-    qnr_alias = config.questionnaires[0]["alias"]
     endkey = []
     startkey = []
-    visited_qns = {}
+    all_qns = []
+    visited_idnr_qns = {}
     for qn in config.filters:
+        indexable_qn = get_indexable_question(qn)
         if idnr_question(qn):
-            indexable_qn = get_indexable_question(qn)
-            idnr = _idnr_type(qnr_alias, qn, filters)
-            filter_value = _filter_value(qnr_alias, qn, filters)
+            idnr = _idnr_type(qn, filters)
+            filter_value = _filter_value(qn, filters)
             if filter_value:
                 endkey.pop()
                 startkey.pop()
                 entities = _get_entities_for_idnr(dbm, idnr, {qn.split(".")[-1:][0]: filter_value})
-                entities = indexable_qn in visited_qns and list(set(entities).intersection(set(visited_qns[indexable_qn]))) or entities
+                entities = indexable_qn in visited_idnr_qns and list(set(entities).intersection(set(visited_idnr_qns[indexable_qn]))) or entities
                 endkey.append(entities[-1:][0])
                 startkey.append(entities[0])
-                visited_qns[indexable_qn] = entities
+                visited_idnr_qns[indexable_qn] = entities
         else:
-            if visited_qns.get(qn) is None:
-                filter_value = _filter_value(qnr_alias, qn, filters)
-                endkey.append(filter_value)
-                startkey.append(filter_value)
-    return filter(None, startkey), endkey
+            filter_value = _filter_value(qn, filters)
+            endkey.append(filter_value)
+            startkey.append(filter_value)
+        all_qns.append(indexable_qn)
+    startkey, endkey, index = _reorder_keys_for_index(startkey, endkey, distinct(all_qns))
+    return filter(None, startkey), endkey, index
+
+
+def _reorder_keys_for_index(startkey, endkey, all_qns):
+    sorted_endkey = sorted(endkey, reverse=True)
+    sorted_startkey = sorted(startkey, reverse=True)
+    return sorted_startkey, sorted_endkey, strip_alias(all_qns[startkey.index(sorted_startkey[0])])
 
 
 def _get_entities_for_idnr(dbm, idnr, filters):
     return get_short_codes_by_entity_type(dbm, [idnr], filters=filters)
 
 
-def _idnr_type(alias, qn, filters):
-    type_and_value = _filter_type_and_value(alias, qn, filters)
+def _idnr_type(qn, filters):
+    type_and_value = _filter_type_and_value(qn, filters)
     return type_and_value and type_and_value.split(";")[0]
 
 
-def _filter_value(alias, qn, filters):
-    type_and_value = _filter_type_and_value(alias, qn, filters)
+def _filter_value(qn, filters):
+    type_and_value = _filter_type_and_value(qn, filters)
     return type_and_value and type_and_value.split(";")[1] or {}
 
 
-def _filter_type_and_value(alias, qn, filters):
-    return filters.get(qn.replace(alias + ".", ""))
+def _filter_type_and_value(qn, filters):
+    return filters.get(strip_alias(qn))
 
 
 def _get_linked_idnr_qns(dbm, entity_qns):
