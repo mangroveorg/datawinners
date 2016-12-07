@@ -25,7 +25,7 @@ def add_sheet_with_data(raw_data, headers, workbook, formatter=None, sheet_name_
     date_formats = {}
 
     for row_number, row in enumerate(raw_data):
-        datawinners_logger.info("EXPORT SUBJECT ----------------------- Processing raw row data --- Row number " + row_number)
+        datawinners_logger.info("EXPORT SUBJECT ----------------------- Processing raw row data --- Row number " + str(row_number))
         if questionnaire and formatter:
             #For advanced transformation
             row = enrich_analysis_data(row['_source'], questionnaire, row['_id'], is_export=True)
