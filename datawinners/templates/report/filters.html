@@ -1,6 +1,6 @@
 <div style="width: 92%; vertical-align: middle; display: inline-block; line-height:3;">
     {% for filter in idnr_filters %}
-        <select id="{{filter.identifier}}" idnr-type="{{filter.idnr_type}}" data-placeholder="Select a {{filter.unique_id_type}}"
+        <select id="{{filter.identifier}}" filter-type="{{filter.type}}" idnr-type="{{filter.idnr_type}}" data-placeholder="Select a {{filter.unique_id_type}}"
                 class="filter" style="width: 32%;">
             <option value=""></option>
             {% for option in filter.options %}
@@ -9,7 +9,7 @@
         </select>
     {% endfor %}
     {% for filter in date_filters %}
-        <input id="{{filter.identifier}}" idnr-type="{{filter.idnr_type}}" placeholder="Select {{filter.label}}" type="text"
+        <input id="{{filter.identifier}}" filter-type="{{filter.type}}" idnr-type="{{filter.idnr_type}}" placeholder="Select {{filter.label}}" type="text"
                class="filter date_filter" style="width: 31.5%; height: 20px;" />
     {% endfor %}
 </div>

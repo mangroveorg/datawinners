@@ -1,3 +1,7 @@
+from datetime import datetime
+
+from pytz import utc
+
 from datawinners.project.submission.analysis_helper import _get_linked_id_details
 from datawinners.report.helper import idnr_question, get_indexable_question, distinct, strip_alias
 from mangrove.datastore.entity import get_short_codes_by_entity_type
@@ -42,17 +46,18 @@ def filter_values(dbm, config, filters):
                 endkey.pop()
                 startkey.pop()
                 entities = _get_entities_for_idnr(dbm, idnr, {qn.split(".")[-1:][0]: filter_value})
-                entities = indexable_qn in visited_idnr_qns and list(set(entities).intersection(set(visited_idnr_qns[indexable_qn]))) or entities
-                endkey.append(entities[-1:][0])
-                startkey.append(entities[0])
+                if indexable_qn in visited_idnr_qns:
+                    entities = list(set(entities).intersection(set(visited_idnr_qns[indexable_qn])))
+                endkey.append(entities and entities[-1:][0])
+                startkey.append(entities and entities[0])
                 visited_idnr_qns[indexable_qn] = entities
         else:
             filter_value = _filter_value(qn, filters)
-            endkey.append(filter_value)
-            startkey.append(filter_value)
+            endkey.append(isinstance(filter_value, list) and int(filter_value[1].strftime("%s")) or filter_value)
+            startkey.append(isinstance(filter_value, list) and int(filter_value[0].strftime("%s")) or filter_value)
         all_qns.append(indexable_qn)
     startkey, endkey, index = _reorder_keys_for_index(startkey, endkey, distinct(all_qns))
-    return filter(None, startkey), endkey, index
+    return filter(lambda key: key != {}, startkey), endkey, index
 
 
 def _reorder_keys_for_index(startkey, endkey, all_qns):
@@ -65,14 +70,23 @@ def _get_entities_for_idnr(dbm, idnr, filters):
     return get_short_codes_by_entity_type(dbm, [idnr], filters=filters)
 
 
-def _idnr_type(qn, filters):
+def _type(qn, filters):
     type_and_value = _filter_type_and_value(qn, filters)
     return type_and_value and type_and_value.split(";")[0]
 
 
+def _idnr_type(qn, filters):
+    type_and_value = _filter_type_and_value(qn, filters)
+    return type_and_value and type_and_value.split(";")[1]
+
+
 def _filter_value(qn, filters):
     type_and_value = _filter_type_and_value(qn, filters)
-    return type_and_value and type_and_value.split(";")[1] or {}
+    if type_and_value:
+        type = type_and_value.split(";")[0]
+        value = type_and_value.split(";")[2] or {}
+        return value and (type == 'date' and [datetime.strptime(date.strip(), "%d-%m-%Y").replace(tzinfo=utc) for date in value.split("to")] or value)
+    return {}
 
 
 def _filter_type_and_value(qn, filters):
