@@ -55,15 +55,21 @@ def filter_values(dbm, config, filters):
             filter_value = _filter_value(qn, filters)
             endkey.append(isinstance(filter_value, list) and int(filter_value[1].strftime("%s")) or filter_value)
             startkey.append(isinstance(filter_value, list) and int(filter_value[0].strftime("%s")) or filter_value)
-        all_qns.append(indexable_qn)
+        all_qns.append(strip_alias(indexable_qn))
     startkey, endkey, index = _reorder_keys_for_index(startkey, endkey, distinct(all_qns))
-    return filter(lambda key: key != {}, startkey), endkey, index
+    return startkey, endkey, index
 
 
 def _reorder_keys_for_index(startkey, endkey, all_qns):
-    sorted_endkey = sorted(endkey, reverse=True)
-    sorted_startkey = sorted(startkey, reverse=True)
-    return sorted_startkey, sorted_endkey, strip_alias(all_qns[startkey.index(sorted_startkey[0])])
+    empty_key_indices = [startkey.index(key) for key in startkey if key == {}]
+    sorted_endkey = filter(lambda key: key != {}, endkey)
+    sorted_startkey = filter(lambda key: key != {}, startkey)
+    for index in empty_key_indices:
+        sorted_endkey.append({})
+        qn = all_qns[index]
+        del all_qns[index]
+        all_qns.append(qn)
+    return sorted_startkey, sorted_endkey, "_".join(all_qns)
 
 
 def _get_entities_for_idnr(dbm, idnr, filters):

@@ -1,3 +1,5 @@
+from itertools import permutations
+
 from django.http import HttpResponse
 
 from datawinners.main.database import get_database_manager
@@ -8,22 +10,19 @@ from mangrove.datastore.report_config import get_report_config
 def create_report_view(request, report_id):
     dbm = get_database_manager(request.user)
     config = get_report_config(dbm, report_id)
-    first_qn = strip_alias(get_indexable_question(config.filters[0]))
-    last_qn = strip_alias(get_indexable_question(config.filters[-1]))
-    fields = distinct([_form_key_for_couch_view(get_indexable_question(qn)) for qn in config.filters])
+    indexes = list(permutations(distinct([strip_alias(get_indexable_question(qn)) for qn in config.filters])))
     questionnaire_ids = '"{0}"'.format('", "'.join([questionnaire['id'] for questionnaire in config.questionnaires]))
-    dbm.create_view(get_report_view_name(report_id, first_qn), _get_map_function(questionnaire_ids, _combined_view_key(fields)), "")
-    dbm.create_view(get_report_view_name(report_id, last_qn), _get_map_function(questionnaire_ids, _combined_view_key(fields[::-1])), "")
+    for index in indexes:
+        dbm.create_view(get_report_view_name(report_id, "_".join(index)), _get_map_function(questionnaire_ids, _combined_view_key(map(_form_key_for_couch_view, index))), "")
     return HttpResponse()
 
 
 def delete_report_view(request, report_id):
     dbm = get_database_manager(request.user)
     config = get_report_config(dbm, report_id)
-    first_qn = strip_alias(get_indexable_question(config.filters[0]))
-    last_qn = strip_alias(get_indexable_question(config.filters[-1]))
-    del dbm.database["_design/" + get_report_view_name(report_id, first_qn)]
-    del dbm.database["_design/" + get_report_view_name(report_id, last_qn)]
+    indexes = list(permutations(distinct([strip_alias(get_indexable_question(qn)) for qn in config.filters])))
+    for index in indexes:
+        del dbm.database["_design/" + get_report_view_name(report_id, "_".join(index))]
     return HttpResponse()
 
 
@@ -40,7 +39,7 @@ def get_report_view_name(report_id, qn):
 def _form_key_for_couch_view(field_path):
     root_path = "doc.values"
     temp_path = ""
-    for field in field_path.split(".")[1:]:
+    for field in field_path.split("."):
         temp_path += "['"
         temp_path += field
         temp_path += "'][0]"
