@@ -39,26 +39,30 @@ def filter_values(dbm, config, filters):
     visited_idnr_qns = {}
     for qn in config.filters:
         indexable_qn = get_indexable_question(qn)
+        filter_value = _filter_value(qn, filters)
+        filter_value = _type(qn, filters) == "date" and _parse_date_filter_value(filter_value) or filter_value
         if idnr_question(qn):
             idnr = _idnr_type(qn, filters)
-            filter_value = _filter_value(qn, filters)
             if filter_value:
                 entities = _get_entities_for_idnr(dbm, idnr, {qn.split(".")[-1:][0]: filter_value})
-                if strip_alias(indexable_qn) == all_qns[-1]:
-                    endkey.pop()
-                    startkey.pop()
                 if indexable_qn in visited_idnr_qns:
                     entities = list(set(entities).intersection(set(visited_idnr_qns[indexable_qn])))
-                endkey.append(entities and entities[-1:][0])
-                startkey.append(entities and entities[0])
+                _update_startkey_endkey(startkey, endkey, entities, indexable_qn, all_qns)
                 visited_idnr_qns[indexable_qn] = entities
         elif indexable_qn not in visited_idnr_qns:
-            filter_value = _filter_value(qn, filters)
-            endkey.append(isinstance(filter_value, list) and int(filter_value[1].strftime("%s")) or filter_value)
-            startkey.append(isinstance(filter_value, list) and int(filter_value[0].strftime("%s")) or filter_value)
+            endkey.append(isinstance(filter_value, list) and filter_value[1] or filter_value)
+            startkey.append(isinstance(filter_value, list) and filter_value[0] or filter_value)
         all_qns.append(strip_alias(indexable_qn))
     startkey, endkey, index = _reorder_keys_for_index(startkey, endkey, distinct(all_qns))
     return startkey, endkey, index
+
+
+def _update_startkey_endkey(startkey, endkey, entities, indexable_qn, all_qns):
+    if strip_alias(indexable_qn) == all_qns[-1]:
+        endkey.pop()
+        startkey.pop()
+    endkey.append(entities and entities[-1:][0])
+    startkey.append(entities and entities[0])
 
 
 def _reorder_keys_for_index(startkey, endkey, all_qns):
@@ -90,11 +94,11 @@ def _idnr_type(qn, filters):
 
 def _filter_value(qn, filters):
     type_and_value = _filter_type_and_value(qn, filters)
-    if type_and_value:
-        type = type_and_value.split(";")[0]
-        value = type_and_value.split(";")[2] or {}
-        return value and (type == 'date' and [datetime.strptime(date.strip(), "%d-%m-%Y").replace(tzinfo=utc) for date in value.split("to")] or value)
-    return {}
+    return type_and_value and type_and_value.split(";")[2] or {}
+
+
+def _parse_date_filter_value(value):
+    return value and [datetime.strptime(date.strip(), "%d-%m-%Y").replace(tzinfo=utc) for date in value.split("to")]
 
 
 def _filter_type_and_value(qn, filters):
