@@ -43,15 +43,16 @@ def filter_values(dbm, config, filters):
             idnr = _idnr_type(qn, filters)
             filter_value = _filter_value(qn, filters)
             if filter_value:
-                endkey.pop()
-                startkey.pop()
                 entities = _get_entities_for_idnr(dbm, idnr, {qn.split(".")[-1:][0]: filter_value})
+                if strip_alias(indexable_qn) == all_qns[-1]:
+                    endkey.pop()
+                    startkey.pop()
                 if indexable_qn in visited_idnr_qns:
                     entities = list(set(entities).intersection(set(visited_idnr_qns[indexable_qn])))
                 endkey.append(entities and entities[-1:][0])
                 startkey.append(entities and entities[0])
                 visited_idnr_qns[indexable_qn] = entities
-        else:
+        elif indexable_qn not in visited_idnr_qns:
             filter_value = _filter_value(qn, filters)
             endkey.append(isinstance(filter_value, list) and int(filter_value[1].strftime("%s")) or filter_value)
             startkey.append(isinstance(filter_value, list) and int(filter_value[0].strftime("%s")) or filter_value)
@@ -61,15 +62,16 @@ def filter_values(dbm, config, filters):
 
 
 def _reorder_keys_for_index(startkey, endkey, all_qns):
-    empty_key_indices = [startkey.index(key) for key in startkey if key == {}]
-    sorted_endkey = filter(lambda key: key != {}, endkey)
-    sorted_startkey = filter(lambda key: key != {}, startkey)
+    empty_key_indices = [index for index, key in enumerate(startkey) if key == {}]
+    reordered_endkey = filter(lambda key: key != {}, endkey)
+    reordered_startkey = filter(lambda key: key != {}, startkey)
+    reordered_qns = list(all_qns)
     for index in empty_key_indices:
-        sorted_endkey.append({})
+        reordered_endkey.append({})
         qn = all_qns[index]
-        del all_qns[index]
-        all_qns.append(qn)
-    return sorted_startkey, sorted_endkey, "_".join(all_qns)
+        reordered_qns.remove(qn)
+        reordered_qns.append(qn)
+    return reordered_startkey, reordered_endkey, "_".join(reordered_qns)
 
 
 def _get_entities_for_idnr(dbm, idnr, filters):
@@ -123,7 +125,7 @@ def _get_identifier_with_alias(alias, question):
 
 def _get_identifier(question):
     is_idnr_question = not question.parent_field_code and question.path
-    return question.path + (".." if is_idnr_question else ".") + (question.name if is_idnr_question else question.code)
+    return question.path + ("" if not question.path else ".." if is_idnr_question else ".") + (question.name if is_idnr_question else question.code)
 
 
 def _unique_id_with_options(qn, dbm):
