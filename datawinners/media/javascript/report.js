@@ -31,22 +31,25 @@ $(function(){
         });
     }
 
-    var loadReportTabCallback = function(anchorElement, pageSize, count, totalCount) {
+    var loadReportTabCallback = function(anchorElement, response) {
         $("#report_navigation li.active").addClass("inactive");
         $("#report_navigation li.active").removeClass("active");
         anchorElement.parent().addClass("active");
-        initPaginationWidget(anchorElement, pageSize, count, totalCount);
+
+        $("#report_container>.report_content").html(response.content);
+
+        $("#report_container>.pagination_container").empty();
+
+        initPaginationWidget(anchorElement, response.pageSize, response.count, response.totalCount);
     };
 
     $("#report_navigation a").click(function(){
         var anchorElement = $(this);
-        $("#report_container>.pagination_container").empty();
         $("#report_container>.filter_container").load(anchorElement.attr("id") + "/filters/", function(){
             initFilters(anchorElement);
         });
         $.get(anchorElement.attr("id")).done(function(response) {
-          $("#report_container>.report_content").html(response.content);
-          loadReportTabCallback(anchorElement, response.pageSize, response.count, response.totalCount);
+          loadReportTabCallback(anchorElement, response);
         });
     });
 
