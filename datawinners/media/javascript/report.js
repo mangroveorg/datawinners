@@ -7,6 +7,7 @@ $(function(){
             });
         };
 
+        $("#report_container>.pagination_container").empty();
         $("#report_container>.pagination_container").append('<div id="pagination-' + anchorElement.attr("id") + '"></div>');
         new PaginationWidget('#pagination-' + anchorElement.attr("id"), loadData, loadData, pageSize, count, totalCount);
     };
@@ -27,6 +28,7 @@ $(function(){
             }, {});
             $.get(anchorElement.attr("id"), values).done(function(response) {
                 $("#report_container>.report_content").html(response.content);
+                initPaginationWidget(anchorElement, response.pageSize, response.count, response.totalCount);
             });
         });
     }
@@ -37,9 +39,6 @@ $(function(){
         anchorElement.parent().addClass("active");
 
         $("#report_container>.report_content").html(response.content);
-
-        $("#report_container>.pagination_container").empty();
-
         initPaginationWidget(anchorElement, response.pageSize, response.count, response.totalCount);
     };
 
