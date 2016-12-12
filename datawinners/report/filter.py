@@ -50,8 +50,8 @@ def filter_values(dbm, config, filters):
                 _update_startkey_endkey(startkey, endkey, entities, indexable_qn, all_qns)
                 visited_idnr_qns[indexable_qn] = entities
         elif indexable_qn not in visited_idnr_qns:
-            endkey.append(isinstance(filter_value, list) and filter_value[1] or filter_value)
-            startkey.append(isinstance(filter_value, list) and filter_value[0] or filter_value)
+            endkey.append(isinstance(filter_value, list) and int(filter_value[1].strftime("%s")) or filter_value)
+            startkey.append(isinstance(filter_value, list) and int(filter_value[0].strftime("%s")) or filter_value)
         all_qns.append(strip_alias(indexable_qn))
     startkey, endkey, index = _reorder_keys_for_index(startkey, endkey, distinct(all_qns))
     return startkey, endkey, index
