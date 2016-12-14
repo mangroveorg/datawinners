@@ -8,8 +8,9 @@ BATCH_SIZE = 25
 
 def get_report_data(dbm, config, page_number, startkey, endkey, index):
     questionnaire = FormModel.get(dbm, config.questionnaires[0]["id"])
+    enrichable_questions = questionnaire.special_questions()
     rows = get_survey_response_by_report_view_name(dbm, "report_"+config.id+"_"+index, BATCH_SIZE, BATCH_SIZE*(page_number-1), startkey, endkey)
-    return [{config.questionnaires[0]["alias"]: _enrich_questions(dbm, row, questionnaire)} for index, row in enumerate(rows) if index < BATCH_SIZE]
+    return [{config.questionnaires[0]["alias"]: _enrich_questions(dbm, row, questionnaire, enrichable_questions)} for index, row in enumerate(rows) if index < BATCH_SIZE]
 
 
 def get_total_count(dbm, config):
@@ -17,8 +18,7 @@ def get_total_count(dbm, config):
     return get_total_number_of_survey_reponse_by_form_model_id(dbm, questionnaire.id).next().value['count']
 
 
-def _enrich_questions(dbm, row, questionnaire):
-    enrichable_questions = questionnaire.special_questions()
+def _enrich_questions(dbm, row, questionnaire, enrichable_questions):
 
     for question in enrichable_questions["entity_questions"]:
         parent = _get_parent(question, row)
