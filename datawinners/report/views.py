@@ -1,4 +1,6 @@
 import json
+import logging
+from datetime import datetime
 
 from django.http import HttpResponse
 from django.shortcuts import render_to_response
@@ -9,6 +11,8 @@ from datawinners.main.database import get_database_manager
 from datawinners.report.aggregator import get_report_data, get_total_count, BATCH_SIZE
 from datawinners.report.filter import get_report_filters, filter_values
 from mangrove.datastore.report_config import get_report_configs, get_report_config
+
+logger = logging.getLogger("django")
 
 
 class AllReportsView(TemplateView):
@@ -75,8 +79,12 @@ def _get_style_content(config):
 
 def _get_content(dbm, config, request):
     page_number = request.GET.get("page_number") or "1"
+    logger.exception('Started filters:-' + datetime.now().strftime("%H:%M:%S:%f"))
     values = filter_values(dbm, config, request.GET)
+    logger.exception('Ended filters:-' + datetime.now().strftime("%H:%M:%S:%f"))
+    logger.exception('Started data:-' + datetime.now().strftime("%H:%M:%S:%f"))
     data = get_report_data(dbm, config, int(page_number), values[0], values[1], values[2])
+    logger.exception('Ended data:-' + datetime.now().strftime("%H:%M:%S:%f"))
     return Template(config.template()).render(RequestContext(request, {
         "report_data": data,
         "report_id": "report_" + config.id
