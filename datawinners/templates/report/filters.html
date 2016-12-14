@@ -1,16 +1,22 @@
-<div style="width: 92%; vertical-align: middle; display: inline-block; line-height:3;">
+<div id="filter_section" style="width: 92%; vertical-align: middle; display: inline-block; line-height:4;">
     {% for filter in idnr_filters %}
-        <select id="{{filter.identifier}}" filter-type="{{filter.type}}" idnr-type="{{filter.idnr_type}}" data-placeholder="Select a {{filter.unique_id_type}}"
-                class="filter" style="width: 32%;">
-            <option value=""></option>
-            {% for option in filter.options %}
-                <option value="{{option.0}}">{{option.1}}</option>
-            {% endfor %}
-        </select>
+        <div style="width: 31%; position: relative; float: left; margin: 0 1%;">
+            <label style="position: absolute; top: -50%;">{{filter.label}}</label>
+            <select id="{{filter.identifier}}" filter-type="{{filter.type}}" idnr-type="{{filter.idnr_type}}" data-placeholder="All"
+                    class="filter" style="width: 100%;">
+                <option value=""></option>
+                {% for option in filter.options %}
+                    <option value="{{option.0}}">{{option.1}}</option>
+                {% endfor %}
+            </select>
+        </div>
     {% endfor %}
     {% for filter in date_filters %}
-        <input id="{{filter.identifier}}" filter-type="{{filter.type}}" idnr-type="{{filter.idnr_type}}" placeholder="Select {{filter.label}}" type="text"
-               class="filter date_filter" style="width: 31.5%; height: 20px;" />
+        <div style="width: 31%; position: relative; float: left; margin: 0 1%;">
+            <label style="position: absolute; top: -50%;">{{filter.label}}</label>
+            <input id="{{filter.identifier}}" filter-type="{{filter.type}}" idnr-type="{{filter.idnr_type}}" placeholder="All Dates" type="text"
+                   class="filter date_filter datepicker" style="height: 20px !important; width: 98%;" />
+        </div>
     {% endfor %}
 </div>
 <input type="submit" style="margin: 0; vertical-align: middle; display: inline-block;" class="button_blue" value="Filter" id="filter_button">
