@@ -47,6 +47,7 @@ def enrich_analysis_data(record, questionnaire, submission_id, is_export=False):
 
 def _get_linked_id_details(dbm, field, linked_id_handler, parent_field_types=[], linked_id_details=None):
     try:
+        logger.info("Fetch linked ID Details triggered ---- " + field.unique_id_type)
         linked_id_details = [] if linked_id_details is None else linked_id_details
         if field.unique_id_type in parent_field_types:
             return None #Prevent cyclic Linked ID Nr
@@ -59,6 +60,7 @@ def _get_linked_id_details(dbm, field, linked_id_handler, parent_field_types=[],
                     continue
                 children = _get_linked_id_details(dbm, linked_id_field, linked_id_handler, parent_field_types=parent_field_types)
                 linked_id_handler(field, linked_id_field, children, linked_id_details)
+        logger.info("Fetch linked ID Details completed ---- " + field.unique_id_type)
         return linked_id_details
     except Exception as e:
         logger.exception("Exception in constructing linked id hierrachy : \n%s" % e)
@@ -74,6 +76,7 @@ def _linked_id_handler(field, linked_id_field, children, linked_id_details):
 
 def _update_record_with_linked_id_details(dbm, record, linked_id_detail, questionnaire_id, nested=False):
     try:
+        logger.info("Update linked ID Details in record triggered")
         for linked_id_info in linked_id_detail:
             if nested:
                 base_node = record
@@ -89,6 +92,7 @@ def _update_record_with_linked_id_details(dbm, record, linked_id_detail, questio
                                                       dbm, 
                                                       base_node[linked_id_info['linked_code']+'_details'], 
                                                       linked_id_info['children'], questionnaire_id,nested=True)
+        logger.info("Update linked ID Details in record completed")
     except KeyError as key_err:
         return #When linked ID doesn't have value, this happens and displays blank in view
     except Exception as e:
