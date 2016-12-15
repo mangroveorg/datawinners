@@ -79,9 +79,7 @@ def _get_style_content(config):
 
 def _get_content(dbm, config, request):
     page_number = request.GET.get("page_number") or "1"
-    logger.exception('Started filters:-' + datetime.now().strftime("%H:%M:%S:%f"))
     values = filter_values(dbm, config, request.GET)
-    logger.exception('Ended filters:-' + datetime.now().strftime("%H:%M:%S:%f"))
     logger.exception('Started data:-' + datetime.now().strftime("%H:%M:%S:%f"))
     data = get_report_data(dbm, config, int(page_number), values[0], values[1], values[2])
     logger.exception('Ended data:-' + datetime.now().strftime("%H:%M:%S:%f"))

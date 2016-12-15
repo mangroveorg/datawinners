@@ -1,8 +1,12 @@
+import logging
+from datetime import datetime
+
 from datawinners.search.submission_index import get_label_to_be_displayed, get_entity, get_datasender_info
 from mangrove.datastore.documents import SurveyResponseDocument
 from mangrove.form_model.form_model import FormModel
 from mangrove.transport.contract.survey_response import get_total_number_of_survey_reponse_by_form_model_id, get_survey_response_by_report_view_name
 
+logger = logging.getLogger("django")
 BATCH_SIZE = 25
 
 
@@ -19,15 +23,15 @@ def get_total_count(dbm, config):
 
 
 def _enrich_questions(dbm, row, questionnaire, enrichable_questions):
-
+    logger.exception('Started entity:-' + datetime.now().strftime("%H:%M:%S:%f"))
     for question in enrichable_questions["entity_questions"]:
         parent = _get_parent(question, row)
         parent[question.code] = get_entity(dbm, parent[question.code], question, questionnaire, SurveyResponseDocument._wrap_row(row))[0].get("q2")
-
+    logger.exception('Started choice:-' + datetime.now().strftime("%H:%M:%S:%f"))
     for question in enrichable_questions["choice_questions"]:
         parent = _get_parent(question, row)
         parent[question.code] = get_label_to_be_displayed(parent[question.code], question, questionnaire, SurveyResponseDocument._wrap_row(row))
-
+    logger.exception('Ended entity and choice:-' + datetime.now().strftime("%H:%M:%S:%f"))
     row["doc"]["created_by"] = get_datasender_info(dbm,  SurveyResponseDocument._wrap_row(row)).get('name', '')
 
     return row

@@ -1,4 +1,3 @@
-import logging
 from datetime import datetime
 
 from pytz import utc
@@ -9,8 +8,6 @@ from mangrove.datastore.entity import get_short_codes_by_entity_type
 from mangrove.form_model.field import DateField, UniqueIdUIField
 from mangrove.form_model.form_model import get_form_model_by_entity_type, FormModel
 
-logger = logging.getLogger("django")
-
 
 def get_report_filters(dbm, config):
     if not hasattr(config, "filters") or not config.filters:
@@ -19,21 +16,15 @@ def get_report_filters(dbm, config):
             "date_filters": []
         }
 
-    logger.exception('Started enrich:-' + datetime.now().strftime("%H:%M:%S:%f"))
     enrichable_questions = FormModel.get(dbm, config.questionnaires[0]["id"]).special_questions()
-    logger.exception('Ended enrich:-' + datetime.now().strftime("%H:%M:%S:%f"))
 
     entity_qns = enrichable_questions["entity_questions"]
-    logger.exception('Started linked idnr:-' + datetime.now().strftime("%H:%M:%S:%f"))
     entity_qns.extend(_get_linked_idnr_qns(dbm, entity_qns))
     idnrFilters = [_unique_id_with_options(qn, dbm) for qn in entity_qns if _get_identifier_with_alias(config.questionnaires[0]["alias"], qn) in config.filters]
-    logger.exception('Ended linked idnr:-' + datetime.now().strftime("%H:%M:%S:%f"))
 
     date_qns = enrichable_questions["date_questions"]
-    logger.exception('Started date:-' + datetime.now().strftime("%H:%M:%S:%f"))
     date_qns.extend(_get_linked_idnr_date_qns(dbm, entity_qns))
     dateFilters = [_date_qn(qn) for qn in date_qns if _get_identifier_with_alias(config.questionnaires[0]["alias"], qn) in config.filters]
-    logger.exception('Ended date:-' + datetime.now().strftime("%H:%M:%S:%f"))
 
     return {
         "idnr_filters": idnrFilters,
