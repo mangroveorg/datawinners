@@ -1,7 +1,7 @@
 <div id="filter_section" style="width: 92%; vertical-align: middle; display: inline-block; line-height:4;">
     {% for filter in idnr_filters %}
         <div style="width: 31%; position: relative; float: left; margin: 0 1%;">
-            <label style="position: absolute; top: -50%;">{{filter.label}}</label>
+            <label style="position: absolute; top: -50%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%">{{filter.label}}</label>
             <select id="{{filter.identifier}}" filter-type="{{filter.type}}" idnr-type="{{filter.idnr_type}}" data-placeholder="All"
                     class="filter" style="width: 100%;">
                 <option value=""></option>
@@ -13,7 +13,7 @@
     {% endfor %}
     {% for filter in date_filters %}
         <div style="width: 31%; position: relative; float: left; margin: 0 1%;">
-            <label style="position: absolute; top: -50%;">{{filter.label}}</label>
+            <label style="position: absolute; top: -50%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%">{{filter.label}}</label>
             <input id="{{filter.identifier}}" filter-type="{{filter.type}}" idnr-type="{{filter.idnr_type}}" placeholder="All Dates" type="text"
                    class="filter date_filter datepicker" style="height: 20px !important; width: 98%;" />
         </div>
