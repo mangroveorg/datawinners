@@ -2,11 +2,14 @@ import json
 import logging
 from datetime import datetime
 
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.shortcuts import render_to_response
 from django.template import RequestContext, Template
+from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView
 
+from datawinners.accountmanagement.decorators import session_not_expired, is_not_expired, is_datasender
 from datawinners.main.database import get_database_manager
 from datawinners.report.aggregator import get_report_data, get_total_count, BATCH_SIZE
 from datawinners.report.filter import get_report_filters, filter_values
@@ -18,6 +21,10 @@ logger = logging.getLogger("django")
 class AllReportsView(TemplateView):
     template_name = 'report/index.html'
 
+    @method_decorator(login_required)
+    @method_decorator(session_not_expired)
+    @method_decorator(is_datasender)
+    @method_decorator(is_not_expired)
     def get(self, request, *args, **kwargs):
         dbm = get_database_manager(request.user)
         configs = get_report_configs(dbm)
