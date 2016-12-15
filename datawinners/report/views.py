@@ -7,12 +7,12 @@ from django.shortcuts import render_to_response
 from django.template import RequestContext, Template
 from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView
-from mangrove.datastore.report_config import get_report_configs, get_report_config
 
 from datawinners.accountmanagement.decorators import session_not_expired, is_not_expired, is_datasender
 from datawinners.main.database import get_database_manager
-from datawinners.report.aggregator import get_report_data, get_total_count, BATCH_SIZE
+from datawinners.report.aggregator import get_report_data, get_total_count
 from datawinners.report.filter import get_report_filters, get_filter_values
+from mangrove.datastore.report_config import get_report_configs, get_report_config
 
 logger = logging.getLogger("django")
 
@@ -42,7 +42,7 @@ def report_content(request, report_id):
                 "content": content,
                 "totalCount": total_count,
                 "count": count,
-                "pageSize": BATCH_SIZE
+                "sortColumns": config.sort_fields
             }),
         content_type='application/json')
 
@@ -84,9 +84,8 @@ def _get_style_content(config):
 
 
 def _get_content(dbm, config, request):
-    page_number = request.GET.get("page_number") or "1"
     filter_values = get_filter_values(dbm, config, request.GET)
-    data = get_report_data(dbm, config, int(page_number), filter_values[0], filter_values[1])
+    data = get_report_data(dbm, config, filter_values[0], filter_values[1])
     return Template(config.template()).render(RequestContext(request, {
         "report_data": data,
         "report_id": "report_" + config.id

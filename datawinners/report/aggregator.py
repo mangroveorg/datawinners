@@ -6,14 +6,12 @@ from mangrove.transport.contract.survey_response import get_survey_response_by_r
 
 from datawinners.search.submission_index import get_label_to_be_displayed, get_datasender_info
 
-BATCH_SIZE = 2
 
-
-def get_report_data(dbm, config, page_number, keys, index):
+def get_report_data(dbm, config, keys, index):
     questionnaire = FormModel.get(dbm, config.questionnaires[0]["id"])
     enrichable_questions = questionnaire.special_questions()
     _load_entities_to_entity_questions(dbm, enrichable_questions)
-    rows = get_survey_response_by_report_view_name(dbm, "report_"+config.id+"_"+index, keys, BATCH_SIZE, BATCH_SIZE*(page_number-1))
+    rows = get_survey_response_by_report_view_name(dbm, "report_"+config.id+"_"+index, keys)
     return [{config.questionnaires[0]["alias"]: _enrich_questions(dbm, row, questionnaire, enrichable_questions)} for row in rows]
 
 
