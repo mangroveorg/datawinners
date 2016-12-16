@@ -1,3 +1,4 @@
+{% if idnr_filters or date_filters %}
 <div id="filter_section" style="width: 92%; vertical-align: middle; display: inline-block; line-height:4;">
     {% for filter in idnr_filters %}
         <div style="width: 31%; position: relative; float: left; margin: 0 1%;">
@@ -21,3 +22,4 @@
 </div>
 <input type="submit" style="margin: 0; vertical-align: middle; display: inline-block;" class="button_blue" value="Filter" id="filter_button">
 <div style="clear:both;"></div>
+{% endif %}
