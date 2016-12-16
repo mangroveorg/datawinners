@@ -58,14 +58,14 @@ def _get_linked_id_details(dbm, field, linked_id_handler, parent_field_types=[],
                 if linked_id_field.unique_id_type in parent_field_types:
                     continue
                 children = _get_linked_id_details(dbm, linked_id_field, linked_id_handler, parent_field_types=parent_field_types)
-                linked_id_handler(field, linked_id_field, children, linked_id_details)
+                linked_id_handler(field, linked_id_field, children, linked_id_details, parent_field_types)
         return linked_id_details
     except Exception as e:
         logger.exception("Exception in constructing linked id hierrachy : \n%s" % e)
         return None
 
 
-def _linked_id_handler(field, linked_id_field, children, linked_id_details):
+def _linked_id_handler(field, linked_id_field, children, linked_id_details, parent_field_types):
     linked_id_info = {'code': field.code, 'type': field.unique_id_type, 'parent_code': field.parent_field_code,
                       'linked_code': linked_id_field.code, 'linked_type': linked_id_field.unique_id_type,
                       'children': children}

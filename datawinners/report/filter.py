@@ -145,7 +145,8 @@ def _date_qn(qn):
     return qn
 
 
-def _linked_id_handler(field, linked_id_field, children, linked_id_details):
+def _linked_id_handler(field, linked_id_field, children, linked_id_details, parent_field_types):
     setattr(linked_id_field, "path", _get_identifier(field))
     setattr(linked_id_field, "idnr_type", field.unique_id_type)
     linked_id_details.append(linked_id_field)
+    parent_field_types.extend(children)
