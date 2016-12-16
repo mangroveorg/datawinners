@@ -19,7 +19,7 @@ def enrich_analysis_data(record, questionnaire, submission_id, is_export=False):
         else:
             entity_questions = questionnaire.entity_questions
 
-        linked_id_details = [_get_linked_id_details(dbm, field, _linked_id_handler, parent_field_types=[]) for field in entity_questions]
+        linked_id_details = [_get_linked_id_details(dbm, field, parent_field_types=[]) for field in entity_questions]
         
         for linked_id_detail in linked_id_details:
             _update_record_with_linked_id_details(dbm, record, linked_id_detail, questionnaire.id,nested=False)
@@ -44,10 +44,9 @@ def enrich_analysis_data(record, questionnaire, submission_id, is_export=False):
         
     return record
 
-
-def _get_linked_id_details(dbm, field, linked_id_handler, parent_field_types=[], linked_id_details=None):
+def _get_linked_id_details(dbm, field, parent_field_types=[]):
     try:
-        linked_id_details = [] if linked_id_details is None else linked_id_details
+        linked_id_details = []
         if field.unique_id_type in parent_field_types:
             return None #Prevent cyclic Linked ID Nr
         parent_field_types.append(field.unique_id_type)
@@ -57,20 +56,19 @@ def _get_linked_id_details(dbm, field, linked_id_handler, parent_field_types=[],
             for linked_id_field in linked_id_fields:
                 if linked_id_field.unique_id_type in parent_field_types:
                     continue
-                children = _get_linked_id_details(dbm, linked_id_field, linked_id_handler, parent_field_types=parent_field_types)
-                linked_id_handler(field, linked_id_field, children, linked_id_details, parent_field_types)
+                linked_id_info = {
+                    'code':field.code,
+                    'type':field.unique_id_type,
+                    'parent_code': field.parent_field_code,
+                    'linked_code':linked_id_field.code,
+                    'linked_type':linked_id_field.unique_id_type
+                }
+                linked_id_info['children'] = _get_linked_id_details(dbm, linked_id_field, parent_field_types=parent_field_types)
+                linked_id_details.append(linked_id_info)
         return linked_id_details
     except Exception as e:
         logger.exception("Exception in constructing linked id hierrachy : \n%s" % e)
         return None
-
-
-def _linked_id_handler(field, linked_id_field, children, linked_id_details, parent_field_types):
-    linked_id_info = {'code': field.code, 'type': field.unique_id_type, 'parent_code': field.parent_field_code,
-                      'linked_code': linked_id_field.code, 'linked_type': linked_id_field.unique_id_type,
-                      'children': children}
-    linked_id_details.append(linked_id_info)
-
 
 def _update_record_with_linked_id_details(dbm, record, linked_id_detail, questionnaire_id, nested=False):
     try:

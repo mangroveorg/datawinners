@@ -2,29 +2,27 @@ from datetime import datetime
 
 from pytz import utc
 
-from datawinners.project.submission.analysis_helper import _get_linked_id_details
 from datawinners.report.helper import idnr_question, get_indexable_question, distinct, strip_alias
 from mangrove.datastore.entity import get_short_codes_by_entity_type
-from mangrove.form_model.field import DateField, UniqueIdUIField
+from mangrove.form_model.field import UniqueIdUIField
 from mangrove.form_model.form_model import get_form_model_by_entity_type, FormModel
 
 
-def get_report_filters(dbm, config):
+def get_report_filters(dbm, config, questionnaire):
     if not hasattr(config, "filters") or not config.filters:
         return {
             "idnr_filters": [],
             "date_filters": []
         }
 
-    enrichable_questions = FormModel.get(dbm, config.questionnaires[0]["id"]).special_questions()
-
-    entity_qns = enrichable_questions["entity_questions"]
-    entity_qns.extend(_get_linked_idnr_qns(dbm, entity_qns))
-    idnrFilters = [_unique_id_with_options(qn, dbm) for qn in entity_qns if _get_identifier_with_alias(config.questionnaires[0]["alias"], qn) in config.filters]
+    enrichable_questions = FormModel.get(dbm, questionnaire["id"]).special_questions()
 
     date_qns = enrichable_questions["date_questions"]
-    date_qns.extend(_get_linked_idnr_date_qns(dbm, entity_qns))
-    dateFilters = [_date_qn(qn) for qn in date_qns if _get_identifier_with_alias(config.questionnaires[0]["alias"], qn) in config.filters]
+    entity_qns = enrichable_questions["entity_questions"]
+    linked_idnr_qns, linked_date_qns = _get_linked_qns(dbm, entity_qns)
+
+    idnrFilters = [_unique_id_with_options(qn, dbm) for qn in entity_qns + linked_idnr_qns if _get_identifier_with_alias(questionnaire["alias"], qn) in config.filters]
+    dateFilters = [_date_qn(qn) for qn in date_qns + linked_date_qns if _get_identifier_with_alias(questionnaire["alias"], qn) in config.filters]
 
     return {
         "idnr_filters": idnrFilters,
@@ -105,22 +103,21 @@ def _filter_type_and_value(qn, filters):
     return filters.get(strip_alias(qn))
 
 
-def _get_linked_idnr_qns(dbm, entity_qns):
-    linked_idnrs = []
-    [_get_linked_id_details(dbm, field, _linked_id_handler, [], linked_idnrs) for field in entity_qns]
-    return linked_idnrs
-
-
-def _get_linked_idnr_date_qns(dbm, entity_qns):
-    date_qns = []
-    for qn in entity_qns:
-        id_number_fields = get_form_model_by_entity_type(dbm, [qn.unique_id_type]).fields
-        for field in id_number_fields:
-            if isinstance(field, DateField):
-                setattr(field, "path", _get_identifier(qn))
-                setattr(field, "idnr_type", qn.unique_id_type)
-                date_qns.append(field)
-    return date_qns
+def _get_linked_qns(dbm, entity_qns):
+    linked_date_qns = []
+    linked_idnr_qns = []
+    for field in entity_qns:
+        id_number_fields = get_form_model_by_entity_type(dbm, [field.unique_id_type]).fields
+        for child_field in id_number_fields:
+            if child_field.type == 'unique_id':
+                setattr(child_field, "path", _get_identifier(field))
+                setattr(child_field, "idnr_type", field.unique_id_type)
+                linked_idnr_qns.append(child_field)
+            elif child_field.type == 'date':
+                setattr(child_field, "path", _get_identifier(field))
+                setattr(child_field, "idnr_type", field.unique_id_type)
+                linked_date_qns.append(child_field)
+    return linked_idnr_qns, linked_date_qns
 
 
 def _get_identifier_with_alias(alias, question):
@@ -143,10 +140,3 @@ def _unique_id_with_options(qn, dbm):
 def _date_qn(qn):
     setattr(qn, "identifier", _get_identifier(qn))
     return qn
-
-
-def _linked_id_handler(field, linked_id_field, children, linked_id_details, parent_field_types):
-    setattr(linked_id_field, "path", _get_identifier(field))
-    setattr(linked_id_field, "idnr_type", field.unique_id_type)
-    linked_id_details.append(linked_id_field)
-    parent_field_types.extend(children)

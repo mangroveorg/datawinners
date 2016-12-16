@@ -65,7 +65,7 @@ def report_font_file(request, report_id, font_file_name):
 def report_filters(request, report_id):
     dbm = get_database_manager(request.user)
     config = get_report_config(dbm, report_id)
-    filters = get_report_filters(dbm, config)
+    filters = get_report_filters(dbm, config, config.questionnaires[0])
     return render_to_response("report/filters.html", {
         "idnr_filters": filters["idnr_filters"],
         "date_filters": filters["date_filters"]
@@ -87,9 +87,7 @@ def _get_style_content(config):
 def _get_content(dbm, config, request):
     page_number = request.GET.get("page_number") or "1"
     values = filter_values(dbm, config, request.GET)
-    logger.exception('Started data:-' + datetime.now().strftime("%H:%M:%S:%f"))
     data = get_report_data(dbm, config, int(page_number), values[0], values[1], values[2])
-    logger.exception('Ended data:-' + datetime.now().strftime("%H:%M:%S:%f"))
     return Template(config.template()).render(RequestContext(request, {
         "report_data": data,
         "report_id": "report_" + config.id
