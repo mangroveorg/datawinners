@@ -2,9 +2,9 @@
     {% for filter in idnr_filters %}
         <div style="width: 31%; position: relative; float: left; margin: 0 1%;">
             <label style="position: absolute; top: -50%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%">{{filter.label}}</label>
-            <select id="{{filter.identifier}}" filter-type="{{filter.type}}" idnr-type="{{filter.idnr_type}}" data-placeholder="All"
+            <select id="{{filter.identifier}}" filter-type="{{filter.type}}" idnr-type="{{filter.idnr_type}}"
                     class="filter" style="width: 100%;">
-                <option value=""></option>
+                <option value="">All</option>
                 {% for option in filter.options %}
                     <option value="{{option.0}}">{{option.1}}</option>
                 {% endfor %}
