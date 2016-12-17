@@ -10,17 +10,19 @@ from mangrove.datastore.report_config import get_report_config
 def create_report_view(request, report_id):
     dbm = get_database_manager(request.user)
     config = get_report_config(dbm, report_id)
-    indexes = list(permutations(distinct([strip_alias(get_indexable_question(qn)) for qn in config.filters])))
+    filter_fields = [f['field'] for f in config.filters]
+    indexes = list(permutations(distinct([strip_alias(get_indexable_question(qn)) for qn in filter_fields])))
     questionnaire_ids = '"{0}"'.format('", "'.join([questionnaire['id'] for questionnaire in config.questionnaires]))
     for index in indexes:
-        dbm.create_view(get_report_view_name(report_id, "_".join(index)), _get_map_function(questionnaire_ids, _combined_view_key(map(_form_key_for_couch_view, index))), "")
+        dbm.create_view(get_report_view_name(report_id, "_".join(index)), _get_map_function(questionnaire_ids, _combined_view_key(map(_form_key_for_couch_view, index))), _get_reduce_function("count"))
     return HttpResponse()
 
 
 def delete_report_view(request, report_id):
     dbm = get_database_manager(request.user)
     config = get_report_config(dbm, report_id)
-    indexes = list(permutations(distinct([strip_alias(get_indexable_question(qn)) for qn in config.filters])))
+    filter_fields = [f['field'] for f in config.filters]
+    indexes = list(permutations(distinct([strip_alias(get_indexable_question(qn)) for qn in filter_fields])))
     for index in indexes:
         del dbm.database["_design/" + get_report_view_name(report_id, "_".join(index))]
     return HttpResponse()
