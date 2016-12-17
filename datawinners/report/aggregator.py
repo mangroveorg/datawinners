@@ -14,7 +14,7 @@ def get_report_data(dbm, config, page_number, keys, index):
     enrichable_questions = questionnaire.special_questions()
     _load_entities_to_entity_questions(dbm, enrichable_questions)
     rows = get_survey_response_by_report_view_name(dbm, "report_"+config.id+"_"+index, keys, BATCH_SIZE, BATCH_SIZE*(page_number-1))
-    return [{config.questionnaires[0]["alias"]: _enrich_questions(dbm, row, questionnaire, enrichable_questions)} for index, row in enumerate(rows) if index < BATCH_SIZE]
+    return [{config.questionnaires[0]["alias"]: _enrich_questions(dbm, row, questionnaire, enrichable_questions)} for row in rows]
 
 
 def get_total_count(dbm, config, keys, index):
