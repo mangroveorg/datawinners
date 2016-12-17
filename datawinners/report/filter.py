@@ -47,7 +47,7 @@ def filter_values(dbm, config, filters):
         if filter_value is None and _idnr_type(qn, filters) or isinstance(filter_value, dict):
             keys = _get_keys_for_idnr(dbm, _idnr_type(qn, filters), filter_value)
         if indexable_qn in visited_qns:
-            keys = list(set(keys).intersection(set(visited_qns[indexable_qn])))
+            keys = sorted(set(keys).intersection(set(visited_qns[indexable_qn])))
         visited_qns[indexable_qn] = keys
         all_qns.append(indexable_qn)
     combination_keys = reduce(lambda prev, qn: _combine_keys(prev, visited_qns.get(qn)), distinct(all_qns), combination_keys)
