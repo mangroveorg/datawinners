@@ -14,6 +14,7 @@ from datawinners.workbook_utils import workbook_add_sheet, workbook_add_sheets, 
 from datawinners.workbook_utils import worksheet_add_header
 from mangrove.form_model.field import ExcelDate
 from datawinners.project.submission.analysis_helper import enrich_analysis_data
+from mangrove.form_model.form_model import EntityFormModel
 
 
 def add_sheet_with_data(raw_data, headers, workbook, formatter=None, sheet_name_prefix=None, browser=None, questionnaire=None):
@@ -22,7 +23,7 @@ def add_sheet_with_data(raw_data, headers, workbook, formatter=None, sheet_name_
     date_formats = {}
 
     for row_number, row in enumerate(raw_data):
-        if questionnaire and formatter:
+        if questionnaire and formatter and not isinstance(questionnaire, EntityFormModel):
             #For advanced transformation
             row = enrich_analysis_data(row['_source'], questionnaire, row['_id'], is_export=True)
             row = formatter.format_row(row)
