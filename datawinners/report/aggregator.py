@@ -9,17 +9,17 @@ from datawinners.search.submission_index import get_label_to_be_displayed, get_d
 BATCH_SIZE = 25
 
 
-def get_report_data(dbm, config, page_number, startkey, endkey, couch_index):
+def get_report_data(dbm, config, page_number, keys, index):
     questionnaire = FormModel.get(dbm, config.questionnaires[0]["id"])
     enrichable_questions = questionnaire.special_questions()
     _load_entities_to_entity_questions(dbm, enrichable_questions)
-    rows = get_survey_response_by_report_view_name(dbm, "report_"+config.id+"_"+couch_index, BATCH_SIZE, BATCH_SIZE*(page_number-1), startkey, endkey)
+    rows = get_survey_response_by_report_view_name(dbm, "report_"+config.id+"_"+index, keys, BATCH_SIZE, BATCH_SIZE*(page_number-1))
     return [{config.questionnaires[0]["alias"]: _enrich_questions(dbm, row, questionnaire, enrichable_questions)} for index, row in enumerate(rows) if index < BATCH_SIZE]
 
 
-def get_total_count(dbm, config, startkey, endkey, index):
-    result_rows = get_total_number_of_survey_response_by_report_view_name(dbm, "report_"+config.id+"_"+index, startkey, endkey).rows
-    return result_rows[0].value if len(result_rows) else 0
+def get_total_count(dbm, config, keys, index):
+    result_rows = get_total_number_of_survey_response_by_report_view_name(dbm, "report_"+config.id+"_"+index, keys).rows
+    return reduce(lambda prev, row: prev + row.value, result_rows, 0)
 
 
 def _load_entities_to_entity_questions(dbm, enrichable_questions):

@@ -35,13 +35,12 @@ class AllReportsView(TemplateView):
 def report_content(request, report_id):
     dbm = get_database_manager(request.user)
     config = get_report_config(dbm, report_id)
-    content, count = _build_report_content(dbm, config, request)
-    values = filter_values(dbm, config, request.GET)
+    content, count, total_count = _build_report_content(dbm, config, request)
     return HttpResponse(
         json.dumps(
             {
                 "content": content,
-                "totalCount": get_total_count(dbm, config, values[0], values[1], values[2]),
+                "totalCount": total_count,
                 "count": count,
                 "pageSize": BATCH_SIZE
             }),
@@ -75,9 +74,9 @@ def report_filters(request, report_id):
 def _build_report_content(dbm, config, request):
     content = ""
     content += _get_style_content(config)
-    data_content, data_count = _get_content(dbm, config, request)
+    data_content, data_count, total_count = _get_content(dbm, config, request)
     content += data_content
-    return content, data_count
+    return content, data_count, total_count
 
 
 def _get_style_content(config):
@@ -87,8 +86,8 @@ def _get_style_content(config):
 def _get_content(dbm, config, request):
     page_number = request.GET.get("page_number") or "1"
     values = filter_values(dbm, config, request.GET)
-    data = get_report_data(dbm, config, int(page_number), values[0], values[1], values[2])
+    data = get_report_data(dbm, config, int(page_number), values[0], values[1])
     return Template(config.template()).render(RequestContext(request, {
         "report_data": data,
         "report_id": "report_" + config.id
-    })), len(data)
+    })), len(data), get_total_count(dbm, config, values[0], values[1])

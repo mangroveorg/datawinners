@@ -1,9 +1,13 @@
-def idnr_question(qn):
+def is_idnr_question(qn):
     return "" in qn.split(".")
 
 
 def get_indexable_question(qn):
-    return idnr_question(qn) and qn.split("..")[:1][0] or qn
+    return is_idnr_question(qn) and qn.split("..")[0] or qn
+
+
+def get_idnr_question(qn):
+    return qn.split("..")[1]
 
 
 def distinct(values):

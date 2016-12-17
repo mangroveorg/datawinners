@@ -13,8 +13,7 @@ def create_report_view(request, report_id):
     filter_fields = [f['field'] for f in config.filters]
     indexes = list(permutations(distinct([strip_alias(get_indexable_question(qn)) for qn in filter_fields])))
     questionnaire_ids = '"{0}"'.format('", "'.join([questionnaire['id'] for questionnaire in config.questionnaires]))
-    for index in indexes:
-        dbm.create_view(get_report_view_name(report_id, "_".join(index)), _get_map_function(questionnaire_ids, _combined_view_key(map(_form_key_for_couch_view, index))), _get_reduce_function("count"))
+    dbm.create_view(get_report_view_name(report_id, "_".join(indexes[0])), _get_map_function(questionnaire_ids, _combined_view_key(map(_form_key_for_couch_view, indexes[0]))), _get_reduce_function("count"))
     return HttpResponse()
 
 
@@ -23,8 +22,7 @@ def delete_report_view(request, report_id):
     config = get_report_config(dbm, report_id)
     filter_fields = [f['field'] for f in config.filters]
     indexes = list(permutations(distinct([strip_alias(get_indexable_question(qn)) for qn in filter_fields])))
-    for index in indexes:
-        del dbm.database["_design/" + get_report_view_name(report_id, "_".join(index))]
+    del dbm.database["_design/" + get_report_view_name(report_id, "_".join(indexes[0]))]
     return HttpResponse()
 
 
@@ -54,5 +52,5 @@ def _get_reduce_function(function_name):
 
 
 def _get_map_function(questionnaire_ids_string, combined_view_key):
-    return "function(doc) {if(doc.document_type == 'SurveyResponse' && [%s].indexOf(doc.form_model_id) > -1) {var keys = [%s];for(key in keys) {var date = keys[key] && keys[key].split('.');if(date && date.length == 3) {var tmp = date[0]; date[0] = date[1]; date[1] = tmp;date = Date.parse(date.join('/'));if(date) {keys[key] = date;}}}emit(keys, 1);}}" % (questionnaire_ids_string, combined_view_key)
+    return "function(doc) {if(doc.document_type == 'SurveyResponse' && [%s].indexOf(doc.form_model_id) > -1) {emit([%s], 1);}}" % (questionnaire_ids_string, combined_view_key)
 

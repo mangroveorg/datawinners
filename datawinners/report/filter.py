@@ -2,7 +2,7 @@ from datetime import datetime
 
 from pytz import utc
 
-from datawinners.report.helper import idnr_question, get_indexable_question, distinct, strip_alias
+from datawinners.report.helper import is_idnr_question, get_indexable_question, distinct, strip_alias, get_idnr_question
 from mangrove.datastore.entity import get_short_codes_by_entity_type
 from mangrove.form_model.field import UniqueIdUIField
 from mangrove.form_model.form_model import get_form_model_by_entity_type, FormModel
@@ -36,53 +36,38 @@ def _get_filter_label_for_field(field, filters):
 
 
 def filter_values(dbm, config, filters):
-    endkey = []
-    startkey = []
+    combination_keys = []
     all_qns = []
-    visited_idnr_qns = {}
+    visited_qns = {}
     filter_fields = [f['field'] for f in config.filters]
     for qn in filter_fields:
+        if not is_idnr_question(qn) and _type(qn, filters) == "date":
+            continue
         indexable_qn = get_indexable_question(qn)
         filter_value = _filter_value(qn, filters)
-        filter_value = _type(qn, filters) == "date" and _parse_date_filter_value(filter_value) or filter_value
-        if idnr_question(qn):
-            idnr = _idnr_type(qn, filters)
-            if filter_value:
-                entities = _get_entities_for_idnr(dbm, idnr, {qn.split(".")[-1:][0]: filter_value})
-                if indexable_qn in visited_idnr_qns:
-                    entities = list(set(entities).intersection(set(visited_idnr_qns[indexable_qn])))
-                _update_startkey_endkey(startkey, endkey, entities, indexable_qn, all_qns)
-                visited_idnr_qns[indexable_qn] = entities
-        elif indexable_qn not in visited_idnr_qns:
-            endkey.append(isinstance(filter_value, list) and int(filter_value[1].strftime("%s"))*1000 or filter_value)
-            startkey.append(isinstance(filter_value, list) and int(filter_value[0].strftime("%s"))*1000 or filter_value)
-        all_qns.append(strip_alias(indexable_qn))
-    startkey, endkey, index = _reorder_keys_for_index(startkey, endkey, distinct(all_qns))
-    return startkey, endkey, index
+        keys = filter_value and [filter_value] or []
+        if filter_value is None and _idnr_type(qn, filters) or isinstance(filter_value, dict):
+            keys = _get_keys_for_idnr(dbm, _idnr_type(qn, filters), filter_value)
+        if indexable_qn in visited_qns:
+            keys = list(set(keys).intersection(set(visited_qns[indexable_qn])))
+        visited_qns[indexable_qn] = keys
+        all_qns.append(indexable_qn)
+    combination_keys = reduce(lambda prev, qn: _combine_keys(prev, visited_qns.get(qn)), distinct(all_qns), combination_keys)
+    return combination_keys, "_".join(distinct([strip_alias(qn) for qn in all_qns]))
 
 
-def _update_startkey_endkey(startkey, endkey, entities, indexable_qn, all_qns):
-    if strip_alias(indexable_qn) == all_qns[-1]:
-        endkey.pop()
-        startkey.pop()
-    endkey.append(entities and entities[-1:][0])
-    startkey.append(entities and entities[0])
+def _combine_keys(combination_keys, keys):
+    new_combination_keys = not keys and combination_keys or []
+    for key in keys:
+        if combination_keys:
+            for combination_key in combination_keys:
+                new_combination_keys.append(combination_key + [key])
+        else:
+            new_combination_keys.append([key])
+    return new_combination_keys
 
 
-def _reorder_keys_for_index(startkey, endkey, all_qns):
-    empty_key_indices = [index for index, key in enumerate(startkey) if key == {}]
-    reordered_endkey = filter(lambda key: key != {}, endkey)
-    reordered_startkey = filter(lambda key: key != {}, startkey)
-    reordered_qns = list(all_qns)
-    for index in empty_key_indices:
-        reordered_endkey.append({})
-        qn = all_qns[index]
-        reordered_qns.remove(qn)
-        reordered_qns.append(qn)
-    return reordered_startkey, reordered_endkey, "_".join(reordered_qns)
-
-
-def _get_entities_for_idnr(dbm, idnr, filters):
+def _get_keys_for_idnr(dbm, idnr, filters):
     return get_short_codes_by_entity_type(dbm, [idnr], filters=filters)
 
 
@@ -98,11 +83,12 @@ def _idnr_type(qn, filters):
 
 def _filter_value(qn, filters):
     type_and_value = _filter_type_and_value(qn, filters)
-    return type_and_value and type_and_value.split(";")[2] or {}
-
-
-def _parse_date_filter_value(value):
-    return value and [datetime.strptime(date.strip(), "%d-%m-%Y").replace(tzinfo=utc) for date in value.split("to")]
+    value = type_and_value and type_and_value.split(";")[2] or None
+    if _type(qn, filters) == "date":
+        value = value and [datetime.strptime(date.strip(), "%d-%m-%Y").replace(tzinfo=utc) for date in value.split("to")]
+    if is_idnr_question(qn):
+        value = value and {get_idnr_question(qn): value}
+    return value
 
 
 def _filter_type_and_value(qn, filters):
@@ -139,7 +125,10 @@ def _unique_id_with_options(qn, dbm):
     field = UniqueIdUIField(qn, dbm)
     setattr(field, "path", qn.path)
     setattr(field, "identifier", _get_identifier(qn))
-    hasattr(qn, "idnr_type") and setattr(field, "idnr_type", qn.idnr_type)
+    if hasattr(qn, "idnr_type"):
+        setattr(field, "idnr_type", qn.idnr_type)
+    else:
+        setattr(field, "idnr_type", qn.unique_id_type)
     return field
 
 
