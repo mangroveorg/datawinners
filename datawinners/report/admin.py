@@ -48,6 +48,11 @@ def _form_key_for_couch_view(field_path):
     return root_path + temp_path[:-3]
 
 
+def _get_reduce_function(function_name):
+    builtin_reduce_functions = {"count": "_count"}
+    return builtin_reduce_functions.get(function_name) or ""
+
+
 def _get_map_function(questionnaire_ids_string, combined_view_key):
     return "function(doc) {if(doc.document_type == 'SurveyResponse' && [%s].indexOf(doc.form_model_id) > -1) {var keys = [%s];for(key in keys) {var date = keys[key] && keys[key].split('.');if(date && date.length == 3) {var tmp = date[0]; date[0] = date[1]; date[1] = tmp;date = Date.parse(date.join('/'));if(date) {keys[key] = date;}}}emit(keys, 1);}}" % (questionnaire_ids_string, combined_view_key)
 

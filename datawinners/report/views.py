@@ -1,6 +1,5 @@
 import json
 import logging
-from datetime import datetime
 
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
@@ -8,12 +7,12 @@ from django.shortcuts import render_to_response
 from django.template import RequestContext, Template
 from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView
+from mangrove.datastore.report_config import get_report_configs, get_report_config
 
 from datawinners.accountmanagement.decorators import session_not_expired, is_not_expired, is_datasender
 from datawinners.main.database import get_database_manager
 from datawinners.report.aggregator import get_report_data, get_total_count, BATCH_SIZE
 from datawinners.report.filter import get_report_filters, filter_values
-from mangrove.datastore.report_config import get_report_configs, get_report_config
 
 logger = logging.getLogger("django")
 
@@ -37,11 +36,12 @@ def report_content(request, report_id):
     dbm = get_database_manager(request.user)
     config = get_report_config(dbm, report_id)
     content, count = _build_report_content(dbm, config, request)
+    values = filter_values(dbm, config, request.GET)
     return HttpResponse(
         json.dumps(
             {
                 "content": content,
-                "totalCount": get_total_count(dbm, config),
+                "totalCount": get_total_count(dbm, config, values[0], values[1], values[2]),
                 "count": count,
                 "pageSize": BATCH_SIZE
             }),

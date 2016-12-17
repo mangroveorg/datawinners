@@ -122,7 +122,7 @@ function PaginationWidget(containerSelector, prevCallback, nextCallback, pageSiz
     renderLast();
     function updatePageNumber(count) {
         renderPrev();
-        renderNext();
+        renderNext(count);
         renderFirst();
         renderLast();
         _this.containerDiv.querySelector('#page-start').textContent =  getStartNumber();
@@ -133,15 +133,15 @@ function PaginationWidget(containerSelector, prevCallback, nextCallback, pageSiz
          _this.containerDiv.querySelector('#prev').className = (_this.currentPageNumber == 1) ? 'disabled' : '';
     }
 
-    function renderNext() {
-        _this.containerDiv.querySelector('#next').className =  (getEndNumber() == _this.totalCount) ? 'disabled' : '';
+    function renderNext(count) {
+        _this.containerDiv.querySelector('#next').className =  (getEndNumber(count) == _this.totalCount) ? 'disabled' : '';
     }
 
     function getStartNumber() {
-        return _this.pageSize * (_this.currentPageNumber - 1) + 1;
+        return _this.totalCount ? (_this.pageSize * (_this.currentPageNumber - 1) + 1) : 0;
     }
 
-    function getEndNumber() {
+    function getEndNumber(count) {
         return _this.pageSize * (_this.currentPageNumber - 1) + count;
     }
 

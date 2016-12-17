@@ -1,7 +1,11 @@
 $(function(){
     var initPaginationWidget = function(anchorElement, pageSize, count, totalCount) {
         var loadData = function (pageNumber, callback) {
-            $.get(anchorElement.attr("id"), {page_number: pageNumber}).done(function(response) {
+            var values = $("#report_container>.filter_container .filter").get().reduce(function(map, elem) {
+                map[elem.id] = $(elem).attr("filter-type") + ";" + $(elem).attr("idnr-type") + ";" + $(elem).val()
+                return map;
+            }, {page_number: pageNumber});
+            $.get(anchorElement.attr("id"), values).done(function(response) {
                 $("#report_container>.report_content").html(response.content);
                 callback && callback(response.count);
             });
