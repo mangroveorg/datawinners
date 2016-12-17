@@ -20,14 +20,19 @@ def get_report_filters(dbm, config, questionnaire):
     date_qns = enrichable_questions["date_questions"]
     entity_qns = enrichable_questions["entity_questions"]
     linked_idnr_qns, linked_date_qns = _get_linked_qns(dbm, entity_qns)
+    filter_fields = [f['field'] for f in config.filters]
 
-    idnrFilters = [_unique_id_with_options(qn, dbm) for qn in entity_qns + linked_idnr_qns if _get_identifier_with_alias(questionnaire["alias"], qn) in config.filters]
-    dateFilters = [_date_qn(qn) for qn in date_qns + linked_date_qns if _get_identifier_with_alias(questionnaire["alias"], qn) in config.filters]
+    idnr_filters = [{'field': _unique_id_with_options(qn, dbm), 'label': _get_filter_label_for_field(_get_identifier_with_alias(questionnaire["alias"], qn), config.filters)} for qn in entity_qns + linked_idnr_qns if _get_identifier_with_alias(questionnaire["alias"], qn) in filter_fields]
+    date_filters = [{'field': _date_qn(qn), 'label': _get_filter_label_for_field(_get_identifier_with_alias(questionnaire["alias"], qn), config.filters)} for qn in date_qns + linked_date_qns if _get_identifier_with_alias(questionnaire["alias"], qn) in filter_fields]
 
     return {
-        "idnr_filters": idnrFilters,
-        "date_filters": dateFilters
+        "idnr_filters": idnr_filters,
+        "date_filters": date_filters
     }
+
+
+def _get_filter_label_for_field(field, filters):
+    return filter(lambda filter: filter['field'] == field, filters)[0]['label']
 
 
 def filter_values(dbm, config, filters):
@@ -35,7 +40,8 @@ def filter_values(dbm, config, filters):
     startkey = []
     all_qns = []
     visited_idnr_qns = {}
-    for qn in config.filters:
+    filter_fields = [f['field'] for f in config.filters]
+    for qn in filter_fields:
         indexable_qn = get_indexable_question(qn)
         filter_value = _filter_value(qn, filters)
         filter_value = _type(qn, filters) == "date" and _parse_date_filter_value(filter_value) or filter_value
