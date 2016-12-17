@@ -41,8 +41,6 @@ def filter_values(dbm, config, filters):
     visited_qns = {}
     filter_fields = [f['field'] for f in config.filters]
     for qn in filter_fields:
-        if not is_idnr_question(qn) and _type(qn, filters) == "date":
-            continue
         indexable_qn = get_indexable_question(qn)
         filter_value = _filter_value(qn, filters)
         keys = filter_value and [filter_value] or []
