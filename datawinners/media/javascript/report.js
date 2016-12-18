@@ -20,7 +20,7 @@ $(function(){
             $(this).daterangepicker({
                 rangeSplitter: 'to',
                 presets: {dateRange: 'Date Range'},
-                dateFormat:'dd-mm-yy'
+                dateFormat:'dd.mm.yy'
             });
         });
         $("#filter_button").click(function() {

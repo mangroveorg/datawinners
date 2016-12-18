@@ -2,11 +2,11 @@ from mangrove.datastore.documents import SurveyResponseDocument
 from mangrove.datastore.entity import get_all_entities
 from mangrove.form_model.form_model import FormModel
 from mangrove.transport.contract.survey_response import get_survey_response_by_report_view_name, \
-    get_total_number_of_survey_response_by_report_view_name
+    reduce_survey_response_by_report_view_name
 
 from datawinners.search.submission_index import get_label_to_be_displayed, get_datasender_info
 
-BATCH_SIZE = 25
+BATCH_SIZE = 2
 
 
 def get_report_data(dbm, config, page_number, keys, index):
@@ -17,9 +17,14 @@ def get_report_data(dbm, config, page_number, keys, index):
     return [{config.questionnaires[0]["alias"]: _enrich_questions(dbm, row, questionnaire, enrichable_questions)} for row in rows]
 
 
+def get_date_values(dbm, config, index):
+    result_rows = reduce_survey_response_by_report_view_name(dbm, "report_" + config.id + "_" + index, []).rows
+    return filter(None, reduce(lambda prev, row: prev + row.value.split(","), result_rows, []))
+
+
 def get_total_count(dbm, config, keys, index):
-    result_rows = get_total_number_of_survey_response_by_report_view_name(dbm, "report_"+config.id+"_"+index, keys).rows
-    return reduce(lambda prev, row: prev + row.value, result_rows, 0)
+    result_rows = reduce_survey_response_by_report_view_name(dbm, "report_" + config.id + "_" + index, keys).rows
+    return reduce(lambda prev, row: prev + len(row.value.split(",")), result_rows, 0)
 
 
 def _load_entities_to_entity_questions(dbm, enrichable_questions):
