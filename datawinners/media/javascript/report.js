@@ -1,11 +1,9 @@
 $(function(){
     var initPaginationWidget = function(anchorElement, pageSize, count, totalCount) {
         var loadData = function (pageNumber, callback) {
-            var values = $("#report_container>.filter_container .filter").get().reduce(function(map, elem) {
-                map[elem.id] = $(elem).attr("filter-type") + ";" + $(elem).attr("idnr-type") + ";" + $(elem).val()
-                return map;
-            }, {page_number: pageNumber});
-            $.get(anchorElement.attr("id"), values).done(function(response) {
+            var requestParams = getFilters();
+            requestParams.page_number = pageNumber;
+            $.get(anchorElement.attr("id"), requestParams).done(function(response) {
                 $("#report_container>.report_content").html(response.content);
                 callback && callback(response.count);
             });
@@ -26,16 +24,24 @@ $(function(){
             });
         });
         $("#filter_button").click(function() {
-            var values = $("#report_container>.filter_container .filter").get().reduce(function(map, elem) {
-                map[elem.id] = $(elem).attr("filter-type") + ";" + $(elem).attr("idnr-type") + ";" + $(elem).val()
-                return map;
-            }, {});
-            $.get(anchorElement.attr("id"), values).done(function(response) {
+            $.get(anchorElement.attr("id"), getFilters()).done(function(response) {
                 $("#report_container>.report_content").html(response.content);
                 initPaginationWidget(anchorElement, response.pageSize, response.count, response.totalCount);
             });
         });
     }
+
+    var getFilters = function() {
+        var values = $("#report_container>.filter_container .filter").get().reduce(function(map, elem) {
+                if($(elem).val() != "") {
+                    map['hasFilter'] = true
+                }
+                map[elem.id] = $(elem).attr("filter-type") + ";" + $(elem).attr("idnr-type") + ";" + $(elem).val()
+                return map;
+            }, {'hasFilter': false});
+        values.hasFilter ? delete values['hasFilter'] : values = {};
+        return values;
+    };
 
     var loadReportTabCallback = function(anchorElement, response) {
         $("#report_navigation li.active").addClass("inactive");
