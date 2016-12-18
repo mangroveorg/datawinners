@@ -42,7 +42,7 @@ def get_filter_values(dbm, config, filters):
     for qn in filter_fields:
         indexable_qn = get_indexable_question(qn)
         filter_value = _filter_value(qn, filters)
-        keys = filter_value and [filter_value]
+        keys = filter_value and [filter_value] or []
         if (filter_value is None and _idnr_type(qn, filters)) or isinstance(filter_value, dict):
             keys = _get_keys_for_idnr(dbm, _idnr_type(qn, filters), filter_value)
         if keys is not None and indexable_qn in visited_qns:
@@ -55,18 +55,16 @@ def get_filter_values(dbm, config, filters):
         qn = config.date_filter['field']
         index += "_" + strip_alias(qn)
         filter_value = _filter_value(qn, filters)
-        keys = filter_value and []
-        if filter_value is not None or (filter_value is None and _idnr_type(qn, filters)):
+        keys = []
+        if filter_value is not None or (filter_value is None and _type(qn, filters)):
             for date in get_date_values(dbm, config, index):
-                filter_value is None or (filter_value[0] <= parse_date(date) <= filter_value[1]) and keys.append(date)
+                (filter_value is None or (filter_value[0] <= parse_date(date) <= filter_value[1])) and keys.append(date)
         combination_keys = _combine_keys(combination_keys, keys)
     return combination_keys, index
 
 
 def _combine_keys(combination_keys, keys):
-    if keys is None:
-        return combination_keys
-    elif not keys:
+    if not keys:
         return [combination_key + [] for combination_key in combination_keys]
     else:
         new_combination_keys = []
