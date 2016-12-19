@@ -38,10 +38,12 @@ def get_filter_values(dbm, config, filters):
     combination_keys = []
     all_qns = []
     visited_qns = {}
+    filter_values = []
     filter_fields = [f['field'] for f in config.filters]
     for qn in filter_fields:
         indexable_qn = get_indexable_question(qn)
         filter_value = _filter_value(qn, filters)
+        filter_value and filter_values.append(filter_value)
         keys = filter_value and [filter_value] or []
         if (filter_value is None and _idnr_type(qn, filters)) or isinstance(filter_value, dict):
             keys = _get_keys_for_idnr(dbm, _idnr_type(qn, filters), filter_value)
@@ -53,13 +55,13 @@ def get_filter_values(dbm, config, filters):
     combination_keys = reduce(lambda prev, qn: _combine_keys(prev, visited_qns.get(qn)), distinct(all_qns), combination_keys)
     if config.date_filter:
         qn = config.date_filter['field']
-        index += "_" + strip_alias(qn)
         filter_value = _filter_value(qn, filters)
         keys = []
         if filter_value is not None or (filter_value is None and _type(qn, filters)):
-            for date in get_date_values(dbm, config, index):
+            for date in get_date_values(dbm, config, strip_alias(qn)):
                 date and date not in keys and (filter_value is None or (filter_value[0] <= parse_date(date) <= filter_value[1])) and keys.append(date)
-        combination_keys = _combine_keys(combination_keys, keys)
+        index = filter_values and index + "_" + strip_alias(qn) or strip_alias(qn)
+        combination_keys = filter_values and _combine_keys(combination_keys, keys) or _combine_keys([], keys)
     return combination_keys, index
 
 

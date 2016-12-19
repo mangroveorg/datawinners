@@ -16,13 +16,13 @@ def get_report_data(dbm, config, keys, index):
 
 
 def get_date_values(dbm, config, index):
-    result_rows = reduce_survey_response_by_report_view_name(dbm, "report_" + config.id + "_" + index, []).rows
-    return reduce(lambda prev, row: prev + row.value, result_rows, [])
+    result_rows = get_survey_response_by_report_view_name(dbm, "report_"+config.id+"_"+index, []).rows
+    return reduce(lambda prev, row: prev + row.key, result_rows, [])
 
 
 def get_total_count(dbm, config, keys, index):
     result_rows = reduce_survey_response_by_report_view_name(dbm, "report_" + config.id + "_" + index, keys).rows
-    return reduce(lambda prev, row: prev + len(row.value), result_rows, 0)
+    return reduce(lambda prev, row: prev + row.value, result_rows, 0)
 
 
 def _load_entities_to_entity_questions(dbm, enrichable_questions):
