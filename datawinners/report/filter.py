@@ -58,7 +58,7 @@ def get_filter_values(dbm, config, filters):
         keys = []
         if filter_value is not None or (filter_value is None and _type(qn, filters)):
             for date in get_date_values(dbm, config, index):
-                (filter_value is None or (filter_value[0] <= parse_date(date) <= filter_value[1])) and keys.append(date)
+                date and date not in keys and (filter_value is None or (filter_value[0] <= parse_date(date) <= filter_value[1])) and keys.append(date)
         combination_keys = _combine_keys(combination_keys, keys)
     return combination_keys, index
 

@@ -49,7 +49,7 @@ def _form_key_for_couch_view(field_path):
 
 
 def _get_reduce_function():
-    return "function(key, values, rereduce) {return values.join(',');}"
+    return "function(key, values, rereduce) {if(rereduce){var vals=[]; for(var i=0; i<values.length; i++) {vals.concat(values[i]);} return vals;} else{return values;}}"
 
 
 def _get_map_function(questionnaire_ids_string, combined_view_key):
