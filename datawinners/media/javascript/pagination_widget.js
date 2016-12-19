@@ -150,7 +150,7 @@ function PaginationWidget(containerSelector, prevCallback, nextCallback, pageSiz
     }
 
     function renderLast() {
-        _this.containerDiv.querySelector('#last').className =  (_this.currentPageNumber == Math.ceil(_this.totalCount/_this.pageSize)) ? 'disabled' : '';
+        _this.containerDiv.querySelector('#last').className =  (_this.currentPageNumber == Math.ceil(_this.totalCount/_this.pageSize)) || _this.totalCount == 0 ? 'disabled' : '';
     }
 
     return _this;
