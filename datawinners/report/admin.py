@@ -1,5 +1,3 @@
-from itertools import permutations
-
 from django.http import HttpResponse
 
 from datawinners.main.database import get_database_manager
@@ -12,9 +10,10 @@ def create_report_view(request, report_id):
     config = get_report_config(dbm, report_id)
     filter_fields = [f['field'] for f in config.filters]
     date_field = config.date_filter and [strip_alias(config.date_filter['field'])] or []
-    indexes = distinct([strip_alias(get_indexable_question(qn)) for qn in filter_fields]) + date_field
+    indexes = distinct([strip_alias(get_indexable_question(qn)) for qn in filter_fields])
     questionnaire_ids = '"{0}"'.format('", "'.join([questionnaire['id'] for questionnaire in config.questionnaires]))
-    dbm.create_view(get_report_view_name(report_id, "_".join(indexes)), _get_map_function(questionnaire_ids, _combined_view_key(map(_form_key_for_couch_view, indexes))), _get_reduce_function())
+    dbm.create_view(get_report_view_name(report_id, "_".join(indexes + date_field)), _get_map_function(questionnaire_ids, _combined_view_key(map(_form_key_for_couch_view, indexes + date_field))), "_count")
+    date_field and dbm.create_view(get_report_view_name(report_id, date_field[0]), _get_map_function(questionnaire_ids, _form_key_for_couch_view(date_field[0])), "_count")
     return HttpResponse()
 
 
@@ -23,8 +22,10 @@ def delete_report_view(request, report_id):
     config = get_report_config(dbm, report_id)
     filter_fields = [f['field'] for f in config.filters]
     date_field = config.date_filter and [strip_alias(config.date_filter['field'])] or []
-    indexes = distinct([strip_alias(get_indexable_question(qn)) for qn in filter_fields]) + date_field
-    del dbm.database["_design/" + get_report_view_name(report_id, "_".join(indexes))]
+    indexes = distinct([strip_alias(get_indexable_question(qn)) for qn in filter_fields])
+    del dbm.database["_design/" + get_report_view_name(report_id, "_".join(indexes + date_field))]
+    if date_field:
+        del dbm.database["_design/" + get_report_view_name(report_id, date_field[0])]
     return HttpResponse()
 
 
@@ -48,10 +49,6 @@ def _form_key_for_couch_view(field_path):
     return root_path + temp_path[:-3]
 
 
-def _get_reduce_function():
-    return "function(key, values, rereduce) {if(rereduce){var vals=[]; for(var i=0; i<values.length; i++) {vals.concat(values[i]);} return vals;} else{return values;}}"
-
-
 def _get_map_function(questionnaire_ids_string, combined_view_key):
-    return "function(doc) {if(doc.document_type == 'SurveyResponse' && [%s].indexOf(doc.form_model_id) > -1) {emit([%s], %s);}}" % (questionnaire_ids_string, combined_view_key, combined_view_key and combined_view_key.split(",")[-1] or "1")
+    return "function(doc) {if(doc.document_type == 'SurveyResponse' && [%s].indexOf(doc.form_model_id) > -1) {emit([%s], 1);}}" % (questionnaire_ids_string, combined_view_key)
 
