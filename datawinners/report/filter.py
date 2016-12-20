@@ -61,7 +61,7 @@ def get_filter_values(dbm, config, filters):
             for date in get_date_values(dbm, config, strip_alias(qn)):
                 date and date not in keys and (filter_value is None or (filter_value[0] <= parse_date(date) <= filter_value[1])) and keys.append(date)
         index = filter_values and index + "_" + strip_alias(qn) or strip_alias(qn)
-        combination_keys = filter_values and _combine_keys(combination_keys, keys) or _combine_keys([], keys or {})
+        combination_keys = filter_values and _combine_keys(combination_keys, keys) or _combine_keys([[]], keys)
     return combination_keys, index
 
 
