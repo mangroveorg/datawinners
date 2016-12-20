@@ -98,7 +98,7 @@ def _filter_value(qn, filters):
     value = type_and_value and type_and_value.split(";")[2] or None
     if _type(qn, filters) == "date":
         value = value and [parse_date(date) for date in value.split("to")]
-        value = value and len(value) == 1 and value + value
+        value = value and len(value) == 1 and value + value or value
     if is_idnr_question(qn):
         value = value and {get_idnr_question(qn): value}
     return value
