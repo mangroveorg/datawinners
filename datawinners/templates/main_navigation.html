@@ -11,9 +11,11 @@
             <li class ="{% ifactivetab 'main_nav' 'dashboard' %}active{% else %}inactive{% endifactivetab %}">
                 <a id="global_dashboard_link" href="{% url datawinners.dashboard.views.dashboard %}" class="{{ disable_link_class }}">{% trans "Dashboard" %}</a>
             </li>
+            {% flag "reports"%}
             <li  class ="{% ifactivetab 'main_nav' 'reports' %}active{% else %}inactive{% endifactivetab %}">
                 <a id="global_reports_link" href="{% url all_reports %}" class="{{ disable_link_class }}">{% trans "Reports" %}</a>
             </li>
+            {% endflag %}
             {% flag "advanced_dashboard"%}
 	            <li class ="{% ifactivetab 'main_nav' 'advanced_dashboard' %}active{% else %}inactive{% endifactivetab %}">
 	                <a id="global_dashboard_link" href="/advanced_dashboard" class="{{ disable_link_class }}">{% trans "Advanced Dashboard" %}</a>
