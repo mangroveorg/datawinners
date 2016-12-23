@@ -50,5 +50,5 @@ def _form_key_for_couch_view(field_path):
 
 
 def _get_map_function(questionnaire_ids_string, combined_view_key):
-    return "function(doc) {if(doc.document_type == 'SurveyResponse' && [%s].indexOf(doc.form_model_id) > -1) {emit([%s], 1);}}" % (questionnaire_ids_string, combined_view_key)
+    return "function(doc) {if(!doc.void && doc.document_type == 'SurveyResponse' && [%s].indexOf(doc.form_model_id) > -1) {emit([%s], 1);}}" % (questionnaire_ids_string, combined_view_key)
 
