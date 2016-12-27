@@ -14,36 +14,6 @@ $(function(){
         new PaginationWidget('#pagination-' + anchorElement.attr("id"), loadData, loadData, pageSize, currentPageCount, totalCount);
     };
 
-    var initFilters = function(anchorElement) {
-        $('#report_container>.filter_container select').chosen();
-        $('#report_container>.filter_container input.date_filter').each(function() {
-            $(this).daterangepicker({
-                rangeSplitter: 'to',
-                presets: {dateRange: 'Date Range'},
-                dateFormat:'dd.mm.yy'
-            });
-        });
-        $("#filter_button").click(function() {
-            $.get(anchorElement.attr("id"), getFilters()).done(function(response) {
-                preparePaginatedData(response.content, response.sortColumns);
-                updateCurrentPageData(0);
-                initPaginationWidget(anchorElement, pageSize, currentPageCount, totalCount);
-            });
-        });
-    }
-
-    var getFilters = function() {
-        var values = $("#report_container>.filter_container .filter").get().reduce(function(map, elem) {
-                if($(elem).val() != "") {
-                    map['hasFilter'] = true
-                }
-                map[elem.id] = $(elem).attr("filter-type") + ";" + $(elem).attr("idnr-type") + ";" + $(elem).val()
-                return map;
-            }, {'hasFilter': false});
-        values.hasFilter ? delete values['hasFilter'] : values = {};
-        return values;
-    };
-
     var preparePaginatedData = function(htmlData, sortColumns) {
         var DOM = $(htmlData);
         data = DOM.find('tr:has(td)');
@@ -92,9 +62,6 @@ $(function(){
 
     $("#report_navigation a").click(function(){
         var anchorElement = $(this);
-        $("#report_container>.filter_container").load(anchorElement.attr("id") + "/filters/", function(){
-            initFilters(anchorElement);
-        });
         $.get(anchorElement.attr("id")).done(function(response) {
           loadReportTabCallback(anchorElement, response);
         });

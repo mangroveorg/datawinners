@@ -22,6 +22,14 @@ def count(qn):
     return "1"
 
 
+@register.inclusion_tag('report/filters.html', takes_context=True)
+def filters(context):
+    return {
+        "idnr_filters": context.get("idnr_filters"),
+        "date_filters": context.get("date_filters")
+    }
+
+
 class LoopNode(template.Node):
     def __init__(self, nodelist):
         self.nodelist = nodelist

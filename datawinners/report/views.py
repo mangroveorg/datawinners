@@ -3,7 +3,6 @@ import logging
 
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
-from django.shortcuts import render_to_response
 from django.template import RequestContext, Template
 from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView
@@ -61,16 +60,6 @@ def report_font_file(request, report_id, font_file_name):
     return HttpResponse(mimetype="font/opentype", content=font_file)
 
 
-def report_filters(request, report_id):
-    dbm = get_database_manager(request.user)
-    config = get_report_config(dbm, report_id)
-    filters = get_report_filters(dbm, config, config.questionnaires[0])
-    return render_to_response("report/filters.html", {
-        "idnr_filters": filters["idnr_filters"],
-        "date_filters": filters["date_filters"]
-    }, context_instance=RequestContext(request))
-
-
 def _build_report_content(dbm, config, request):
     content = ""
     content += _get_style_content(config)
@@ -84,9 +73,12 @@ def _get_style_content(config):
 
 
 def _get_content(dbm, config, request):
+    all_filters = get_report_filters(dbm, config, config.questionnaires[0])
     filter_values = get_filter_values(dbm, config, request.GET)
     data = get_report_data(dbm, config, filter_values[0], filter_values[1])
     return Template(config.template()).render(RequestContext(request, {
         "report_data": data,
+        "idnr_filters": all_filters["idnr_filters"],
+        "date_filters": all_filters["date_filters"],
         "report_id": "report_" + config.id
     })), len(data), get_total_count(dbm, config, filter_values[0], filter_values[1])
