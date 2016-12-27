@@ -1,5 +1,8 @@
 from django import template
 import xml.etree.ElementTree as ET
+
+from datawinners.report.aggregator import get_report_data
+from datawinners.report.filter import get_filter_values, get_report_filters
 from datawinners.report.template_resolver import resolve_data
 
 register = template.Library()
@@ -24,9 +27,10 @@ def count(qn):
 
 @register.inclusion_tag('report/filters.html', takes_context=True)
 def filters(context):
+    report_filters = get_report_filters(context.get("dbm"), context.get("config"), context.get("config").questionnaires[0])
     return {
-        "idnr_filters": context.get("idnr_filters"),
-        "date_filters": context.get("date_filters")
+        "idnr_filters": report_filters["idnr_filters"],
+        "date_filters": report_filters["date_filters"]
     }
 
 
@@ -35,7 +39,9 @@ class LoopNode(template.Node):
         self.nodelist = nodelist
 
     def render(self, context):
-        resolved_data = resolve_data(self._parse_cell_values(), context.get("report_data"))
+        filter_values = get_filter_values(context.get("dbm"), context.get("config"), context.get("filters"))
+        data = get_report_data(context.get("dbm"), context.get("config"), filter_values[0], filter_values[1])
+        resolved_data = resolve_data(self._parse_cell_values(), data)
         return self._generate_html(resolved_data)
 
     def _parse_cell_values(self):
