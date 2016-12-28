@@ -7,8 +7,8 @@
                 <select id="{{filter.field.identifier}}" filter-type="{{filter.field.type}}" idnr-type="{{filter.field.idnr_type}}"
                         class="filter" style="width: 100%;">
                     <option value="">All</option>
-                    {% for option in filter.field.options %}
-                        <option value="{{option.0}}">{{option.1}}</option>
+                    {% for option in filter.field.new_options %}
+                        <option {{option.2}} value="{{option.0}}">{{option.1}}</option>
                     {% endfor %}
                 </select>
             </div>
@@ -17,7 +17,7 @@
             <div style="width: 31%; position: relative; float: left; margin: 0 1%;">
                 <label style="margin-bottom: -10px; line-height: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%">{{filter.label}}</label>
                 <input id="{{filter.field.identifier}}" filter-type="{{filter.field.type}}" idnr-type="{{filter.field.idnr_type}}" placeholder="All Dates" type="text"
-                       class="filter date_filter datepicker" style="height: 20px !important; width: 98%;" />
+                       class="filter date_filter datepicker" style="height: 20px !important; width: 98%;" value="{% if filter.field.value %}{{ filter.field.value }}{% endif %}" />
             </div>
         {% endfor %}
     </div>
