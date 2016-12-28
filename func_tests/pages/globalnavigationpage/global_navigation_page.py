@@ -8,6 +8,7 @@ from pages.languagespage.customized_languages_page import CustomizedLanguagePage
 from pages.page import Page
 from pages.projectspage.projects_page import ProjectsPage
 from pages.alldatasenderspage.all_data_senders_page import AllDataSendersPage
+from pages.reportspage.reports_page import ReportsPage
 from tests.testsettings import UI_TEST_TIMEOUT
 
 
@@ -93,5 +94,8 @@ class GlobalNavigationPage(Page):
         self.driver.find(LANGUAGES_LINK).click()
         return CustomizedLanguagePage(self.driver)
 
-
+    def navigate_to_reports_page(self):
+        self.driver.find(REPORTS_LINK).click()
+        self.driver.wait_for_page_load()
+        return ReportsPage(self.driver)
 
