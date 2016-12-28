@@ -1,25 +1,26 @@
 {% if idnr_filters or date_filters %}
-<div id="filter_section" style="width: 92%; vertical-align: middle; display: inline-block; line-height:4;">
-    {% for filter in idnr_filters %}
-        <div style="width: 31%; position: relative; float: left; margin: 0 1%;">
-            <label style="line-height: 1; margin-bottom: -10px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%;">{{filter.label}}</label>
-            <select id="{{filter.field.identifier}}" filter-type="{{filter.field.type}}" idnr-type="{{filter.field.idnr_type}}"
-                    class="filter" style="width: 100%;">
-                <option value="">All</option>
-                {% for option in filter.field.options %}
-                    <option value="{{option.0}}">{{option.1}}</option>
-                {% endfor %}
-            </select>
-        </div>
-    {% endfor %}
-    {% for filter in date_filters %}
-        <div style="width: 31%; position: relative; float: left; margin: 0 1%;">
-            <label style="margin-bottom: -10px; line-height: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%">{{filter.label}}</label>
-            <input id="{{filter.field.identifier}}" filter-type="{{filter.field.type}}" idnr-type="{{filter.field.idnr_type}}" placeholder="All Dates" type="text"
-                   class="filter date_filter datepicker" style="height: 20px !important; width: 98%;" />
-        </div>
-    {% endfor %}
-</div>
-<input type="submit" style="margin: 0; margin-bottom: 12px; vertical-align: bottom; display: inline-block;" class="button_blue" value="Filter" id="filter_button">
-<div style="clear:both;"></div>
+    <script type="text/javascript" src="/media/javascript/report/filters.js"></script>
+    <div id="filter_section" report_id="{{report_id}}" style="width: 92%; vertical-align: middle; display: inline-block; line-height:4;">
+        {% for filter in idnr_filters %}
+            <div style="width: 31%; position: relative; float: left; margin: 0 1%;">
+                <label style="line-height: 1; margin-bottom: -10px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%;">{{filter.label}}</label>
+                <select id="{{filter.field.identifier}}" filter-type="{{filter.field.type}}" idnr-type="{{filter.field.idnr_type}}"
+                        class="filter" style="width: 100%;">
+                    <option value="">All</option>
+                    {% for option in filter.field.options %}
+                        <option value="{{option.0}}">{{option.1}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        {% endfor %}
+        {% for filter in date_filters %}
+            <div style="width: 31%; position: relative; float: left; margin: 0 1%;">
+                <label style="margin-bottom: -10px; line-height: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%">{{filter.label}}</label>
+                <input id="{{filter.field.identifier}}" filter-type="{{filter.field.type}}" idnr-type="{{filter.field.idnr_type}}" placeholder="All Dates" type="text"
+                       class="filter date_filter datepicker" style="height: 20px !important; width: 98%;" />
+            </div>
+        {% endfor %}
+    </div>
+    <input type="submit" style="margin: 0; margin-bottom: 12px; vertical-align: bottom; display: inline-block;" class="button_blue" value="Filter" id="filter_button">
+    <div style="clear:both;"></div>
 {% endif %}

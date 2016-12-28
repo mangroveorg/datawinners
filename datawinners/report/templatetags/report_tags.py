@@ -29,6 +29,7 @@ def count(qn):
 def filters(context):
     report_filters = get_report_filters(context.get("dbm"), context.get("config"), context.get("config").questionnaires[0])
     return {
+        "report_id": context.get("report_id"),
         "idnr_filters": report_filters["idnr_filters"],
         "date_filters": report_filters["date_filters"]
     }
