@@ -36,6 +36,15 @@ def filters(context):
     }
 
 
+@register.inclusion_tag('report/pagination.html', takes_context=True)
+def pagination(context):
+    return {
+        "data": context.get("data"),
+        "report_id": context.get("report_id"),
+        "sort_columns": context.get("config").sort_fields,
+    }
+
+
 class LoopNode(template.Node):
     def __init__(self, nodelist):
         self.nodelist = nodelist
@@ -44,7 +53,9 @@ class LoopNode(template.Node):
         filter_values = get_filter_values(context.get("dbm"), context.get("config"), context.get("filters"))
         data = get_report_data(context.get("dbm"), context.get("config"), filter_values[0], filter_values[1])
         resolved_data = resolve_data(self._parse_cell_values(), data)
-        return self._generate_html(resolved_data)
+        html = self._generate_html(resolved_data)
+        context['data'] = html
+        return ""
 
     def _parse_cell_values(self):
         cells = ET.fromstring(self.nodelist[0].s).findall("./td")

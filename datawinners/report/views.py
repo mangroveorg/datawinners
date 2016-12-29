@@ -30,13 +30,9 @@ def report_content(request, report_id):
     dbm = get_database_manager(request.user)
     config = get_report_config(dbm, report_id)
     return HttpResponse(
-        json.dumps(
-            {
-                "content": '<link rel="stylesheet" href="/reports/' + report_id + '/stylesheet/" />' +
-                           _get_content(request, dbm, config),
-                "sortColumns": config.sort_fields
-            }),
-        content_type='application/json')
+        '<link rel="stylesheet" href="/reports/' + report_id + '/stylesheet/" />' +
+        _get_content(request, dbm, config),
+    )
 
 
 def report_stylesheet(request, report_id):

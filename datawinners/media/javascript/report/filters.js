@@ -10,9 +10,7 @@ var initFilters = function() {
     $("#filter_button").click(function() {
         var report_id = $('#filter_section').attr("report_id");
         $.get(report_id, getFilters(), function(response) {
-            preparePaginatedData(response.content, response.sortColumns);
-            updateCurrentPageData(0);
-            initPaginationWidget(report_id);
+            $("#report_container").html(response);
         });
     });
 }
