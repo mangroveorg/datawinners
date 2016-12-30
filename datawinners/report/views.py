@@ -1,5 +1,3 @@
-import json
-
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.template import RequestContext, Template
@@ -53,6 +51,5 @@ def _get_content(request, dbm, config):
     return Template(config.template()).render(RequestContext(request, {
         "dbm": dbm,
         "config": config,
-        "filters": request.GET,
-        "report_id": config.id
+        "filters": request.GET
     }))
