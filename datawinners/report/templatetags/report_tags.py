@@ -30,7 +30,7 @@ def filters(context):
     report_filters = get_report_filters(context.get("dbm"), context.get("config"), context.get("config").questionnaires[0])
     _stopgap_load_previous_selected_values(context.get("filters"), report_filters)
     return {
-        "report_id": context.get("report_id"),
+        "report_id": context.get("config").id,
         "idnr_filters": report_filters["idnr_filters"],
         "date_filters": report_filters["date_filters"]
     }
@@ -40,7 +40,7 @@ def filters(context):
 def pagination(context):
     return {
         "data": context.get("data"),
-        "report_id": context.get("report_id"),
+        "report_id": context.get("config").id,
         "sort_columns": context.get("config").sort_fields,
     }
 
