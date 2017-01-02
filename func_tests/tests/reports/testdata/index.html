@@ -1,4 +1,4 @@
-<div id="report_{{report_id}}">
+<div id="{{config.id}}">
     {% load report_tags %}
     <table>
       <tr>
@@ -12,4 +12,5 @@
             </tr>
         {% endloop %}
     </table>
+    {% pagination %}
 </div>

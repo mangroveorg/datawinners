@@ -34,7 +34,7 @@ class TestReports(HeadlessRunnerTest):
     @classmethod
     def setUpClass(cls):
         cls.test_passed = True
-        cls.driver = setup_driver("firefox")
+        cls.driver = setup_driver("phantom")
         cls.admin_email_id = 'tester150411@gmail.com'
         cls.global_navigation_page = login(cls.driver, VALID_CREDENTIALS)
         cls.client = Client()
