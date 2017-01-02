@@ -29,7 +29,7 @@ var updateCurrentPageData = function (pageNumber, rows) {
 var initPaginationWidget = function(report_id, rows) {
     var loadData = function (pageNumber, callback) {
         updateCurrentPageData(pageNumber - 1, rows);
-        callback(currentPageData.length);
+        callback(currentPageCount);
     };
     new PaginationWidget('#pagination-' + report_id, loadData, loadData, pageSize, currentPageCount, rows.length);
 };
