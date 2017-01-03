@@ -1,0 +1,13 @@
+<script type="text/javascript" src="/media/javascript/report/export_excel.js"></script>
+<script type="text/javascript" src="/media/javascript/report/sort.js"></script>
+<script>
+    $(function(){
+        var rows = doSort($("{{data|safe}}"), {{sort_columns}});
+        var exportExcel = prepareForExport(rows);
+        $('#export').click(function() {
+            exportExcel();
+            return false;
+        });
+    });
+</script>
+<a href="#" id="export" style="float: right">Export</a>

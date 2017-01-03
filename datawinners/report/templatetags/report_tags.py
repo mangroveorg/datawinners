@@ -1,5 +1,8 @@
-from django import template
 import xml.etree.ElementTree as ET
+
+from django import template
+from django.template import Context
+from django.template.loader import get_template
 
 from datawinners.report.aggregator import get_report_data
 from datawinners.report.filter import get_filter_values, get_report_filters
@@ -55,7 +58,10 @@ class LoopNode(template.Node):
         resolved_data = resolve_data(self._parse_cell_values(), data)
         html = self._generate_html(resolved_data)
         context['data'] = html
-        return ""
+        return get_template("report/export.html").render(Context({
+            "data": html,
+            "sort_columns": context.get("config").sort_fields
+        }))
 
     def _parse_cell_values(self):
         cells = ET.fromstring(self.nodelist[0].s).findall("./td")

@@ -1,22 +1,12 @@
 <script type="text/javascript" src="/media/javascript/pagination_widget.js"></script>
 <script type="text/javascript" src="/media/javascript/report/pagination.js"></script>
-<script type="text/javascript" src="/media/javascript/report/export_excel.js"></script>
-<script type="text/javascript" src="/media/javascript/report/lib/jszip.min.js"></script>
-<script type="text/javascript" src="/media/javascript/report/lib/xlsx.core.min.js"></script>
-<script type="text/javascript" src="/media/javascript/report/lib/blob.js"></script>
-<script type="text/javascript" src="/media/javascript/report/lib/filesaver.js"></script>
+<script type="text/javascript" src="/media/javascript/report/sort.js"></script>
 <script>
     $(function(){
         var rows = doSort($("{{data|safe}}"), {{sort_columns}});
         updateCurrentPageData(0, rows);
         initPaginationWidget("{{report_id}}", rows);
-        var exportExcel = prepareForExport(rows);
-        $('#export').click(function() {
-            exportExcel();
-            return false;
-        });
     });
 </script>
 
 <div id="pagination-{{report_id}}" style="text-align: center;"></div>
-<a href="#" id="export" style="float: right">Export</a>

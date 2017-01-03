@@ -1,6 +1,6 @@
 {% if idnr_filters or date_filters %}
     <script type="text/javascript" src="/media/javascript/report/filters.js"></script>
-    <div id="filter_section" report_id="{{report_id}}" style="width: 92%; vertical-align: middle; display: inline-block; line-height:4;">
+    <div id="filter_section" report_id="{{report_id}}" style="width: 93%; vertical-align: middle; display: inline-block; line-height:4;">
         {% for filter in idnr_filters %}
             <div style="width: 31%; position: relative; float: left; margin: 0 1%;">
                 <label style="line-height: 1; margin-bottom: -10px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%;">{{filter.label}}</label>
