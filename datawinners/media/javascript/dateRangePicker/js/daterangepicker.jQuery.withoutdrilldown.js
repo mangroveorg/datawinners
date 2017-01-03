@@ -42,7 +42,7 @@ jQuery.fn.daterangepicker = function(settings){
 
 				options.onChange();			
 			},
-			defaultDate: +0
+        defaultDate: +0
 	};
 	
 	//change event fires both when a calendar is updated or a change event on the input is triggered
@@ -56,14 +56,14 @@ jQuery.fn.daterangepicker = function(settings){
 	var inputDateA, inputDateB = Date.parse('today');
 	var inputDateAtemp, inputDateBtemp;
 	if(rangeInput.size() == 2){
-		inputDateAtemp = Date.parse( rangeInput.eq(0).val() );
-		inputDateBtemp = Date.parse( rangeInput.eq(1).val() );
+		inputDateAtemp = jQuery.datepicker.parseDate(options.dateFormat, rangeInput.eq(0).val());
+		inputDateBtemp = jQuery.datepicker.parseDate(options.dateFormat, rangeInput.eq(1).val() || "");
 		if(inputDateAtemp == null){inputDateAtemp = inputDateBtemp;} 
 		if(inputDateBtemp == null){inputDateBtemp = inputDateAtemp;} 
 	}
 	else {
-		inputDateAtemp = Date.parse( rangeInput.val().split(options.rangeSplitter)[0] );
-		inputDateBtemp = Date.parse( rangeInput.val().split(options.rangeSplitter)[1] );
+		inputDateAtemp = jQuery.datepicker.parseDate(options.dateFormat, rangeInput.val().split(options.rangeSplitter)[0].trim());
+		inputDateBtemp = jQuery.datepicker.parseDate(options.dateFormat, rangeInput.val().split(options.rangeSplitter)[1] && rangeInput.val().split(options.rangeSplitter)[1].trim() || "");
 		if(inputDateBtemp == null){inputDateBtemp = inputDateAtemp;} //if one date, set both
 	}
 	if(inputDateAtemp != null){inputDateA = inputDateAtemp;}
