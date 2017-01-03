@@ -34,7 +34,7 @@ def _load_entities_to_entity_questions(dbm, enrichable_questions):
 def _enrich_questions(dbm, row, questionnaire, enrichable_questions):
     for question in enrichable_questions["entity_questions"]:
         parent = _get_parent(question, row)
-        parent[question.code] = question.entities.get(parent[question.code]) or ""
+        parent[question.code] = question.entities.get(parent.get(question.code)) or ""
     for question in enrichable_questions["choice_questions"]:
         parent = _get_parent(question, row)
         parent[question.code] = get_label_to_be_displayed(parent[question.code], question, questionnaire, SurveyResponseDocument._wrap_row(row))
