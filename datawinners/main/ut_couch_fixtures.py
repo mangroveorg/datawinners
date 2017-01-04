@@ -1535,7 +1535,7 @@ def load_data():
     if reports_flags:
         reports_flag = reports_flags[0]
     else:
-        reports_flag = Flag(name='questionnaire_builder')
+        reports_flag = Flag(name='reports')
         reports_flag.save()
 
     questionnaire_builder_flag.users.clear()
