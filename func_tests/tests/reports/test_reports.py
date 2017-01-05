@@ -44,6 +44,7 @@ class TestReports(HeadlessRunnerTest):
 
     @attr('functional_test')
     def test_should_show_reports(self):
+        self.driver.maximize_window()
         self.project_name = random_string()
         self.report_name = random_string()
         file_name = 'test_questionnaire.xlsx'
@@ -59,11 +60,11 @@ class TestReports(HeadlessRunnerTest):
         self._create_views(self.report)
         report_page = self.global_navigation_page.navigate_to_reports_page()
         report_page.navigate_to_report(self.report_name)
-        time.sleep(60)  # This waiting is for ajax calls on report page
+        time.sleep(300)  # This waiting is for ajax calls on report page
         self.assertEquals(len(self.submission_ids), report_page.get_number_of_records())
         delete_submissions(self.project_id, self.submission_ids[:1], VALID_CREDENTIALS)
         report_page.navigate_to_report(self.report_name)
-        time.sleep(60)  # This waiting is for ajax calls on report page
+        time.sleep(300)  # This waiting is for ajax calls on report page
         self.assertEquals(len(self.submission_ids) - 1, report_page.get_number_of_records())
 
     def _do_web_submissions(self):
