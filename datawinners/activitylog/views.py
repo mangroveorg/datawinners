@@ -93,9 +93,9 @@ def show_log(request):
                     question = unicode(value['question'])
                     #if value['old'] and value['new']:
                     try:
-                        old_data_value = str(value['old'])
-                        new_data_value = str(value['new'])
-                        text_details += '<li>'+ question + ': "' + old_data_value + '" ' + _("to") + ' "' + new_data_value +'"</li>'
+                        old_data_value = str(value['old'].encode('UTF-8'))
+                        new_data_value = str(value['new'].encode('UTF-8'))
+                        text_details += '<li>'+ question + ': "' + old_data_value.decode('UTF-8') + '" ' + _("to") + ' "' + new_data_value.decode('UTF-8') +'"</li>'
                     #except :
                         #new_data_value = str(value['new'])
                         #text_details += '<li>'+ _("New node: ") + '</br>' + question + ':' + new_data_value +'"</li>'
