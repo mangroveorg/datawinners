@@ -58,7 +58,6 @@ from datawinners.settings import EMAIL_HOST_USER, HNI_SUPPORT_EMAIL_ID
 from collections import OrderedDict
 from datawinners.blue.xlsform_utils import convert_excel_to_dict, \
     convert_json_to_excel
-from xmldict import xml_to_dict
 
 logger = logging.getLogger("datawinners.xls-questionnaire")
 
@@ -418,11 +417,12 @@ def edit_xform_submission_post(request, survey_response_id):
     activity_log = UserActivityLog()
     questionnaire = Project.get(manager, survey_response.form_model_id)
     old_data = survey_response._doc.values
-    new_data = (xml_to_dict(str(request.POST['form_data'].encode('UTF-16')))).values()[0]
 
     try:
         response = XFormWebSubmissionHandler(request=request). \
             update_submission_response(survey_response_id)
+        new_survey_response = get_survey_response_by_id(manager, survey_response_id)
+        new_data = new_survey_response._doc.values
 
         edit_details = _details_for_activity_log(new_data, old_data, questionnaire)
         activity_log.log(request, action=EDITED_DATA_SUBMISSION_ADV_QUEST, project=questionnaire.name,
@@ -441,15 +441,11 @@ def edit_xform_submission_post(request, survey_response_id):
 
 def _create_details_for_edit_info(new_data_dict, old_data, questionnaire):
     details = dict()
-    from datawinners.utils import convert_dmy_to_ymd
     for key, value in new_data_dict.iteritems():
         if key in old_data and key not in {"intro", "meta", "form_code"}:
             if new_data_dict[key] != old_data[key]:
-                if questionnaire.get_field_by_code(key).type == 'date':
-                    formatted_date = old_data[key].replace(".", "-")
-                    converted_date = convert_dmy_to_ymd(formatted_date)
-                    if converted_date != new_data_dict[key]:
-                        details.update({key: {'old_data': converted_date, 'new_data': new_data_dict[key]}})
+                if old_data[key] != new_data_dict[key]:
+                    details.update({key: {'old_data': old_data[key], 'new_data': new_data_dict[key]}})
 
                 elif questionnaire.get_field_by_code(key).type == 'geocode':
                     formatted_geo_point = new_data_dict[key].replace(" ", ",")
