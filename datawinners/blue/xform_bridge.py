@@ -706,7 +706,7 @@ class XFormSubmissionProcessor():
     def get_model_edit_str(self, form_model_fields, submission_values, project_name, form_code):
         # todo instead of using form_model fields, use xform to find the fields
         answer_dict, edit_model_dict = {'form_code': form_code}, {}
-        formatted_field_values = self._convert_date_values(form_model_fields, self._format_field_answers_for(form_model_fields, submission_values))
+        formatted_field_values = convert_date_values(form_model_fields, self._format_field_answers_for(form_model_fields, submission_values))
         answer_dict.update(formatted_field_values)
         edit_model_dict.update({project_name: answer_dict})
         return xmldict.dict_to_xml(edit_model_dict)
@@ -714,12 +714,19 @@ class XFormSubmissionProcessor():
     def _format_date_time(self, value):
         return datetime.strptime(value, '%d.%m.%Y %H:%M:%S').strftime('%Y-%m-%dT%H:%M:%S')
 
-    def _convert_date_values(self, fields, value_dict):
-        for field in fields:
-            if type(field) is DateField:
-                converted_value = convert_date_to_ymd(value_dict.get(field.code))
-                value_dict[field.code] = converted_value
-        return value_dict
+
+def convert_date_values(fields, value_dict):
+    for field in fields:
+        if type(field) is FieldSet:
+            dicts = []
+            for value in value_dict.get(field.code):
+                converted_dict = convert_date_values(field.fields, value)
+                dicts.append(converted_dict)
+            value_dict[field.code] = dicts
+        elif type(field) is DateField:
+            converted_value = convert_date_to_ymd(value_dict.get(field.code))
+            value_dict[field.code] = converted_value
+    return value_dict
 
 
 def convert_date_to_ymd(str_date):
