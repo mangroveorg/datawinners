@@ -444,16 +444,7 @@ def _create_details_for_edit_info(new_data_dict, old_data, questionnaire):
     for key, value in new_data_dict.iteritems():
         if key in old_data and key not in {"intro", "meta", "form_code"}:
             if new_data_dict[key] != old_data[key]:
-                if old_data[key] != new_data_dict[key]:
-                    details.update({key: {'old_data': old_data[key], 'new_data': new_data_dict[key]}})
-
-                elif questionnaire.get_field_by_code(key).type == 'geocode':
-                    formatted_geo_point = new_data_dict[key].replace(" ", ",")
-                    if formatted_geo_point != old_data[key]:
-                        details.update({key: {'old_data': formatted_geo_point, 'new_data': new_data_dict[key]}})
-
-                else:
-                    details.update({key: {'old_data': old_data[key], 'new_data': new_data_dict[key]}})
+                details.update({key: {'old_data': old_data[key], 'new_data': new_data_dict[key]}})
     return details
 
 
