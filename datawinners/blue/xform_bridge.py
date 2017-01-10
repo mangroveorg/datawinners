@@ -730,6 +730,9 @@ def convert_date_values(fields, value_dict):
 
 
 def convert_date_to_ymd(str_date):
+    if not str_date:
+        return str_date
+    
     try:
         date = datetime.strptime(str_date, "%Y-%m")
     except ValueError:
