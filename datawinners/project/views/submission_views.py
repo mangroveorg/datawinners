@@ -586,16 +586,16 @@ def export_count(request):
     return HttpResponse(mimetype='application/json', content=json.dumps({"count": submission_count}))
 
 
-def _advanced_questionnaire_export(current_language, form_model, is_media, local_time_delta, manager, project_name,
+def _advanced_questionnaire_export(current_language, form_model, is_media, is_single_sheet, local_time_delta, manager, project_name,
                                    query_params, submission_type, preferences):
+    xform_submission_exporter = XFormSubmissionExporter(form_model, project_name, manager, local_time_delta, current_language,
+                                       preferences, is_single_sheet)
     if not is_media:
-        return XFormSubmissionExporter(form_model, project_name, manager, local_time_delta, current_language,
-                                       preferences) \
+        return xform_submission_exporter \
             .create_excel_response(submission_type, query_params)
 
     else:
-        return XFormSubmissionExporter(form_model, project_name, manager, local_time_delta, current_language,
-                                       preferences) \
+        return xform_submission_exporter \
             .create_excel_response_with_media(submission_type, query_params)
 
 
@@ -613,8 +613,14 @@ def _create_export_artifact(form_model, manager, request, search_filters):
     query_params.update({"search_text": search_text})
     query_params.update({"filter": submission_type})
     is_media = False
+    is_single_sheet = False
+
     if request.POST.get('is_media') == u'true':
         is_media = True
+
+    if request.POST.get('is_single_sheet') == u'true':
+        is_single_sheet = True
+
     organization = get_organization(request)
     local_time_delta = get_country_time_delta(organization.country)
     project_name = request.POST.get(u"project_name")
@@ -622,7 +628,7 @@ def _create_export_artifact(form_model, manager, request, search_filters):
 
     preferences = get_preferences(manager, request.user.id, form_model, submission_type, ugettext)
     if form_model.xform:
-        return _advanced_questionnaire_export(current_language, form_model, is_media, local_time_delta, manager,
+        return _advanced_questionnaire_export(current_language, form_model, is_media, is_single_sheet, local_time_delta, manager,
                                               project_name, query_params, submission_type, preferences)
 
     return SubmissionExporter(form_model, project_name, manager, local_time_delta, current_language, preferences) \

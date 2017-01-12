@@ -12,7 +12,7 @@ from xlsxwriter import Workbook
 from django.core.servers.basehttp import FileWrapper
 
 from datawinners.project.submission.export import export_filename, export_media_folder_name, \
-    create_multi_sheet_excel_headers, create_multi_sheet_entries
+    create_multi_sheet_excel_headers, create_multi_sheet_entries, create_single_sheet_excel_headers
 from datawinners.project.submission.exporter import SubmissionExporter
 from datawinners.project.submission.formatter import SubmissionFormatter, GEOCODE_FIELD_CODE
 from datawinners.project.submission.submission_search import get_scrolling_submissions_query
@@ -30,10 +30,14 @@ Current approach is complex and maintenance will be difficult. This can be simpl
 '''
 class XFormSubmissionExporter(SubmissionExporter):
 
+    def __init__(self, form_model, project_name, dbm, local_time_delta, current_language='en', preferences=None, is_single_sheet=False):
+        SubmissionExporter.__init__(self, form_model, project_name, dbm, local_time_delta, current_language, preferences)
+        self.is_single_sheet = is_single_sheet
+
     def _create_excel_workbook(self, columns, submission_list, submission_type):
         file_name = export_filename(submission_type, self.project_name)
         workbook_file = AdvancedQuestionnaireSubmissionExporter(self.form_model, columns, self.local_time_delta,
-                                                                self.preferences).create_excel(submission_list)
+                                                                self.preferences).create_excel(submission_list, self.is_single_sheet)
         workbook_file.close()
 
         return file_name, workbook_file
@@ -123,7 +127,7 @@ class XFormSubmissionExporter(SubmissionExporter):
     def _create_response(self, columns, submission_list, submission_type, hide_codes_sheet=False):
         file_name = slugify(export_filename(submission_type, self.project_name))
         workbook_file = AdvancedQuestionnaireSubmissionExporter(self.form_model, columns,
-                                                                self.local_time_delta, self.preferences).create_excel(submission_list)
+                                                                self.local_time_delta, self.preferences).create_excel(submission_list, self.is_single_sheet)
 
         workbook_file.seek(0)
         response = HttpResponse(FileWrapper(workbook_file),
@@ -182,7 +186,7 @@ class AdvancedQuestionnaireSubmissionExporter():
         self.local_time_delta = local_time_delta
         self.preferences = preferences
 
-    def create_excel(self, submission_list):
+    def create_excel(self, submission_list, is_single_sheet):
         workbook_file = tempfile.NamedTemporaryFile(suffix=".xlsx", delete=False)
         workbook = Workbook(workbook_file, options={'constant_memory': True})
 
@@ -190,32 +194,36 @@ class AdvancedQuestionnaireSubmissionExporter():
         if isinstance(headers, NoneType):
             headers = {}
         visible_headers = headers
-        create_multi_sheet_excel_headers(visible_headers, workbook)
 
-        sheet_names_index_map = dict([(sheet_name, index) for index, sheet_name in enumerate(visible_headers.iterkeys())])
-        sheet_name_row_count_map = dict([(sheet_name, 0) for sheet_name in sheet_names_index_map.iterkeys()])
+        if is_single_sheet:
+            create_single_sheet_excel_headers(visible_headers, workbook)
+        else:
+            create_multi_sheet_excel_headers(visible_headers, workbook)
 
-        formatter = AdvanceSubmissionFormatter(self.columns, self.form_model, self.local_time_delta, self.preferences)
+            sheet_names_index_map = dict([(sheet_name, index) for index, sheet_name in enumerate(visible_headers.iterkeys())])
+            sheet_name_row_count_map = dict([(sheet_name, 0) for sheet_name in sheet_names_index_map.iterkeys()])
 
-        for row_number, row_dict in enumerate(submission_list):
-            formatted_values, formatted_repeats = [], {}
+            formatter = AdvanceSubmissionFormatter(self.columns, self.form_model, self.local_time_delta, self.preferences)
 
-            if row_number == 20000:
-                # export limit set to 20K after performance exercise
-                #since scan & scroll API does not support result set size the workaround is to handle it this way
-                break
+            for row_number, row_dict in enumerate(submission_list):
+                formatted_values, formatted_repeats = [], {}
 
-            row = enrich_analysis_data(
-                row_dict['_source'], self.form_model, submission_id=row_dict['_id'], is_export=True)
-            result = formatter.format_row(row, row_number, formatted_repeats)
+                if row_number == 20000:
+                    # export limit set to 20K after performance exercise
+                    #since scan & scroll API does not support result set size the workaround is to handle it this way
+                    break
 
-            if self.form_model.has_nested_fields:
-                result.append(row_number + 1)
+                row = enrich_analysis_data(
+                    row_dict['_source'], self.form_model, submission_id=row_dict['_id'], is_export=True)
+                result = formatter.format_row(row, row_number, formatted_repeats)
 
-            formatted_values.append(result)
-            formatted_repeats.update({'main': formatted_values})
+                if self.form_model.has_nested_fields:
+                    result.append(row_number + 1)
 
-            create_multi_sheet_entries(formatted_repeats, workbook, sheet_names_index_map, sheet_name_row_count_map)
+                formatted_values.append(result)
+                formatted_repeats.update({'main': formatted_values})
+
+                create_multi_sheet_entries(formatted_repeats, workbook, sheet_names_index_map, sheet_name_row_count_map)
 
         workbook.close()
         return workbook_file
