@@ -64,7 +64,7 @@ def colToExcel(col): # col is 1 based
     return excelCol
 
 
-def worksheet_add_header(worksheet, headers, workbook, browser=None):
+def worksheet_add_header(worksheet, headers, workbook, browser=None, offset=0):
     for column, header in enumerate(headers):
         if isinstance(header, tuple):
             header_styles = get_header_style(workbook, "Template")
@@ -84,7 +84,7 @@ def worksheet_add_header(worksheet, headers, workbook, browser=None):
 
         else:
             worksheet.set_row(0, 50)
-            worksheet.write(0, column, header, get_header_style(workbook))
+            worksheet.write(0, offset + column, header, get_header_style(workbook))
 
 def workbook_add_header(wb, headers, number_of_sheets):
     style = xlwt.easyxf('borders: top double, bottom double, right double')

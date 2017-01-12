@@ -51,13 +51,29 @@ def get_header_style(workbook):
     header_style.set_text_wrap('right')
     return header_style
 
-def create_multi_sheet_excel_headers(excel_headers, workbook):
 
+def create_multi_sheet_excel_headers(excel_headers, workbook):
     for sheet_name, headers in excel_headers.iteritems():
         if not headers:
             continue
         ws = workbook.add_worksheet(name=sheet_name)
         worksheet_add_header(ws, headers, workbook, get_header_style(workbook))
+
+
+def _remove_relating_columns(headers):
+    headers.remove('_index')
+    headers.remove('_parent_index')
+
+
+def create_single_sheet_excel_headers(excel_headers, workbook):
+    ws = workbook.add_worksheet(name='main')
+    offset = 0
+    for sheet_name, headers in excel_headers.iteritems():
+        if not headers:
+            continue
+        _remove_relating_columns(headers)
+        worksheet_add_header(ws, headers, workbook, get_header_style(workbook), offset)
+        offset += len(headers)
 
 
 def create_multi_sheet_entries(raw_data, workbook, excel_headers, row_count_dict):
