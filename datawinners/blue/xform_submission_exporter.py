@@ -12,7 +12,8 @@ from xlsxwriter import Workbook
 from django.core.servers.basehttp import FileWrapper
 
 from datawinners.project.submission.export import export_filename, export_media_folder_name, \
-    create_multi_sheet_excel_headers, create_multi_sheet_entries, create_single_sheet_excel_headers
+    create_multi_sheet_excel_headers, create_multi_sheet_entries, create_single_sheet_excel_headers, \
+    create_single_sheet_entries
 from datawinners.project.submission.exporter import SubmissionExporter
 from datawinners.project.submission.formatter import SubmissionFormatter, GEOCODE_FIELD_CODE
 from datawinners.project.submission.submission_search import get_scrolling_submissions_query
@@ -197,6 +198,38 @@ class AdvancedQuestionnaireSubmissionExporter():
 
         if is_single_sheet:
             create_single_sheet_excel_headers(visible_headers, workbook)
+            row_count_dict = {'main': 0}
+            sheet_names_index_map = {}
+            previous_headers_count = 0
+            for index, sheet_name in enumerate(visible_headers.iterkeys()):
+                if sheet_names_index_map:
+                    sheet_names_index_map[sheet_name] = previous_headers_count
+                else:
+                    sheet_names_index_map[sheet_name] = 0
+
+                previous_headers_count += len(visible_headers[sheet_name])
+
+            formatter = AdvanceSubmissionFormatter(self.columns, self.form_model, self.local_time_delta, self.preferences, is_single_sheet)
+
+            for row_number, row_dict in enumerate(submission_list):
+                formatted_values, formatted_repeats = [], {}
+
+                if row_number == 20000:
+                    # export limit set to 20K after performance exercise
+                    #since scan & scroll API does not support result set size the workaround is to handle it this way
+                    break
+
+                row = enrich_analysis_data(
+                    row_dict['_source'], self.form_model, submission_id=row_dict['_id'], is_export=True)
+                result = formatter.format_row(row, row_number, formatted_repeats)
+
+                if self.form_model.has_nested_fields and not is_single_sheet:
+                    result.append(row_number + 1)
+
+                formatted_values.append(result)
+                formatted_repeats.update({'main': formatted_values})
+
+                create_single_sheet_entries(formatted_repeats, workbook, sheet_names_index_map, row_count_dict)
         else:
             create_multi_sheet_excel_headers(visible_headers, workbook)
 
@@ -295,9 +328,10 @@ class AdvancedQuestionnaireSubmissionExporter():
 
 
 class AdvanceSubmissionFormatter(SubmissionFormatter):
-    def __init__(self, columns, form_model, local_time_delta, preferences):
+    def __init__(self, columns, form_model, local_time_delta, preferences, is_single_sheet=False):
         super(AdvanceSubmissionFormatter, self).__init__(columns, local_time_delta, preferences)
         self.form_model = form_model
+        self.is_single_sheet = is_single_sheet
 
     def _get_repeat_col_name(self, label):
         return slugify(label)[:30]
@@ -322,8 +356,9 @@ class AdvanceSubmissionFormatter(SubmissionFormatter):
                     repeat_item[question_code] = json.dumps(data_value)
             _result = self.__format_row(repeat_item, repeat_fields, index, repeat)
             _repeat_row.append(_result)
-            _result.append('')
-            _result.append(index + 1)
+            if not self.is_single_sheet:
+                _result.append('')
+                _result.append(index + 1)
         return _repeat_row
 
     def __format_row(self, row, columns, index, repeat):
