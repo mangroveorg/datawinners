@@ -119,6 +119,7 @@ DW.SubmissionLogExport = function () {
 
     self.init = function () {
         self.exportLink = $('.export_link');
+        self.exportSingleSheetLink = $('.export_single_sheet_link');
         self.exportForm = $('#export_form');
         _initialize_dialogs();
         _initialize_events();
@@ -137,7 +138,7 @@ DW.SubmissionLogExport = function () {
         });
     };
 
-    var _updateAndSubmitForm = function(is_export_with_media){
+    var _updateAndSubmitForm = function(is_export_with_media, is_single_sheet){
         if (is_export_with_media)
         {
             self._show_export_message();
@@ -145,12 +146,13 @@ DW.SubmissionLogExport = function () {
         self.exportForm.appendJson(
             {
                 "search_filters": JSON.stringify(filter_as_json()),
-                "is_media":is_export_with_media
+                "is_media": is_export_with_media,
+                "is_single_sheet": is_single_sheet
             }
         ).attr('action', self.url).submit();
     };
 
-    var _check_limit_and_export = function(is_export_with_media){
+    var _check_limit_and_export = function(is_export_with_media, is_single_sheet){
         $.post(self.count_url, {
                 'data': JSON.stringify({"questionnaire_code": $("#questionnaire_code").val(),
                                         "search_filters": filter_as_json()
@@ -159,7 +161,7 @@ DW.SubmissionLogExport = function () {
             }
         ).done(function(data){
                 if(data['count'] <= 20000){
-                   _updateAndSubmitForm(is_export_with_media);
+                   _updateAndSubmitForm(is_export_with_media, is_single_sheet);
                 }
                 else{
                     DW.trackEvent('export-submissions', 'export-exceeded-limit', user_email + ":" + organization_name);
@@ -185,12 +187,17 @@ DW.SubmissionLogExport = function () {
     var _initialize_events = function () {
         $('.with_media').click(function(){
                DW.trackEvent('export-submissions-with-images', 'export-submissions-single-sheet', user_email + ":" + organization_name);
-               _check_limit_and_export(true);
+               _check_limit_and_export(true, false);
          });
 
         self.exportLink.click(function () {
                DW.trackEvent('export-submissions', 'export-submissions-single-sheet', user_email + ":" + organization_name);
-               _check_limit_and_export(false);
+               _check_limit_and_export(false, false);
+        });
+
+        self.exportSingleSheetLink.click(function () {
+               DW.trackEvent('export-submissions', 'export-submissions-single-sheet', user_email + ":" + organization_name, 'single sheet');
+               _check_limit_and_export(false, true);
         });
 
     };
