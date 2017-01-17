@@ -16,6 +16,7 @@ from django.core.urlresolvers import reverse
 from django.views.decorators.csrf import csrf_view_exempt
 from elasticutils import F
 import jsonpickle
+import waffle
 
 from datawinners import settings
 from datawinners.accountmanagement.localized_time import get_country_time_delta, convert_utc_to_localized
@@ -623,7 +624,7 @@ def _create_export_artifact(form_model, manager, request, search_filters):
     if request.POST.get('is_media') == u'true':
         is_media = True
 
-    if request.POST.get('is_single_sheet') == u'true':
+    if request.POST.get('is_single_sheet') == u'true' and waffle.flag_is_active(request, "single_sheet_export"):
         is_single_sheet = True
 
     organization = get_organization(request)
