@@ -212,7 +212,8 @@ class AdvancedQuestionnaireSubmissionExporter():
             formatter = AdvanceSubmissionFormatter(self.columns, self.form_model, self.local_time_delta, self.preferences, is_single_sheet)
 
             for row_number, row_dict in enumerate(submission_list):
-                formatted_values, formatted_repeats = [], {}
+                formatted_values = []
+                formatted_repeats = OrderedDict({'main': []})
 
                 if row_number == 20000:
                     # export limit set to 20K after performance exercise
