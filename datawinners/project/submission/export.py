@@ -102,11 +102,16 @@ def create_multi_sheet_entries(raw_data, workbook, excel_headers, row_count_dict
 def create_single_sheet_entries(raw_data, workbook, excel_headers, row_count_dict):
     date_formats = {}
     ws = workbook.worksheets()[0]
-    for sheet_name, data in raw_data.iteritems():
-        if sheet_name not in excel_headers:
-            continue
-        row_number = row_count_dict['main']
-        for row in raw_data[sheet_name]:
+    total_number_of_rows = max([len(data) for sheet_name, data in raw_data.iteritems()])
+    row_number = row_count_dict['main']
+    sheet_names = []
+    for sheet_name in raw_data.keys():
+        if sheet_name in excel_headers:
+            sheet_names.append(sheet_name)
+
+    for index in xrange(0, total_number_of_rows):
+        for sheet_name in sheet_names:
+            row = raw_data[sheet_name][index] if len(raw_data[sheet_name]) > index else []
             for column, val in enumerate(row):
                 column = column + excel_headers[sheet_name]
                 if isinstance(val, ExcelDate):
@@ -114,13 +119,12 @@ def create_single_sheet_entries(raw_data, workbook, excel_headers, row_count_dic
                         date_format = {'submission_date': 'mmm d yyyy hh:mm:ss'}.get(val.date_format, val.date_format)
                         date_formats.update({val.date_format: workbook.add_format({'num_format': date_format})})
                     ws.write(row_number + 1, column, val.date.replace(tzinfo=None), date_formats.get(val.date_format))
-
                 elif isinstance(val, float):
                     ws.write_number(row_number + 1, column, val)
                 else:
                     ws.write(row_number + 1, column, val)
-            row_number += 1
-    row_count_dict['main'] += max([len(data) for sheet_name, data in raw_data.iteritems()])
+        row_number += 1
+    row_count_dict['main'] += total_number_of_rows
 
 
 def create_non_zipped_response(excel_workbook, file_name):

@@ -213,7 +213,7 @@ class AdvancedQuestionnaireSubmissionExporter():
 
             for row_number, row_dict in enumerate(submission_list):
                 formatted_values = []
-                formatted_repeats = OrderedDict({'main': []})
+                formatted_repeats = {}
 
                 if row_number == 20000:
                     # export limit set to 20K after performance exercise
