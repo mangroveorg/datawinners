@@ -236,6 +236,8 @@ def index(request, project_id=None, questionnaire_code=None, tab=0):
         duplicates_filter_list = get_duplicates_filterable_fields(questionnaire.fields, duplicates_filter_list)
         first_filterable_fields = filterable_fields.pop(0) if filterable_fields else None
         xform = questionnaire.xform
+        is_repeat_present = questionnaire.is_repeat_field_present
+
         result_dict = {
             "user_email": request.user.email,
             "tab": tab,
@@ -247,7 +249,8 @@ def index(request, project_id=None, questionnaire_code=None, tab=0):
             "first_filterable_field": first_filterable_fields,
             "filterable_fields": filterable_fields,
             "duplicates_filter_list": duplicates_filter_list,
-            "is_media_field_present": questionnaire.is_media_type_fields_present
+            "is_media_field_present": questionnaire.is_media_type_fields_present,
+            "is_repeat_field_present": is_repeat_present
         }
 
         result_dict.update(project_info(request, questionnaire, questionnaire_code))
@@ -275,6 +278,7 @@ def analysis(request, project_id, questionnaire_code=None):
         first_filterable_fields = filterable_fields.pop(0) if filterable_fields else None
         if questionnaire.is_void():
             return HttpResponseRedirect(dashboard_page)
+        is_repeat_present = questionnaire.is_repeat_field_present
 
         result_dict = {
             "xform": questionnaire.xform,
@@ -285,6 +289,7 @@ def analysis(request, project_id, questionnaire_code=None):
             'first_filterable_field': first_filterable_fields,
             "is_media_field_present": questionnaire.is_media_type_fields_present,
             'has_chart': (len(questionnaire.choice_fields) > 0) & (not bool(questionnaire.xform)),
+            "is_repeat_field_present": is_repeat_present
             # first 3 columns are additional submission data fields (ds_is, ds_name and submission_status
         }
         result_dict.update(project_info(request, questionnaire, questionnaire_code))

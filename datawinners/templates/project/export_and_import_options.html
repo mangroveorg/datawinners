@@ -12,7 +12,7 @@
            {% endif %}
        {% else %}
            {% if is_media_field_present %}
-               {#                   action button like look#}
+               {#action button like look#}
                <div id="action_dropdown">
                    <div id="action_button" class="action_bar clear-both">
                        <div class="btn-group">
@@ -26,12 +26,34 @@
                        <ul class="dropdown-menu text-right export_dropdown">
                            <li><a id="export_with_out_media" action-dropdown="export_with_out_media" class="export_link">{% trans "Export Excel file only" %}</a></li>
                            <li><a id="export_with_media" action-dropdown="export_with_media"  class="with_media">{% trans "Export Excel and Media Files(.zip)" %}</a></li>
+                            {% if is_repeat_field_present %}
+                                <li><a id="export_with_out_media_single_sheet" action-dropdown="export_with_out_media" class="export_single_sheet_link">{% trans "Export Excel file only with repeats in Single sheet" %}</a></li>
+                                <li>><a id="export_with_media_single_sheet" action-dropdown="export_with_media"  class="export_single_sheet_with_media_link">{% trans "Export Excel and Media Files(.zip) with repeats in Single sheet" %}</a></li>
+                            {% endif %}
                        </ul>
                    </div>
                </div>
            {% else %}
-               <a href="javascript:void(0);" class="export_link">{% trans "Export Submissions" %}</a>
-               <a href="javascript:void(0);" class="export_single_sheet_link">{% trans "Export Submissions in Single Sheet" %}</a>
+                {% if is_repeat_field_present %}
+                    <div id="action_dropdown_repeat">
+                       <div id="action_button_repeat" class="action_bar clear-both">
+                           <div class="btn-group">
+                               <button class="export_btn dropdown-toggle action"
+                                       data-dropdown="#action_repeat">{% trans "Export Submissions" %}
+                                   <span class="caret"></span>
+                               </button>
+                           </div>
+                       </div>
+                       <div id="action_repeat" class="dropdown margin_top_5" >
+                           <ul class="dropdown-menu text-right export_dropdown">
+                                <li><a id="export_link" action-dropdown="report_in_multi_sheet" class="export_link">{% trans "Export Submissions" %}</a></li>
+                                <li><a id="export_single_sheet_link" action-dropdown="repeat_in_single_sheet"  class="export_single_sheet_link">{% trans "Export Submissions with repeats in single sheet" %}</a></li>
+                           </ul>
+                       </div>
+                   </div>
+                {% else %}
+                    <a href="javascript:void(0);" class="export_link">{% trans "Export Submissions" %}</a>
+                {% endif %}
            {% endif %}
        {% endif %}
 </span>

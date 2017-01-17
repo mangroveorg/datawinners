@@ -120,6 +120,7 @@ DW.SubmissionLogExport = function () {
     self.init = function () {
         self.exportLink = $('.export_link');
         self.exportSingleSheetLink = $('.export_single_sheet_link');
+        self.exportSingleSheetWithMediaLink = $('.export_single_sheet_with_media_link');
         self.exportForm = $('#export_form');
         _initialize_dialogs();
         _initialize_events();
@@ -198,6 +199,10 @@ DW.SubmissionLogExport = function () {
         self.exportSingleSheetLink.click(function () {
                DW.trackEvent('export-submissions', 'export-submissions-single-sheet', user_email + ":" + organization_name, 'single sheet');
                _check_limit_and_export(false, true);
+        });
+        self.exportSingleSheetWithMediaLink.click(function () {
+                DW.trackEvent('export-submissions', 'export-submissions-single-sheet', user_email + ":" + organization_name, 'single sheet');
+               _check_limit_and_export(true, true);
         });
 
     };
