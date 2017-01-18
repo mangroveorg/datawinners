@@ -1,5 +1,5 @@
 var initFilters = function() {
-    $('#filter_section select').chosen();
+    $('#filter_section select').chosen("width: 30%");
     $('#filter_section input.date_filter').each(function() {
         $(this).daterangepicker({
             rangeSplitter: 'to',
