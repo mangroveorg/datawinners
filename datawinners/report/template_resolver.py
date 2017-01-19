@@ -25,5 +25,5 @@ def _resolve_data(data, resolved_data, variable):
 
 def _get_value(values, question_path_components):
     if len(question_path_components) == 1:
-        return values[question_path_components[0]]
+        return values.get(question_path_components[0]) or ''
     return _get_value(values[question_path_components[0]][0], question_path_components[1:])
