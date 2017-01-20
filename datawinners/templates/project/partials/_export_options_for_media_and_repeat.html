@@ -1,0 +1,11 @@
+{% load i18n %}
+<li style="font-weight: bold; color: grey; text-align: right; padding: 10px;">{% trans "Submissions without Media Files (Excel only)" %}</li>
+<li><a id="export_with_out_media" action-dropdown="export_with_out_media" class="export_link">{% trans "Standard Export" %}</a></li>
+{% if is_repeat_field_present %}
+    <li><a id="export_with_out_media_single_sheet" action-dropdown="export_with_out_media" class="export_single_sheet_link">{% trans "All data merged into one sheet" %}</a></li>
+{% endif %}
+<li style="font-weight: bold; color: grey; text-align: right; padding: 10px; padding-top: 15px">{% trans "Submissions with Media (.zip)" %}</li>
+<li><a id="export_with_media" action-dropdown="export_with_media"  class="with_media">{% trans "Standard Export" %}</a></li>
+{% if is_repeat_field_present %}
+    <li><a id="export_with_media_single_sheet" action-dropdown="export_with_media"  class="export_single_sheet_with_media_link">{% trans "All data merged into one sheet" %}</a></li>
+{% endif %}
