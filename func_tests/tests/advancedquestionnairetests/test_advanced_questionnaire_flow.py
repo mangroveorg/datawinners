@@ -83,7 +83,7 @@ class TestAdvancedQuestionnaireEndToEnd(HeadlessRunnerTest):
         DataSenderActivationPage(self.driver).activate_datasender(email, NEW_PASSWORD)
 
     def _do_web_submission(self, xml_file, project_temp_name, form_code, user, password, image_upload=False):
-        r = perform_submission(xml_file, project_temp_name, form_code, {'user': user, 'password': password}, image_upload)
+        r = perform_submission(xml_file, project_temp_name, form_code, {'username': user, 'password': password}, image_upload)
         self.assertEquals(r.status_code, 201)
         self.assertNotEqual(r._container[0].find('submission_uuid'), -1)
 
