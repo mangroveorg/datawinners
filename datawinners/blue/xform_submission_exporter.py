@@ -148,10 +148,10 @@ class AdvancedQuestionnaireSubmissionExportHeaderCreator():
         self.form_model = form_model
         self.preferences = preferences
 
-    def create_headers(self):
+    def create_headers(self, is_single_sheet):
         repeat_headers = OrderedDict()
         repeat_headers.update({'main': ''})
-        headers = self._format_tabular_data({"fields":self.columns}, repeat_headers)
+        headers = self._format_tabular_data({"fields":self.columns}, repeat_headers, is_single_sheet)
         if self.form_model.has_nested_fields:
             self._append_relating_columns(headers)
         repeat_headers.update({'main': headers})
@@ -162,23 +162,23 @@ class AdvancedQuestionnaireSubmissionExportHeaderCreator():
         cols.append('_index')
         cols.append('_parent_index')
 
-    def _format_tabular_data(self, fields_dict, repeat):
+    def _format_tabular_data(self, fields_dict, repeat, is_single_sheet, repeat_label_name=None):
         headers = []
         for col_def in fields_dict["fields"].values():
             if col_def.get('type', '') == GEODCODE_FIELD_CODE:
                 headers.append(col_def['label'] + " Latitude")
                 headers.append(col_def['label'] + " Longitude")
             elif col_def.get('type', '') == FIELD_SET:
-                _repeat = self._format_tabular_data(col_def, repeat)
+                _repeat_label_name = col_def.get("label") if is_single_sheet else None
+                _repeat = self._format_tabular_data(col_def, repeat, is_single_sheet, _repeat_label_name)
                 self._append_relating_columns(_repeat)
                 repeat.update({self._get_repeat_column_name(col_def['code']): _repeat})
             else:
-                headers.append(col_def['label'])
+                headers.append(repeat_label_name + "/" + col_def['label']) if repeat_label_name else headers.append(col_def['label'])
         return headers
 
     def _get_repeat_column_name(self, code):
         return slugify(code)[:30]
-
 
 class AdvancedQuestionnaireSubmissionExporter():
     def __init__(self, form_model, columns, local_time_delta, preferences):
@@ -191,7 +191,7 @@ class AdvancedQuestionnaireSubmissionExporter():
         workbook_file = tempfile.NamedTemporaryFile(suffix=".xlsx", delete=False)
         workbook = Workbook(workbook_file, options={'constant_memory': True})
 
-        headers = self.get_visible_headers()
+        headers = self.get_visible_headers(is_single_sheet)
         if isinstance(headers, NoneType):
             headers = {}
         visible_headers = headers
@@ -262,9 +262,9 @@ class AdvancedQuestionnaireSubmissionExporter():
         workbook.close()
         return workbook_file
 
-    def get_visible_headers(self):
+    def get_visible_headers(self, is_single_sheet):
         excel_headers = AdvancedQuestionnaireSubmissionExportHeaderCreator(self.columns, self.form_model,
-                                                                           self.preferences).create_headers()
+                                                                           self.preferences).create_headers(is_single_sheet)
         if not self.preferences:
             return excel_headers
 
