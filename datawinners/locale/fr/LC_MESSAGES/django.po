@@ -5465,6 +5465,18 @@ msgstr "d’autres colonnes à part le colonne Default_Language sur la feuille S
 msgid "Export Submissions"
 msgstr "Exporter les Soumissions"
 
+msgid "Standard Export"
+msgstr "Exportation standard"
+
+msgid "All data merged into one sheet"
+msgstr "Tout sur une seule feuille"
+
+msgid "Submissions without Media Files (Excel only)"
+msgstr "Soumissions avec fichiers média (Excel uniquement)"
+
+msgid "Submissions with Media (.zip)"
+msgstr "Soumissions avec fichiers média (.zip)"
+
 msgid "The current version of DataWinners supports the export of Submissions to Excel with up to 256 columns per Excel sheet. Your Submissions will be exported to several Excel sheets."
 msgstr "La version actuelle de DataWinners permet l'exportation des Soumissions vers Excel, avec une limite de 256 colonnes par feuille de calcul Excel. Vos Soumissions seront ainsi exportées et réparties en plusieurs feuilles de calcul Excel."
 
