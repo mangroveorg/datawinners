@@ -109,9 +109,12 @@ def create_single_sheet_entries(raw_data, workbook, excel_headers, row_count_dic
         if sheet_name in excel_headers:
             sheet_names.append(sheet_name)
 
+    unique_submission_identifier = 0
     for index in xrange(0, total_number_of_rows):
         for sheet_name in sheet_names:
             row = raw_data[sheet_name][index] if len(raw_data[sheet_name]) > index else []
+            if sheet_name == 'main' and row:
+                unique_submission_identifier = row[0]
             for column, val in enumerate(row):
                 column = column + excel_headers[sheet_name]
                 if isinstance(val, ExcelDate):
@@ -123,6 +126,7 @@ def create_single_sheet_entries(raw_data, workbook, excel_headers, row_count_dic
                     ws.write_number(row_number + 1, column, val)
                 else:
                     ws.write(row_number + 1, column, val)
+            ws.write(row_number + 1, 0, unique_submission_identifier)
         row_number += 1
     row_count_dict['main'] += total_number_of_rows
 

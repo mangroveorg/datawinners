@@ -154,6 +154,8 @@ class AdvancedQuestionnaireSubmissionExportHeaderCreator():
         headers = self._format_tabular_data({"fields":self.columns}, repeat_headers, is_single_sheet)
         if self.form_model.has_nested_fields:
             self._append_relating_columns(headers)
+        if is_single_sheet:
+            headers.insert(0, 'Submission Unique Identifier #')
         repeat_headers.update({'main': headers})
 
         return repeat_headers
@@ -226,6 +228,9 @@ class AdvancedQuestionnaireSubmissionExporter():
 
                 if self.form_model.has_nested_fields and not is_single_sheet:
                     result.append(row_number + 1)
+
+                if is_single_sheet:
+                    result.insert(0, row_number + 1)
 
                 formatted_values.append(result)
                 formatted_repeats.update({'main': formatted_values})
