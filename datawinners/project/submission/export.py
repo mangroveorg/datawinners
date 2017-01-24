@@ -102,33 +102,60 @@ def create_multi_sheet_entries(raw_data, workbook, excel_headers, row_count_dict
 def create_single_sheet_entries(raw_data, workbook, excel_headers, row_count_dict):
     date_formats = {}
     ws = workbook.worksheets()[0]
-    total_number_of_rows = max([len(data) for sheet_name, data in raw_data.iteritems()])
-    row_number = row_count_dict['main']
-    sheet_names = []
-    for sheet_name in raw_data.keys():
-        if sheet_name in excel_headers:
-            sheet_names.append(sheet_name)
+    flattened_rows = _flatten_repeat_rows(raw_data['main'][0])
+    last_row_number = row_count_dict['main']
+    for index, row in enumerate(flattened_rows):
+        row_number = last_row_number + index + 1
+        for column, val in enumerate(row):
+            if isinstance(val, ExcelDate):
+                if not date_formats.has_key(val.date_format):
+                    date_format = {'submission_date': 'mmm d yyyy hh:mm:ss'}.get(val.date_format, val.date_format)
+                    date_formats.update({val.date_format: workbook.add_format({'num_format': date_format})})
+                    ws.write(row_number, column, val.date.replace(tzinfo=None), date_formats.get(val.date_format))
+            elif isinstance(val, float):
+                ws.write_number(row_number, column, val)
+            else:
+                ws.write(row_number, column, val)
 
-    unique_submission_identifier = 0
-    for index in xrange(0, total_number_of_rows):
-        for sheet_name in sheet_names:
-            row = raw_data[sheet_name][index] if len(raw_data[sheet_name]) > index else []
-            if sheet_name == 'main' and row:
-                unique_submission_identifier = row[0]
-            for column, val in enumerate(row):
-                column = column + excel_headers[sheet_name]
-                if isinstance(val, ExcelDate):
-                    if not date_formats.has_key(val.date_format):
-                        date_format = {'submission_date': 'mmm d yyyy hh:mm:ss'}.get(val.date_format, val.date_format)
-                        date_formats.update({val.date_format: workbook.add_format({'num_format': date_format})})
-                    ws.write(row_number + 1, column, val.date.replace(tzinfo=None), date_formats.get(val.date_format))
-                elif isinstance(val, float):
-                    ws.write_number(row_number + 1, column, val)
-                else:
-                    ws.write(row_number + 1, column, val)
-            ws.write(row_number + 1, 0, unique_submission_identifier)
-        row_number += 1
-    row_count_dict['main'] += total_number_of_rows
+    row_count_dict['main'] += len(flattened_rows)
+
+
+def _flatten_repeat_rows(raw_data):
+    flattened_rows = []
+    result = []
+    repeated_data = []
+
+    for val in raw_data:
+        if isinstance(val, list):
+            repeated_data.append({'row_index': len(result), 'data': val})
+            max_number_of_columns_for_repeat = max([len(item) for item in val])
+            [result.append('') for i in range(max_number_of_columns_for_repeat)]
+        else:
+            result.append(val)
+
+    total_number_of_rows = max([len(item['data']) for item in repeated_data])
+    submission_unique_id = result[0]
+    # Merging First Repeat with the base data
+    _split_repeated_data(repeated_data, result, 0)
+    flattened_rows.append(result)
+
+    # splitting further repeats as separate rows
+    for row_index in range(total_number_of_rows):
+        row = ['' for i in range(len(result))]
+        _split_repeated_data(repeated_data, row, row_index + 1)
+
+        if any(row):
+            row[0] = submission_unique_id
+            flattened_rows.append(row)
+    return flattened_rows
+
+
+def _split_repeated_data(repeated_data, row, row_index):
+    for repeated_datum in repeated_data:
+        if len(repeated_datum['data']) > row_index:
+            start_column_index = repeated_datum['index']
+            for index, val in enumerate(repeated_datum['data'][row_index]):
+                row[index + start_column_index] = val
 
 
 def create_non_zipped_response(excel_workbook, file_name):

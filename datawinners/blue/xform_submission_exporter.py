@@ -169,10 +169,13 @@ class AdvancedQuestionnaireSubmissionExportHeaderCreator():
                 headers.append(col_def['label'] + " Latitude")
                 headers.append(col_def['label'] + " Longitude")
             elif col_def.get('type', '') == FIELD_SET:
-                _repeat_label_name = col_def.get("label") if is_single_sheet else None
-                _repeat = self._format_tabular_data(col_def, repeat, is_single_sheet, _repeat_label_name)
-                self._append_relating_columns(_repeat)
-                repeat.update({self._get_repeat_column_name(col_def['code']): _repeat})
+                if is_single_sheet:
+                    _repeat = self._format_tabular_data(col_def, repeat, is_single_sheet, col_def.get("label"))
+                    headers = headers + _repeat
+                else:
+                    _repeat = self._format_tabular_data(col_def, repeat, is_single_sheet, None)
+                    self._append_relating_columns(_repeat)
+                    repeat.update({self._get_repeat_column_name(col_def['code']): _repeat})
             else:
                 headers.append(repeat_label_name + "/" + col_def['label']) if repeat_label_name else headers.append(col_def['label'])
         return headers
@@ -395,7 +398,10 @@ class AdvanceSubmissionFormatter(SubmissionFormatter):
                     self._format_data_sender_id_field(result)
                 elif field_type == 'field_set':
                     _repeat_row = self._format_field_set(columns, field_code, index, repeat, row)
-                    self._add_repeat_data(repeat, self._get_repeat_col_name(columns[field_code]['code']), _repeat_row)
+                    if self.is_single_sheet:
+                        result.append(_repeat_row)
+                    else:
+                        self._add_repeat_data(repeat, self._get_repeat_col_name(columns[field_code]['code']), _repeat_row)
                 else:
                     self._default_format(parsed_value, result)
             except Exception as e:
