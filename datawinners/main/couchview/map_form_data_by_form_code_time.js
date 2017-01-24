@@ -1,5 +1,5 @@
 function(doc) {
-    if (!doc.void && doc.document_type == "DataRecord")
+    if (doc.document_type == "DataRecord")
     { 	var c = new Date(doc.created);
         c.setUTCHours(0);
         c.setUTCMinutes(0);
@@ -13,6 +13,6 @@ function(doc) {
             data[k] = value;
         }
         key = [form_code,date];
-        emit(key, {'submission_time' : doc.created, 'submission_data' : data});
+        emit(key, {'submission_time' : doc.created, 'submission_data' : data, 'status': doc.void?'deleted':'active'});
     }
 }

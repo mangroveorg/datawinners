@@ -1,9 +1,9 @@
 import json
 
+import elasticutils
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_view_exempt, csrf_response_exempt
-import elasticutils
 
 from datawinners.accountmanagement.decorators import is_datasender
 from datawinners.common.constant import DELETED_IDENTIFICATION_NUMBER
@@ -15,7 +15,7 @@ from datawinners.search.entity_search import SubjectQuery
 from datawinners.search.index_utils import es_questionnaire_field_name
 from datawinners.settings import ELASTIC_SEARCH_URL, ELASTIC_SEARCH_TIMEOUT
 from mangrove.datastore.documents import EntityActionDocument, HARD_DELETE, SOFT_DELETE
-from mangrove.datastore.entity import get_by_short_code, delete_data_record
+from mangrove.datastore.entity import get_by_short_code, void_data_record
 from mangrove.form_model.form_model import get_form_model_by_entity_type, header_fields
 from mangrove.transport import TransportInfo
 
@@ -46,7 +46,7 @@ def _hard_delete_unique_ids(unique_ids, dbm, form_model, request):
     for unique_id in unique_ids:
         entity = get_by_short_code(dbm, unique_id, form_model.entity_type)
         _delete_unique_id_from_elastic_search(dbm, form_model.entity_type[0], entity.id)
-        delete_data_record(dbm, form_model.form_code, unique_id)
+        void_data_record(dbm, form_model.form_code, unique_id)
         dbm._save_document(EntityActionDocument(form_model.entity_type[0], unique_id, HARD_DELETE))
         entity.delete()
     if unique_ids:
