@@ -5472,7 +5472,7 @@ msgid "All data merged into one sheet"
 msgstr "Tout sur une seule feuille"
 
 msgid "Submissions without Media Files (Excel only)"
-msgstr "Soumissions avec fichiers média (Excel uniquement)"
+msgstr "Soumissions sans fichiers média (Excel uniquement)"
 
 msgid "Submissions with Media (.zip)"
 msgstr "Soumissions avec fichiers média (.zip)"
