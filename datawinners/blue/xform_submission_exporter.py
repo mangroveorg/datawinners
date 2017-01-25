@@ -154,8 +154,6 @@ class AdvancedQuestionnaireSubmissionExportHeaderCreator():
         headers = self._format_tabular_data({"fields":self.columns}, repeat_headers, is_single_sheet)
         if self.form_model.has_nested_fields:
             self._append_relating_columns(headers)
-        if is_single_sheet:
-            headers.insert(0, 'Submission Unique Identifier #')
         repeat_headers.update({'main': headers})
 
         return repeat_headers
@@ -270,6 +268,8 @@ class AdvancedQuestionnaireSubmissionExporter():
     def get_visible_headers(self, is_single_sheet):
         excel_headers = AdvancedQuestionnaireSubmissionExportHeaderCreator(self.columns, self.form_model,
                                                                            self.preferences).create_headers(is_single_sheet)
+        if is_single_sheet:
+                excel_headers['main'].insert(0, 'Submission Unique Identifier #')
         if not self.preferences:
             return excel_headers
 
@@ -278,6 +278,8 @@ class AdvancedQuestionnaireSubmissionExporter():
                 process_preferences=self.preferences)
             if self.form_model.has_nested_fields:
                 header_columns.get('main').extend(['_index', '_parent_index'])
+            if is_single_sheet:
+                header_columns['main'].insert(0, 'Submission Unique Identifier #')
             return header_columns
         except Exception as e:
             logger.exception('Exception occurred while applying preferences for exports. Safely handled for now, by exporting default columns')
