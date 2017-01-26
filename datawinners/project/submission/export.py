@@ -71,7 +71,6 @@ def create_single_sheet_excel_headers(excel_headers, workbook):
     for sheet_name, headers in excel_headers.iteritems():
         if not headers:
             continue
-        _remove_relating_columns(headers)
         worksheet_add_header(ws, headers, workbook, get_header_style(workbook), offset)
         offset += len(headers)
 
@@ -99,7 +98,7 @@ def create_multi_sheet_entries(raw_data, workbook, excel_headers, row_count_dict
             row_count_dict[sheet_name] += 1
 
 
-def create_single_sheet_entries(raw_data, workbook, excel_headers, row_count_dict):
+def create_single_sheet_entries(raw_data, workbook, row_count_dict):
     date_formats = {}
     ws = workbook.worksheets()[0]
     flattened_rows = _flatten_repeat_rows(raw_data['main'][0])
@@ -133,27 +132,28 @@ def _flatten_repeat_rows(raw_data):
         else:
             result.append(val)
 
-    total_number_of_rows = max([len(item['data']) for item in repeated_data])
     submission_unique_id = result[0]
     # Merging First Repeat with the base data
     _split_repeated_data(repeated_data, result, 0)
     flattened_rows.append(result)
 
-    # splitting further repeats as separate rows
-    for row_index in range(total_number_of_rows):
-        row = ['' for i in range(len(result))]
-        _split_repeated_data(repeated_data, row, row_index + 1)
+    if repeated_data:
+        total_number_of_rows = max([len(item['data']) for item in repeated_data])
+        # splitting further repeats as separate rows
+        for row_index in range(total_number_of_rows):
+            row = ['' for i in range(len(result))]
+            _split_repeated_data(repeated_data, row, row_index + 1)
 
-        if any(row):
-            row[0] = submission_unique_id
-            flattened_rows.append(row)
+            if any(row):
+                row[0] = submission_unique_id
+                flattened_rows.append(row)
     return flattened_rows
 
 
 def _split_repeated_data(repeated_data, row, row_index):
     for repeated_datum in repeated_data:
         if len(repeated_datum['data']) > row_index:
-            start_column_index = repeated_datum['index']
+            start_column_index = repeated_datum['row_index']
             for index, val in enumerate(repeated_datum['data'][row_index]):
                 row[index + start_column_index] = val
 

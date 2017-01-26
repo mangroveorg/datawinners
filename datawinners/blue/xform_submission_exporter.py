@@ -151,13 +151,17 @@ class AdvancedQuestionnaireSubmissionExportHeaderCreator():
     def create_headers(self, is_single_sheet):
         repeat_headers = OrderedDict()
         repeat_headers.update({'main': ''})
-        headers = self._format_tabular_data({"fields":self.columns}, repeat_headers, is_single_sheet)
+        headers = self._format_tabular_data({"fields":self.columns}, repeat_headers, False)
+
         if self.form_model.has_nested_fields:
             self._append_relating_columns(headers)
-        if is_single_sheet:
-            headers.insert(0, 'Submission Unique Identifier #')
-        repeat_headers.update({'main': headers})
 
+        if is_single_sheet:
+            single_sheet_headers = self._format_tabular_data({"fields":self.columns}, repeat_headers, is_single_sheet)
+            single_sheet_headers.insert(0, 'Submission Unique Identifier #')
+            repeat_headers.update({'single_sheet_headers': single_sheet_headers})
+
+        repeat_headers.update({'main': headers})
         return repeat_headers
 
     def _append_relating_columns(self, cols):
@@ -204,15 +208,6 @@ class AdvancedQuestionnaireSubmissionExporter():
         if is_single_sheet:
             create_single_sheet_excel_headers(visible_headers, workbook)
             row_count_dict = {'main': 0}
-            sheet_names_index_map = {}
-            previous_headers_count = 0
-            for index, sheet_name in enumerate(visible_headers.iterkeys()):
-                if sheet_names_index_map:
-                    sheet_names_index_map[sheet_name] = previous_headers_count
-                else:
-                    sheet_names_index_map[sheet_name] = 0
-
-                previous_headers_count += len(visible_headers[sheet_name])
 
             formatter = AdvanceSubmissionFormatter(self.columns, self.form_model, self.local_time_delta, self.preferences, is_single_sheet)
 
@@ -238,7 +233,7 @@ class AdvancedQuestionnaireSubmissionExporter():
                 formatted_values.append(result)
                 formatted_repeats.update({'main': formatted_values})
 
-                create_single_sheet_entries(formatted_repeats, workbook, sheet_names_index_map, row_count_dict)
+                create_single_sheet_entries(formatted_repeats, workbook, row_count_dict)
         else:
             create_multi_sheet_excel_headers(visible_headers, workbook)
 
@@ -274,17 +269,28 @@ class AdvancedQuestionnaireSubmissionExporter():
         excel_headers = AdvancedQuestionnaireSubmissionExportHeaderCreator(self.columns, self.form_model,
                                                                            self.preferences).create_headers(is_single_sheet)
         if not self.preferences:
+            if is_single_sheet:
+                return {'main': excel_headers.get('single_sheet_headers')}
             return excel_headers
 
         try:
             header_columns = self._get_visible_headers(excel_headers,
-                process_preferences=self.preferences)
+                process_preferences=self.preferences, is_single_sheet=is_single_sheet)
             if self.form_model.has_nested_fields:
                 header_columns.get('main').extend(['_index', '_parent_index'])
+            if is_single_sheet:
+                header_columns.get('single_sheet_headers').insert(0, 'Submission Unique Identifier #')
+                return {'main': header_columns.get('single_sheet_headers')}
             return header_columns
         except Exception as e:
             logger.exception('Exception occurred while applying preferences for exports. Safely handled for now, by exporting default columns')
-            
+
+        if is_single_sheet:
+            return {'main': excel_headers.get('single_sheet_headers')}
+
+        if not is_single_sheet and 'single_sheet_headers' in excel_headers:
+            del excel_headers['single_sheet_headers']
+
         return excel_headers #safe handling
 
     '''
@@ -297,7 +303,7 @@ class AdvancedQuestionnaireSubmissionExporter():
         }
     Order of columns are important.    
     '''
-    def _get_visible_headers(self, precomputed_excel_headers, process_preferences=[]):
+    def _get_visible_headers(self, precomputed_excel_headers, process_preferences=[], is_single_sheet=False):
 
         excel_headers = OrderedDict()
         for preference in process_preferences:
@@ -305,13 +311,16 @@ class AdvancedQuestionnaireSubmissionExporter():
                 key = preference.get('data')
                 if preference.has_key('children'):
                     child_excel_headers = self._get_visible_headers(precomputed_excel_headers,
-                        process_preferences=preference.get('children'))
+                        process_preferences=preference.get('children'), is_single_sheet=is_single_sheet)
                     if child_excel_headers:
                         for sheet_name,child_columns in child_excel_headers.iteritems():
                             dict_extend_list_value(excel_headers, sheet_name, child_columns)
                 elif self.columns.get(key) and self.columns.get(key).get('type') == 'field_set':
                     field_code = self.columns.get(key).get('code')
                     excel_headers.update({field_code: precomputed_excel_headers.get(field_code)})
+                    if is_single_sheet:
+                        self._add_already_ordered_repeat_columns_from_single_sheet_headers(excel_headers, field_code,
+                                                                                           precomputed_excel_headers)
                     #Not optimal. Temporary fix for Group within repeat scenarios, which won't have
                     #preferences and which should come in separate sheet.
                     for field in self.form_model.fields:
@@ -323,8 +332,28 @@ class AdvancedQuestionnaireSubmissionExporter():
                             
                 else:
                     column_header = self._check_and_return_column_header(key, preference.get("title"))
+                    if is_single_sheet:
+                        dict_extend_list_value(excel_headers, 'single_sheet_headers', column_header)
                     dict_extend_list_value(excel_headers, 'main', column_header)
         return excel_headers
+
+    def _add_already_ordered_repeat_columns_from_single_sheet_headers(self, excel_headers, field_code,
+                                                                      precomputed_excel_headers):
+        if len(self.form_model.get_field_by_code(field_code).fields):
+            start_index = self._get_index_of_field_inside_repeat_columns(field_code, precomputed_excel_headers, 0)
+            end_index = self._get_index_of_field_inside_repeat_columns(field_code, precomputed_excel_headers, -1)
+        dict_extend_list_value(excel_headers, 'single_sheet_headers',
+                               precomputed_excel_headers['single_sheet_headers'][start_index: (end_index + 1)])
+
+    def _get_index_of_field_inside_repeat_columns(self, field_code, precomputed_excel_headers, index):
+        field = self.form_model.get_field_by_code(field_code).fields[index]
+        label = field.fields[index].label if field.is_field_set else field.label
+        index = self._index_of_repeat_field_by_label(precomputed_excel_headers['single_sheet_headers'],
+                                                           label)
+        return index
+
+    def _index_of_repeat_field_by_label(self, single_sheet_headers, label):
+        return [ x.split('/')[-1] for x in single_sheet_headers].index(label)
 
     def _check_and_return_column_header(self, key, label):
         header_columns = []
@@ -364,7 +393,14 @@ class AdvanceSubmissionFormatter(SubmissionFormatter):
                         'type', None) == 'field_set':  # every field_set in a repeat is a list
                     repeat_item[question_code] = json.dumps(data_value)
             _result = self.__format_row(repeat_item, repeat_fields, index, repeat)
-            _repeat_row.append(_result)
+            if self.is_single_sheet and self.form_model.get_field_by_code(field_code.replace(self.form_model.id+"_", "").split("-")[-1]).is_group():
+                for item in _result:
+                    if isinstance(item, list):
+                        [_repeat_row.append(val_inside_group) for val_inside_group in _result]
+                    else:
+                        _repeat_row.append(item)
+            else:
+                _repeat_row.append(_result)
             if not self.is_single_sheet:
                 _result.append('')
                 _result.append(index + 1)
@@ -397,7 +433,10 @@ class AdvanceSubmissionFormatter(SubmissionFormatter):
                 elif field_type == 'field_set':
                     _repeat_row = self._format_field_set(columns, field_code, index, repeat, row)
                     if self.is_single_sheet:
-                        result.append(_repeat_row)
+                        if self.is_single_sheet and self.form_model.get_field_by_code(field_code.replace(self.form_model.id+"_", "").split("-")[-1]).is_group():
+                            [result.append(val_inside_group) for val_inside_group in _repeat_row]
+                        else:
+                            result.append(_repeat_row)
                     else:
                         self._add_repeat_data(repeat, self._get_repeat_col_name(columns[field_code]['code']), _repeat_row)
                 else:
