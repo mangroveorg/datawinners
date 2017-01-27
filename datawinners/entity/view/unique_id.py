@@ -15,7 +15,7 @@ from datawinners.search.entity_search import SubjectQuery
 from datawinners.search.index_utils import es_questionnaire_field_name
 from datawinners.settings import ELASTIC_SEARCH_URL, ELASTIC_SEARCH_TIMEOUT
 from mangrove.datastore.documents import EntityActionDocument, HARD_DELETE, SOFT_DELETE
-from mangrove.datastore.entity import get_by_short_code, void_data_record
+from mangrove.datastore.entity import get_by_short_code
 from mangrove.form_model.form_model import get_form_model_by_entity_type, header_fields
 from mangrove.transport import TransportInfo
 
