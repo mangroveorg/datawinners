@@ -7,7 +7,7 @@ from migration.couch.utils import migrate
 
 def void_data_records(database_name):
     dbm = get_db_manager(database_name)
-    entities = dbm.load_all_rows_in_view('entity_by_short_code')
+    entities = dbm.load_all_rows_in_view('entity_by_short_code', include_docs=True)
     for entity in entities:
         if entity['doc']['document_type'] == 'Entity':
             entity = Entity.new_from_doc(dbm, EntityDocument.wrap(entity['doc']))
