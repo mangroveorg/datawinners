@@ -46,7 +46,7 @@ def _hard_delete_unique_ids(unique_ids, dbm, form_model, request):
     for unique_id in unique_ids:
         entity = get_by_short_code(dbm, unique_id, form_model.entity_type)
         _delete_unique_id_from_elastic_search(dbm, form_model.entity_type[0], entity.id)
-        void_data_record(dbm, form_model.form_code, unique_id)
+        entity.invalidate()
         dbm._save_document(EntityActionDocument(form_model.entity_type[0], unique_id, HARD_DELETE))
         entity.delete()
     if unique_ids:
