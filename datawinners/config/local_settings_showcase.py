@@ -2,6 +2,7 @@ SITE_ID = 2
 DEBUG = False
 TEMPLATE_DEBUG = False
 COMPRESS_ENABLED = True
+EXTERNAL_APPS_ORGS = ["hni_marie-stopes-cambodia_mxc944582"]
 
 ADMINS = (('DW Devs', 'datawinners-devs@googlegroups.com'),)
 COMPRESS = False
