@@ -445,7 +445,10 @@ class AdvanceSubmissionFormatter(SubmissionFormatter):
                     self._default_format(parsed_value, result)
             except Exception as e:
                 col_val = row.get(field_code) or ""
-                result.extend(col_val)
+                if isinstance(col_val, list):
+                    result.extend(col_val)
+                else:
+                    result.append(col_val)
 
         return result
 
