@@ -110,7 +110,7 @@ def create_single_sheet_entries(raw_data, workbook, row_count_dict):
                 if not date_formats.has_key(val.date_format):
                     date_format = {'submission_date': 'mmm d yyyy hh:mm:ss'}.get(val.date_format, val.date_format)
                     date_formats.update({val.date_format: workbook.add_format({'num_format': date_format})})
-                    ws.write(row_number, column, val.date.replace(tzinfo=None), date_formats.get(val.date_format))
+                ws.write(row_number, column, val.date.replace(tzinfo=None), date_formats.get(val.date_format))
             elif isinstance(val, float):
                 ws.write_number(row_number, column, val)
             else:
