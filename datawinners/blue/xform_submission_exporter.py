@@ -393,6 +393,13 @@ class AdvanceSubmissionFormatter(SubmissionFormatter):
             for question_code, data_value in repeat_item.items():
                 if repeat_fields.get(question_code, {}).get(
                         'type', None) == 'field_set':  # every field_set in a repeat is a list
+                    if not data_value:
+                        group_fields = self.form_model.get_field_by_code(question_code.replace(self.form_model.id+"_", "").split("-")[-1]).fields
+                        group_data = {}
+                        for group_field in group_fields:
+                            group_data.update({group_field.name.replace(" ","_"): ''})
+                        data_value = [group_data]
+
                     repeat_item[question_code] = json.dumps(data_value)
             _result = self.__format_row(repeat_item, repeat_fields, index, repeat)
             if self.is_single_sheet and self.form_model.get_field_by_code(field_code.replace(self.form_model.id+"_", "").split("-")[-1]).is_group():
