@@ -305,7 +305,7 @@ class AdvancedQuestionnaireSubmissionExporter():
         }
     Order of columns are important.    
     '''
-    def _get_visible_headers(self, precomputed_excel_headers, process_preferences=[], is_single_sheet=False):
+    def _get_visible_headers(self, precomputed_excel_headers, process_preferences=[], is_single_sheet=False, search_start_index={'index': 0}):
 
         excel_headers = OrderedDict()
         for preference in process_preferences:
@@ -313,7 +313,7 @@ class AdvancedQuestionnaireSubmissionExporter():
                 key = preference.get('data')
                 if preference.has_key('children'):
                     child_excel_headers = self._get_visible_headers(precomputed_excel_headers,
-                        process_preferences=preference.get('children'), is_single_sheet=is_single_sheet)
+                        process_preferences=preference.get('children'), is_single_sheet=is_single_sheet, search_start_index=search_start_index)
                     if child_excel_headers:
                         for sheet_name,child_columns in child_excel_headers.iteritems():
                             dict_extend_list_value(excel_headers, sheet_name, child_columns)
@@ -321,8 +321,8 @@ class AdvancedQuestionnaireSubmissionExporter():
                     field_code = self.columns.get(key).get('code')
                     excel_headers.update({field_code: precomputed_excel_headers.get(field_code)})
                     if is_single_sheet:
-                        self._add_already_ordered_repeat_columns_from_single_sheet_headers(excel_headers, field_code,
-                                                                                           precomputed_excel_headers)
+                        search_start_index['index'] = self._add_already_ordered_repeat_columns_from_single_sheet_headers(excel_headers, field_code,
+                                                                                           precomputed_excel_headers, search_start_index['index'])
                     #Not optimal. Temporary fix for Group within repeat scenarios, which won't have
                     #preferences and which should come in separate sheet.
                     for field in self.form_model.fields:
@@ -340,18 +340,21 @@ class AdvancedQuestionnaireSubmissionExporter():
         return excel_headers
 
     def _add_already_ordered_repeat_columns_from_single_sheet_headers(self, excel_headers, field_code,
-                                                                      precomputed_excel_headers):
+                                                                      precomputed_excel_headers, search_start_index):
         if len(self.form_model.get_field_by_code(field_code).fields):
-            start_index = self._get_index_of_field_inside_repeat_columns(field_code, precomputed_excel_headers, 0)
-            end_index = self._get_index_of_field_inside_repeat_columns(field_code, precomputed_excel_headers, -1)
-        dict_extend_list_value(excel_headers, 'single_sheet_headers',
-                               precomputed_excel_headers['single_sheet_headers'][start_index: (end_index + 1)])
+            single_sheet_headers = precomputed_excel_headers['single_sheet_headers'][search_start_index:]
+            start_index = self._get_index_of_field_inside_repeat_columns(field_code, single_sheet_headers, 0)
+            end_index = self._get_index_of_field_inside_repeat_columns(field_code, single_sheet_headers, -1)
+            dict_extend_list_value(excel_headers, 'single_sheet_headers',
+                           precomputed_excel_headers['single_sheet_headers'][start_index: (end_index + 1)])
+            search_start_index = end_index + 1
+        return search_start_index
 
-    def _get_index_of_field_inside_repeat_columns(self, field_code, precomputed_excel_headers, index):
+    def _get_index_of_field_inside_repeat_columns(self, field_code, single_sheet_headers, index):
         field = self.form_model.get_field_by_code(field_code).fields[index]
         label = field.fields[index].label if field.is_field_set else field.label
-        index = self._index_of_repeat_field_by_label(precomputed_excel_headers['single_sheet_headers'],
-                                                           label)
+        index = self._index_of_repeat_field_by_label(single_sheet_headers,
+                                                     label)
         return index
 
     def _index_of_repeat_field_by_label(self, single_sheet_headers, label):
