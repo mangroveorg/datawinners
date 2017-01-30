@@ -277,7 +277,7 @@ class AdvancedQuestionnaireSubmissionExporter():
 
         try:
             header_columns = self._get_visible_headers(excel_headers,
-                process_preferences=self.preferences, is_single_sheet=is_single_sheet)
+                process_preferences=self.preferences, is_single_sheet=is_single_sheet,search_start_index={'index': 0})
             if self.form_model.has_nested_fields:
                 header_columns.get('main').extend(['_index', '_parent_index'])
             if is_single_sheet:
