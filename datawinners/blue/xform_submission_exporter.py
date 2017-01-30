@@ -345,8 +345,7 @@ class AdvancedQuestionnaireSubmissionExporter():
             single_sheet_headers = precomputed_excel_headers['single_sheet_headers'][search_start_index:]
             start_index = self._get_index_of_field_inside_repeat_columns(field_code, single_sheet_headers, 0)
             end_index = self._get_index_of_field_inside_repeat_columns(field_code, single_sheet_headers, -1)
-            dict_extend_list_value(excel_headers, 'single_sheet_headers',
-                           precomputed_excel_headers['single_sheet_headers'][start_index: (end_index + 1)])
+            dict_extend_list_value(excel_headers, 'single_sheet_headers', single_sheet_headers[start_index: (end_index + 1)])
             search_start_index = end_index + 1
         return search_start_index
 
