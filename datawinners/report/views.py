@@ -47,6 +47,13 @@ def report_font_file(request, report_id, font_file_name):
     return HttpResponse(mimetype="font/opentype", content=font_file)
 
 
+def report_image_file(request, report_id, image_file_name):
+    dbm = get_database_manager(request.user)
+    config = get_report_config(dbm, report_id)
+    image_file = config.image_file(image_file_name)
+    return HttpResponse(mimetype="image/*", content=image_file)
+
+
 def _get_content(request, dbm, config):
     return Template(config.template()).render(RequestContext(request, {
         "dbm": dbm,
