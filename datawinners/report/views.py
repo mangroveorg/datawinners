@@ -3,7 +3,8 @@ from django.http import HttpResponse
 from django.template import RequestContext, Template
 from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView
-
+import os
+import mimetypes
 from datawinners.accountmanagement.decorators import session_not_expired, is_not_expired, is_datasender
 from datawinners.main.database import get_database_manager
 from mangrove.datastore.report_config import get_report_configs, get_report_config
@@ -34,24 +35,20 @@ def report_content(request, report_id):
 
 
 def report_stylesheet(request, report_id):
-    dbm = get_database_manager(request.user)
-    config = get_report_config(dbm, report_id)
-    style = config.stylesheet().replace("{{report_id}}", report_id)
+    style = _get_file(request, report_id, "styles.css").replace("{{report_id}}", report_id)
     return HttpResponse(mimetype="text/css", content=style)
 
 
-def report_font_file(request, report_id, font_file_name):
-    dbm = get_database_manager(request.user)
-    config = get_report_config(dbm, report_id)
-    font_file = config.font_file(font_file_name)
-    return HttpResponse(mimetype="font/opentype", content=font_file)
+def report_file(request, report_id, file_name):
+    _file = _get_file(request, report_id, file_name)
+    file_extn = os.path.splitext(file_name)[-1]
+    mime_type = mimetypes.types_map.get(file_extn, 'application/octet-stream')
+    return HttpResponse(mimetype=mime_type, content=_file)
 
 
-def report_image_file(request, report_id, image_file_name):
+def _get_file(request, report_id, file_name):
     dbm = get_database_manager(request.user)
-    config = get_report_config(dbm, report_id)
-    image_file = config.image_file(image_file_name)
-    return HttpResponse(mimetype="image/*", content=image_file)
+    return get_report_config(dbm, report_id).file(file_name)
 
 
 def _get_content(request, dbm, config):
