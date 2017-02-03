@@ -389,8 +389,12 @@ class AdvanceSubmissionFormatter(SubmissionFormatter):
 
     def _format_field_set(self, columns, field_code, index, repeat, row):
         _repeat_row = []
-        repeat_answers = json.loads(row.get(field_code))
+        repeat_answers = json.loads(row.get(field_code, '[]'))
         repeat_fields = columns[field_code].get('fields')
+        if not repeat_answers:
+            _result = ['' for i in xrange(len(repeat_fields))]
+            _repeat_row.append(_result)
+
         for repeat_item in repeat_answers:
             for question_code, data_value in repeat_item.items():
                 if repeat_fields.get(question_code, {}).get(
