@@ -58,6 +58,7 @@ from mangrove.datastore.entity import get_by_short_code
 from mangrove.datastore.entity_share import save_entity_preference, get_entity_preference
 from mangrove.datastore.entity_type import define_type, delete_type, entity_type_already_defined,\
     get_unique_id_types
+from mangrove.datastore.report_config import get_report_config
 from mangrove.errors.MangroveException import EntityTypeAlreadyDefined, DataObjectAlreadyExists, \
     QuestionCodeAlreadyExistsException, EntityQuestionAlreadyExistsException, DataObjectNotFound, \
     QuestionAlreadyExistsException
@@ -496,11 +497,17 @@ def map_admin(request, entity_type=None):
 
 
 @valid_web_user
+@waffle_flag('reports', None)
+def map_data_for_reports(request, entity_type=None, report_id=None):
+    return map_data(request, entity_type, get_report_config(get_database_manager(request.user), report_id))
+
+
+@valid_web_user
 @waffle_flag('idnr_map', None)
-def map_data(request, entity_type=None):
+def map_data(request, entity_type=None, entity_preference=None):
     manager = get_database_manager(request.user)
     form_model = get_form_model_by_entity_type(manager, [entity_type.lower()])
-    entity_preference = get_entity_preference(get_db_manager("public"), _get_organization_id(request), entity_type)
+    entity_preference = entity_preference or get_entity_preference(get_db_manager("public"), _get_organization_id(request), entity_type)
     details = entity_preference.details if entity_preference is not None else []
     specials = entity_preference.specials if entity_preference is not None else []
     fallback_location = entity_preference.fallback_location if entity_preference is not None else {}

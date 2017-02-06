@@ -1,8 +1,10 @@
 from django.contrib.auth.decorators import login_required
+from django.core.urlresolvers import resolve
 from django.http import HttpResponse
+from django.shortcuts import redirect
 from django.template import RequestContext, Template
 from django.utils.decorators import method_decorator
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, RedirectView
 import os
 import mimetypes
 from datawinners.accountmanagement.decorators import session_not_expired, is_not_expired, is_datasender
@@ -52,8 +54,16 @@ def _get_file(request, report_id, file_name):
 
 
 def _get_content(request, dbm, config):
-    return Template(config.template()).render(RequestContext(request, {
+    template = config.template() or _template_content(request, config) or ''
+    return Template(template).render(RequestContext(request, {
         "dbm": dbm,
         "config": config,
         "filters": request.GET
     }))
+
+
+def _template_content(request, config):
+    request.GET = {}
+    view, args, kwargs = resolve(config.template_url)
+    args += (request,)
+    return view(*args, **kwargs).content
