@@ -176,14 +176,14 @@ class AdvancedQuestionnaireSubmissionExportHeaderCreator():
                 headers.append(col_def['label'] + " Longitude")
             elif col_def.get('type', '') == FIELD_SET:
                 if is_single_sheet:
-                    _repeat = self._format_tabular_data(col_def, repeat, is_single_sheet, col_def.get("label"))
+                    _repeat = self._format_tabular_data(col_def, repeat, is_single_sheet, col_def.get("label") + "/")
                     headers = headers + _repeat
                 else:
                     _repeat = self._format_tabular_data(col_def, repeat, is_single_sheet, None)
                     self._append_relating_columns(_repeat)
                     repeat.update({self._get_repeat_column_name(col_def['code']): _repeat})
             else:
-                headers.append(repeat_label_name + "/" + col_def['label']) if repeat_label_name else headers.append(col_def['label'])
+                headers.append(repeat_label_name + col_def['label']) if repeat_label_name else headers.append(col_def['label'])
         return headers
 
     def _get_repeat_column_name(self, code):
@@ -350,14 +350,14 @@ class AdvancedQuestionnaireSubmissionExporter():
         return search_start_index
 
     def _get_index_of_field_inside_repeat_columns(self, field_code, single_sheet_headers, index):
-        field = self.form_model.get_field_by_code(field_code).fields[index]
-        label = field.fields[index].label if field.is_field_set else field.label
-        index = self._index_of_repeat_field_by_label(single_sheet_headers,
-                                                     label)
+        parent_field = self.form_model.get_field_by_code(field_code)
+        field = parent_field.fields[index]
+        label = field.label + '/' + field.fields[index].label if field.is_field_set else parent_field.label + '/' + field.label
+        index = self._index_of_repeat_field_by_label(single_sheet_headers, label)
         return index
 
     def _index_of_repeat_field_by_label(self, single_sheet_headers, label):
-        return [ x.split('/')[-1] for x in single_sheet_headers].index(label)
+        return [ x for x in single_sheet_headers].index(label)
 
     def _check_and_return_column_header(self, key, label):
         header_columns = []
