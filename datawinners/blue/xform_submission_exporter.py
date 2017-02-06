@@ -387,12 +387,23 @@ class AdvanceSubmissionFormatter(SubmissionFormatter):
         else:
             repeat.update({col_name: row})
 
+    def _get_primitive_field_count(self, field_sets):
+        count = len(filter(lambda field: not field.get('type') == 'field_set' and not field.get('type') == 'geocode', field_sets))
+        count += (len(filter(lambda field: field.get('type', None) == 'geocode', field_sets)) * 2)
+
+        nested_field_sets = filter(lambda field: field.get('type', None) == 'field_set', field_sets)
+        for nested_field_set in nested_field_sets:
+            count += self._get_primitive_field_count(nested_field_set.get('fields').values())
+
+        return count
+
     def _format_field_set(self, columns, field_code, index, repeat, row):
         _repeat_row = []
         repeat_answers = json.loads(row.get(field_code, '[]'))
         repeat_fields = columns[field_code].get('fields')
         if not repeat_answers:
-            _result = ['' for i in xrange(len(repeat_fields))]
+            total_column_count = self._get_primitive_field_count(repeat_fields.values())
+            _result = ['' for i in xrange(total_column_count)]
             _repeat_row.append(_result)
 
         for repeat_item in repeat_answers:
