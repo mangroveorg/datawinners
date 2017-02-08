@@ -26,7 +26,7 @@ class TestAdvancedQuestionnaireSubmissionExporter(unittest.TestCase):
                                                                               dict(data='age',visibility='True')]),
                        dict(data='uuid1_city',visibility=False), dict(data='area',visibility='True')]
 
-        headers = AdvancedQuestionnaireSubmissionExportHeaderCreator(columns, form_model_mock, preferences).create_headers()
+        headers = AdvancedQuestionnaireSubmissionExportHeaderCreator(columns, form_model_mock, preferences).create_headers(False)
 
         self.assertEqual(expected_header, headers['main'])
         self.assertEqual(expected_family_header, headers['field_code'])
@@ -40,7 +40,7 @@ class TestAdvancedQuestionnaireSubmissionExporter(unittest.TestCase):
 
         preferences = OrderedDict()
 
-        headers = AdvancedQuestionnaireSubmissionExportHeaderCreator(columns, form_model_mock, preferences).create_headers()
+        headers = AdvancedQuestionnaireSubmissionExportHeaderCreator(columns, form_model_mock, preferences).create_headers(False)
 
         self.assertEqual(expected_header, headers['main'])
 
@@ -57,6 +57,6 @@ class TestAdvancedQuestionnaireSubmissionExporter(unittest.TestCase):
         preferences = [dict(data='uuid1_city',visibility=True), dict(data='area',visibility=False)]
 
         headers = AdvancedQuestionnaireSubmissionExporter(form_model_mock, columns, local_time_delta, preferences).\
-            get_visible_headers()
+            get_visible_headers(False)
 
         self.assertEqual(expected_header, headers['main'])
