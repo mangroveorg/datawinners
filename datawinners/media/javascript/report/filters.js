@@ -15,6 +15,35 @@ var initFilters = function() {
     });
 }
 
+var prepareExportableFilters = function() {
+    var filters = getFilters();
+    var transformedFilters = [['Filter Section']];
+    Object.keys(filters).forEach(function(key, index) {
+        var filterValue = filters[key].split(';')[2];
+        if (filterValue) {
+            var filterName = $(document.getElementById(key+ "_label")).text();
+            filterValue = getLabelForFilterValue(key, filterValue);
+            transformedFilters.push([filterName, filterValue]);
+        }
+
+    });
+    return transformedFilters;
+};
+
+var getLabelForFilterValue = function(key, value) {
+    // Not using jquery since jquery does not support 'dot' in id
+    var filterElement = $(document.getElementById(key));
+    var nodeName = filterElement[0].nodeName;
+    switch (nodeName) {
+        case 'SELECT':
+            value = filterElement.find('option:selected').text();
+            break;
+        default:
+            break;
+    }
+    return value;
+};
+
 var getFilters = function() {
     var values = $("#filter_section .filter").get().reduce(function(map, elem) {
             if($(elem).val() != "") {
