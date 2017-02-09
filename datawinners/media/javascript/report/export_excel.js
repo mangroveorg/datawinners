@@ -13,15 +13,26 @@ var prepareForExport = function(htmlData) {
     headers = headers.map(function(index, element) { return $(element).text(); });
     headers = [$.makeArray(headers)];
     extractedData = [];
+    var exportableFilters = getExportableFilters();
+
     htmlData.forEach(function(element) { var row = $(element).find('td').map(function(index, element) { return $(element).text(); }); extractedData.push($.makeArray(row)) });;
     var workbook = {
           SheetNames: ['report'], Sheets: {
-            'report' : prepareExcelData(headers.concat(extractedData))
+            'report' : prepareExcelData(exportableFilters.concat(headers.concat(extractedData)))
           }
         };
     return exportExcel(workbook);
 };
 
+
+var getExportableFilters = function() {
+// Safe handling when there is no filter.
+    try {
+        return prepareExportableFilters();
+    } catch(e) {
+        return [];
+    }
+};
 
 var exportExcel = function(workbook) {
     return function () {
