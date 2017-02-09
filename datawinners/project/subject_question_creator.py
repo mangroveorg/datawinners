@@ -22,7 +22,7 @@ class SubjectQuestionFieldCreator(object):
     def _get_choice_field(self, subject_choices, subject_field, help_text, widget=None):
         subject_choice_field = UniqueIdChoiceField(entity_type=subject_field.unique_id_type,
                                                    required=subject_field.is_required(), choices=subject_choices,
-                                                   label=subject_field.name, widget=widget,
+                                                   label=subject_field.label, widget=widget,
                                                    initial=subject_field.value, help_text=help_text)
         if (self.has_linked_idnr):            
             subject_choice_field.widget.attrs['class'] = 'linked_subject_field'
