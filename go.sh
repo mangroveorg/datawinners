@@ -171,3 +171,7 @@ function recreate_search_index {
 function compile_css {
   cd "$DWROOT_DIR/datawinners" && python manage.py compile_css
 }
+
+function createdynamicviews {
+   cd "$DWROOT_DIR/datawinners" && python manage.py createdynamicviews
+}
