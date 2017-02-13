@@ -26,6 +26,7 @@ function main {
 		rs) run_server;;
 		jt) js_tests;;
 		ccss) compile_css;;
+		cdv) createdynamicviews;;
 		*) show_help && exit 1;;
 	esac	
 }
