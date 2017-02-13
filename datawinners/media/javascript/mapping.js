@@ -91,6 +91,7 @@ Map = function(fallbackLocation) {
         loadFilters();
 
         $("#filters input").click(applyFilters);
+        $("#filters select").change(applyFilters);
 
         var geolocation = new ol.Geolocation({
             projection: 'EPSG:3857',
@@ -120,12 +121,15 @@ Map = function(fallbackLocation) {
     var applyFilters = function() {
         var filters = [];
         $("#filters .filter-choices").each(function(){
+            var question = $(this).attr("id");
             if($(this).find("input:checked").length > 0) {
-                var question = $(this).attr("id");
                 var answers = $(this).find("input:checked").map(function(elem){return this.id}).get();
                 answers.forEach(function(answer){
                     filters.push(question + "=" + answer);
                 });
+            } else if($(this).find("select").length > 0) {
+                var answer = $(this).find("select").val();
+                filters.push(question + "=" + answer);
             }
         })
         window.location.href = window.location.origin + window.location.pathname + "?" + filters.join("&");
@@ -137,7 +141,12 @@ Map = function(fallbackLocation) {
             var question = filter.split("=")[0];
             var answers = filter.split("=")[1].split(",");
             $.each(answers, function(index, answer){
-                $("#filters").find("#" + question).find("#" + answer).attr("checked", "checked");
+                var elem = $("#filters").find("#" + question)
+                if(elem.find("input").length > 0) {
+                    elem.find("#" + answer).attr("checked", "checked");
+                } else if(elem.find("select").length > 0) {
+                    elem.find("select").val(answer);
+                }
             });
         });
     };

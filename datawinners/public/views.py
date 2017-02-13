@@ -5,10 +5,10 @@ from django.template import RequestContext
 from datawinners.entity.geo_data import geo_jsons
 from datawinners.feature_toggle.models import FeatureSubscription, Feature
 from datawinners.main.database import get_db_manager
-from mangrove.datastore.entity_share import get_entity_preference_by_share_token
-from mangrove.form_model.form_model import get_form_model_by_entity_type
-
 from datawinners.utils import get_mapbox_api_key
+from mangrove.datastore.entity_share import get_entity_preference_by_share_token
+from mangrove.form_model.field import UniqueIdUIField, UniqueIdField
+from mangrove.form_model.form_model import get_form_model_by_entity_type
 
 
 def render_map(request, share_token):
@@ -34,11 +34,21 @@ def render_map(request, share_token):
 
 
 def _get_filters(form_model, filters):
+    filters = [{'code': field.code, 'label': field.label, 'choices': field.options}
+               for field in form_model.fields if field.code in filters and not isinstance(field, UniqueIdField)]
+    return filters
+
+
+def _get_uniqueid_filters(form_model, filters, dbm):
     filters = [
-        {'code': field['code'], 'label': field['label'], 'choices': field['choices']}
-        for field in form_model.form_fields if field['code'] in filters
+        {
+            'code': field.code, 'label': field.label,
+            'choices': UniqueIdUIField(field, dbm).options
+        }
+        for field in form_model.fields if field.code in filters and isinstance(field, UniqueIdField)
     ]
     return filters
+
 
 def _flag_active(flag, org_id):
     feature = Feature.objects.get(name=flag)

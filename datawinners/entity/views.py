@@ -42,7 +42,7 @@ from datawinners.messageprovider.messages import exception_messages, WEB
 from datawinners.project.helper import create_request
 from datawinners.project.submission.exporter import SubmissionExporter
 from datawinners.project.web_questionnaire_form import SubjectRegistrationForm
-from datawinners.public.views import _get_filters
+from datawinners.public.views import _get_filters, _get_uniqueid_filters
 from datawinners.questionnaire.questionnaire_builder import QuestionnaireBuilder
 from datawinners.search.entity_search import SubjectQuery
 from datawinners.search.index_utils import delete_mapping, es_questionnaire_field_name
@@ -516,6 +516,7 @@ def map_data(request, entity_type=None, entity_preference=None):
                                   "entity_type": entity_type,
                                   "fallback_location": fallback_location,
                                   "filters": [] if entity_preference is None else _get_filters(form_model, entity_preference.filters),
+                                  "idnr_filters": [] if entity_preference is None else _get_uniqueid_filters(form_model, entity_preference.filters, manager),
                                   "geo_jsons": geo_jsons(manager, entity_type, request.GET, details, specials),
                                   "mapbox_api_key": get_mapbox_api_key(request.META['HTTP_HOST'])
                                },

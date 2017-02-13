@@ -1,8 +1,11 @@
 import json
 from collections import OrderedDict
 
+from coverage.html import escape
+
 from mangrove.datastore.entity import get_all_entities
 from mangrove.errors.MangroveException import DataObjectNotFound
+from mangrove.form_model.field import UniqueIdUIField, field_attributes
 
 
 def geo_jsons(manager, entity_type, filters, details, specials):
@@ -69,7 +72,7 @@ def _geo_json(dbm, entity_type, entity_fields, filters, details):
     location_list = []
 
     try:
-        transformed_filters = _transform_filters(filters, entity_fields)
+        transformed_filters = _transform_filters(filters, entity_fields, dbm)
         first_geocode_field = get_first_geocode_field_for_entity_type(entity_fields)
         if first_geocode_field:
             unique_ids = get_all_entities(
@@ -89,14 +92,22 @@ def _geo_json(dbm, entity_type, entity_fields, filters, details):
     return {"type": "FeatureCollection", "features": location_list}
 
 
-def _transform_filters(filters, entity_all_fields):
-    entity_fields_dict = dict((field['code'], field) for field in entity_all_fields)
-    return {
-        entity_fields_dict[f]['name']: [
-            choice['text'] for choice in entity_fields_dict[f]['choices'] if choice['val'] in filters[f]
-        ]
-        for f in filters
-    }
+def _transform_filters(filters, entity_all_fields, dbm):
+    d = dict((field['code'], field) for field in entity_all_fields)
+    transformed_filters = {}
+    for f in filters:
+        if d[f]["type"] == field_attributes.UNIQUE_ID_FIELD:
+            if "" not in filters[f]:
+                transformed_filters[d[f]['name']] = \
+                    [option[0] for option in _get_entity_options(dbm, d[f]["unique_id_type"]) if option[0] in filters[f]][0]
+        else:
+            transformed_filters[d[f]['name']] = \
+                [choice['text'] for choice in d[f]['choices'] if choice['val'] in filters[f]]
+    return transformed_filters
+
+
+def _get_entity_options(dbm, entity_type):
+    return [(entity.short_code, escape(entity.data['name']['value'])) for entity in get_all_entities(dbm, [entity_type])]
 
 
 def _get_field_labels(entity_fields):
