@@ -138,7 +138,7 @@ Map = function(fallbackLocation) {
     var loadFilters = function() {
         var filters = window.location.search.slice(1).split("&").filter(String);
         $.each(filters, function(index, filter){
-            var question = filter.split("=")[0];
+            var question = filter.split("=")[0].replace(",", "\\,");
             var answers = filter.split("=")[1].split(",");
             $.each(answers, function(index, answer){
                 var elem = $("#filters").find("#" + question)

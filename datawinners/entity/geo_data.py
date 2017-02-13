@@ -72,11 +72,11 @@ def _geo_json(dbm, entity_type, entity_fields, filters, details):
     location_list = []
 
     try:
-        transformed_filters = _transform_filters(filters, entity_fields, dbm)
+        forward_filters, reverse_filters = _transform_filters(filters, entity_fields)
         first_geocode_field = get_first_geocode_field_for_entity_type(entity_fields)
         if first_geocode_field:
             unique_ids = get_all_entities(
-                dbm, [entity_type], 1000, transformed_filters
+                dbm, [entity_type], 1000, forward_filters, reverse_filters
             )
             details.extend(['q2'])
             fields_to_show = filter(lambda field: field['code'] in details, entity_fields)
@@ -92,18 +92,21 @@ def _geo_json(dbm, entity_type, entity_fields, filters, details):
     return {"type": "FeatureCollection", "features": location_list}
 
 
-def _transform_filters(filters, entity_all_fields, dbm):
+def _transform_filters(filters, entity_all_fields):
     d = dict((field['code'], field) for field in entity_all_fields)
-    transformed_filters = {}
+    forward_filters = {}
+    reverse_filters = {}
     for f in filters:
-        if d[f]["type"] == field_attributes.UNIQUE_ID_FIELD:
+        if len(f.split(",")) > 1 or d[f]["type"] == field_attributes.UNIQUE_ID_FIELD:
             if "" not in filters[f]:
-                transformed_filters[d[f]['name']] = \
-                    [option[0] for option in _get_entity_options(dbm, d[f]["unique_id_type"]) if option[0] in filters[f]][0]
+                if len(f.split(",")) > 1:
+                    reverse_filters[filters[f][0]] = [d[qn]['name'] for qn in f.split(",")]
+                else:
+                    forward_filters[d[f]['name']] = filters[f][0]
         else:
-            transformed_filters[d[f]['name']] = \
+            forward_filters[d[f]['name']] = \
                 [choice['text'] for choice in d[f]['choices'] if choice['val'] in filters[f]]
-    return transformed_filters
+    return forward_filters, reverse_filters
 
 
 def _get_entity_options(dbm, entity_type):

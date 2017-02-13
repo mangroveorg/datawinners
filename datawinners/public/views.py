@@ -1,3 +1,5 @@
+import json
+
 from django.http import Http404
 from django.shortcuts import render_to_response
 from django.template import RequestContext
@@ -39,15 +41,38 @@ def _get_filters(form_model, filters):
     return filters
 
 
+def _is_json(str):
+    try:
+        json.loads(str)
+    except ValueError:
+        return False
+    return True
+
+
 def _get_uniqueid_filters(form_model, filters, dbm):
-    filters = [
+    uniqueid_filters = []
+    multi_filters = [json.loads(f.replace("'", '"')) for f in filters if _is_json(f.replace("'", '"'))]
+    single_filters = [f for f in filters if not _is_json(f.replace("'", '"'))]
+    d = dict((field.code, field) for field in form_model.fields)
+
+    uniqueid_filters += [
         {
-            'code': field.code, 'label': field.label,
-            'choices': UniqueIdUIField(field, dbm).options
+            'code': d[f].code, 'label': d[f].label,
+            'choices': UniqueIdUIField(d[f], dbm).options
         }
-        for field in form_model.fields if field.code in filters and isinstance(field, UniqueIdField)
+        for f in single_filters if isinstance(d[f], UniqueIdField)
     ]
-    return filters
+
+    uniqueid_filters += [
+        {
+            'code': ",".join(mf),
+            'label': d[mf[0]].unique_id_type.capitalize(),
+            'choices': list(set(reduce(lambda prev, f: prev + UniqueIdUIField(d[f], dbm).options, mf, [])))
+        }
+        for mf in multi_filters
+    ]
+
+    return filter(None, uniqueid_filters)
 
 
 def _flag_active(flag, org_id):
