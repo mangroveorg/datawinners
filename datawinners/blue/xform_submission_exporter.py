@@ -401,7 +401,7 @@ class AdvanceSubmissionFormatter(SubmissionFormatter):
         _repeat_row = []
         repeat_answers = json.loads(row.get(field_code, '[]'))
         repeat_fields = columns[field_code].get('fields')
-        if not repeat_answers:
+        if self.is_single_sheet and not repeat_answers:
             total_column_count = self._get_primitive_field_count(repeat_fields.values())
             _result = ['' for i in xrange(total_column_count)]
             _repeat_row.append(_result)
