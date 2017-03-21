@@ -9,7 +9,7 @@ from datawinners.feature_toggle.models import FeatureSubscription, Feature
 from datawinners.main.database import get_db_manager
 from datawinners.utils import get_mapbox_api_key
 from mangrove.datastore.entity_share import get_entity_preference_by_share_token
-from mangrove.form_model.field import UniqueIdUIField, UniqueIdField
+from mangrove.form_model.field import UniqueIdUIField, UniqueIdField, TextField
 from mangrove.form_model.form_model import get_form_model_by_entity_type
 
 
@@ -37,7 +37,8 @@ def render_map(request, share_token):
 
 def _get_filters(form_model, filters):
     filters = [{'code': field.code, 'label': field.label, 'choices': field.options}
-               for field in form_model.fields if field.code in filters and not isinstance(field, UniqueIdField)]
+               for field in form_model.fields if field.code in filters and not isinstance(field, UniqueIdField) and hasattr(field,'options')]
+
     return filters
 
 
@@ -63,6 +64,36 @@ def _get_uniqueid_filters(form_model, filters, dbm):
         for f in single_filters if isinstance(d[f], UniqueIdField)
     ]
 
+
+    # for textfield filter
+
+    for f in single_filters:
+        if isinstance(d[f], TextField):
+            map_function = """
+            function(doc) {
+                    if (doc.document_type == "Entity" && !doc.void && doc.aggregation_paths['_type'][0] == 'facility') {
+                        emit(doc.data['%s'].value,doc.data['%s'].value);
+                    }
+                }
+            """
+            map_function = map_function % (d[f].name, d[f].name)
+            reduce_function = """
+                function(keys, values) {
+                  return true
+                }
+            """
+            
+            list_options = [(row.key, row.key) for row in dbm.database.query(map_function, reduce_function, group=True)]
+
+
+            uniqueid_filters += [
+                {
+                    'code': d[f].code, 'label': d[f].label,
+                    'choices': list_options
+                }
+
+            ]
+
     uniqueid_filters += [
         {
             'code': ",".join(mf),
@@ -71,6 +102,7 @@ def _get_uniqueid_filters(form_model, filters, dbm):
         }
         for mf in multi_filters
     ]
+
 
     return filter(None, uniqueid_filters)
 

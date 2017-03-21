@@ -32,9 +32,10 @@ def geo_jsons(manager, entity_type, filters, details, specials):
                                  details) if is_geojson_for_special_required else {'features': [],
                                                                                 'type': 'FeatureCollection'}
                 group["data"].append({
-                    "name": matched_choices[0],
+                    "name": matched_choices[0] + " (" + str(len(data['features'])) + ")",
                     "data": data,
                     "color": choice['color']
+
                 })
         geo_jsons.append(group)
 
@@ -97,12 +98,13 @@ def _transform_filters(filters, entity_all_fields):
     forward_filters = {}
     reverse_filters = {}
     for f in filters:
-        if len(f.split(",")) > 1 or d[f]["type"] == field_attributes.UNIQUE_ID_FIELD:
+        if len(f.split(",")) > 1 or d[f]["type"] == field_attributes.UNIQUE_ID_FIELD or d[f]["type"] == field_attributes.TEXT_FIELD:
             if "" not in filters[f]:
                 if len(f.split(",")) > 1:
                     reverse_filters[filters[f][0]] = [d[qn]['name'] for qn in f.split(",")]
                 else:
                     forward_filters[d[f]['name']] = filters[f][0]
+        
         else:
             forward_filters[d[f]['name']] = \
                 [choice['text'] for choice in d[f]['choices'] if choice['val'] in filters[f]]
