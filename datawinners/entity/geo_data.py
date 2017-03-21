@@ -20,6 +20,7 @@ def geo_jsons(manager, entity_type, filters, details, specials):
     for special in specials:
         field = [field for field in entity_fields if field['code'] == special][0]
         group = {"group": field['label'], "data": []}
+        total_number = 0
         for choice in specials[special]:
             filters_with_special = dict(filters)
             filters_with_special.update({special: choice['value']})
@@ -37,6 +38,8 @@ def geo_jsons(manager, entity_type, filters, details, specials):
                     "color": choice['color']
 
                 })
+                total_number += len(data['features'])
+        group["group"] += " Tot:" + str(total_number)
         geo_jsons.append(group)
 
     return json.dumps(geo_jsons)
