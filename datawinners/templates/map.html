@@ -23,8 +23,9 @@
                 <h3>{{ filter.label }}</h3>
                 <div id="{{ filter.code }}" class="filter-choices">
                     {% for choice in filter.choices %}
-                        <span style="white-space: nowrap"><label><input type="checkbox" name="{{ filter.code }}" id="{{ choice.val }}">{{ choice.text }}</label></span>
+                        <label style="float:left;"><input type="checkbox" name="{{ filter.code }}" id="{{ choice.val }}">{{ choice.text }}</label>
                     {% endfor %}
+                    <br style="clear:left;" />
                 </div>
             {% endfor %}
         </div>
