@@ -39,7 +39,7 @@ def geo_jsons(manager, entity_type, filters, details, specials):
 
                 })
                 total_number += len(data['features'])
-        group["group"] += " Tot:" + str(total_number)
+        group["group"] += " Total " + str(total_number)
         geo_jsons.append(group)
 
     return json.dumps(geo_jsons)
