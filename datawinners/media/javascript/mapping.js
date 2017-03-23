@@ -145,7 +145,7 @@ Map = function(fallbackLocation) {
                 if(elem.find("input").length > 0) {
                     elem.find("#" + answer).attr("checked", "checked");
                 } else if(elem.find("select").length > 0) {
-                    elem.find("select").val(answer);
+                    elem.find("select").val(decodeURI(answer));
                 }
             });
         });

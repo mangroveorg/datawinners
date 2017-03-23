@@ -71,12 +71,12 @@ def _get_uniqueid_filters(form_model, filters, dbm):
         if isinstance(d[f], TextField):
             map_function = """
             function(doc) {
-                    if (doc.document_type == "Entity" && !doc.void && doc.aggregation_paths['_type'][0] == 'facility') {
-                        emit(doc.data['%s'].value,doc.data['%s'].value);
+                    if (doc.document_type == "Entity" && !doc.void && doc.aggregation_paths['_type'][0] == '%s') {
+                        emit(doc.data['%s'].value.toUpperCase(),doc.data['%s'].value.toUpperCase());
                     }
                 }
             """
-            map_function = map_function % (d[f].name, d[f].name)
+            map_function = map_function % (form_model.entity_type[0], d[f].name, d[f].name)
             reduce_function = """
                 function(keys, values) {
                   return true
