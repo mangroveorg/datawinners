@@ -484,14 +484,17 @@ def map_admin(request, entity_type=None):
     filters = _build_filterable_fields(form_model.form_fields, filters_in_entity_preference)
     details = _build_details(form_model.form_fields, details_in_entity_preference)
     specials = _build_specials(form_model.form_fields, specials_in_entity_preference)
-
+    height_frame = len([flr for flr in filters if flr['visible']])
+    height_frame = 428 + height_frame * 80
     return render_to_response('entity/map_edit.html',
                               {
                                   "entity_type": entity_type,
                                   "form_code": form_model.form_code,
                                   "filters": json.dumps(filters),
                                   "details": json.dumps(details),
-                                  "specials": json.dumps(specials)
+                                  "specials": json.dumps(specials),
+                                  "height_frame": height_frame
+                                  
                                },
                               context_instance=RequestContext(request))
 
@@ -499,17 +502,18 @@ def map_admin(request, entity_type=None):
 @valid_web_user
 @waffle_flag('reports', None)
 def map_data_for_reports(request, entity_type=None, report_id=None):
-    return map_data(request, entity_type, get_report_config(get_database_manager(request.user), report_id))
+    return map_data(request, entity_type, get_report_config(get_database_manager(request.user), report_id),True)
 
 
 @valid_web_user
 @waffle_flag('idnr_map', None)
-def map_data(request, entity_type=None, entity_preference=None):
+def map_data(request, entity_type=None, entity_preference=None, map_view = False):
     manager = get_database_manager(request.user)
     form_model = get_form_model_by_entity_type(manager, [entity_type.lower()])
     entity_preference = entity_preference or get_entity_preference(get_db_manager("public"), _get_organization_id(request), entity_type)
     details = entity_preference.details if entity_preference is not None else []
     specials = entity_preference.specials if entity_preference is not None else []
+    total_in_label = entity_preference.total_in_label if entity_preference is not None else False
     fallback_location = entity_preference.fallback_location if entity_preference is not None else {}
     return render_to_response('map.html',
                               {
@@ -517,7 +521,7 @@ def map_data(request, entity_type=None, entity_preference=None):
                                   "fallback_location": fallback_location,
                                   "filters": [] if entity_preference is None else _get_filters(form_model, entity_preference.filters),
                                   "idnr_filters": [] if entity_preference is None else _get_uniqueid_filters(form_model, entity_preference.filters, manager),
-                                  "geo_jsons": geo_jsons(manager, entity_type, request.GET, details, specials),
+                                  "geo_jsons": geo_jsons(manager, entity_type, request.GET, details, specials, map_view, total_in_label),
                                   "mapbox_api_key": get_mapbox_api_key(request.META['HTTP_HOST'])
                                },
                               context_instance=RequestContext(request))

@@ -90,18 +90,20 @@ ul#pop-details {
             white-space: pre-wrap;
             word-break: break-word;
             width: 80%;
-            color: #888888;
+            color: #000000;
         }
 
         .question {
             margin: 0;
             font-weight: bold;
+            color: #000000;
         }
     }
 }
 
 .ol-popup {
     padding-right: 10px;
+    opacity: 0.82;
 }
 
 .ol-popup-closer{

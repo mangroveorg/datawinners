@@ -132,6 +132,7 @@ Map = function(fallbackLocation) {
                 filters.push(question + "=" + answer);
             }
         })
+       
         window.location.href = window.location.origin + window.location.pathname + "?" + filters.join("&");
     };
 

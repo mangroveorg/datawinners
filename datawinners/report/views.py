@@ -10,6 +10,8 @@ import mimetypes
 from datawinners.accountmanagement.decorators import session_not_expired, is_not_expired, is_datasender
 from datawinners.main.database import get_database_manager
 from mangrove.datastore.report_config import get_report_configs, get_report_config
+from datawinners import utils
+
 
 
 class AllReportsView(TemplateView):
@@ -22,8 +24,11 @@ class AllReportsView(TemplateView):
     def get(self, request, *args, **kwargs):
         dbm = get_database_manager(request.user)
         configs = get_report_configs(dbm)
+        organization = utils.get_organization(request)
+        is_pro_sms = organization.is_pro_sms
         return self.render_to_response(RequestContext(request, {
-            "configs": configs
+            "configs": configs,
+            "is_pro_sms": is_pro_sms
         }))
 
 

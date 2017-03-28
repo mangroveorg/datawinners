@@ -79,6 +79,11 @@ DW.MappingEditor = function(entityType, filters, details, specials) {
         saveEntityPreference(entityPreference, function(result) {
             saveCallback(result);
             reloadMapPreview();
+            height_frame = 428 + (entityPreference.filters.length)*80;
+            var map_iframe = document.getElementById('map-preview');
+            if (map_iframe) {
+                map_iframe.style.height = height_frame + "px";
+            }
         })
     };
 

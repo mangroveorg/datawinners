@@ -8,7 +8,7 @@ from mangrove.errors.MangroveException import DataObjectNotFound
 from mangrove.form_model.field import UniqueIdUIField, field_attributes
 
 
-def geo_jsons(manager, entity_type, filters, details, specials):
+def geo_jsons(manager, entity_type, filters, details, specials, map_view = False, total_in_label = False):
     entity_fields = manager.view.registration_form_model_by_entity_type(key=[entity_type], include_docs=True)[0]["doc"]["json_fields"]
 
     geo_jsons = [{
@@ -32,14 +32,21 @@ def geo_jsons(manager, entity_type, filters, details, specials):
                 data = _geo_json(manager, entity_type, entity_fields, filters_with_special,
                                  details) if is_geojson_for_special_required else {'features': [],
                                                                                 'type': 'FeatureCollection'}
-                group["data"].append({
-                    "name": matched_choices[0] + " (" + str(len(data['features'])) + ")",
-                    "data": data,
-                    "color": choice['color']
+                label_legend = matched_choices[0]
+                if map_view and total_in_label:
+                    label_legend += " (" + str(len(data['features'])) + ")"
+                if (map_view and len(data['features'])>0) or not map_view:
+                    group["data"].append({
+                        "name": label_legend ,
+                        "data": data,
+                        "color": choice['color']
 
-                })
+                    })
                 total_number += len(data['features'])
-        group["group"] += " Total " + str(total_number)
+        if map_view and total_in_label:
+            group["group"] += " Total " + str(total_number)
+
+            
         geo_jsons.append(group)
 
     return json.dumps(geo_jsons)
