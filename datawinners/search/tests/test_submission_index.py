@@ -186,7 +186,7 @@ class TestSubmissionIndex(unittest.TestCase):
             _update_with_form_model_fields(Mock(spec=DatabaseManager), submission_doc, search_dict, self.form_model)
             self.assertEquals(
                 {'1212_q1_unique_code': 'option1,option2', '1212_q1_details': {}, 'is_anonymous': False,
-                 'void': False},
+                 'void': False, 'media': {}, '1212_q1': None},
                 search_dict)
 
     def test_generate_elastic_index_for_a_unique_id_field_in_parent_level(self):
