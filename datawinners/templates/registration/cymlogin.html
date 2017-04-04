@@ -1,0 +1,83 @@
+{% extends 'layout_registration.html' %}
+{% load i18n %}
+{% block page_title %} {% trans "Login" %} {% endblock %}
+{% block section_title %} {% trans "Sign In to Your Account on DataWinners" %} {% endblock %}
+{% block page_js %}
+    <script type="text/javascript" >
+        $(document).ready(function(){
+            $('#logout_link').hide()
+        })
+    </script>
+{% endblock %}
+
+{% block page_scss %}
+    {{ block.super }}
+    <link href="/media/css/scss/section_login.css" rel="stylesheet" />
+{% endblock %}
+
+{% block right_second_hand_section %}
+{% endblock %}
+
+{% block header %}
+    <div id="container_header_application">
+        <div class="container_24" id="header_application">
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block right_hand_section %}
+    {% block already_registered_link %}
+    {% endblock %}
+    <div class="grid_7 right_hand_section alpha omega about_datawinners" style="margin-top: 11px;">
+    {% trans "about_DW" %}
+    </div>
+{% endblock  %}
+
+{% block login_content %}
+    <div class="grid_5 alpha">
+        <img src="/media/images/logo-cym.jpeg"/>
+    </div>
+    <div class="grid_10  left_hand_section">
+        {% if form.errors and not form.username.errors and not form.password.errors %}
+            {% ifequal form.errors.items.0.1.0 "The trial period is expired" %}
+            <div class="warning-message-box clear-both overflow_hidden">
+                <p>{% trans "Your DataWinners account has been deactivated. " %}</p>
+                <div class="message_plus">{% trans "To reactivate it, subscribe to a monthly subscription by contacting your Project Manager or DW Support at <a href='mailto:support@datawinners.com'>support@datawinners.com</a>." %}</div>
+                <br/>
+            </div>
+            {% else %}
+            <div class=" error span-12 push-6 message-box">
+                {% for key,error in form.errors.items %}
+                    {{ error }}
+                {% endfor %}
+            </div>
+            {% endifequal %}
+        {% endif %}
+
+
+        <div class="signin">
+            <fieldset>
+                <form action="" method="POST" class="signin_form" style="margin-left: 30px;">
+                    {% csrf_token %}
+                        <ul>
+                            <li class="{{ form.username.css_classes  }} form-row-10px">
+                                <label for="id_username">Email</label>
+                                {{ form.username }}
+                                {{ form.username.errors }}
+                            </li>
+                            <li class="{{ form.password.css_classes  }} form-row-10px">
+                                {{ form.password.label_tag }}
+                                {{ form.password }}
+                                {{ form.password.errors }}
+                            </li>
+                            <li class="login_button">
+                                <div class="login_button_div"><input type="submit"  id="id_login" value="{% trans 'Sign in' %}" class="button"/></div>
+                            </li>
+                        </ul>
+                </form>
+            </fieldset>
+        </div>
+    </div>
+{% endblock %}
+

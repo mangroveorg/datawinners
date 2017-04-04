@@ -32,10 +32,13 @@
   <div class="container_24">
     
     <div class="grid_23 content">
-      <div class="grid_15 alpha  left_hand_section">
-        {% block messages %}{% endblock %} 
-        {% block content %} {% endblock %}
-      </div>
+      {% block login_content %}
+          <div class="grid_15 alpha  left_hand_section">
+            {% block messages %}{% endblock %}
+            {% block content %} {% endblock %}
+          </div>
+      {% endblock %}
+      
         {% block right_hand_section %}
             {% block already_registered_link %}
             {% endblock %}
