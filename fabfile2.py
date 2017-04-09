@@ -72,6 +72,12 @@ def prod():
     env.warn_only = True
 
 
+def preprod():
+    env.user = "mangrover"
+    env.hosts = ["preprod.datawinners.com:51986"]
+    env.key_filename = ["/home/jenkins/.ssh/id_rsa"]
+    env.warn_only = True
+
 def anonymous():
     run("uname -a")
 
