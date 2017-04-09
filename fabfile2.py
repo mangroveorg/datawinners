@@ -187,7 +187,7 @@ def _deploy_datawinners(context, sync_views):
         if sync_views:
             activate_and_run(context.virtual_env, "python manage.py syncviews syncall")
             activate_and_run(context.virtual_env, "python manage.py syncfeedviews syncall")
-            activate_and_run(context.virtual_env, "python manage.py createdynamicviews syncall")
+            activate_and_run(context.virtual_env, "python manage.py createdynamicviews hni_marie-stopes-int-cambodia_ejn610045")
         activate_and_run(context.virtual_env, "python manage.py compile_css")
 
 
