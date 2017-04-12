@@ -519,8 +519,8 @@ def map_data(request, entity_type=None, entity_preference=None, map_view = False
                               {
                                   "entity_type": entity_type,
                                   "fallback_location": fallback_location,
-                                  "filters": [] if entity_preference is None else _get_filters(form_model, entity_preference.filters),
-                                  "idnr_filters": [] if entity_preference is None else _get_uniqueid_filters(form_model, entity_preference.filters, manager),
+                                  "filters": [] if entity_preference is None else _get_filters(form_model, entity_preference.filters, entity_preference.remove_options),
+                                  "idnr_filters": [] if entity_preference is None else _get_uniqueid_filters(form_model, entity_preference.filters, manager, entity_preference.remove_options),
                                   "geo_jsons": geo_jsons(manager, entity_type, request.GET, details, specials, map_view, total_in_label),
                                   "mapbox_api_key": get_mapbox_api_key(request.META['HTTP_HOST'])
                                },

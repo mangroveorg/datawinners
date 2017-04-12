@@ -7,7 +7,7 @@ from django.template import RequestContext
 from datawinners.entity.geo_data import geo_jsons
 from datawinners.feature_toggle.models import FeatureSubscription, Feature
 from datawinners.main.database import get_db_manager
-from datawinners.utils import get_mapbox_api_key
+from datawinners.utils import get_mapbox_api_key, is_json
 from mangrove.datastore.entity_share import get_entity_preference_by_share_token
 from mangrove.form_model.field import UniqueIdUIField, UniqueIdField, TextField
 from mangrove.form_model.form_model import get_form_model_by_entity_type
@@ -35,25 +35,20 @@ def render_map(request, share_token):
     )
 
 
-def _get_filters(form_model, filters):
-    filters = [{'code': field.code, 'label': field.label, 'choices': field.options}
+def _get_filters(form_model, filters, remove_options = None):
+    filters = [{'code': field.code, 'label': field.label, 'choices': field.options if remove_options == None else filter(lambda fo: fo['text'] not in remove_options, field.options)}
                for field in form_model.fields if field.code in filters and not isinstance(field, UniqueIdField) and hasattr(field,'options')]
 
     return filters
 
 
-def _is_json(str):
-    try:
-        json.loads(str)
-    except ValueError:
-        return False
-    return True
 
 
-def _get_uniqueid_filters(form_model, filters, dbm):
+
+def _get_uniqueid_filters(form_model, filters, dbm, remove_options = None):
     uniqueid_filters = []
-    multi_filters = [json.loads(f.replace("'", '"')) for f in filters if _is_json(f.replace("'", '"'))]
-    single_filters = [f for f in filters if not _is_json(f.replace("'", '"'))]
+    multi_filters = [json.loads(f.replace("'", '"')) for f in filters if is_json(f.replace("'", '"'))]
+    single_filters = [f for f in filters if not is_json(f.replace("'", '"'))]
     d = dict((field.code, field) for field in form_model.fields)
 
     uniqueid_filters += [
@@ -89,11 +84,11 @@ def _get_uniqueid_filters(form_model, filters, dbm):
             uniqueid_filters += [
                 {
                     'code': d[f].code, 'label': d[f].label,
-                    'choices': list_options
+                    'choices': list_options if remove_options == None else filter(lambda lo: lo[0] not in remove_options, list_options)
                 }
 
             ]
-
+    """
     uniqueid_filters += [
         {
             'code': ",".join(mf),
@@ -102,6 +97,20 @@ def _get_uniqueid_filters(form_model, filters, dbm):
         }
         for mf in multi_filters
     ]
+    """
+
+
+    uniqueid_filters = []
+    for mf in multi_filters:
+        list_options = list(set(reduce(lambda prev, f: prev + UniqueIdUIField(d[f], dbm).options, mf, [])))
+        uniqueid_filters.append({
+            'code': ",".join(mf),
+            'label': d[mf[0]].unique_id_type.capitalize(),
+            'choices': list_options if remove_options == None else filter(lambda lo: lo[1] not in remove_options, list_options)
+        })
+
+
+    
 
 
     return filter(None, uniqueid_filters)

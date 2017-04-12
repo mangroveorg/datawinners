@@ -6,6 +6,8 @@ from coverage.html import escape
 from mangrove.datastore.entity import get_all_entities
 from mangrove.errors.MangroveException import DataObjectNotFound
 from mangrove.form_model.field import UniqueIdUIField, field_attributes
+from datawinners.utils import is_json
+
 
 
 def geo_jsons(manager, entity_type, filters, details, specials, map_view = False, total_in_label = False):
@@ -91,11 +93,25 @@ def _geo_json(dbm, entity_type, entity_fields, filters, details):
             )
             details.extend(['q2'])
             fields_to_show = filter(lambda field: field['code'] in details, entity_fields)
-            location_list.extend(_get_detail_list_for_entities(
-                _get_field_labels(fields_to_show),
+            details_to_show_combined = [json.loads(d.replace("'", '"')) for d in details if is_json(d.replace("'", '"'))]
+            field_label_combined = None
+            if len(details_to_show_combined):
+                field_label_combined = []
+                for dtsc in details_to_show_combined:
+                    field_label_combined_simple = {}
+                    field_label_combined_simple['list'] = filter(lambda field: field['code'] in dtsc['list'], entity_fields)
+                    field_label_combined_simple['list'] = _get_field_labels(field_label_combined_simple['list'])
+                    field_label_combined_simple['label'] = dtsc['label']
+                    field_label_combined.append(field_label_combined_simple)
+            field_label = _get_field_labels(fields_to_show)
+
+            lst_for_entity = _get_detail_list_for_entities(
+                field_label,
                 first_geocode_field,
-                unique_ids
-            ))
+                unique_ids,
+                field_label_combined
+            )
+            location_list.extend(lst_for_entity)
 
     except DataObjectNotFound:
         pass
@@ -132,19 +148,36 @@ def _get_field_labels(entity_fields):
     return dict_simplified
 
 
-def _get_detail_list_for_entities(entity_field_labels, first_geocode_field, unique_ids):
+def _get_detail_list_for_entities(entity_field_labels, first_geocode_field, unique_ids, field_label_combined = None):
     detail_list = []
     for entity in unique_ids:
         value_dict = entity.data.get(first_geocode_field["name"])
         if value_dict and value_dict.has_key('value'):
             value = value_dict["value"]
-            detail_list.append(_to_json_detail(value, entity_field_labels, entity.data, entity.type_string))
+            detail_list.append(_to_json_detail(value, entity_field_labels, entity.data, entity.type_string, field_label_combined))
     return detail_list
 
 
-def _to_json_detail(value, entity_field_labels, data=None, entity_type=None):
+def _to_json_detail(value, entity_field_labels, data=None, entity_type=None, fields_to_show_combined=None):
     detail_json = _to_json_point(value)
     detail_json['properties'] = _simplify_field_data(data, entity_field_labels, entity_type)
+    if fields_to_show_combined != None:
+        for ftsc in fields_to_show_combined:
+            combined_value = _simplify_field_data(data, ftsc['list'], entity_type)
+            value_string = ''
+            for label,details  in combined_value.items():
+                if label != 'entity_type':
+                    if len(value_string)>0:
+                        value_string = value_string + ', '
+                    value_string = value_string + details['value']
+            # detail_json["properties"].update({"address", {'value':value_string, 'label':'Address'}})
+            detail_json["properties"].update({ftsc['label']: {'value':value_string, 'label':ftsc['label']}})
+            #combined_value_dict = {}
+            #combined_value_dict[ftsc['label']]['value'] = value_string
+            #combined_value_dict[ftsc['label']]['label'] = ftsc['label']
+            #detail_json['properties'].append(combined_value_dict)
+
+
     return detail_json
 
 
