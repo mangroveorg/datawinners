@@ -171,6 +171,7 @@ def index(request):
                                    'is_pro_sms': organization.is_pro_sms,
                                    'activation_success': activation_success,
                                    'hide_for_data_sender': hide_for_data_sender,
+                                   'hide_link_class': hide_for_data_sender,
                                    'current_lang': get_language()},
                                   context_instance=RequestContext(request))
     else:
@@ -184,6 +185,7 @@ def index(request):
                                    'is_pro_sms': organization.is_pro_sms,
                                    'activation_success': activation_success,
                                    'hide_for_data_sender':hide_for_data_sender,
+                                   'hide_link_class': hide_for_data_sender,
                                    'current_lang': get_language()},
                                   context_instance=RequestContext(request))
 
