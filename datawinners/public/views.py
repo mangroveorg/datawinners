@@ -88,19 +88,10 @@ def _get_uniqueid_filters(form_model, filters, dbm, remove_options = None):
                 }
 
             ]
-    """
-    uniqueid_filters += [
-        {
-            'code': ",".join(mf),
-            'label': d[mf[0]].unique_id_type.capitalize(),
-            'choices': list(set(reduce(lambda prev, f: prev + UniqueIdUIField(d[f], dbm).options, mf, [])))
-        }
-        for mf in multi_filters
-    ]
-    """
+    
 
 
-    uniqueid_filters = []
+    
     for mf in multi_filters:
         list_options = list(set(reduce(lambda prev, f: prev + UniqueIdUIField(d[f], dbm).options, mf, [])))
         uniqueid_filters.append({
