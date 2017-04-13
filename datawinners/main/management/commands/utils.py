@@ -22,7 +22,7 @@ def document_stores_to_process(args):
     if "syncall" in args:
         return document_stores()
 
-    if len(args) == 1 and args[1].startswith("hni_"):
-        return [args[1]]
+    if len(args) == 1 and args[0].startswith("hni_"):
+        return [args[0]]
 
     return test_document_stores()
