@@ -103,10 +103,8 @@ class TestViews(TestCase):
         self.assertEquals(response.status_code, 201)
         self.assertTrue(user_saved_mock.save.called)
         self.assertTrue(ngo_user_profile_mock.save.called)
-        #questionnaire_mock.associate_data_sender_to_project.assert_called_with(manager_mock, ['rep123'])
-        #update_datasender_index_by_id_mock.assert_called_with('rep123', manager_mock)
-        #user_activity_log_mock.log.assert_called_with(ANY, action=ADDED_USER,
-        #                                              detail=expected_detail)
+        user_activity_log_mock.log.assert_called_with(ANY, action=ADDED_USER,
+                                                      detail=expected_detail)
 
     @patch('datawinners.accountmanagement.views.UserActivityLog')
     @patch('datawinners.accountmanagement.views.UserProfileForm')
@@ -145,11 +143,9 @@ class TestViews(TestCase):
         self.assertEquals(response.status_code, 201)
         self.assertTrue(user_saved_mock.save.called)
         self.assertTrue(ngo_user_profile_mock.save.called)
-        #questionnaire_mock.associate_data_sender_to_project.assert_called_with(manager_mock, ['rep123'])
-        #update_datasender_index_by_id_mock.assert_called_with('rep123', manager_mock)
-        #user_activity_log_mock.log.assert_called_with(ANY, action=ADDED_USER,
-        #                                              detail=expected_detail)
-        #self.assertTrue(user_permission_mock.save.called)
+        user_activity_log_mock.log.assert_called_with(ANY, action=ADDED_USER,
+                                                      detail=expected_detail)
+        
 
     @patch('datawinners.accountmanagement.views.UserActivityLog')
     @patch('datawinners.accountmanagement.views.get_organization')

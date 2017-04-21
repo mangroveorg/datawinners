@@ -56,7 +56,7 @@ from django.db import transaction
 import logging
 from datawinners.feature_toggle.services import handle_feature_toggle_impact_for_new_user,\
     handle_feature_toggle_impact_for_deleted_user
-from datawinners.accountmanagement.user_tasks import link_user_to_all_projects
+from datawinners.accountmanagement.user_tasks import link_user_to_all_projects, link_user_to_some_projects
 datawinners_logger = logging.getLogger("datawinners")
 
 
@@ -221,15 +221,12 @@ def new_user(request):
                         name = post_parameters["full_name"]
                         if role == 'Extended Users':
                             link_user_to_all_projects.delay(ngo_user_profile.user_id)
-                            #associate_user_with_all_projects_of_organisation(manager, ngo_user_profile.reporter_id)
                             UserActivityLog().log(request, action=ADDED_USER, detail=activity_log_detail(name, friendly_name(role)))
                         elif role == 'Project Managers':
                             selected_questionnaires = post_parameters.getlist('selected_questionnaires[]')
                             selected_questionnaire_names = post_parameters.getlist('selected_questionnaire_names[]')
-                            if selected_questionnaires is None:
-                                selected_questionnaires = []
-                            associate_user_with_projects(manager, ngo_user_profile.reporter_id, user.id,
-                                                         selected_questionnaires)
+                            if selected_questionnaires is not None:
+                                link_user_to_some_projects.delay(ngo_user_profile.user_id, *tuple(selected_questionnaires))
                             UserActivityLog().log(request, action=ADDED_USER, detail=activity_log_detail(name, friendly_name(role), selected_questionnaire_names))
                             transaction.savepoint_commit(sid)
     
@@ -574,7 +571,7 @@ def edit_user_profile(request, user_id=None):
                 UserActivityLog().log(request, action=UPDATED_USER, detail=activity_log_detail(name, friendly_name(role), selected_questionnaire_names))
             elif role == 'Extended Users':
                 if previous_role != 'Extended Users':
-                    associate_user_with_all_projects_of_organisation(manager, reporter_id)
+                    link_user_to_all_projects.delay(user.id)
                     update_user_permission(manager, user_id=user.id, project_ids=[])
                 UserActivityLog().log(request, action=UPDATED_USER, detail=activity_log_detail(name, friendly_name(role)))
 

@@ -14,9 +14,12 @@ def link_user_to_all_projects(user_id):
     rows = get_all_projects(manager)
     for row in rows:
         make_user_data_sender_with_project(manager, reporter_id, row['value']['_id'])
-    
 
-#@app.task(max_retries=3, throw=False)
-@shared_task
-def add_x(number, another):
-    return  number + another
+@app.task(max_retries=3, throw=False)
+def link_user_to_some_projects(user_id, *projects):
+    user = User.objects.get(pk=user_id)
+    reporter_id = user.get_profile().reporter_id
+    manager = get_database_manager(user)
+    for projet in projects:
+        make_user_data_sender_with_project(manager, reporter_id, projet)
+    
