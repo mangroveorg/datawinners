@@ -14,6 +14,8 @@ from datawinners.accountmanagement.models import Organization, NGOUserProfile, \
 from datawinners.utils import get_database_manager_for_org
 from django.contrib.auth.models import User, Group
 from mangrove.form_model.form_model import REPORTER, NAME_FIELD, REGISTRATION_FORM_CODE
+from mangrove.form_model.project import Project
+from datawinners.search.datasender_index import update_datasender_index_by_id
 
 
 def get_trial_account_user_phone_numbers():
@@ -172,3 +174,11 @@ def validate_and_create_web_users(org_id, reporter_details, language_code):
 
 def get_org_id(request):
     return request.user.get_profile().org_id
+
+
+def make_user_data_sender_with_project(manager, reporter_id, project_id):
+    questionnaire = Project.get(manager, project_id)
+    reporters_to_associate = [reporter_id]
+    questionnaire.associate_data_sender_to_project(manager, reporters_to_associate)
+    for data_senders_code in reporters_to_associate:
+        update_datasender_index_by_id(data_senders_code, manager)

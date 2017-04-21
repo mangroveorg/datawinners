@@ -22,7 +22,8 @@ from django.utils.http import base36_to_int
 from rest_framework.authtoken.models import Token
 from django.contrib.sites.models import Site
 
-from datawinners.accountmanagement.helper import get_all_users_for_organization, update_corresponding_datasender_details
+from datawinners.accountmanagement.helper import get_all_users_for_organization, \
+    update_corresponding_datasender_details, make_user_data_sender_with_project
 from datawinners.accountmanagement.localized_time import get_country_time_delta, convert_utc_to_localized
 from datawinners.project.couch_view_helper import get_all_projects
 from datawinners.project.templatetags.filters import friendly_name
@@ -55,6 +56,7 @@ from django.db import transaction
 import logging
 from datawinners.feature_toggle.services import handle_feature_toggle_impact_for_new_user,\
     handle_feature_toggle_impact_for_deleted_user
+from datawinners.accountmanagement.user_tasks import link_user_to_all_projects
 datawinners_logger = logging.getLogger("datawinners")
 
 
@@ -150,12 +152,6 @@ def associate_user_with_all_projects_of_organisation(manager, reporter_id):
         make_user_data_sender_with_project(manager, reporter_id, row['value']['_id'])
 
 
-def make_user_data_sender_with_project(manager, reporter_id, project_id):
-    questionnaire = Project.get(manager, project_id)
-    reporters_to_associate = [reporter_id]
-    questionnaire.associate_data_sender_to_project(manager, reporters_to_associate)
-    for data_senders_code in reporters_to_associate:
-        update_datasender_index_by_id(data_senders_code, manager)
 
 
 def associate_user_with_projects(manager, reporter_id, user_id, project_ids):
@@ -224,7 +220,8 @@ def new_user(request):
         
                         name = post_parameters["full_name"]
                         if role == 'Extended Users':
-                            associate_user_with_all_projects_of_organisation(manager, ngo_user_profile.reporter_id)
+                            link_user_to_all_projects.delay(ngo_user_profile.user_id)
+                            #associate_user_with_all_projects_of_organisation(manager, ngo_user_profile.reporter_id)
                             UserActivityLog().log(request, action=ADDED_USER, detail=activity_log_detail(name, friendly_name(role)))
                         elif role == 'Project Managers':
                             selected_questionnaires = post_parameters.getlist('selected_questionnaires[]')
@@ -595,3 +592,5 @@ def access_denied(request):
     return render_to_response("accountmanagement/account/access_denied.html", {'is_pro_sms': org.is_pro_sms,
                                                                                'current_lang': get_language()},
                               context_instance=(RequestContext(request)))
+
+    
