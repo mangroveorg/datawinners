@@ -196,7 +196,7 @@ def new_user(request):
         errors = {}
 
         if form.is_valid():
-            username = post_parameters['username']
+            username = post_parameters['username'].lower()
             role = post_parameters['role']
             if not form.errors:
                 with transaction.commit_manually():
