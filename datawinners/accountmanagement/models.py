@@ -322,7 +322,7 @@ class NGOUserProfile(models.Model):
         return self._is("Data Senders")
 
     def _is(self, role_name):
-        user = User.objects.get(email=self.user)
+        user = User.objects.get(username=self.user)
         return True if user.groups.filter(name=role_name).count() else False
 
 
