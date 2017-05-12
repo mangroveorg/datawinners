@@ -2,7 +2,7 @@ import os
 import unittest
 import json
 from datawinners.blue.xlsform_utils import convert_excel_to_dict,\
-    convert_json_to_excel
+    convert_json_to_excel, purify_posted_data
 from collections import OrderedDict
 import pyexcel as pe
 import io
@@ -30,16 +30,25 @@ class TestXlsFormUtils(unittest.TestCase):
             self.assertEqual(actual_book_dict,expected_book_dict)
          
     def test_should_convert_excel_to_json(self):
-        filename = os.path.join(self.test_data,"household_without_fieldset_MSI.xlsx")
-        with open(os.path.join(self.test_data, 'household_without_fieldset_MSI.xlsx'), 'r') as input_file:
+        filename = os.path.join(self.test_data,"household_testing_excel_to_json.xlsx")
+        with open(os.path.join(self.test_data, 'household_testing_excel_to_json.xlsx'), 'r') as input_file:
             file_content = input_file.read()
             excel_as_dict = convert_excel_to_dict(file_content=file_content, file_type='xlsx')
-            with open(os.path.join(self.test_data, 'household_without_fieldset_MSI_expected.json'), 'r') as expected_file:
+            with open(os.path.join(self.test_data, 'household_testing_excel_to_json.json'), 'r') as expected_file:
 #                 json.dump(excel_as_dict, expected_file)
                 excel_dump = json.dumps(excel_as_dict)
                 expected_json_as_obj = json.load(expected_file)
                 self.assertEqual(json.loads(excel_dump), expected_json_as_obj)
-        
+
+    def test_should_cover_purify_posted_data(self):
+        with open(os.path.join(self.test_data, 'data_testing_empty_default_for_some_question_type.json'), 'r') as input_file:
+            input_file_json = "".join(line.rstrip() for line in input_file)
+            input_file_json_as_obj = json.loads(input_file_json, object_pairs_hook=OrderedDict)
+            input_file_json_without_default = purify_posted_data(input_file_json_as_obj)
+            with open(os.path.join(self.test_data, 'data_testing_empty_default_for_some_question_type_expected.json'), 'r') as expected_file:
+                transformed_obj = json.dumps(input_file_json_without_default)
+                expected_json_as_obj = json.load(expected_file)
+                self.assertEqual(json.loads(transformed_obj), expected_json_as_obj)
 #     def test_stringio_features(self):
 #         str_io = io.StringIO()
 #         str_io.write(u'First line.\n')
