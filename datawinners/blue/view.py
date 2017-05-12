@@ -57,7 +57,7 @@ from datawinners.search.submission_index import SubmissionSearchStore
 from datawinners.settings import EMAIL_HOST_USER, HNI_SUPPORT_EMAIL_ID
 from collections import OrderedDict
 from datawinners.blue.xlsform_utils import convert_excel_to_dict, \
-    convert_json_to_excel
+    convert_json_to_excel, purify_posted_data
 
 logger = logging.getLogger("datawinners.xls-questionnaire")
 
@@ -176,6 +176,7 @@ class ProjectBuilder(View):
         is_draft = request.POST['is_draft']
         try:
             excel_as_dict = json.loads(data, object_pairs_hook=OrderedDict)
+            excel_as_dict = purify_posted_data(excel_as_dict)
             if is_draft and is_draft.lower().strip() == 'true':
                 manager = get_database_manager(request.user)
                 questionnaire = Project.get(manager, project_id)

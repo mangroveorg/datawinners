@@ -6,12 +6,24 @@ from pyexcel.ext import xls #This import is needed for loading excel. Please don
 from collections import OrderedDict
 
 XLSFORM_PREDEFINED_COLUMN_NAMES={
-                                 "survey": ['type','name','label','calculation','hint','required','appearance','constraint','constraint_message','relevant','default', 'choice_filter'],
+                                 "survey": ['type','name','label','calculation','hint','required','appearance','constraint','constraint_message','relevant','default', 'choice_filter','required_message'],
                                  "choices": ['list_name','name', 'label']
                                  }
 XLSFORM_EXCLUDE_COLUMN_NAMES={
                               "cascades":['base_index']
                               }
+XLSFORM_EXCLUDE_FOR_DEFAULT=['begin_group','end_group', 'begin repeat', 'end repeat', 'note']
+
+def purify_posted_data(excel_as_dict):
+    for survey in excel_as_dict['survey']:
+        if survey['type'] in XLSFORM_EXCLUDE_FOR_DEFAULT:
+            if survey['default'] and survey['default'].strip():
+                try:
+                    del survey['default']
+                except KeyError:
+                    pass
+    return excel_as_dict
+
 def convert_excel_to_dict(file_name=None, file_content=None, file_type='xlsx'):
     book = pe.get_book(file_name=file_name, file_content=file_content, file_type=file_type)
     excel_as_dict = OrderedDict()
