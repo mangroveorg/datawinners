@@ -19,6 +19,7 @@ Map = function(fallbackLocation) {
         renderer: 'canvas',
         view: view
     });
+    var globalGeoJson = {};
 
     var popup = new ol.Overlay.Popup({
         insertFirst: false,
@@ -111,6 +112,12 @@ Map = function(fallbackLocation) {
           if (fallbackLocation.center && fallbackLocation.resolution) {
             view.setCenter(fallbackLocation.center);
             map.getView().setResolution(fallbackLocation.resolution);
+          }
+          else{
+           var vectorSource = new ol.source.Vector({
+                features: (new ol.format.GeoJSON()).readFeatures(globalGeoJson, {featureProjection: 'EPSG:3857'})
+            });
+            map.getView().fit(vectorSource.getExtent(), map.getSize());
           }
         });
 
@@ -220,6 +227,16 @@ Map = function(fallbackLocation) {
     };
 
     var createVector = function(name, geoJson, color, entityType) {
+        if (!fallbackLocation.center && !fallbackLocation.resolution){
+            if ('features' in globalGeoJson) {
+                if('features' in geoJson){
+                    globalGeoJson.features.push.apply(globalGeoJson.features, geoJson.features);
+                }
+            }
+            else{
+                globalGeoJson = Object.assign(geoJson);
+            }
+        }
         var source = new ol.source.Vector({
             features: (new ol.format.GeoJSON()).readFeatures(geoJson, {featureProjection: 'EPSG:3857'})
         });

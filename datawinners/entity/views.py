@@ -30,7 +30,7 @@ from datawinners.common.constant import ADDED_IDENTIFICATION_NUMBER_TYPE, REGIST
 from datawinners.custom_report_router.report_router import ReportRouter
 from datawinners.entity import import_data as import_module
 from datawinners.entity.forms import EntityTypeForm
-from datawinners.entity.geo_data import geo_jsons
+from datawinners.entity.geo_data import geo_jsons, _transform_filters
 from datawinners.entity.group_helper import create_new_group
 from datawinners.entity.helper import create_registration_form, get_organization_telephone_number, set_email_for_contact
 from datawinners.entity.subjects import load_subject_type_with_projects, get_subjects_count
@@ -514,7 +514,9 @@ def map_data(request, entity_type=None, entity_preference=None, map_view = False
     details = entity_preference.details if entity_preference is not None else []
     specials = entity_preference.specials if entity_preference is not None else []
     total_in_label = entity_preference.total_in_label if entity_preference is not None else False
-    fallback_location = entity_preference.fallback_location if entity_preference is not None else {}
+    entity_fields = manager.view.registration_form_model_by_entity_type(key=[entity_type], include_docs=True)[0]["doc"]["json_fields"]
+    forward_filters, reverse_filters = _transform_filters(dict(request.GET), entity_fields)
+    fallback_location = entity_preference.fallback_location if entity_preference is not None and not any(forward_filters) and not any(reverse_filters) else {}
     return render_to_response('map.html',
                               {
                                   "entity_type": entity_type,
