@@ -6,29 +6,48 @@ function resize_iframe(event) {
 }
 
 $(document).ready(function(){
-    $.ajax({
-        url: DW.help_url,
-        data: {},
-        global: false,
-        error: function(r){
-            $('#help_iframe').addClass("none");
-            $("#help_unavailable").removeClass("none");
-        },
-        complete: function(xhr, statusText){
-            if (xhr.status == 200) {
-                $("#help_iframe").attr("src", DW.help_url);
-                $("#help_iframe").addClass("block");
-            } else {
+    $("#need_help_button").one( "click",function() {
+        $.ajax({
+            url: DW.help_url,
+            data: {},
+            global: false,
+            error: function(r){
                 $('#help_iframe').addClass("none");
                 $("#help_unavailable").removeClass("none");
-            }
-        }
-    });
+            },
+            complete: function(xhr, statusText){
+                if (xhr.status == 200) {
+                    $('.spinner_help').hide();
+                    $("#help_iframe").attr("src", DW.help_url);
+                    $('#help_iframe').removeClass("none");
+                    $("#help_iframe").addClass("block");
+                    $("#need_help_button").addClass("none");
+                    $('#need_help_active_button').removeClass("none");
+                } else {
+                    $('#help_iframe').addClass("none");
+                    $("#help_unavailable").removeClass("none");
+                }
+            },
+            beforeSend: function() {
+                $("#help_iframe").attr("src", "");
+                $('#help_iframe').addClass("none");
+                $('#help_iframe').hide();
+                $('.spinner_help').show();
+                $("#div_iframe").css("visibility", "visible");
 
-    $("#need_help_button").click(function() {
-        $("#div_iframe").css("visibility", "visible");
-        $("#need_help_button").addClass("none");
-        $('#need_help_active_button').removeClass("none");
+
+            }
+
+        });
+
+        return false;
+    });
+    $("#need_help_button").on( "click",function() {
+                    $("#div_iframe").css("visibility", "visible");
+                    $('#help_iframe').removeClass("none");
+                    $("#help_iframe").addClass("block");
+                    $("#need_help_button").addClass("none");
+                    $('#need_help_active_button').removeClass("none");
         return false;
     });
 

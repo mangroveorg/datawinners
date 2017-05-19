@@ -8,6 +8,8 @@
 
     <div class="padding_left_right_10" id="div_iframe">
         <a class="close_help_button float_right"><img src="/media/images/close_button.png" class="close_help_button"><span class="font_size_12">{% trans "Close" %}</span></a>
+        <div class="spinner_help float_right" style="width: 920px;height:400px"><img style="text-align: center;margin-left: 460px;margin-top:200px" src="/media/images/ajax-loader.gif"></div>
+
         <iframe src="" width="920" name="myFrame" scrolling="no" id="help_iframe" class="float_right"></iframe>
         <div id="help_unavailable" class="none clear_both text_align_center">
 {#                {% trans "The help is unavailable for a moment!" %}#}
@@ -16,7 +18,7 @@
                 <br>
                 {% trans 'or contact'%}
                 <a href="https://www.datawinners.com/{% trans "en" %}/help-center/ask-us/" target="_blank" > {% trans 'Datawinners Support.' %}</a>
-            </div>
+        </div>
         <a class="close_help_button float_right"><img src="/media/images/close_button.png" class="close_help_button"><span class="font_size_12">{% trans "Close" %}</span></a>
     </div>
-{% endblock %}
+{% endblock %}/
