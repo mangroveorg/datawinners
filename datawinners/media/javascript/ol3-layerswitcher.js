@@ -42,13 +42,14 @@ ol.control.LayerSwitcher = function(opt_options) {
     button.onclick = function(e) {
         e = e || window.event;
         //this_.showPanel();
-        $('.panel').toggle();
-        if($('.panel').css('display')=='none'){
+        if($('.panel').css('display')!='none'){
              $(this).css('background-image','url("/media/images/map_show_panel.png")');
         }
         else{
             $(this).css('background-image','url("/media/images/map_hide_panel.png")');
         }
+        $('.panel').toggle('slow');
+
         
         e.preventDefault();
     };
