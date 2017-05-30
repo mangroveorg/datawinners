@@ -64,6 +64,9 @@
         background-position: 2px;
         background-color: transparent;
         border: none;
+        &:hover,&:focus {
+            background-color : transparent!important;
+        }
     }
 
 
