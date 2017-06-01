@@ -66,6 +66,7 @@
         border: none;
         &:hover,&:focus {
             background-color : transparent!important;
+            outline: none;
         }
     }
 
