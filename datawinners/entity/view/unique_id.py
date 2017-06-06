@@ -54,20 +54,26 @@ def _hard_delete_unique_ids(unique_ids, dbm, form_model, request):
         log_activity(request, DELETED_IDENTIFICATION_NUMBER, "%s: [%s]" % (request.POST['entity_type'], ", ".join(unique_ids)))
 
 
-def _check_if_questionnaire_has_submissions_with_unique_id(manager, project, unique_id):
-    field_names = [_get_unique_id_es_field_name(field, project.id) for field in project.entity_questions]
+def _check_if_questionnaire_has_submissions_with_unique_id(manager, project, unique_id, entity_type):
+    field_names = [_get_unique_id_es_field_name(field, project.id, project.is_entity_registration_form())
+                   for field in project.get_questions_for_entity([entity_type])]
+    doc_type = project.entity_type[0] if project.is_entity_registration_form() else project.id
     query = elasticutils.S().es(urls=ELASTIC_SEARCH_URL, timeout=ELASTIC_SEARCH_TIMEOUT).indexes(
-        manager.database_name).doctypes(project.id)[:1]
+        manager.database_name).doctypes(doc_type)[:1]
     for field_name in field_names:
         params = {field_name: unique_id}
         query = query.filter(**params)
 
-    return list(query.values_list('status'))
+    return list(query.values_list('void' if project.is_entity_registration_form() else 'status'))
 
 
-def _get_unique_id_es_field_name(field, project_id):
+def _get_unique_id_es_field_name(field, project_id, entity_questionnaire=False):
     unique_id_field_name = es_questionnaire_field_name(field.code, project_id)
-    return unique_id_field_name + '_unique_code_exact'
+    if not entity_questionnaire:
+        unique_id_field_name += '_unique_code_exact'
+    else:
+        unique_id_field_name += "_unique_code"
+    return unique_id_field_name
 
 
 def _get_unique_ids_to_hard_delete(unique_ids, entity_type, manager):
@@ -79,7 +85,7 @@ def _get_unique_ids_to_hard_delete(unique_ids, entity_type, manager):
             if unique_id in unique_ids_with_submissions:
                 continue
 
-            if _check_if_questionnaire_has_submissions_with_unique_id(manager, project, unique_id):
+            if _check_if_questionnaire_has_submissions_with_unique_id(manager, project, unique_id, entity_type):
                 unique_ids_with_submissions.append(unique_id)
 
     return set(unique_ids) - set(unique_ids_with_submissions)
