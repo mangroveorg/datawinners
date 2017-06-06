@@ -15,6 +15,8 @@ from mangrove.form_model.project import Project
 from mangrove.form_model.validation import TextLengthConstraint, NumericRangeConstraint
 from datawinners.scheduler.smsclient import SMSClient
 from datawinners.sms.models import MSG_TYPE_USER_MSG
+from mangrove.form_model.form_model import EntityFormModel
+from mangrove.form_model.project import Project
 from unittest.case import SkipTest
 
 class TestHelper(unittest.TestCase):
@@ -274,8 +276,6 @@ class TestPreviewCreator(unittest.TestCase):
             all_project_by_entity.return_value = [{"doc": {'is_registration_model': True, 'void':False}},
                 {"doc": {'is_registration_model': False, 'void':False}}]
             result = get_projects_by_unique_id_type(dbm, ["clinic"])
-            from mangrove.form_model.form_model import EntityFormModel
-            from mangrove.form_model.project import Project
             self.assertTrue(isinstance(result[0], EntityFormModel))
             self.assertTrue(isinstance(result[1], Project))
             
