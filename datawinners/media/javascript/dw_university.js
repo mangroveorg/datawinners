@@ -8,6 +8,7 @@ function resize_iframe(event) {
 $(document).ready(function(){
     $("#need_help_button").one( "click",function() {
         $.ajax({
+            async:false,
             url: DW.help_url,
             data: {},
             global: false,
@@ -16,16 +17,10 @@ $(document).ready(function(){
                 $("#help_unavailable").removeClass("none");
             },
             complete: function(xhr, statusText){
-                if (xhr.status == 200) {
-                    $('.spinner_help').hide();
-                    $("#help_iframe").attr("src", DW.help_url);
-                    $('#help_iframe').removeClass("none");
-                    $("#help_iframe").addClass("block");
-                    $("#need_help_button").addClass("none");
-                    $('#need_help_active_button').removeClass("none");
-                } else {
+                if (xhr.status !=200){
                     $('#help_iframe').addClass("none");
                     $("#help_unavailable").removeClass("none");
+
                 }
             },
             beforeSend: function() {
@@ -35,6 +30,17 @@ $(document).ready(function(){
                 $('.spinner_help').show();
                 $("#div_iframe").css("visibility", "visible");
 
+
+            },
+            success: function(){
+                $("#help_iframe").attr("src", DW.help_url);
+                $("#help_iframe").on("load",function(){
+                    $('.spinner_help').hide();
+                    $(this).removeClass("none");
+                    $(this).addClass("block");
+                    $("#need_help_button").addClass("none");
+                    $('#need_help_active_button').removeClass("none");
+                });
 
             }
 
