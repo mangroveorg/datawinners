@@ -137,6 +137,16 @@ form{
     font-style: italic;
 }
 
+.pro_sms_selected_country_note{
+    display: block;
+    font-size: 12px;
+    text-align: left;
+    margin-left: 3px;
+    margin-top: -10px;
+    color: #000000;
+    font-style: italic;
+}
+
 .choices_description{
     line-height: 14px;
     margin-bottom: 10px;
@@ -188,7 +198,7 @@ form.registration_form{
         float: left;
     }
     ul.payment_details{
-        width: 675px;
+        width: 864px;
         > li:last-child{
             width:766px;
         }

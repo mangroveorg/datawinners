@@ -4408,6 +4408,7 @@ msgstr "<div class='radio_title'>Pro</div>"
 msgid "pro_sms_subtitle"
 msgstr "<div class='radio_title'>Pro SMS</div>"
 "<div class='subtitle_for_radio_button pro_sms_account'>Collect unlimited data via 3 channels: SMS, Android (Smartphone, Tablet) & Web</div>"
+"<div class='pro_sms_selected_country_note'>* Pro SMS is available in selected countries only, please contact <a href=\"mailto:support@datawinners.com\">support@datawinners.com</a> for more information.</div>"
 
 msgid "Account Type"
 msgstr ""
