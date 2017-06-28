@@ -41,7 +41,7 @@ export default class SelectQuestionForm extends React.Component {
                       onChange={this.props.onChangeForChoiceType}
                       value={questionType[1]}
                       name='choiceType'
-                      errorText={this.props.errors.type}
+                      errorText={this.props.errors.choiceType}
                     >
                     {this.getChoicesMenuItems()}
             </SelectField>

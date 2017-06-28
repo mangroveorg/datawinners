@@ -39,12 +39,12 @@
     "gulp-concat": "^2.6.0",
     "jquery": "^2.2.3",
     "lodash": "^4.6.1",
-    "material-ui": "^0.15.0-beta.1",
-    "react": "^15.0.1",
-    "react-dom": "^15.0.1",
+    "material-ui": "^0.16.4",
+    "react": "^15.6.1",
+    "react-dom": "^15.6.1",
     "react-motion": "^0.4.2",
     "react-select": "^1.0.0-beta11",
-    "react-tap-event-plugin": "^1.0.0",
+    "react-tap-event-plugin": "^2.0.1",
     "toastr": "^2.1.2"
   }
 }

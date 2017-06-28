@@ -26,7 +26,7 @@ module.exports = {
 	},
 	GroupBoundaries : ['begin_group', 'begin_repeat', 'end_group', 'end_repeat'],
 	MANDATORY_ASTERISK: '*',
-	REQUIRED_QUESTION_FIELDS : ['label', 'name', 'type'],
+	REQUIRED_QUESTION_FIELDS : ['label', 'name', 'type','choiceType'],
 	REQUIRED_CHOICE_FIELDS : ['list_name', 'name', 'label'],
 	QuestionnaireUrl : '/xlsform/',
 	QuestionnaireSaveUrl : '/xlsform/',
@@ -43,5 +43,7 @@ module.exports = {
 		{value: "video", label: "Video"},
 		{value: "dw_idnr", label: "Identification Number"},
 		{value: "note", label: "Note"}
-	]
+	],
+	CHOICE_TYPE_FIELD_NAME :'choiceType',
+	SELECT_QUESTION_TYPE : ['select_one','select_multiple']
 };
