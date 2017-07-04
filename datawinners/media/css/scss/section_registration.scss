@@ -49,13 +49,14 @@
 #registration_form{
     .black_italic{
         display: inline-block;
+        padding-left: 8px;
+        padding-bottom: 4px;
     }
     .black_italic.optional{
         display: block;
     }
     ul{
         li#mobile-phone-number-fr p{
-            margin-top: -12px;
         }
     }
 }
