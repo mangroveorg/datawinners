@@ -39,6 +39,16 @@ def _add_text_field_mapping(mapping_fields, field_def):
 
         }}})
 
+def _add_binary_field_mapping(mapping_fields, field_def):
+    name = field_def["name"]
+    mapping_fields.update(
+        {name: {"type": "multi_field", "fields": {
+            name: {"type": "string"},
+            name + "_value": {"type": "binary", "index_analyzer": "sort_analyzer", "include_in_all": False},
+            name + "_exact": {"type": "binary", "index": "not_analyzed", "include_in_all": False},
+
+        }}})
+
 
 def get_field_definition(form_field, field_name=None):
     field_def = {"name": field_name or lower(form_field.name)}
@@ -47,6 +57,11 @@ def get_field_definition(form_field, field_name=None):
         field_def.update({"date_format": form_field.date_format})
     else:
         field_def.update({"type": 'string'})
+    return field_def
+
+def get_field_definition_with_binary_type(form_field, field_name=None):
+    field_def = {"name": field_name or lower(form_field.name)}
+    field_def.update({"type": "binary"})
     return field_def
 
 

@@ -20,7 +20,7 @@ from mangrove.errors.MangroveException import DataObjectNotFound
 from datawinners.search.index_utils import get_elasticsearch_handle, get_field_definition, _add_date_field_mapping, \
     es_unique_id_code_field_name, \
     es_questionnaire_field_name, _add_text_field_mapping, es_unique_id_details_field_name,\
-    lookup_entity
+    lookup_entity, get_field_definition_with_binary_type, _add_binary_field_mapping
 from mangrove.datastore.entity import get_by_short_code_include_voided, Entity, Contact
 from mangrove.form_model.form_model import FormModel, get_form_model_by_entity_type
 from mangrove.form_model.project import Project
@@ -126,8 +126,13 @@ class SubmissionSearchStore():
                 fields_definition.append(
                     get_field_definition(field, field_name=es_unique_id_code_field_name(unique_id_field_name)))
 
-            if isinstance(field, FieldSet) and field.is_group():
-                self._get_submission_fields(fields_definition, field.fields, field.code)
+            if isinstance(field, FieldSet):
+                if field.is_group():
+                    self._get_submission_fields(fields_definition, field.fields, field.code)
+                else:
+                    es_field_name = es_questionnaire_field_name(field.code, self.latest_form_model.id,
+                                                                            parent_field_name)
+                    fields_definition.append(get_field_definition_with_binary_type(field, field_name=es_field_name))
                 continue
             fields_definition.append(
                 get_field_definition(field,
@@ -162,11 +167,11 @@ class SubmissionSearchStore():
         """
         mapping_fields = {}
         mapping = {"date_detection": False, "properties": mapping_fields}
+        methods_dict = {"date": _add_date_field_mapping, "binary": _add_binary_field_mapping}
+        
         for field_def in fields_definition:
-            if field_def.get("type") is "date":
-                _add_date_field_mapping(mapping_fields, field_def)
-            else:
-                _add_text_field_mapping(mapping_fields, field_def)
+            method = methods_dict.get(field_def.get("type"), _add_text_field_mapping)
+            method(mapping_fields, field_def)
 
         ds_mapping = self._add_data_sender_details_to_mapping()
         all_id_fields = [field for field in self.latest_form_model.fields if

@@ -1,7 +1,7 @@
 import logging
 from django.core.management.base import BaseCommand
 from datawinners.main.database import get_db_manager
-from datawinners.search.index_utils import get_elasticsearch_handle
+from datawinners.search.index_utils import get_elasticsearch_handle, delete_mapping
 from datawinners.search.manage_index import create_all_mappings, create_all_indices, populate_submission_index
 from datawinners.main.couchdb.utils import all_db_names
 from datawinners.search.mapping import form_model_change_handler
@@ -20,6 +20,7 @@ def recreate_index_for_questionnaire(database_name, form_code):
     dbm = get_db_manager(database_name)
     try:
         form_model = get_form_model_by_code(dbm, form_code)
+        delete_mapping(database_name, form_model.id)
         create_mapping_for_form_model(dbm, form_model)
         populate_submission_index(dbm, form_model.id)
     except Exception as e:
