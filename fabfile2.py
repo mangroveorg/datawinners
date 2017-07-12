@@ -14,6 +14,7 @@ couch_db_feed_service_name = 'couchdbfeed'
 
 ENVIRONMENT_CONFIGURATIONS = {
     "prod": "../../datawinners-conf/datawinners/local_settings_ec2.py",
+    "preprod": "../../local_settings_preprod.py",
 }
 
 ENVIRONMENT_VES = "/home/mangrover/virtual_env/datawinners"
