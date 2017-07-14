@@ -34,14 +34,12 @@ DW.MappingEditor = function(entityType, filters, details, specials) {
 
     var displayShareLink = function (token) {
         var iFrameDom = $('#map-preview').contents();
-        //dataParam = iFrameDom.find('#fmap input:not([type="checkbox"])').serialize();
         var dataParam = '';
         iFrameDom.find('#fmap input[type="checkbox"]:checked').each(function(){
             if(this.name!= 'base'){
                 dataParam += '&' + this.name + '=' + this.id;
             }
         });
-        //alert(dataParam);
         shareWidget.find('input').val(window.location.origin + "/public/maps/" + token +"/?" + dataParam)
         shareWidget.show();
         shareWidget.find('input').select();
