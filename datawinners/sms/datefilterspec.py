@@ -40,7 +40,7 @@ class DateForm(forms.Form):
         for k in kwargs.get('initial',{}):
             if not self.fields.has_key(k):
                 self.fields[k] = forms.CharField(widget=forms.HiddenInput())
-                self.fields[k].inital = kwargs.get('initial').get(k)
+                self.fields[k].initial = kwargs.get('initial').get(k)
 
 
 class DateFilterSpec(DateFieldFilterSpec):
@@ -61,15 +61,12 @@ class DateFilterSpec(DateFieldFilterSpec):
         }
         </style>
         <form method="GET" action="">
-        <link rel="stylesheet" type="text/css" href="%(admin_media)scss/forms.css" />
-        <link rel="stylesheet" type="text/css" href="%(admin_media)scss/widgets.css" />
-        %(form_media)s
         <ul>
         %(form)s
         <li> <input type="submit" value="%(search)s"> </li>
         </ul>
         </form>
-        """ % {'search':_('Go'),'form_media':form.media,'form':form.as_ul(),'admin_media':settings.ADMIN_MEDIA_PREFIX}
+        """ % {'search':_('Go'),'form':form.as_ul()}
         return mark_safe(title) + mark_safe(out)
         
 

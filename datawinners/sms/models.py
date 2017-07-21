@@ -13,6 +13,7 @@ MSG_TYPE_SUBMISSION_REPLY = "Automatic Reply"
 class SMS(models.Model):
     organization = models.ForeignKey(Organization)
     created_at = models.DateField(auto_now_add=True)
+    created_at.date_filter = True
     delivered_at = models.DateField(null=True)
     delivered_at.date_filter = True
     status = models.CharField(max_length=20)

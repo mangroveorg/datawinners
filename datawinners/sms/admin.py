@@ -12,7 +12,7 @@ from datawinners.common.admin.utils import get_text_search_filter, get_admin_pan
 class SMSAdmin(admin.ModelAdmin):
     list_display = (
     'message_id', 'organization', 'status', 'created_at','delivered_at', 'message', 'msg_from', 'msg_to', 'msg_type', 'smsc')
-    list_filter = ['delivered_at', "status", "smsc", "msg_type"]
+    list_filter = ['delivered_at','created_at', "status", "smsc", "msg_type"]
     search_fields = ['msg_to', 'organization__org_id']
 
     def export_sms_details_to_excel(modeladmin, request, query_set):
