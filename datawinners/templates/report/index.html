@@ -35,7 +35,7 @@
     {% for config_line in configs %}
         <ul id="report_navigation">
             {% for config in config_line %}
-                <li class="{% if forloop.first %}active{% else %}inactive{% endif %}" title="{{config.description}}">
+                <li class="{% if forloop.first %}active{% else %}inactive{% endif %}">
                     <a id="{{ config.id }}">{{ config.name }}</a>
                 </li>
             {% endfor %}
