@@ -4617,6 +4617,9 @@ msgstr "Si vous avez besoin d’aide, contactez votre gestionnaire de projet ou 
 msgid "Minimum of 6 characters in length"
 msgstr "Au minimum 6 caratères"
 
+msgid "Example: Minimum of 6 characters in length"
+msgstr "Exemple: Au minimum 6 caratères"
+
 msgid "Thank you %(datasender)s. We received your SMS for %(subject_info)s"
 msgstr "Merci %(datasender)s. Nous avons recu votre SMS concernant %(subject_info)s"
 

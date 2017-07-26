@@ -4216,6 +4216,10 @@ msgstr ""
 msgid "Minimum of 6 characters in length"
 msgstr ""
 
+msgid "Example: Minimum of 6 characters in length"
+msgstr ""
+
+
 msgid "Thank you %(datasender)s. We received your SMS for %(subject_info)s"
 msgstr ""
 
