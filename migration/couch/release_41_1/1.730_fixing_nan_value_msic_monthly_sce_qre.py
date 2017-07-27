@@ -21,7 +21,10 @@ def get_numerator(submission_dict):
     numerators = ['pafp_m_cd', 'pafp_m_pill', 'pafp_m_inj', 'pafp_m_imp', 'pafp_m_iud', 'pafp_s_cd', 'pafp_s_pill', 'pafp_s_inj', 'pafp_s_imp', 'pafp_s_iud']
     total = 0
     for numerator in numerators:
-        total += int(submission_dict['value']['values']['section_service'][0][numerator])
+        try:
+            total += int(submission_dict['value']['values']['section_service'][0][numerator])
+        except Exception as e:
+            pass
     return total
 
 
@@ -29,7 +32,10 @@ def get_denumerator(submission_dict):
     denumerators = ['service_cacm', 'service_cacs']
     total = 0
     for denumerator in denumerators:
-        total += int(submission_dict['value']['values']['section_service'][0][denumerator])
+        try:
+            total += int(submission_dict['value']['values']['section_service'][0][denumerator])
+        except Exception as e:
+            pass
     return total
 
 def calculate_pafp_calc1(row):
@@ -44,7 +50,10 @@ def get_total_servicefp(submission_dict):
     'service_implant', 'service_iud', 'service_tl', 'service_vasectomy', 'service_STI', 'service_cacm', 'service_cacs']
     total = 0
     for sce in services:
-        total += int(submission_dict['value']['values']['section_service'][0][sce])
+        try:
+            total += int(submission_dict['value']['values']['section_service'][0][sce])
+        except Exception as e:
+            pass
     return total
    
 
