@@ -6,7 +6,7 @@ function(doc) {
     if (doc.document_type == 'SurveyResponse' && doc.form_model_id == '16ff92ba2d5511e68c6d12313d2da6d0'
       && (doc.values['section_service'][0]['pafp_calc1']== 'NaN'
       || doc.values['section_service'][0]['pafp_calc2']== 'NaN'
-      || doc.values['section_client2']['service_totalfp'] == 'NaN')) {
+      || doc.values['section_client2'][0]['service_totalfp'] == 'NaN')) {
         emit(doc.form_model_id, doc);
     }
 }
