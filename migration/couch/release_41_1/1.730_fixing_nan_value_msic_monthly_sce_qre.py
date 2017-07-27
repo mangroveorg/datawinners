@@ -75,5 +75,9 @@ for row in manager.database.query(nan_submissions):
         manager.database.save(row['value'], process_post_update=False)
         print "\n%s - %s" % (i, row['id'])
         i += 1
+    except KeyError as e:
+        print "\n%s - %s KeyError" % (i, row['id'])
+        i += 1
+        pass
     except Exception as e:
         raise
