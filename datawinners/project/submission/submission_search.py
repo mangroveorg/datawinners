@@ -199,6 +199,8 @@ def _create_query(dbm, form_model, local_time_delta, search_parameters):
     search = _add_pagination_criteria(search_parameters, search)
     search = _add_sort_criteria(search_parameters, search)
     search = _add_response_fields(search_parameters, search)
+    if search_parameters.get('filter') == 'identification_number':
+        search = _add_search_filters(search_parameters,form_model,local_time_delta,search)
     query_fields, search = _add_filters(form_model, search_parameters, local_time_delta, search)
     return query_fields, search
 

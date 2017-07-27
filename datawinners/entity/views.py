@@ -812,7 +812,9 @@ def export_subject(request):
     subject_type = request.POST.get('subject_type', '').lower()
     project_name = subject_type
     form_model = get_form_model_by_entity_type(manager, [subject_type.lower()])
+    search_text = request.POST.get('query_text')
     query_params = {
+                    "search_text" : search_text,
                     "start_result_number": 0,
                     "number_of_results": 4000,
                     "order": "",

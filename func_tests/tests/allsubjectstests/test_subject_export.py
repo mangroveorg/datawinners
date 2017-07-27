@@ -16,6 +16,7 @@ class TestSubjectExport(HeadlessRunnerTest):
     def setUp(self):
         self.client = Client()
         self.mobile_number = self.random_number(6)
+        self.mobile_number2 = self.random_number(6)
         self.create_subject()
         self.client.login(username='tester150411@gmail.com', password='tester150411')
 
@@ -24,7 +25,8 @@ class TestSubjectExport(HeadlessRunnerTest):
 
     def test_export(self):
         resp = self.client.post('/entity/subject/export/',
-                                {'subject_type': 'clinic', 'query_text': self.mobile_number})
+                                {'subject_type': 'clinic', 'query_text': ''})
+
         xlfile_fd, xlfile_name = tempfile.mkstemp(".xls")
         os.write(xlfile_fd, resp.content)
         os.close(xlfile_fd)
@@ -42,6 +44,8 @@ class TestSubjectExport(HeadlessRunnerTest):
             sheet.row_values(0, 0, 7))
         total_rows = sheet.nrows
         self.assertEqual([u'firstname', u'lastname', u'location', 3.0, 3.0, unicode(self.mobile_number)],
+                         sheet.row_values(total_rows-2, 0, 6))
+        self.assertEqual([u'firstname2', u'lastname2', u'location2', 4.0, 4.0, unicode(self.mobile_number2)],
                          sheet.row_values(total_rows-1, 0, 6))
         self.assertEqual([], sheet.row_values(total_rows-1, 7))
 
@@ -51,4 +55,7 @@ class TestSubjectExport(HeadlessRunnerTest):
 
         message = "cli firstname lastname location 3,3 %s" % self.mobile_number
         data = {"message": message, "from_msisdn": _from, "to_msisdn": _to, "message_id": uuid.uuid1().hex}
+        message2= "cli firstname2 lastname2 location2 4,4 %s" % self.mobile_number2
+        data2 = {"message": message2, "from_msisdn": _from, "to_msisdn": _to, "message_id": uuid.uuid1().hex}
         self.client.post("/submission", data)
+        self.client.post("/submission", data2)
