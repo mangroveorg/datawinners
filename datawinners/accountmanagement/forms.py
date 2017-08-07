@@ -68,7 +68,7 @@ class OrganizationForm(ModelForm):
 class UserProfileForm(forms.Form):
     required_css_class = 'required'
 
-    title = forms.CharField(max_length=30, required=False, label=_("Job Title"))
+    title = forms.CharField(max_length=100, required=False, label=_("Job Title"))
     full_name = forms.CharField(max_length=80, required=True, label=_('Name'))
     role = forms.CharField(max_length=20, required=True, label=_('Role'))
     username = forms.EmailField(max_length=75, required=True, label=_("Email"), error_messages={

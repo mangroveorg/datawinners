@@ -36,7 +36,7 @@
         <ul id="report_navigation">
             {% for config in config_line %}
                 <li class="{% if forloop.first %}active{% else %}inactive{% endif %}" title="{{config.description}}">
-                    <a id="{{ config.id }}">{{ config.name }}</a>
+                    <a id="{{ config.id }}" class="report_fixed_width">{{ config.name }}</a>
                 </li>
             {% endfor %}
         </ul>

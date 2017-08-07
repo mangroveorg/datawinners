@@ -19,6 +19,13 @@ $font_family:"Arail";
                 font-size:14px;
                 font-weight:bold;
             }
+            a.report_fixed_width{
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                width: 90px;
+                display: block;
+            }
         }
         li.active{
             background:#FFFFFF;
