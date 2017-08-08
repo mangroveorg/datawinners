@@ -132,7 +132,7 @@ var viewModel = function () {
         this.hasFormChanged(false);
         setTimeout(function () {
             self.addUserSuccess(false);
-        }, 10000)
+        }, 20000)
     };
     
     this.selectedQuestionnaireNames = function(){
