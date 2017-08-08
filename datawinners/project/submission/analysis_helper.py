@@ -35,6 +35,10 @@ def enrich_analysis_data(record, questionnaire, submission_id, is_export=False):
             if isinstance(value, basestring):
                 try:
                     value_obj = json.loads(value)
+                    if isinstance(value_obj, float):
+                        diff = value_obj - int(value_obj)
+                        if diff == 0 :
+                            record[key.replace("."," ")] = int(value_obj)
                     if isinstance(value_obj, list) and not is_export:
                         _transform_nested_question_answer(key, value_obj, record, questionnaire, submission_id)
                 except Exception as e:
