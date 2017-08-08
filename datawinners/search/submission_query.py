@@ -165,7 +165,8 @@ class SubmissionQueryResponseCreator(object):
 
         else:
             temp_dict = {code.replace(".", " "):res[code] for code in res}
-            return temp_dict.get(ugettext(key))
+            value = temp_dict.get(ugettext(key))
+            return _remove_dot_zero_if_needed(value)
 
     def create_aggregate_response(self, search_results, search_parameters):
         aggr_result = []
@@ -248,3 +249,14 @@ def format_fieldset_values_for_representation(entry, field_set, submission_id):
 def _append_to_(result, key, value):
     setattr(result, key, value)
     return result
+
+def _remove_dot_zero_if_needed(value):
+    try:
+        float_value = float(value)
+        diff = float_value - int(float_value)
+        if diff == 0 :
+            return int(float_value)
+        else:
+            return value
+    except ValueError:
+        return value
