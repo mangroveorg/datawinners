@@ -99,6 +99,9 @@ var viewModel = function () {
         if (errors['role']) {
             self.role.setError(errors['role'][0]);
         }
+        if (errors['title']) {
+            self.title.setError(errors['title'][0]);
+        }
 
         if ($.isEmptyObject(errors)) {
             self.showErrorMessage();
