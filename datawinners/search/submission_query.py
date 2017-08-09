@@ -260,3 +260,5 @@ def _remove_dot_zero_if_needed(value):
             return value
     except ValueError:
         return value
+    except TypeError:
+        return value
