@@ -63,7 +63,10 @@ i = 0
 for row in manager.database.query(nan_submissions):
     try:
         pafp_calc1 = calculate_pafp_calc1(row)
-        calc1 = row['value']['values']['section_service'][0]['pafp_calc1']
+        try:
+            calc1 = row['value']['values']['section_service'][0]['pafp_calc1']
+        except KeyError:
+            calc1 = 0
         pafp_calc2 = int(pafp_calc1)
         total_servicefp = get_total_servicefp(row)
         current_total = row['value']['values']['section_client2'][0]['service_totalfp']
