@@ -1,5 +1,5 @@
 from datawinners.main.database import get_db_manager
-
+import logging,time
 
 nan_submissions = """
 function(doc) {
@@ -14,6 +14,7 @@ function(doc) {
 """
 
 db_name = "hni_marie-stopes-int-cambodia_ejn610045"
+logger = logging.getLogger(db_name)
 
 manager = get_db_manager(db_name)
 
@@ -56,7 +57,9 @@ def get_total_servicefp(submission_dict):
         except Exception as e:
             pass
     return total
-   
+
+logger.info('Started data record migration for user records')
+start = time.time()
 
 i = 0
 
@@ -75,7 +78,7 @@ for row in manager.database.query(nan_submissions):
         row['value']['values']['section_service'][0]['pafp_calc1'] = str(pafp_calc1)
         row['value']['values']['section_service'][0]['pafp_calc2'] = str(pafp_calc2)
         row['value']['values']['section_client2'][0]['service_totalfp'] = str(total_servicefp)
-        
+
         manager.database.save(row['value'], process_post_update=False)
         print "\n%s - %s" % (i, row['id'])
         i += 1
@@ -85,3 +88,6 @@ for row in manager.database.query(nan_submissions):
         pass
     except Exception as e:
         raise
+
+logger.info('Completed data record migration for user records')
+logger.info('Total Time taken (seconds) : {timetaken}'.format(timetaken=(time.time() - start)))
