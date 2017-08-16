@@ -124,10 +124,10 @@ def _change_questionnaire_end_date(questionnaire, end_date):
 @is_not_expired
 @is_project_exist
 def deactivate_poll(request, project_id):
-    return HttpResponse(json.dumps({'success': True,'method': request.method }))
     if request.method == 'POST':
         manager = get_database_manager(request.user)
         questionnaire = Project.get(manager, project_id)
+        return HttpResponse(json.dumps({'success': True,'questionnaire': not questionnaire }))
         if questionnaire:
             _change_questionnaire_status(questionnaire, "deactivated")
             return HttpResponse(json.dumps({'success': True}))
