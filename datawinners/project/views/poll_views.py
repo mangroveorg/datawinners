@@ -127,10 +127,10 @@ def deactivate_poll(request, project_id):
     if request.method == 'POST':
         manager = get_database_manager(request.user)
         questionnaire = Project.get(manager, project_id)
-        return HttpResponse(json.dumps({'success': True,'questionnaire': not questionnaire }))
         if questionnaire:
             _change_questionnaire_status(questionnaire, "deactivated")
-            return HttpResponse(json.dumps({'success': True}))
+            return HttpResponse(json.dumps({'success': True,'questionnaire': not questionnaire }))
+            # return HttpResponse(json.dumps({'success': True}))
             # UserActivityLog().log(request, action=DEACTIVATE_POLL, project=questionnaire.name,
             #                       detail=questionnaire.name)
             # return HttpResponse(json.dumps({'success': True}))
