@@ -7,7 +7,8 @@ function(doc) {
       && (doc.values['section_service'][0]['pafp_calc1']== 'NaN'
       || doc.values['section_service'][0]['pafp_calc2']== 'NaN'
       || doc.values['section_client2'][0]['service_totalfp'] == 'NaN'
-      || doc.values['section_client2'][0]['service_totalfp'] == '')) {
+      || doc.values['section_client2'][0]['service_totalfp'] == ''
+      || doc.values['section_client2'][0]['service_totalfp'] == null)) {
         emit(doc.form_model_id, doc);
     }
 }
