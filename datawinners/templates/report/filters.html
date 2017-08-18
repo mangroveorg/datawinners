@@ -8,7 +8,7 @@
                         class="filter" style="width: 100%;">
                     <option value="">All</option>
                     {% for option in filter.field.new_options %}
-                        <option {{option.2}} value="{{option.0}}">{{option.1}}</option>
+                        <option {{option.2}} value="{{option.0}}">{{option.1|safe }}</option>
                     {% endfor %}
                 </select>
             </div>
