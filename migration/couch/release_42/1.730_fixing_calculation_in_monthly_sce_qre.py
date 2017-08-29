@@ -33,7 +33,6 @@ function(doc) {
 """
 
 db_name = "hni_marie-stopes-int-cambodia_ejn610045"
-db_name = "hni_testorg_slx364903"
 logger = logging.getLogger(db_name)
 
 manager = get_db_manager(db_name)
