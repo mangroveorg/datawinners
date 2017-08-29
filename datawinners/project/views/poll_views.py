@@ -131,9 +131,8 @@ def deactivate_poll(request, project_id):
             _change_questionnaire_status(questionnaire, "deactivated")
             UserActivityLog().log(request, action=DEACTIVATE_POLL, project=questionnaire.name,
                                   detail=questionnaire.name)
-            return HttpResponse(json.dumps({'success': True,'questionnaire_name': questionnaire.name,'action':DEACTIVATE_POLL}))
-            # return HttpResponse(json.dumps({'success': True}))
-        return HttpResponse(json.dumps({'success': False}))
+            return HttpResponse(json.dumps({'success': True, 'post':request.POST}))
+        return HttpResponse(json.dumps({'success': False, 'message': "No Such questionnaire",'post':request.POST}))
 
 
 def _create_reponse_for_activated_poll(manager, questionnaire, request):
