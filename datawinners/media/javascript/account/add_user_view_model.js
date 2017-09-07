@@ -44,6 +44,9 @@ var viewModel = function () {
     });
 
     this.title.subscribe(function(){
+        if(!self.title() || self.title().length <= 100){
+            self.title.setError(null);
+        }
        self.hasFormChanged(true);
     });
 
@@ -125,6 +128,7 @@ var viewModel = function () {
         this.email(null);
         this.email.setError(null);
         this.title(null);
+        this.title.setError(null);
         this.role(null);
         this.mobilePhone(null);
         this.mobilePhone.setError(null);
