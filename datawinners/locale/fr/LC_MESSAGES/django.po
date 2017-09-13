@@ -6380,3 +6380,6 @@ msgstr "A modifié les Soumissions d’un Questionnaire avancé"
 
 msgid "Deadline updated: month day"
 msgstr "Echéance mise à jour: mois jour"
+
+msgid "Project Manager (without delete permission)"
+msgstr "Gestionnaire de projet (sans permission de suppression)"

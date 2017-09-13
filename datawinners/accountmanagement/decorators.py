@@ -212,3 +212,14 @@ def restrict_access(f):
         return f(request, project_id, *args, **kw)
 
     return wrapper
+
+
+def has_delete_permission(f):
+    def wrapper(*args, **kw):
+        user = args[0].user
+        if user.is_no_delete_pm():
+            return HttpResponseRedirect(django_settings.HOME_PAGE)
+
+        return f(*args, **kw)
+
+    return wrapper

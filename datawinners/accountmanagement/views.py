@@ -222,7 +222,7 @@ def new_user(request):
                         if role == 'Extended Users':
                             link_user_to_all_projects.delay(ngo_user_profile.user_id)
                             UserActivityLog().log(request, action=ADDED_USER, detail=activity_log_detail(name, friendly_name(role)))
-                        elif role == 'Project Managers':
+                        elif role in ['Project Managers', "No Delete PM"]:
                             selected_questionnaires = post_parameters.getlist('selected_questionnaires[]')
                             selected_questionnaire_names = post_parameters.getlist('selected_questionnaire_names[]')
                             if selected_questionnaires is not None:

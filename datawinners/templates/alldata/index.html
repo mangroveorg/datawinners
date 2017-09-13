@@ -131,9 +131,11 @@
                                     {% trans "Register a new " %}{{ entity_type }}</a>
                                 {% endfor %}
                             {% endif %}
+                            {% if user|in_group:"NGO Admins,Project Managers,Read Only Users, Extended Users" %}
                             <span class="{{ project.hide_link_class }}">
                                 |<a href="{{ project.delete_links }}" class="delete_project">{% trans "Delete Questionnaire" %}</a>
                             </span>
+                            {% endif %}
                         </span>
                     </td>
                 </tr>

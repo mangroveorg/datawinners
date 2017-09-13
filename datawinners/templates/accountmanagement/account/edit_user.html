@@ -74,6 +74,13 @@
                                   data-bind="checked: role, click: $root.fetchQuestionnaires, value: 'Project Managers'"/> {% trans "Project Manager" %}
                     </label>
 
+                    <div class="margin_left_30" data-bind="visible: role()=='Project Managers'">
+                        <label style="font-weight: normal;"><input type="checkbox" name="deletePermission" id="has_permission_to_delete"
+                                  data-bind="checked: deletePermission, value: 'Delete Permission'"/>
+                            {% trans "Can delete Questionnaire" %}
+                        </label>
+                    </div>
+
                     <p class="role_description">{% trans "role_project_manager_description" %}</p>
                     <div class="ajax-loader" data-bind="visible: role()=='Project Managers' && hasFetchedQuestionnaires() == false"><img src="/media/images/ajax-loader-horizontal-bar.gif"/></div>
 

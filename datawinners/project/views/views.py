@@ -41,7 +41,7 @@ from mangrove.transport.contract.transport_info import Channel
 from mangrove.transport.player.new_players import WebPlayerV2
 from datawinners import settings
 from datawinners.accountmanagement.decorators import is_datasender_allowed, is_datasender, session_not_expired, \
-    project_has_web_device, valid_web_user, restrict_access
+    project_has_web_device, valid_web_user, restrict_access, has_delete_permission
 from datawinners.feeds.database import get_feeds_database
 from datawinners.feeds.mail_client import mail_feed_errors
 from datawinners.main.database import get_database_manager
@@ -87,6 +87,7 @@ websubmission_logger = logging.getLogger("websubmission")
 @is_datasender
 @is_not_expired
 @is_project_exist
+@has_delete_permission
 def delete_project(request, project_id):
     manager = get_database_manager(request.user)
     questionnaire = Project.get(manager, project_id)

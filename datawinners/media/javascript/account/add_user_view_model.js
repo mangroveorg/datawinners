@@ -7,6 +7,7 @@ var viewModel = function () {
     this.questionnaires = ko.observableArray([]);
     this.selectedQuestionnaires = ko.observableArray([]);
     this.role = DW.ko.createValidatableObservable({value: ""});
+    this.deletePermission = ko.observable(true);
     this.hasFetchedQuestionnaires = ko.observable(false);
     this.addUserSuccess = ko.observable(false);
     this.hasFormChanged = ko.observable(false);
@@ -39,6 +40,7 @@ var viewModel = function () {
     });
 
     this.role.subscribe(function () {
+        self.deletePermission(true);
         self.hasFormChanged(true);
         self.role.setError(null);
     });
@@ -60,6 +62,13 @@ var viewModel = function () {
         self.showFlashMessage(true);
     }
 
+    self.getRole = function(){
+        if (self.role() == "Project Managers" && !self.deletePermission()) {
+            return "No Delete PM";
+        }
+        return self.role();
+    }
+
     this.submit = function () {
         $.blockUI({
             message: '<h1><img src="/media/images/ajax-loader.gif"/><span class="loading">' + gettext("Just a moment") + '...</span></h1>',
@@ -70,7 +79,7 @@ var viewModel = function () {
             'title': self.title(),
             'full_name': self.fullName(),
             'username': self.email(),
-            'role': self.role(),
+            'role': self.getRole(),
             'mobile_phone': self.mobilePhone(),
             'selected_questionnaires': self.selectedQuestionnaires() || [],
             'selected_questionnaire_names': self.selectedQuestionnaireNames() || [],

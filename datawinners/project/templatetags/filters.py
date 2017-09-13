@@ -26,7 +26,7 @@ def join_by_attr(the_list, attr_name='name', separator=', '):
 @register.filter
 def friendly_name(name):
     role_map = {'NGO Admins': 'Account Administrator', 'Project Managers': 'Project Manager',
-                'Extended Users': 'Administrator'};
+                'Extended Users': 'Administrator', 'No Delete PM': 'Project Manager (without delete permission)'};
     if role_map[name] is not None:
         return ugettext(role_map[name])
     return name

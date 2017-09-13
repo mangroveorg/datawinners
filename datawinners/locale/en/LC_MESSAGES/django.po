@@ -5063,3 +5063,6 @@ msgstr ""
 
 msgid "Deadline updated: month day"
 msgstr ""
+
+msgid "Project Manager (without delete permission)"
+msgstr ""
