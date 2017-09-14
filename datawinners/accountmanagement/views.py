@@ -457,7 +457,7 @@ def _update_user_and_profile(form, user_name, role=None):
 def dissociate_user_as_datasender_with_projects(reporter_id, user, previous_role, selected_questionnaires):
     manager = get_database_manager(user)
 
-    if previous_role == 'Project Managers':
+    if previous_role == 'Project Managers' or previous_role == "No Delete PM":
         user_permission = get_user_permission(user.id, manager)
         project_ids = user_permission.project_ids if user_permission else []
     elif previous_role == 'Extended Users':
