@@ -5066,3 +5066,6 @@ msgstr ""
 
 msgid "Project Manager (without delete permission)"
 msgstr ""
+
+msgid "Permission to Delete Questionnaires"
+msgstr ""

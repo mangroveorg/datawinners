@@ -6381,5 +6381,8 @@ msgstr "A modifié les Soumissions d’un Questionnaire avancé"
 msgid "Deadline updated: month day"
 msgstr "Echéance mise à jour: mois jour"
 
-msgid "Project Manager (without delete permission)"
+msgid "Project Manager (without delete permissides on)"
 msgstr "Gestionnaire de projet (sans permission de suppression)"
+
+msgid "Permission to Delete Questionnaires"
+msgstr "Autoriser à supprimer des Questionnaires"
