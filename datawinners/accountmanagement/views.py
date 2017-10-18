@@ -559,7 +559,7 @@ def edit_user_profile(request, user_id=None):
 
             name = post_parameters["full_name"]
 
-            if role == 'Project Managers':
+            if role == 'Project Managers' or role == 'No Delete PM':
                 selected_questionnaires = post_parameters.getlist('selected_questionnaires[]')
                 selected_questionnaire_names = post_parameters.getlist('selected_questionnaire_names[]')
                 if selected_questionnaires is None or len(selected_questionnaires) < 1:

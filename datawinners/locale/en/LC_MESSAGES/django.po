@@ -5064,7 +5064,7 @@ msgstr ""
 msgid "Deadline updated: month day"
 msgstr ""
 
-msgid "Project Manager (without delete permission)"
+msgid "Project Manager (Permission to Delete Questionnaire removed)"
 msgstr ""
 
 msgid "Permission to Delete Questionnaires"
