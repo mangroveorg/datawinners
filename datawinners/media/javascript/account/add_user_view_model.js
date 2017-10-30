@@ -122,7 +122,7 @@ var viewModel = function () {
     };
 
     this.fetchQuestionnaires = function () {
-        if (self.role() == 'Project Managers') {
+        if (self.role() == 'Project Managers' || self.role() == 'No Delete PM') {
             $.getJSON('/entity/questionnairesandpolls/', {}, function (data) {
                 $('#container_content').height('auto');
                 self.hasFetchedQuestionnaires(true);
@@ -138,12 +138,13 @@ var viewModel = function () {
         this.email.setError(null);
         this.title(null);
         this.title.setError(null);
-        this.role(null);
+        this.role(self.role());
         this.mobilePhone(null);
         this.mobilePhone.setError(null);
         this.fullName.setError(null);
         this.questionnaires([]);
         this.hasFetchedQuestionnaires(false);
+        this.fetchQuestionnaires();
         this.selectedQuestionnaires([]);
         this.hasFormChanged(false);
         setTimeout(function () {
