@@ -19,10 +19,10 @@ def enrich_analysis_data(record, questionnaire, submission_id, is_export=False):
         else:
             entity_questions = questionnaire.entity_questions
 
-        linked_id_details = [_get_linked_id_details(dbm, field, parent_field_types=[]) for field in entity_questions]
+        #linked_id_details = [_get_linked_id_details(dbm, field, parent_field_types=[]) for field in entity_questions]
         
-        for linked_id_detail in linked_id_details:
-            _update_record_with_linked_id_details(dbm, record, linked_id_detail, questionnaire.id,nested=False)
+        #for linked_id_detail in linked_id_details:
+        #    _update_record_with_linked_id_details(dbm, record, linked_id_detail, questionnaire.id,nested=False)
         
         if isinstance(record, dict):
             record_as_dict = record
