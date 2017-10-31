@@ -72,7 +72,7 @@
                     {% trans "Project Manager" %}
                 </label>
 
-                <div class="margin_left_30" data-bind="visible: role()=='Project Managers'">
+                <div class="margin_left_30" data-bind="visible: role()=='Project Managers' || role()=='No Delete PM'">
                     <label style="font-weight: normal;"><input type="checkbox" name="deletePermission" id="has_permission_to_delete"
                               data-bind="checked: deletePermission, value: 'Delete Permission'"/>
                         {% trans "Permission to Delete Questionnaires" %}
@@ -87,7 +87,7 @@
                     {% trans "questionnaire_access_placeholder_text" %}
                 </div>
                 <div class="questionnaire-list"
-                     data-bind="visible: role()=='Project Managers'">
+                     data-bind="visible: role()=='Project Managers' || role()=='No Delete PM'">
                     <ul data-bind="foreach: questionnaires">
                         <li>
                             <input type="checkbox"
