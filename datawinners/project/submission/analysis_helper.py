@@ -13,11 +13,11 @@ logger = logging.getLogger("datawinners")
 
 def enrich_analysis_data(record, questionnaire, submission_id, is_export=False):
     try:
-        dbm = questionnaire._dbm
-        if isinstance(questionnaire, EntityFormModel):
-            entity_questions = questionnaire.base_entity_questions
-        else:
-            entity_questions = questionnaire.entity_questions
+        #dbm = questionnaire._dbm
+        #if isinstance(questionnaire, EntityFormModel):
+        #    entity_questions = questionnaire.base_entity_questions
+        #else:
+        #    entity_questions = questionnaire.entity_questions
 
         #linked_id_details = [_get_linked_id_details(dbm, field, parent_field_types=[]) for field in entity_questions]
         
