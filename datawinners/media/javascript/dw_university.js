@@ -7,20 +7,29 @@ function resize_iframe(event) {
 
 $(document).ready(function(){
     $("#need_help_button").one( "click",function() {
+        DW.help_url = DW.help_url.replace('/en/', '/');
+        var url_language = DW.help_url.match("www.datawinners.com/(.*)/find-answers-app");
+        if (url_language) {
+            url_slug = DW.help_url.match("find-answers-app/(.*)/\\?template=help");
+            if (url_slug) {
+                DW.help_url = DW.help_url.replace(url_slug[1], url_slug[1] + '-' + url_language[1]);
+            }
+        }
+
         $.ajax({
-            async:false,
+            async: false,
             url: DW.help_url,
             data: {},
             global: false,
             error: function(r){
-                $('#help_iframe').addClass("none");
+                $('.spinner_help').remove();
+                $('#help_iframe').remove();
                 $("#help_unavailable").removeClass("none");
             },
             complete: function(xhr, statusText){
-                if (xhr.status !=200){
+                if (xhr.status != 200){
                     $('#help_iframe').addClass("none");
                     $("#help_unavailable").removeClass("none");
-
                 }
             },
             beforeSend: function() {
@@ -29,8 +38,6 @@ $(document).ready(function(){
                 $('#help_iframe').hide();
                 $('.spinner_help').show();
                 $("#div_iframe").css("visibility", "visible");
-
-
             },
             success: function(){
                 $("#help_iframe").attr("src", DW.help_url);
@@ -41,9 +48,7 @@ $(document).ready(function(){
                     $("#need_help_button").addClass("none");
                     $('#need_help_active_button').removeClass("none");
                 });
-
             }
-
         });
 
         return false;
