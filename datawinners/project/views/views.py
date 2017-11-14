@@ -758,6 +758,7 @@ class SurveyWebQuestionnaireRequest():
 @is_datasender_allowed
 @project_has_web_device
 @is_not_expired
+@restrict_access
 def survey_web_questionnaire(request, project_id):
     survey_request = SurveyWebQuestionnaireRequest(request, project_id)
     if request.method == 'GET':

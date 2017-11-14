@@ -58,6 +58,7 @@ from datawinners.settings import EMAIL_HOST_USER, HNI_SUPPORT_EMAIL_ID
 from collections import OrderedDict
 from datawinners.blue.xlsform_utils import convert_excel_to_dict, \
     convert_json_to_excel, purify_posted_data
+from datawinners.accountmanagement.decorators import restrict_access
 
 logger = logging.getLogger("datawinners.xls-questionnaire")
 
@@ -390,6 +391,7 @@ class ProjectUpdate(View):
 @is_datasender_allowed
 @project_has_web_device
 @is_not_expired
+@restrict_access
 def new_xform_submission_get(request, project_id):
     survey_request = SurveyWebXformQuestionnaireRequest(request, project_id, XFormSubmissionProcessor())
     if request.method == 'GET':
