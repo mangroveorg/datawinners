@@ -2910,7 +2910,7 @@ msgid "Between %d -- %d characters"
 msgstr "Entre %d -- %d caractères"
 
 msgid "Answer must be a number between %d-%d."
-msgstr "La réponse doit être entre %d-%d."
+msgstr "La réponse doit être un nombre entre %d et %d."
 
 msgid "Answer must be a number. The minimum is %d."
 msgstr "La réponse doit être un nombre. Le minimum est %d"
@@ -3077,7 +3077,7 @@ msgid "Enter the Name"
 msgstr "Tapez le nom"
 
 msgid "Example: Person (Patient, Farmer), Place (Region, Village), Thing (Health center, School, Water pump, Retail shop), Event (Training, Public gathering)"
-msgstr "Exemple: Personne (Patient, Fermier), Place (Région, Village), Chose (Centre de santé, Pompe à eau, Magasin détaillant), Event (Formation, Rassmeblement public)"
+msgstr "Exemple: Personne (Patient, Fermier), Place (Région, Village), Chose (Centre de santé, Pompe à eau, Magasin détaillant), Événement (Formation, Rassemblement public)"
 
 msgid "Once you have registered a %(entity_type)s, it will appear here."
 msgstr "Une fois que vous avez enregistré un(e) %(entity_type)s, il(elle) apparaîtra ici"
@@ -3221,7 +3221,7 @@ msgid "Project"
 msgstr "Projet"
 
 msgid "You may be sharing this %(entity_type)s registration form with other questionnaire. If you make changes, the other questionnaire will have to use your new %(entity_type)s registration form as well."
-msgstr "Vous pouvez partager ce formulaire d’enregistrement de %(entity_type)s avec d'autres questionnaire. Si vous effectuez des modifications, les autres questionnaire devront également utiliser votre nouveau formulaire d'enregistrement de %(entity_type)s."
+msgstr "Vous pouvez partager ce formulaire d’enregistrement de %(entity_type)s avec d'autres questionnaires. Si vous effectuez des modifications, les autres questionnaires devront également utiliser votre nouveau formulaire d'enregistrement de %(entity_type)s."
 
 msgid "If you delete this question, any previously collected data will be lost."
 msgstr "Si vous supprimez cette question, toutes les données collectées auparavant seront perdues."
@@ -4384,7 +4384,7 @@ msgid "Currently, registering a new %(subject_type)s via Smartphone is not possi
 msgstr "Pour l’instant, enregistrer un(e) %(subject_type)s avec le Smartphone n’est pas possible"
 
 msgid "Remind them to download the updated version of the Questionnaire"
-msgstr "Rappelez-leur de télécharger la version mise du Questionnaire"
+msgstr "Rappelez-leur de télécharger la version mise à jour du Questionnaire"
 
 msgid "No action needed. We will display the updated version of the Registration Form automatically"
 msgstr "Aucune action requise. Nous afficherons la version mise à jour du Questionnaire automatiquement"
@@ -4477,7 +4477,7 @@ msgid "Choose 1 or more answers from the list."
 msgstr "Choisissez 1 ou plusieurs réponses dans la liste."
 
 msgid "Choose 1 answer from the list. Example: a"
-msgstr "Choisissez une réponse de la liste. Exemple: a"
+msgstr "Choisissez une réponse à partir de la liste. Exemple: a"
 
 msgid "Choose 1 or more answers from the list. Example: a or ab "
 msgstr ""
@@ -6277,7 +6277,7 @@ msgid "The template you are using is not correct, please use DataWinners templat
 msgstr "Le modèle que vous utilisez n'est pas adapté, veuillez utiliser le modèle de DataWinners et réessayer."
 
 msgid "Answer must be a date in the following format: %s. Example: %s"
-msgstr "La réponse doit être une date au format : %s. Exemple : %s"
+msgstr "La réponse doit être une date suivant le format : %s. Exemple : %s"
 
 msgid "Show Duplicates For"
 msgstr "Afficher les doublons pour"

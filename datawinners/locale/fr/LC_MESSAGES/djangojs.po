@@ -379,7 +379,7 @@ msgstr "La réponse doit être un nombre. Le maximum est %d."
 #: media/javascript/entity/questionnaire_helper.js:21
 #, perl-format
 msgid "Answer must be a number between %d-%d."
-msgstr "La réponse doit être entre %d-%d."
+msgstr "La réponse doit être un nombre entre %d et %d."
 
 #: media/javascript/entity/questionnaire_helper.js:22
 msgid "Answer must be a word"
@@ -397,7 +397,7 @@ msgstr "La réponse doit être une date au format : %s. Exemple : %s"
 
 #: media/javascript/entity/questionnaire_helper.js:25
 msgid "Choose 1 answer from the list. Example: a"
-msgstr "Choisissez une réponse de la liste. Exemple: a"
+msgstr "Choisissez une réponse à partir de la liste. Exemple: a"
 
 #: media/javascript/entity/questionnaire_helper.js:26
 msgid "Choose 1 or more answers from the list. Example: a or ab "

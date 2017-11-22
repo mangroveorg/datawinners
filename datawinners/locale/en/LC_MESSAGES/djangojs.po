@@ -1241,3 +1241,9 @@ msgstr ""
 
 msgid " first."
 msgstr ""
+
+msgid "From: "
+msgstr ""
+
+msgid " To: "
+msgstr ""

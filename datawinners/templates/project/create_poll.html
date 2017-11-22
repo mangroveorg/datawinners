@@ -49,16 +49,16 @@
 
                 <div><br>
                     <label>3. {%trans 'How Long Should the Poll be Active?'%}</label>
-                    &nbsp&nbsp&nbsp&nbsp<span class="italic_grey">{% trans "Select an end date for your poll.The poll will be active from the moment you've create the poll.You can deactivate it before the end date if needed." %}</span>
+                    &nbsp&nbsp&nbsp&nbsp<span class="italic_grey">{%trans "Select an end date for your poll.The poll will be active from the moment you've create the poll.You can deactivate it before the end date if needed." %}</span>
                     <br><br>
                      &nbsp&nbsp&nbsp
-                   <!-- <span>{% trans 'Active for' %}</span>
+                   <!-- <span>{%trans 'Active for' %}</span>
                     <select data-bind="options: days_active, value: number_of_days" class="dropdown_style dropdown_width"></select> <span> {% trans 'Days' %} </span> -->
                     &nbsp
-                    <span class="bold-text italic_grey">{% trans 'From '%} </span>
+                    <span class="bold-text italic_grey">{% trans "From " %} </span>
                     <span id="from_date_poll" class="date_text"
                                      data-bind="text:from_date_poll"></span>&nbsp
-                        <span class="bold-text italic_grey">{% trans 'to '%} </span>
+                        <span class="bold-text italic_grey">{%trans "to " %} </span>
                         <input data-bind="datepicker: endDate, datepickerOptions: { minDate: new Date(+new Date() + 86400000),dateFormat: 'dd MM yy' }" required="required"/>
                     <!--<span id="to_date_poll" class="date_text"
                                      data-bind="text:to_date_poll"></span>-->
