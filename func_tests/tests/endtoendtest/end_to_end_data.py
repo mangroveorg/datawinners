@@ -248,7 +248,7 @@ SMS_DATA_LOG = {
     UNIQUE_VALUE: "Mr.Tessy"}
 
 WEB_ANSWER_LOG = {
-    SUBMISSION: "Mickey Duck rep3 " + regex_date_match + " Success 25.12.2010 5.0 12.2010 02.12.2010 LIGHT RED web admin Bacteroids 12.0,12.0 Strike game1 last school1",
+    SUBMISSION: "Mickey Duck rep3 " + regex_date_match + " Success 25.12.2010 5 12.2010 02.12.2010 LIGHT RED web admin Bacteroids 12.0,12.0 Strike game1 last school1",
     UNIQUE_VALUE: 'web admin'
 }
 
