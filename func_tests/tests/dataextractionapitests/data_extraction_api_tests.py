@@ -91,7 +91,7 @@ class DataExtractionAPITestCase(HeadlessRunnerTest):
         self.assertIsInstance(result, dict)
         self.assertEqual(len(submissions), 4)
         self.assertEqual(result["message"], SUCCESS_MESSAGE)
-        self.assertEqual(submissions[0]["submission_data"][QUESTION_NAME], VALID_ANSWERS[0][0][ANSWER])
+        self.assertEqual(submissions[0]["submission_data"]["q2"], VALID_ANSWERS[0][0][ANSWER])
 
     @attr('functional_test')
     def test_get_data_for_form_with_form_code_and_same_date(self):
@@ -103,7 +103,7 @@ class DataExtractionAPITestCase(HeadlessRunnerTest):
         self.assertIsInstance(result, dict)
         self.assertEqual(len(submissions), 4)
         self.assertEqual(result["message"], SUCCESS_MESSAGE)
-        self.assertEqual(submissions[0]["submission_data"][QUESTION_NAME], VALID_ANSWERS[0][0][ANSWER])
+        self.assertEqual(submissions[0]["submission_data"]["q2"], VALID_ANSWERS[0][0][ANSWER])
 
     @attr('functional_test')
     def test_get_data_for_form_with_form_code_and_only_start_date(self):
@@ -114,7 +114,7 @@ class DataExtractionAPITestCase(HeadlessRunnerTest):
         self.assertIsInstance(result, dict)
         self.assertEqual(len(submissions), 4)
         self.assertEqual(result["message"], SUCCESS_MESSAGE)
-        self.assertEqual(submissions[0]["submission_data"][QUESTION_NAME], VALID_ANSWERS[0][0][ANSWER])
+        self.assertEqual(submissions[0]["submission_data"]["q2"], VALID_ANSWERS[0][0][ANSWER])
 
     @attr('functional_test')
     def test_get_data_for_form_with_form_code_with_success_status_set_to_false_when_pass_not_exist_form_code(self):
