@@ -10,6 +10,7 @@ from pages.globalnavigationpage.global_navigation_locator import PROJECT_LINK
 from pages.page import Page
 from tests.projects.questionnairetests.project_questionnaire_data import POLL, POLL_RECIPIENTS, MY_POLL_RECIPIENTS, DATA_ANALYSIS
 from tests.testsettings import UI_TEST_TIMEOUT
+import time
 
 class PollQuestionnairePage(Page):
 
@@ -138,6 +139,8 @@ class PollQuestionnairePage(Page):
         self.driver.find(activate_link).click()
         self.driver.wait_for_element(UI_TEST_TIMEOUT, ACTIVATE_BTN, True)
         self.driver.find_text_box(ACTIVATE_BTN).click()
+        time.sleep(1)
+        self.driver.find(ACTIVATE_BTN).click()
 
     def select_send_sms(self):
         self.select_element(POLL_TAB)

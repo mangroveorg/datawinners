@@ -11,6 +11,7 @@ from tests.editusertests.edit_user_data import *
 from tests.addusertests.add_user_data import *
 from tests.alluserstests.all_users_data import ALL_USERS_URL
 from tests.submissionlogtests.submission_log_tests import send_sms_with
+import time
 
 
 class TestEditUser(HeadlessRunnerTest):
@@ -34,6 +35,7 @@ class TestEditUser(HeadlessRunnerTest):
             "mobile_phone": random_number(9)
         })
         success_message = edit_user_page.get_success_message()
+        time.sleep(1)
         self.global_navigation.sign_out()
         self.assertEqual(USER_EDITED_SUCCESS_MESSAGE, success_message,
                          'Expected "User has been updated successfully" message but was not found')
@@ -274,6 +276,7 @@ class TestEditUser(HeadlessRunnerTest):
         edit_user_page.save_changes()
         edit_user_page.get_success_message()
         response = send_sms_with(SMS_TO_TEST_PERMISSION)
+        self.global_navigation.sign_out()
         self.assertEqual(response, SUCCESS_MESSAGE)
 
     @attr('functional_test')

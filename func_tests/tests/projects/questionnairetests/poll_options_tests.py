@@ -139,7 +139,7 @@ class TestPollOptions(HeadlessRunnerTest):
         self.poll_questionnaire_page.click_create_poll()
         self.poll_questionnaire_page.deactivate_poll()
         sleep(2)
-        self.assertEquals(self.poll_questionnaire_page.get_poll_status(), 'Deactivated')
+        self.assertEquals(self.poll_questionnaire_page.get_poll_status(), 'deactivated')
 
     @attr('functional_test')
     def test_should_activate_the_poll(self):
@@ -147,10 +147,10 @@ class TestPollOptions(HeadlessRunnerTest):
         self.poll_questionnaire_page.click_create_poll()
         self.poll_questionnaire_page.deactivate_poll()
         sleep(2)
-        self.assertEquals(self.poll_questionnaire_page.get_poll_status(), 'Deactivated')
+        self.assertEquals(self.poll_questionnaire_page.get_poll_status(), 'deactivated')
         self.poll_questionnaire_page.activate_poll()
         sleep(2)
-        self.assertEquals(self.poll_questionnaire_page.get_poll_status(), 'Active')
+        self.assertEquals(self.poll_questionnaire_page.get_poll_status(), 'active')
 
     @attr('functional_test')
     def test_warning_message_should_come_while_activating_a_poll_when_another_poll_is_active(self):
