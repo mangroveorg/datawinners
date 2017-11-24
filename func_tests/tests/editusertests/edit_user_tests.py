@@ -34,9 +34,10 @@ class TestEditUser(HeadlessRunnerTest):
             "mobile_phone": random_number(9)
         })
         success_message = edit_user_page.get_success_message()
+        self.global_navigation.sign_out()
         self.assertEqual(USER_EDITED_SUCCESS_MESSAGE, success_message,
                          'Expected "User has been updated successfully" message but was not found')
-        self.global_navigation.sign_out()
+
 
     @attr('functional_test')
     def test_should_edit_a_project_manager_as_ngo_admin(self):
@@ -68,10 +69,11 @@ class TestEditUser(HeadlessRunnerTest):
 
         self.driver.go_to(ALL_USERS_URL)
         self.assertEqual('New User Name', all_users_page.get_full_name_for(username))
+        self.global_navigation.sign_out()
         self.assertEqual(3, len(selected_questionnaires),
                          'Expected the questionnaires length to be 3 but was %s' %
                          len(selected_questionnaires))
-        self.global_navigation.sign_out()
+
 
     @attr('functional_test')
     def test_should_edit_a_project_manager_as_extended_user(self):
@@ -121,10 +123,11 @@ class TestEditUser(HeadlessRunnerTest):
 
         self.driver.go_to(ALL_USERS_URL)
         self.assertEqual('New User Name', self.all_users_page.get_full_name_for(username))
+        self.global_navigation.sign_out()
         self.assertEqual(3, len(selected_questionnaires),
                          'Expected the questionnaires length to be 3 but was %s' %
                          len(selected_questionnaires))
-        self.global_navigation.sign_out()
+
 
     @attr('functional_test')
     def test_should_change_a_extended_user_to_project_manager(self):
@@ -146,8 +149,10 @@ class TestEditUser(HeadlessRunnerTest):
         self.driver.go_to(ALL_USERS_URL)
         questionnaire_list_for_user = self.all_users_page.get_questionnaire_list_for(username)
         self.assertEqual(set(questionnaire_list_for_user), set(selected_questionnaires))
-        self.assertEqual('Project Manager', self.all_users_page.get_role_for(username))
+        role = self.all_users_page.get_role_for(username)
         self.global_navigation.sign_out()
+        self.assertEqual('Project Manager', role)
+
 
     @attr('functional_test')
     def test_should_change_a_project_manager_to_extended_user(self):
@@ -176,8 +181,10 @@ class TestEditUser(HeadlessRunnerTest):
         edit_user_page.get_success_message()
         self.driver.go_to(ALL_USERS_URL)
         self.assertEqual('Administrator', self.all_users_page.get_role_for(username))
-        self.assertEqual('All', self.all_users_page.get_questionnaire_list_for(username)[0])
+        questionnaire_list = self.all_users_page.get_questionnaire_list_for(username)[0]
         self.global_navigation.sign_out()
+        self.assertEqual('All', questionnaire_list)
+
 
     @attr('functional_test')
     def test_should_check_validations_while_editing_an_user(self):
