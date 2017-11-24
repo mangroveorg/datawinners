@@ -200,7 +200,7 @@ class TestAdvancedQuestionnaireEndToEnd(HeadlessRunnerTest):
         workbook = xlrd.open_workbook(xlfile_name)
         self._verify_workbook_values(workbook)
 
-    @attr('functional_testa')
+    @attr('functional_test')
     def test_should_create_project_when_xlsform_is_uploaded(self):
         self.project_name = random_string()
 

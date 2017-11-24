@@ -34,7 +34,7 @@ class TestReports(HeadlessRunnerTest):
     @classmethod
     def setUpClass(cls):
         cls.test_passed = True
-        cls.driver = setup_driver("phantom")
+        cls.driver = setup_driver("firefox")
         cls.admin_email_id = 'tester150411@gmail.com'
         cls.global_navigation_page = login(cls.driver, VALID_CREDENTIALS)
         cls.client = Client()
@@ -59,13 +59,16 @@ class TestReports(HeadlessRunnerTest):
         self.report = self._create_report_config(self.report_name, self.project_id, template_file_name)
         self._create_views(self.report)
         report_page = self.global_navigation_page.navigate_to_reports_page()
+        time.sleep(3)
         report_page.navigate_to_report(self.report_name)
-        time.sleep(300)  # This waiting is for ajax calls on report page
+        time.sleep(3)
         self.assertEquals(len(self.submission_ids), report_page.get_number_of_records())
         delete_submissions(self.project_id, self.submission_ids[:1], VALID_CREDENTIALS)
+        time.sleep(3)
         report_page.navigate_to_report(self.report_name)
-        time.sleep(300)  # This waiting is for ajax calls on report page
+        time.sleep(2)  # This waiting is for ajax calls on report page
         self.assertEquals(len(self.submission_ids) - 1, report_page.get_number_of_records())
+        
 
     def _do_web_submissions(self):
         submission_ids = []

@@ -214,7 +214,7 @@ class TestSMSTester(HeadlessRunnerTest):
                          "Error. Incorrect answer for question 3. Please review printed Questionnaire and resend entire SMS.")
 
         message = fetch_(SMS, from_(test_data))
-        test_data.update({SMS: message.replace("age", "56").replace("ade","ADE")})
+        test_data.update({SMS: message.replace("age", "56")})
         count_before_submission = (self._get_test_paid_org_message_tracker(paid_test_org)).incoming_sms_count
         self.assertEqual(send_sms_with(test_data),
                          "Thank you Shweta. We received your SMS.")
