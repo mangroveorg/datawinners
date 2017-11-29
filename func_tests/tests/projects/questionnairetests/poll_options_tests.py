@@ -168,7 +168,9 @@ class TestPollOptions(HeadlessRunnerTest):
         self.global_navigation.navigate_to_all_data_page()
         previous_poll = by_xpath(FIRST_CREATED_POLL_XPATH % poll_title_1)
         self.driver.find(previous_poll).click()
+        sleep(2)
         self.poll_questionnaire_page.activate_poll()
+        sleep(2)
         self.assertTrue(self.poll_questionnaire_page.is_another_poll_active(poll_title_2))
         self.driver.find(ACTIVE_POLL_NAME).click()
 
