@@ -11,6 +11,7 @@ from tests.projects.questionnairetests.project_questionnaire_data import LANGUAG
     REP7, REP5, REP6, THIRD_COLUMN, SECOND_ROW, GROUP, THIRD_ROW, MY_POLL_RECIPIENTS, CLINIC_TEST_PROJECT, REP8, REP3, \
     REP1, SIXTH_COLUMN, FIRST_ROW, FOURTH_ROW, SIXTH_ROW, FIFTH_ROW, REP35
 from tests.testsettings import UI_TEST_TIMEOUT
+import time
 
 
 class TestPollOptions(HeadlessRunnerTest):
@@ -172,6 +173,7 @@ class TestPollOptions(HeadlessRunnerTest):
         self.poll_questionnaire_page.activate_poll()
         sleep(2)
         self.assertTrue(self.poll_questionnaire_page.is_another_poll_active(poll_title_2))
+        time.sleep(1)
         self.driver.find(ACTIVE_POLL_NAME).click()
 
     def create_group_with_one_contact(self):
