@@ -16,6 +16,7 @@ from testdata.test_data import DATA_WINNER_ALL_DATA_SENDERS_PAGE, UNDELETE_PROJE
 from tests.alldatasenderstests.all_data_sender_data import *
 from pages.alldatasenderspage.all_data_senders_page import AllDataSendersPage
 from tests.testsettings import UI_TEST_TIMEOUT
+from time import sleep
 from pages.warningdialog.warning_dialog import WarningDialog
 
 

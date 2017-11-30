@@ -47,7 +47,7 @@ class TestPollOptionsFirefox(HeadlessRunnerTest):
         self.assertTrue(self.poll_questionnaire_page.is_another_poll_active(poll_title_2))
         self.driver.find(ACTIVE_POLL_NAME).click()
 
-    @attr('functional_testa')
+    @attr('functional_test')
     def test_should_activate_the_poll(self):
         self.poll_questionnaire_page.select_broadcast_option()
         self.poll_questionnaire_page.click_create_poll()
