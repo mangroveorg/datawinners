@@ -26,6 +26,7 @@ from tests.submissionlogtests.submission_log_tests import send_sms_with
 from tests.editusertests.edit_user_data import SMS_TO_TEST_PERMISSION, SMS
 from tests.dashboardtests.dashboard_tests_data import USER_RASITEFA_CREDENTIALS
 from tests.alldatasenderstests.all_data_sender_data import *
+from time import sleep
 
 CLOSE_WARNING_DIALOGUE_LINK = by_css(
     'div.ui-dialog[style*="block"] > div.ui-dialog-titlebar>a.ui-dialog-titlebar-close')
@@ -114,9 +115,10 @@ class TestProjectQuestionnaire(HeadlessRunnerTest):
         self.assertEqual(questionnaire_tab_page.get_existing_questions_count(), 8, "Question count of updated questionnaire does not match")
         self._verify_users_added_to_project()
 
-    @attr('functional_test')
+    @attr('functional_testa')
     def test_should_show_warning_popup_when_exiting_a_modified_questionnaire(self):
         modified_warning_dialog = QuestionnaireModifiedDialog(self.driver)
+        sleep(2)
         self._verify_edit_dialog_cancel(modified_warning_dialog)
         self._verify_edit_dialog_ignore_changes(modified_warning_dialog)
         self._verify_edit_dialog_save_changes(modified_warning_dialog)
