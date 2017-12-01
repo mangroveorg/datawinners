@@ -8,7 +8,7 @@ simplejson==3.3.0
 jsonpickle==0.6.1
 ipython==1.0.0
 mock==1.0.1
-selenium==2.43.0
+selenium==2.53.6
 iso8601==0.1.4
 pytz==2013b
 django-registration==0.8
