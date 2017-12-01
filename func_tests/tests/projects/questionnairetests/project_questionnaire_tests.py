@@ -115,7 +115,7 @@ class TestProjectQuestionnaire(HeadlessRunnerTest):
         self.assertEqual(questionnaire_tab_page.get_existing_questions_count(), 8, "Question count of updated questionnaire does not match")
         self._verify_users_added_to_project()
 
-    @attr('functional_testa')
+    @attr('functional_test')
     def test_should_show_warning_popup_when_exiting_a_modified_questionnaire(self):
         modified_warning_dialog = QuestionnaireModifiedDialog(self.driver)
         sleep(2)
