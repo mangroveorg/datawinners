@@ -1,6 +1,6 @@
 from time import sleep
 from nose.plugins.attrib import attr
-from framework.base_test import HeadlessRunnerTest
+from framework.base_test import HeadlessRunnerTest, setup_driver
 from framework.utils.common_utils import random_number, by_css, by_xpath
 from pages.createquestionnairepage.create_questionnaire_locator import POLL_TAB, LINKED_CONTACTS, DATA_SENDER_TAB, FIRST_CREATED_POLL_XPATH, \
     ACTIVE_POLL_NAME
@@ -16,7 +16,7 @@ from tests.testsettings import UI_TEST_TIMEOUT
 class TestPollOptionsFirefox(HeadlessRunnerTest):
     @classmethod
     def setUpClass(cls):
-        HeadlessRunnerTest.setUpClassFirefox()
+        cls.driver = setup_driver("firefox")
         cls.global_navigation = login(cls.driver)
 
     def setUp(self):
