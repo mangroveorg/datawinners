@@ -15,12 +15,13 @@ from time import sleep
 class TestAddUser(HeadlessRunnerTest):
 
     def setUp(self):
-
         try:
+            self.global_navigation = login(self.driver, VALID_CREDENTIALS)
+        except:
             self.global_navigation.sign_out()
-        except AttributeError:
-            pass
-        self.global_navigation = login(self.driver, VALID_CREDENTIALS)
+            sleep(2)
+            self.global_navigation = login(self.driver, VALID_CREDENTIALS)
+
         self.driver.go_to(ALL_USERS_URL)
         self.all_users_page = AllUsersPage(self.driver)
         self.add_user_page = self.all_users_page.navigate_to_add_user()
@@ -44,7 +45,7 @@ class TestAddUser(HeadlessRunnerTest):
         sleep(2)
         self.global_navigation.sign_out()
 
-    @attr('functional_test')
+    @attr('functional_testa')
     def test_should_add_a_new_extended_user_as_ngo_admin(self):
         self.add_user_page.select_role_as_administrator()
         user = generate_user()
@@ -64,7 +65,7 @@ class TestAddUser(HeadlessRunnerTest):
         sleep(2)
         self.global_navigation.sign_out()
 
-    @attr('functional_test')
+    @attr('functional_testa')
     def test_should_add_a_new_project_manager_as_ngo_admin(self):
         self.add_user_page.select_role_as_project_manager()
         questionnaires = self.add_user_page.select_questionnaires(2)

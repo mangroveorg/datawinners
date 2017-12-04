@@ -90,6 +90,7 @@ class GlobalNavigationPage(Page):
         """
         self.driver.wait_for_element(UI_TEST_TIMEOUT, SIGN_OUT_LINK, True)
         self.driver.find(SIGN_OUT_LINK).click()
+        self.driver.wait_for_page_load()
 
     def navigate_to_languages_page(self):
         self.driver.find(LANGUAGES_LINK).click()
