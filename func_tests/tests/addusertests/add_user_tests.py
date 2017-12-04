@@ -38,7 +38,7 @@ class TestAddUser(HeadlessRunnerTest):
         self.assertEqual(title, DASHBOARD_PAGE_TITLE)
         self.global_navigation.sign_out()
 
-    @attr('functional_testa')
+    @attr('functional_test')
     def test_should_add_a_new_extended_user_as_ngo_admin(self):
         self.add_user_page.select_role_as_administrator()
         user = generate_user()
@@ -157,7 +157,7 @@ class TestAddUser(HeadlessRunnerTest):
         user = generate_user()
         user.update({MOBILE_PHONE: 'abcdefgh'})
         self._validate_and_check_error_message(user,
-                                               u'Please enter a valid phone number.')
+                                               u'Invalid phone number')
         self.global_navigation.sign_out()
         self.add_user_page.confirm_leave_page()
 
