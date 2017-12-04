@@ -15,7 +15,6 @@ from time import sleep
 class TestAddUser(HeadlessRunnerTest):
 
     def setUp(self):
-        sleep(2)
         self.global_navigation = login(self.driver, VALID_CREDENTIALS)
         self.driver.go_to(ALL_USERS_URL)
         self.all_users_page = AllUsersPage(self.driver)
@@ -39,7 +38,7 @@ class TestAddUser(HeadlessRunnerTest):
         self.assertEqual(title, DASHBOARD_PAGE_TITLE)
         self.global_navigation.sign_out()
 
-    @attr('functional_test')
+    @attr('functional_testa')
     def test_should_add_a_new_extended_user_as_ngo_admin(self):
         self.add_user_page.select_role_as_administrator()
         user = generate_user()
