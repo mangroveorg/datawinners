@@ -15,6 +15,11 @@ from time import sleep
 class TestAddUser(HeadlessRunnerTest):
 
     def setUp(self):
+
+        try:
+            self.global_navigation.sign_out()
+        except AttributeError:
+            pass
         self.global_navigation = login(self.driver, VALID_CREDENTIALS)
         self.driver.go_to(ALL_USERS_URL)
         self.all_users_page = AllUsersPage(self.driver)
@@ -38,7 +43,7 @@ class TestAddUser(HeadlessRunnerTest):
         self.assertEqual(title, DASHBOARD_PAGE_TITLE)
         self.global_navigation.sign_out()
 
-    @attr('functional_test')
+    @attr('functional_testa')
     def test_should_add_a_new_extended_user_as_ngo_admin(self):
         self.add_user_page.select_role_as_administrator()
         user = generate_user()
@@ -57,7 +62,7 @@ class TestAddUser(HeadlessRunnerTest):
         self.assertEqual(title, DASHBOARD_PAGE_TITLE)
         self.global_navigation.sign_out()
 
-    @attr('functional_test')
+    @attr('functional_testa')
     def test_should_add_a_new_project_manager_as_ngo_admin(self):
         self.add_user_page.select_role_as_project_manager()
         questionnaires = self.add_user_page.select_questionnaires(2)
@@ -84,7 +89,7 @@ class TestAddUser(HeadlessRunnerTest):
         self.assertEqual(title, DASHBOARD_PAGE_TITLE)
         self.global_navigation.sign_out()
 
-    @attr('functional_test')
+    @attr('functional_testa')
     def test_should_add_a_new_project_manager_as_extended_user(self):
         self.add_user_page.select_role_as_administrator()
         user = generate_user()
@@ -127,7 +132,7 @@ class TestAddUser(HeadlessRunnerTest):
         self.assertEqual(title, DASHBOARD_PAGE_TITLE)
         self.global_navigation.sign_out()
 
-    @attr('functional_test')
+    @attr('functional_testa')
     def test_should_check_when_adding_user_with_existing_username(self):
         user = get_existing_username_user()
         self._validate_and_check_error_message(user,
@@ -135,7 +140,7 @@ class TestAddUser(HeadlessRunnerTest):
         self.global_navigation.sign_out()
         self.add_user_page.confirm_leave_page()
 
-    @attr('functional_test')
+    @attr('functional_testa')
     def test_should_check_when_adding_user_with_existing_phonenumber(self):
         user = generate_user_with_existing_phone_number()
         self._validate_and_check_error_message(user,
@@ -143,7 +148,7 @@ class TestAddUser(HeadlessRunnerTest):
         self.global_navigation.sign_out()
         self.add_user_page.confirm_leave_page()
 
-    @attr('functional_test')
+    @attr('functional_testa')
     def test_should_check_choose_a_role_when_adding_user(self):
         user = generate_user()
         self.add_user_page.add_user_with(user)
@@ -152,7 +157,7 @@ class TestAddUser(HeadlessRunnerTest):
         self.global_navigation.sign_out()
         self.add_user_page.confirm_leave_page()
 
-    @attr('functional_test')
+    @attr('functional_testa')
     def test_should_check_when_adding_user_with_invalid_phonenumber(self):
         user = generate_user()
         user.update({MOBILE_PHONE: 'abcdefgh'})
@@ -161,7 +166,7 @@ class TestAddUser(HeadlessRunnerTest):
         self.global_navigation.sign_out()
         self.add_user_page.confirm_leave_page()
 
-    @attr('functional_test')
+    @attr('functional_testa')
     def test_should_check_when_adding_user_with_invalid_email_address(self):
         user = generate_user()
         user.update({USERNAME: 'abcdefgh'})
