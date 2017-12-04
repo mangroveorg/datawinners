@@ -10,10 +10,12 @@ from tests.logintests.login_data import VALID_CREDENTIALS, PASSWORD
 from pages.alluserspage.all_users_page import AllUsersPage
 from tests.addusertests.add_user_data import *
 from tests.alluserstests.all_users_data import ALL_USERS_URL
+from time import sleep
 
 class TestAddUser(HeadlessRunnerTest):
 
     def setUp(self):
+        sleep(2)
         self.global_navigation = login(self.driver, VALID_CREDENTIALS)
         self.driver.go_to(ALL_USERS_URL)
         self.all_users_page = AllUsersPage(self.driver)
