@@ -25,6 +25,7 @@ from mangrove.datastore.entity_type import get_unique_id_types
 from pyxform.errors import PyXFormError, BindError
 
 from mangrove.errors.MangroveException import ExceedSubmissionLimitException, QuestionAlreadyExistsException
+from datawinners.exceptions import QuestionCodeAlreadyExistsException
 from mangrove.form_model.form_model import get_form_model_by_code
 from mangrove.form_model.project import Project
 from mangrove.transport.repository.survey_responses import get_survey_response_by_id, get_survey_responses, \
@@ -98,9 +99,9 @@ class ProjectUpload(View):
 
                 return HttpResponse(content_type='application/json', content=json.dumps({
                     'success': False,
-                    'error_msg': [_("Duplicate labels. All questions (labels) must be unique.")],
+                    'error_msg': [_("Duplicate questionnaire name. All questionnaire (name) must be unique.")],
                     'message_prefix': _("Sorry! Current version of DataWinners does not support"),
-                    'message_suffix': _("Update your XLSForm and upload again.")
+                    'message_suffix': _("Use another questionnaire name and upload again.")
                 }))
 
             questionnaire = Project.get(manager, questionnaire_id)
@@ -112,6 +113,15 @@ class ProjectUpload(View):
                     _(e.message)
                 ]
             }))
+
+        except QuestionCodeAlreadyExistsException as e:
+            return HttpResponse(content_type='application/json', content=json.dumps({
+                'success': False,
+                'error_msg': [
+                    _(e.message)
+                ]
+            }))
+        
         return HttpResponse(
             json.dumps(
                 {

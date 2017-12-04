@@ -6386,3 +6386,12 @@ msgstr "Gestionnaire de projet (Suppression de Questionnaires non autorisée)"
 
 msgid "Permission to Delete Questionnaires"
 msgstr "Autoriser à supprimer des Questionnaires"
+
+msgid "Duplicate questionnaire name. All questionnaire (name) must be unique."
+msgstr "Doublon au niveau du nom de questionnaire. Toutes les questionnaires (noms) doivent être uniques."
+
+msgid "Use another questionnaire name and upload again."
+msgstr "Utiliser un autre nom de questionnaire et téléchargez une nouvelle fois."
+
+msgid "All field codes must be unique, please check %s field"
+msgstr "Toutes code de champs doivent être unique, veuillez vérifier le champs %s"
