@@ -41,9 +41,10 @@ class TestAddUser(HeadlessRunnerTest):
         login(self.driver, self.new_user_credential)
         title = self.driver.get_title()
         self.assertEqual(title, DASHBOARD_PAGE_TITLE)
+        sleep(2)
         self.global_navigation.sign_out()
 
-    @attr('functional_testa')
+    @attr('functional_test')
     def test_should_add_a_new_extended_user_as_ngo_admin(self):
         self.add_user_page.select_role_as_administrator()
         user = generate_user()
@@ -60,9 +61,10 @@ class TestAddUser(HeadlessRunnerTest):
         login(self.driver, self.new_user_credential)
         title = self.driver.get_title()
         self.assertEqual(title, DASHBOARD_PAGE_TITLE)
+        sleep(2)
         self.global_navigation.sign_out()
 
-    @attr('functional_testa')
+    @attr('functional_test')
     def test_should_add_a_new_project_manager_as_ngo_admin(self):
         self.add_user_page.select_role_as_project_manager()
         questionnaires = self.add_user_page.select_questionnaires(2)
@@ -87,9 +89,10 @@ class TestAddUser(HeadlessRunnerTest):
         login(self.driver, self.new_user_credential)
         title = self.driver.get_title()
         self.assertEqual(title, DASHBOARD_PAGE_TITLE)
+        sleep(2)
         self.global_navigation.sign_out()
 
-    @attr('functional_testa')
+    @attr('functional_test')
     def test_should_add_a_new_project_manager_as_extended_user(self):
         self.add_user_page.select_role_as_administrator()
         user = generate_user()
@@ -130,49 +133,55 @@ class TestAddUser(HeadlessRunnerTest):
         login(self.driver, self.new_user_credential)
         title = self.driver.get_title()
         self.assertEqual(title, DASHBOARD_PAGE_TITLE)
+        sleep(2)
         self.global_navigation.sign_out()
 
-    @attr('functional_testa')
+    @attr('functional_test')
     def test_should_check_when_adding_user_with_existing_username(self):
         user = get_existing_username_user()
         self._validate_and_check_error_message(user,
                                                u'This email address is already in use. Please supply a different email address')
         self.global_navigation.sign_out()
+        sleep(2)
         self.add_user_page.confirm_leave_page()
 
-    @attr('functional_testa')
+    @attr('functional_test')
     def test_should_check_when_adding_user_with_existing_phonenumber(self):
         user = generate_user_with_existing_phone_number()
         self._validate_and_check_error_message(user,
                                                u'This phone number is already in use. Please supply a different phone number')
         self.global_navigation.sign_out()
+        sleep(2)
         self.add_user_page.confirm_leave_page()
 
-    @attr('functional_testa')
+    @attr('functional_test')
     def test_should_check_choose_a_role_when_adding_user(self):
         user = generate_user()
         self.add_user_page.add_user_with(user)
         message = self.add_user_page.get_error_messages()
         self.assertEqual(message, "This field is required.")
         self.global_navigation.sign_out()
+        sleep(2)
         self.add_user_page.confirm_leave_page()
 
-    @attr('functional_testa')
+    @attr('functional_test')
     def test_should_check_when_adding_user_with_invalid_phonenumber(self):
         user = generate_user()
         user.update({MOBILE_PHONE: 'abcdefgh'})
         self._validate_and_check_error_message(user,
                                                u'Invalid phone number')
         self.global_navigation.sign_out()
+        sleep(2)
         self.add_user_page.confirm_leave_page()
 
-    @attr('functional_testa')
+    @attr('functional_test')
     def test_should_check_when_adding_user_with_invalid_email_address(self):
         user = generate_user()
         user.update({USERNAME: 'abcdefgh'})
         self._validate_and_check_error_message(user,
                                                u'Enter a valid email address. Example:name@organization.com')
         self.global_navigation.sign_out()
+        sleep(2)
         self.add_user_page.confirm_leave_page()
 
     def _validate_and_check_error_message(self, user, expected_message):
