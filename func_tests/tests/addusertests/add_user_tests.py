@@ -16,10 +16,9 @@ class TestAddUser(HeadlessRunnerTest):
 
     def setUp(self):
         try:
+            self.global_navigation.sign_out()
             self.global_navigation = login(self.driver, VALID_CREDENTIALS)
         except:
-            self.global_navigation.sign_out()
-            sleep(2)
             self.global_navigation = login(self.driver, VALID_CREDENTIALS)
 
         self.driver.go_to(ALL_USERS_URL)
