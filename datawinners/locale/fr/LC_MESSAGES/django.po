@@ -6393,5 +6393,5 @@ msgstr "Doublon au niveau du nom de questionnaire. Toutes les questionnaires (no
 msgid "Use another questionnaire name and upload again."
 msgstr "Utiliser un autre nom de questionnaire et téléchargez une nouvelle fois."
 
-msgid "All field codes must be unique, please check %s field"
-msgstr "Toutes code de champs doivent être unique, veuillez vérifier le champs %s"
+msgid "All code fields must be unique, please check %s field"
+msgstr "Tous les champs de code doivent être uniques, veuillez vérifier le champs %s "
