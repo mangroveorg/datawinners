@@ -45,7 +45,7 @@ class TestAddUser(HeadlessRunnerTest):
         sleep(2)
         self.global_navigation.sign_out()
 
-    @attr('functional_testa')
+    @attr('functional_test')
     def test_should_add_a_new_extended_user_as_ngo_admin(self):
         self.add_user_page.select_role_as_administrator()
         user = generate_user()
@@ -65,7 +65,7 @@ class TestAddUser(HeadlessRunnerTest):
         sleep(2)
         self.global_navigation.sign_out()
 
-    @attr('functional_testa')
+    @attr('functional_test')
     def test_should_add_a_new_project_manager_as_ngo_admin(self):
         self.add_user_page.select_role_as_project_manager()
         questionnaires = self.add_user_page.select_questionnaires(2)
