@@ -5070,5 +5070,5 @@ msgstr ""
 msgid "Permission to Delete Questionnaires"
 msgstr ""
 
-msgid "All field codes must be unique, please check %s field"
+msgid "All code fields must be unique, please check %s field"
 msgstr ""
