@@ -11,7 +11,8 @@ from tests.logintests.login_data import VALID_CREDENTIALS
 class TestWebSubmission(HeadlessRunnerTest):
     @classmethod
     def setUpClass(cls):
-        cls.driver = setup_driver("firefox")
+        #cls.driver = setup_driver("firefox")
+        cls.driver = setup_driver("phantom")
         login(cls.driver, VALID_CREDENTIALS)
 
     dashboard_page = None
