@@ -360,6 +360,15 @@ class ProjectUpdate(View):
                 'reason': "Save Failed",  # TODO: i18n translation
                 'details': _(e.message)
             }))
+        except QuestionCodeAlreadyExistsException as e:
+            return HttpResponse(content_type='application/json', content=json.dumps({
+                'success': False,
+                'error_msg': [
+                    _(e.message)
+                ]
+            }))
+
+
 
         return HttpResponse(
             json.dumps(
