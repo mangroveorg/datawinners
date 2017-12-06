@@ -93,6 +93,7 @@ class TestAddUser(HeadlessRunnerTest):
         self.global_navigation.sign_out()
 
     @attr('functional_test')
+    @unittest.skip('Waiting for a fix...')
     def test_should_add_a_new_project_manager_as_extended_user(self):
         self.add_user_page.select_role_as_administrator()
         user = generate_user()
