@@ -29,7 +29,7 @@ class TestPollOptionsFirefox(HeadlessRunnerTest):
     def tearDown(self):
         self.poll_questionnaire_page.delete_the_poll()
 
-    @attr('functional_testa')
+    @attr('functional_test')
     def test_warning_message_should_come_while_activating_a_poll_when_another_poll_is_active(self):
         poll_title_1 = self.create_questionnaire_page.set_poll_questionnaire_title("poll_questionnaire", generate_random=True)
         self.poll_questionnaire_page.select_broadcast_option()
