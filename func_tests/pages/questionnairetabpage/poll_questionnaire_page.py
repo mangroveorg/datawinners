@@ -121,6 +121,7 @@ class PollQuestionnairePage(Page):
 
     def has_DS_received_sms(self, recipent, row, column):
         self.select_element(POLL_TAB)
+        time.sleep(3)
         self.select_element(POLL_SMS_ACCORDIAN)
         self.driver.wait_for_element(UI_TEST_TIMEOUT, by_css("#poll_sms_table"), True)
         recipient_name = self.driver.find(by_css('#poll_sms_table>tbody>tr:nth-of-type(%s)>td:nth-of-type(%s)>span:nth-of-type(2)' % (row, column))).text
