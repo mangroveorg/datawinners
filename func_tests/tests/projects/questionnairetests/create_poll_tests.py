@@ -10,6 +10,7 @@ from pages.questionnairetabpage.poll_questionnaire_page import PollQuestionnaire
 from tests.projects.questionnairetests.project_questionnaire_data import CLINIC_ALL_DS, FIRST_ROW, SIXTH_COLUMN, \
     THIRD_COLUMN, REP6, REP5, REP7, CONTACTS_LINKED, GROUP, SECOND_ROW, THIRD_ROW, REP35
 from tests.testsettings import UI_TEST_TIMEOUT
+import time
 
 
 class TestCreatePollQuestionnaire(HeadlessRunnerTest):
@@ -24,6 +25,7 @@ class TestCreatePollQuestionnaire(HeadlessRunnerTest):
         add_group_page.enter_group_name(group_name)
         add_group_page.click_on_add_group_button()
         all_contacts_page.add_contact_to_group(unique_id, group_name)
+        time.sleep(1)
         self.driver.wait_for_element(UI_TEST_TIMEOUT, DASHBOARD_PAGE_LINK, True)
         dashboard_page = self.global_navigation.navigate_to_dashboard_page()
         create_questionnaire_options_page = dashboard_page.navigate_to_create_project_page()
@@ -123,6 +125,7 @@ class TestCreatePollQuestionnaire(HeadlessRunnerTest):
         self.poll_Questionnaire_page.enter_sms_text()
         self.poll_Questionnaire_page.select_receipient(GROUP, group_name)
         self.poll_Questionnaire_page.click_create_poll()
+        time.sleep(1)
         self.assertTrue(self.poll_Questionnaire_page.has_DS_received_sms(contact_id, FIRST_ROW, THIRD_COLUMN))
 
     @attr('functional_test')
@@ -135,22 +138,28 @@ class TestCreatePollQuestionnaire(HeadlessRunnerTest):
         self.driver.wait_for_element(UI_TEST_TIMEOUT, DATA_SENDER_TAB, True)
         self.poll_Questionnaire_page.select_element(DATA_SENDER_TAB)
         recipient = [REP5, REP6, REP7, REP35]
+        self.driver.create_screenshot("debug-ft")
         result = self.poll_Questionnaire_page.has_DS_received_sms(recipient, FIRST_ROW, THIRD_COLUMN)
         if not result:
             self.driver.create_screenshot("after-poll-creation")
             raise Exception()
-        self.assertEquals(self.poll_Questionnaire_page.has_DS_received_sms(recipient, FIRST_ROW, THIRD_COLUMN), True)
-        self.assertEquals(self.poll_Questionnaire_page.has_DS_received_sms(recipient, FIRST_ROW, THIRD_COLUMN), True)
-        self.assertEquals(self.poll_Questionnaire_page.has_DS_received_sms(recipient, FIRST_ROW, THIRD_COLUMN), True)
+        self.assertTrue(result)
+        time.sleep(1)
+        #self.assertEquals(self.poll_Questionnaire_page.has_DS_received_sms(recipient, FIRST_ROW, THIRD_COLUMN), True)
+        #self.assertEquals(self.poll_Questionnaire_page.has_DS_received_sms(recipient, FIRST_ROW, THIRD_COLUMN), True)
+        #self.assertEquals(self.poll_Questionnaire_page.has_DS_received_sms(recipient, FIRST_ROW, THIRD_COLUMN), True)
 
     @attr('functional_test')
     def test_a_poll_cannot_be_created_when_another_poll_is_active(self):
         poll_title = self.create_Questionnaire_page.set_poll_questionnaire_title("poll_questionnaire", generate_random=True)
         self.poll_Questionnaire_page.select_broadcast_option()
         self.poll_Questionnaire_page.click_create_poll()
+
+        time.sleep(1)
         dashboard_page = self.global_navigation.navigate_to_dashboard_page()
         dashboard_page.navigate_to_create_project_page()
         self.assertEquals(self.poll_Questionnaire_page.get_already_active_poll_name(), poll_title)
 
         self.driver.find(ACTIVE_POLL_NAME).click()
         self.poll_Questionnaire_page.deactivate_poll()
+        time.sleep(2)
