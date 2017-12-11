@@ -25,11 +25,13 @@ class TestCreatePollQuestionnaire(HeadlessRunnerTest):
         add_group_page.enter_group_name(group_name)
         add_group_page.click_on_add_group_button()
         all_contacts_page.add_contact_to_group(unique_id, group_name)
-        time.sleep(1)
+        time.sleep(3)
         self.driver.wait_for_element(UI_TEST_TIMEOUT, DASHBOARD_PAGE_LINK, True)
         dashboard_page = self.global_navigation.navigate_to_dashboard_page()
+        self.assertEqual(self.driver.get_title(), "Dashboard")
         create_questionnaire_options_page = dashboard_page.navigate_to_create_project_page()
         self.create_Questionnaire_page = create_questionnaire_options_page.select_poll_questionnaire_option()
+        self.assertEqual(self.driver.get_title(), "Create Questionnaire")
         return group_name, unique_id
 
     @classmethod
@@ -61,7 +63,7 @@ class TestCreatePollQuestionnaire(HeadlessRunnerTest):
         self.assertEquals(self.poll_Questionnaire_page.get_automatic_reply_status(), "On")
         self.poll_Questionnaire_page.select_element(POLL_TAB)
         self.poll_Questionnaire_page.select_element(poll_info_accordian)
-        self.assertEquals(self.poll_Questionnaire_page.get_poll_status(), 'Active')
+        self.assertEquals(self.poll_Questionnaire_page.get_poll_status(), 'active')
 
 
     @attr('functional_test')
