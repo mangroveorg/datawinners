@@ -152,6 +152,7 @@ class TestPollOptions(HeadlessRunnerTest):
         add_group_page.enter_group_name(group_name)
         add_group_page.click_on_add_group_button()
         all_contacts_page.add_contact_to_group(unique_id, group_name)
+        sleep(2)
         self.driver.wait_for_element(UI_TEST_TIMEOUT, DASHBOARD_PAGE_LINK, True)
         create_questionnaire_options_page = self.global_navigation.navigate_to_dashboard_page().navigate_to_create_project_page()
         self.create_questionnaire_page = create_questionnaire_options_page.select_poll_questionnaire_option()

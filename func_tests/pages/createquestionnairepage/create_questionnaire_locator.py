@@ -62,6 +62,7 @@ LINKED_CONTACTS = 'linked'
 OTHERS = 'others'
 ACTIVE_POLL_NAME = by_id('active_poll_name')
 poll_info_accordian = by_id('poll_status_info')
+POLL_STATUS_BY_ID = by_id("poll_status")
 deactivate_link = by_xpath(".//*[@id='deactivate_link']")
 activate_link = by_id('activate_link')
 POLL_INFORMATION_BOX = by_css(".information_box")

@@ -5,7 +5,7 @@ from pages.createquestionnairepage.create_questionnaire_locator import POLL_SMS_
     AUTOMATIC_REPLY_ACCORDIAN, POLL_SMS_ACCORDIAN, AUTOMATIC_REPLY_SMS_TEXT, ITALIC_GREY_COMMENT, \
     POLL_SMS_TABLE, SEND_SMS_LINK, PROJECT_LANGUAGE, SAVE_LANG_BTN, SUCCESS_MSG_BOX, \
     DEACTIVATE_BTN, ON_SWITCH, RECIPIENT_DROPDOWN, SEND_BUTTON, CANCEL_SMS, LANGUAGE_TEXT, ACTIVATE_BTN, activate_link, \
-    ACTIVE_POLL_NAME, POLL_INFORMATION_BOX, ON_OFF_SWITCH
+    ACTIVE_POLL_NAME, POLL_INFORMATION_BOX, ON_OFF_SWITCH, POLL_STATUS_BY_ID
 from pages.globalnavigationpage.global_navigation_locator import PROJECT_LINK
 from pages.page import Page
 from tests.projects.questionnairetests.project_questionnaire_data import POLL, POLL_RECIPIENTS, MY_POLL_RECIPIENTS, DATA_ANALYSIS
@@ -56,8 +56,8 @@ class PollQuestionnairePage(Page):
     def is_poll_status_accordian_present(self):
         self.driver.wait_for_element(UI_TEST_TIMEOUT, POLL_STATUS_INFO, True)
         self.driver.find(POLL_STATUS_INFO).click()
-        self.driver.wait_for_element(UI_TEST_TIMEOUT, ITALIC_GREY_COMMENT, True)
-        return self.driver.find(ITALIC_GREY_COMMENT).text != ''
+        self.driver.wait_for_element(UI_TEST_TIMEOUT, POLL_STATUS_BY_ID, True)
+        return self.driver.find(POLL_STATUS_BY_ID).text != ''
 
     def is_automatic_reply_sms_option_present(self):
         self.select_element(AUTOMATIC_REPLY_ACCORDIAN)
@@ -100,6 +100,7 @@ class PollQuestionnairePage(Page):
     def are_all_three_accordians_present(self):
         try:
             self.driver.find(POLL_TAB).click()
+            time.sleep(2)
             poll_info = self.is_poll_status_accordian_present()
             automatic_reply_sms = self.is_automatic_reply_sms_option_present()
             poll_sent_sms = self.is_sent_poll_sms_table()
