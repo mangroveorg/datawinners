@@ -15,8 +15,8 @@ from time import sleep
 class TestAddUser(HeadlessRunnerTest):
 
     @classmethod
-    def setUpClass(cls):
-        HeadlessRunnerTest.setUpClass()
+    #def setUpClass(cls):
+    #    HeadlessRunnerTest.setUpClass()
 
     def setUp(self):
         self.global_navigation = login(self.driver, VALID_CREDENTIALS)
