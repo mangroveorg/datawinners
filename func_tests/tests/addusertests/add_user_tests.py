@@ -14,16 +14,19 @@ from time import sleep
 
 class TestAddUser(HeadlessRunnerTest):
 
-    def setUp(self):
-        try:
-            self.global_navigation.sign_out()
-            self.global_navigation = login(self.driver, VALID_CREDENTIALS)
-        except:
-            self.global_navigation = login(self.driver, VALID_CREDENTIALS)
+    @classmethod
+    def setUpClass(cls):
+        HeadlessRunnerTest.setUpClass()
 
+    def setUp(self):
+        self.global_navigation = login(self.driver, VALID_CREDENTIALS)
         self.driver.go_to(ALL_USERS_URL)
         self.all_users_page = AllUsersPage(self.driver)
         self.add_user_page = self.all_users_page.navigate_to_add_user()
+
+    #def tearDown(self):
+    #    #self.global_navigation.sign_out()
+    #    pass
 
     def _create_extended_user(self):
         self.add_user_page.select_role_as_administrator()

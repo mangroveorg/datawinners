@@ -16,7 +16,7 @@ from tests.testsettings import UI_TEST_TIMEOUT
 class TestPollOptionsFirefox(HeadlessRunnerTest):
     @classmethod
     def setUpClass(cls):
-        cls.driver = setup_driver("firefox")
+        cls.driver = setup_driver("phantom")
         cls.global_navigation = login(cls.driver)
 
     def setUp(self):
