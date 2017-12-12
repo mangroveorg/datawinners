@@ -39,13 +39,16 @@ def verify_on_edit_project_page(verify_edit_page_functionality):
 
 class TestProjectQuestionnaire(HeadlessRunnerTest):
 
-    @classmethod
-    def setUpClass(cls):
-        HeadlessRunnerTest.setUpClass()
-        cls.driver.go_to(DATA_WINNER_LOGIN_PAGE)
-        login_page = LoginPage(cls.driver)
-        cls.global_navigation = login_page.do_successful_login_with(VALID_CREDENTIALS)
-        cls.project_name, cls.questionnaire_code = cls._create_project(EDIT_PROJECT_DATA, EDIT_PROJECT_QUESTIONNAIRE_DATA)
+    def setUp(self):
+        self.driver.go_to(DATA_WINNER_LOGIN_PAGE)
+        login_page = LoginPage(self.driver)
+        self.global_navigation = login_page.do_successful_login_with(VALID_CREDENTIALS)
+        project_questionnaire_data = EDIT_PROJECT_QUESTIONNAIRE_DATA.copy()
+        project_questionnaire_data[QUESTIONS][8][NEW_UNIQUE_ID_TYPE] = 'new type'+random_number(3)
+        self.project_name, self.questionnaire_code = self._create_project(EDIT_PROJECT_DATA, project_questionnaire_data)
+
+    def tearDown(self):
+        self.global_navigation.sign_out()
 
     @classmethod
     def _create_project(cls, project_data, questionnaire_data):
@@ -546,7 +549,7 @@ class TestProjectQuestionnaire(HeadlessRunnerTest):
         all_projects_page = ProjectsPage(self.driver)
         self.assertEqual(len(dashboard_page.get_projects_list()), 3)
         self.assertFalse(all_projects_page.is_project_present(project_name))
-        self.global_navigation.sign_out()
+        
     
 
 
