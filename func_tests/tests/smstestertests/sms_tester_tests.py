@@ -176,8 +176,9 @@ class TestSMSTester(HeadlessRunnerTest):
     @attr('functional_test')
     def test_should_check_with_right_order(self):
         test_data = MULTIPLE_WRONG_DATA.copy()
+        test_data['from'] = "4938429843743"
         paid_test_org = Organization.objects.get(org_id=DEFAULT_TEST_ORG_ID)
-        print test_data
+        
         self.assertEqual(send_sms_with(test_data),
                          "Error. You are not registered as a Data Sender. Please contact your supervisor.")
 

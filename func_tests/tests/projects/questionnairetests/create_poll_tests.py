@@ -117,7 +117,7 @@ class TestCreatePollQuestionnaire(HeadlessRunnerTest):
         self.assertEquals(self.poll_Questionnaire_page.is_send_sms_to_more_people_visible(), False)
         self.assertEquals(self.poll_Questionnaire_page.get_automatic_reply_status(), "On")
         self.poll_Questionnaire_page.select_element(poll_info_accordian)
-        self.assertEquals(self.poll_Questionnaire_page.get_poll_status(), 'Active')
+        self.assertEquals(self.poll_Questionnaire_page.get_poll_status(), 'active')
 
     @attr('functional_test')
     def test_after_poll_creation_with_group_the_group_should_receive_sms_and_appear_in_sent_sms_table(self):
