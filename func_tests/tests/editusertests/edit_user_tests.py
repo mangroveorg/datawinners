@@ -18,7 +18,11 @@ from framework.utils.common_utils import random_string, random_number
 class TestEditUser(HeadlessRunnerTest):
     @attr('functional_test')
     def test_should_edit_an_extended_user_as_ngo_admin(self):
-        self.global_navigation = login(self.driver, VALID_CREDENTIALS)
+        try:
+            self.global_navigation.sign_out()
+            self.global_navigation = login(self.driver, VALID_CREDENTIALS)
+        except:
+            self.global_navigation = login(self.driver, VALID_CREDENTIALS)
         self.driver.go_to(ALL_USERS_URL)
         all_users_page = AllUsersPage(self.driver)
         add_user_page = all_users_page.navigate_to_add_user()
@@ -44,7 +48,11 @@ class TestEditUser(HeadlessRunnerTest):
 
     @attr('functional_test')
     def test_should_edit_a_project_manager_as_ngo_admin(self):
-        self.global_navigation = login(self.driver, VALID_CREDENTIALS)
+        try:
+            self.global_navigation.sign_out()
+            self.global_navigation = login(self.driver, VALID_CREDENTIALS)
+        except:
+            self.global_navigation = login(self.driver, VALID_CREDENTIALS)
         self.driver.go_to(ALL_USERS_URL)
         all_users_page = AllUsersPage(self.driver)
         add_user_page = all_users_page.navigate_to_add_user()
@@ -274,7 +282,11 @@ class TestEditUser(HeadlessRunnerTest):
 
     @attr('functional_test')
     def test_should_make_sure_that_ds_permission_is_removed_in_the_same_time_as_user_permission_is_removed(self):
-        self.global_navigation = login(self.driver, VALID_CREDENTIALS)
+        try:
+            self.global_navigation.sign_out()
+            self.global_navigation = login(self.driver, VALID_CREDENTIALS)
+        except:
+            self.global_navigation = login(self.driver, VALID_CREDENTIALS)
         self.driver.go_to(ALL_USERS_URL)
         all_users_page = AllUsersPage(self.driver)
         all_users_page.select_user_with_username("rasitefa@mailinator.com")
