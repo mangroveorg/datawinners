@@ -78,7 +78,7 @@ class TestEditUser(HeadlessRunnerTest):
                          len(selected_questionnaires))
 
 
-    @attr('functional_testa')
+    @attr('functional_test')
     def test_should_edit_a_project_manager_as_extended_user(self):
         user = {
             TITLE: "Developer",
