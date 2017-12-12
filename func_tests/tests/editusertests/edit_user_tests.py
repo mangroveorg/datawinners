@@ -12,6 +12,7 @@ from tests.addusertests.add_user_data import *
 from tests.alluserstests.all_users_data import ALL_USERS_URL
 from tests.submissionlogtests.submission_log_tests import send_sms_with
 import time
+from framework.utils.common_utils import random_string, random_number
 
 
 class TestEditUser(HeadlessRunnerTest):
@@ -77,10 +78,20 @@ class TestEditUser(HeadlessRunnerTest):
                          len(selected_questionnaires))
 
 
-    @attr('functional_test')
+    @attr('functional_testa')
     def test_should_edit_a_project_manager_as_extended_user(self):
-        user = generate_user()
-        new_user = generate_user()
+        user = {
+            TITLE: "Developer",
+            NAME: random_string(7),
+            USERNAME: random_string(7)+"@mailinator.com",
+            MOBILE_PHONE: random_number(9)
+        }
+        new_user = {
+            TITLE: "Developer",
+            NAME: random_string(7),
+            USERNAME: random_string(7)+"@mailinator.com",
+            MOBILE_PHONE: random_number(9)
+        }
 
         # create extended user
         self._create_extended_user(user)
@@ -109,6 +120,7 @@ class TestEditUser(HeadlessRunnerTest):
         self.assertTrue(self.all_users_page.is_editable(username),
                         '%s user was expected to be editable but was not editable')
         questionnaire_list_for_user = self.all_users_page.get_questionnaire_list_for(username)
+        time.sleep(10)
         self.all_users_page.select_user_with_username(username)
         edit_user_page = self.all_users_page.select_edit_action()
         self.assertTrue(edit_user_page.is_user_name_is_prefetched(username))
