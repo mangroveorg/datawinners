@@ -4,7 +4,7 @@ from tests.smstestertests.sms_tester_data import SENDER, RECEIVER, SMS, ERROR_MS
 def generate_user():
     return {
         TITLE: "Developer",
-        NAME: random_string(7),
+        NAME: "Mino Rakoto",
         USERNAME: random_string(7)+"@mailinator.com",
         MOBILE_PHONE: random_number(9)
     }
