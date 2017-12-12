@@ -14,7 +14,7 @@ from time import sleep
 
 class TestAddUser(HeadlessRunnerTest):
 
-    @classmethod
+    #@classmethod
     #def setUpClass(cls):
     #    HeadlessRunnerTest.setUpClass()
 

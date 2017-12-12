@@ -3,7 +3,7 @@ from framework.utils.common_utils import random_number, random_string
 def generate_user():
     return {
         TITLE: "Developer",
-        NAME: random_string(7),
+        NAME: "Mino Rakoto",
         USERNAME: random_string(7)+"@mailinator.com",
         MOBILE_PHONE: random_number(9)
     }
@@ -19,7 +19,7 @@ def get_existing_username_user():
 def generate_user_with_existing_phone_number():
     return {
         TITLE: "Developer",
-        NAME: random_string(7),
+        NAME: "Mino Rakoto",
         USERNAME: random_string(7)+"@mailinator.com",
         MOBILE_PHONE: 2619875
     }
