@@ -8,7 +8,7 @@ from pages.loginpage.login_page import login
 from tests.logintests.login_data import VALID_CREDENTIALS, PASSWORD
 from pages.alluserspage.all_users_page import AllUsersPage
 from tests.editusertests.edit_user_data import *
-from tests.addusertests.add_user_data import *
+#from tests.addusertests.add_user_data import *
 from tests.alluserstests.all_users_data import ALL_USERS_URL
 from tests.submissionlogtests.submission_log_tests import send_sms_with
 import time
