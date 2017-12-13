@@ -16,7 +16,7 @@ from tests.testsettings import UI_TEST_TIMEOUT
 class TestPollOptionsFirefox(HeadlessRunnerTest):
     @classmethod
     def setUpClass(cls):
-        cls.driver = setup_driver("phantom")
+        cls.driver = setup_driver("firefox")
         cls.global_navigation = login(cls.driver)
 
     def setUp(self):
@@ -29,7 +29,7 @@ class TestPollOptionsFirefox(HeadlessRunnerTest):
     def tearDown(self):
         self.poll_questionnaire_page.delete_the_poll()
 
-    @attr('functional_test')
+    #@attr('functional_test')
     def test_warning_message_should_come_while_activating_a_poll_when_another_poll_is_active(self):
         poll_title_1 = self.create_questionnaire_page.set_poll_questionnaire_title("poll_questionnaire", generate_random=True)
         self.poll_questionnaire_page.select_broadcast_option()
@@ -53,7 +53,7 @@ class TestPollOptionsFirefox(HeadlessRunnerTest):
         self.assertTrue(self.poll_questionnaire_page.is_another_poll_active(poll_title_2))
         self.driver.find(ACTIVE_POLL_NAME).click()
 
-    @attr('functional_test')
+    #@attr('functional_test')
     def test_should_activate_the_poll(self):
         self.poll_questionnaire_page.select_broadcast_option()
         self.poll_questionnaire_page.click_create_poll()
