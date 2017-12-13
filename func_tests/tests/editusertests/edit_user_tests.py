@@ -16,15 +16,11 @@ from framework.utils.common_utils import random_string, random_number
 
 
 class TestEditUser(HeadlessRunnerTest):
-    @classmethod
-    def setUpClass(cls):
-        HeadlessRunnerTest.setUpClass()
+    def setUp(cls):
         cls.global_navigation = login(cls.driver, VALID_CREDENTIALS)
 
-    @classmethod
-    def tearDownClass(cls):
+    def tearDown(cls):
         cls.global_navigation.sign_out()
-        teardown_driver(cls.driver)
 
     @attr('functional_test')
     def test_should_edit_an_extended_user_as_ngo_admin(self):
