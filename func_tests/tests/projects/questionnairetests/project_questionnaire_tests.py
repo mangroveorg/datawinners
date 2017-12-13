@@ -42,6 +42,7 @@ class TestProjectQuestionnaire(HeadlessRunnerTest):
     def setUp(self):
         self.driver.go_to(DATA_WINNER_LOGIN_PAGE)
         login_page = LoginPage(self.driver)
+        self.driver.create_screenshot("debug-setup-test-project-questionnaire")
         self.global_navigation = login_page.do_successful_login_with(VALID_CREDENTIALS)
         project_questionnaire_data = EDIT_PROJECT_QUESTIONNAIRE_DATA.copy()
         project_questionnaire_data[QUESTIONS][8][NEW_UNIQUE_ID_TYPE] = 'new type'+random_number(3)
@@ -119,7 +120,7 @@ class TestProjectQuestionnaire(HeadlessRunnerTest):
         self._verify_users_added_to_project()
 
     @attr('functional_test')
-    def test_should_show_warning_popup_when_exiting_a_modified_questionnaire(self):
+    def test_should_show_warning_popup_when_exiting_a_modified_questionnaire_qre(self):
         modified_warning_dialog = QuestionnaireModifiedDialog(self.driver)
         sleep(2)
         self._verify_edit_dialog_cancel(modified_warning_dialog)
