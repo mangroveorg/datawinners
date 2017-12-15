@@ -51,7 +51,12 @@ class TestEditUser(HeadlessRunnerTest):
         self.driver.go_to(ALL_USERS_URL)
         all_users_page = AllUsersPage(self.driver)
         add_user_page = all_users_page.navigate_to_add_user()
-        user = generate_user()
+        user = {
+            TITLE: "Developer",
+            NAME: random_string(7),
+            USERNAME: random_string(7)+"@mailinator.com",
+            MOBILE_PHONE: random_number(9)
+        }
         add_user_page.select_role_as_project_manager()
         add_user_page.select_questionnaires(2, 4)
         add_user_page.add_user_with(user)
