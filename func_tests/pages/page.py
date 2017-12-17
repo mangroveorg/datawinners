@@ -52,4 +52,5 @@ class Page(object):
     def close_help(self):
         from framework.utils.common_utils import by_id
         locator = by_id("need_help_active_button")
+        self.driver.wait_for_element(UI_TEST_TIMEOUT, locator, True)
         self.driver.find(locator).click()
