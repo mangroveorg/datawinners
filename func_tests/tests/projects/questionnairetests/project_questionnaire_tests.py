@@ -66,7 +66,7 @@ class TestProjectQuestionnaire(HeadlessRunnerTest):
     @attr('functional_test')
     def test_editing_existing_questionnaire(self):
         self.global_navigation.navigate_to_view_all_project_page()
-        ProjectsPage(self.driver).navigate_to_project_overview_page(TestProjectQuestionnaire.project_name)\
+        ProjectsPage(self.driver).navigate_to_project_overview_page(self.project_name)\
                                  .navigate_to_questionnaire_tab()
         questionnaire_tab_page = self.questionnaire_tab_page
         self.assertEqual(questionnaire_tab_page.get_select_or_edit_question_message(),
@@ -108,7 +108,7 @@ class TestProjectQuestionnaire(HeadlessRunnerTest):
         questionnaire_tab_page.submit_questionnaire()
         self._expect_empty_questionnaire_dialog_to_be_shown()
         questionnaire_tab_page.add_questions(ADDITIONAL_TAB_QUESTIONNAIRE_DATA)
-        questionnaire_tab_page.set_questionnaire_code(TestProjectQuestionnaire.questionnaire_code)
+        questionnaire_tab_page.set_questionnaire_code(self.questionnaire_code)
         self.driver.find_element_by_name("question_title")
         questionnaire_tab_page.submit_questionnaire()
         self.assertEqual(questionnaire_tab_page.get_error_message(), DUPLICATE_QUESTIONNAIRE_CODE_MESSAGE,"Duplicate error message not shown")
@@ -485,6 +485,7 @@ class TestProjectQuestionnaire(HeadlessRunnerTest):
         self._validate_duplicate_unique_id(create_questionnaire_page)
         #cleaning up state
         create_questionnaire_page.delete_question(10)
+        self.driver.refresh()
 
 
     def _validate_errored_unique_id_input(self, create_questionnaire_page):
