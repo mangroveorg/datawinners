@@ -9,6 +9,7 @@ from pages.loginpage.login_page import login
 from tests.logintests.login_data import VALID_CREDENTIALS, PASSWORD
 from pages.alluserspage.all_users_page import AllUsersPage
 from tests.addusertests.add_user_data import *
+from pages.adduserpage.add_user_page import AddUserPage
 from tests.alluserstests.all_users_data import ALL_USERS_URL
 from time import sleep
 
@@ -25,7 +26,11 @@ class TestAddUser(HeadlessRunnerTest):
             pass
         self.driver.go_to(ALL_USERS_URL)
         self.all_users_page = AllUsersPage(self.driver)
-        self.add_user_page = self.all_users_page.navigate_to_add_user()
+        try:
+            self.add_user_page = self.all_users_page.navigate_to_add_user()
+        except:
+            self.add_user_page = AddUserPage(self.driver)
+            self.add_user_page.confirm_leave_page()
 
     def tearDown(cls):
         cls.global_navigation.sign_out()
