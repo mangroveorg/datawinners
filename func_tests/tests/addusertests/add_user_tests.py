@@ -19,7 +19,10 @@ class TestAddUser(HeadlessRunnerTest):
     #    HeadlessRunnerTest.setUpClass()
 
     def setUp(self):
-        self.global_navigation = login(self.driver, VALID_CREDENTIALS)
+        try:
+            self.global_navigation = login(self.driver, VALID_CREDENTIALS)
+        except:
+            pass
         self.driver.go_to(ALL_USERS_URL)
         self.all_users_page = AllUsersPage(self.driver)
         self.add_user_page = self.all_users_page.navigate_to_add_user()
