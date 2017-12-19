@@ -33,7 +33,10 @@ class TestAddUser(HeadlessRunnerTest):
             self.add_user_page.confirm_leave_page()
 
     def tearDown(cls):
-        cls.global_navigation.sign_out()
+        try:
+            cls.global_navigation.sign_out()
+        except:
+            pass
 
     def _create_extended_user(self):
         self.add_user_page.select_role_as_administrator()
