@@ -146,12 +146,20 @@ class TestAddUser(HeadlessRunnerTest):
 
     @attr('functional_test')
     def test_should_check_when_adding_user_with_existing_username(self):
+        self.global_navigation = login(self.driver, VALID_CREDENTIALS)
+        self.driver.go_to(ALL_USERS_URL)
+        self.all_users_page = AllUsersPage(self.driver)
+        self.add_user_page = self.all_users_page.navigate_to_add_user()
         user = get_existing_username_user()
         self._validate_and_check_error_message(user,
                                                u'This email address is already in use. Please supply a different email address')
 
     @attr('functional_test')
     def test_should_check_when_adding_user_with_existing_phonenumber(self):
+        self.global_navigation = login(self.driver, VALID_CREDENTIALS)
+        self.driver.go_to(ALL_USERS_URL)
+        self.all_users_page = AllUsersPage(self.driver)
+        self.add_user_page = self.all_users_page.navigate_to_add_user()
         user = generate_user_with_existing_phone_number()
         self._validate_and_check_error_message(user,
                                                u'This phone number is already in use. Please supply a different phone number')
@@ -172,6 +180,10 @@ class TestAddUser(HeadlessRunnerTest):
 
     @attr('functional_test')
     def test_should_check_when_adding_user_with_invalid_email_address(self):
+        self.global_navigation = login(self.driver, VALID_CREDENTIALS)
+        self.driver.go_to(ALL_USERS_URL)
+        self.all_users_page = AllUsersPage(self.driver)
+        self.add_user_page = self.all_users_page.navigate_to_add_user()
         user = generate_user()
         user.update({USERNAME: 'abcdefgh'})
         self._validate_and_check_error_message(user,
