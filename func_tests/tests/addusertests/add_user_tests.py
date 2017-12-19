@@ -168,7 +168,7 @@ class TestAddUser(HeadlessRunnerTest):
         user = generate_user()
         user.update({MOBILE_PHONE: 'abcdefgh'})
         self._validate_and_check_error_message(user,
-                                               u'Invalid phone number')
+                                               u'Please enter a valid phone number.')
 
     @attr('functional_test')
     def test_should_check_when_adding_user_with_invalid_email_address(self):
