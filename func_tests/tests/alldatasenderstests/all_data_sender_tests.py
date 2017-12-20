@@ -150,9 +150,10 @@ class TestAllDataSenders(HeadlessRunnerTest):
             self.driver.is_element_present(self.all_datasenders_page.get_checkbox_selector_for_datasender_row(1)))
         self.all_datasenders_page.search_with(delete_datasender_id)
         self.all_datasenders_page.wait_for_table_to_load()
-        sleep(2)
-        self.assertFalse(
-            self.driver.is_element_present(self.all_datasenders_page.get_checkbox_selector_for_datasender_row(1)))
+        self.driver.create_screenshot("debug-ft-display-warning-dialog-alldstest-line155")
+        self.driver.wait_for_element(UI_TEST_TIMEOUT,
+                                     self.all_datasenders_page.get_checkbox_selector_for_datasender_row(1), True)
+
 
 
     @attr('functional_test')
