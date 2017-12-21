@@ -5,6 +5,7 @@ from framework.utils.common_utils import by_css
 from pages.adddatasenderspage.add_data_senders_locator import FLASH_MESSAGE_LABEL
 from pages.adduserpage.add_user_locator import *
 from tests.testsettings import UI_TEST_TIMEOUT
+from time import sleep
 
 
 class AddUserPage(Page):
@@ -15,7 +16,9 @@ class AddUserPage(Page):
         for key, value in user_data.items():
             self.driver.find_text_box(by_css("input[name='%s']" % key)).enter_text(value)
         if click_submit:
+            sleep(2)
             self.driver.find(by_css("button[id=submit]")).click()
+            self.driver.wait_until_element_is_not_present(UI_TEST_TIMEOUT, by_css(".loading"))
 
     def get_success_message(self):
         locator = self.driver.wait_for_element(UI_TEST_TIMEOUT * 2, FLASH_MESSAGE_LABEL, True)

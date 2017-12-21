@@ -54,3 +54,26 @@ class Page(object):
         locator = by_id("need_help_active_button")
         self.driver.wait_for_element(UI_TEST_TIMEOUT, locator, True)
         self.driver.find(locator).click()
+
+    def confirm_form_changed_dialog(self):
+        from framework.utils.common_utils import by_css
+        locator = by_css("#form_changed_warning_dialog a.yes_button")
+        confirm_button = self.driver.find(locator)
+        if confirm_button.is_displayed():
+            confirm_button.click()
+
+    def cancel_form_changed_dialog(self):
+        from framework.utils.common_utils import by_css
+        locator = by_css("#form_changed_warning_dialog a.cancel_link")
+        cancel_button = self.driver.find(locator)
+        if cancel_button.is_displayed():
+            cancel_button.click()
+
+
+    def get_warning_dialog_message(self):
+        from framework.utils.common_utils import by_css
+        locator = by_css("#form_changed_warning_dialog p.warning_message")
+        wmsg = self.driver.find(locator)
+        if wmsg.is_displayed():
+            return wmsg.text
+        return ""
