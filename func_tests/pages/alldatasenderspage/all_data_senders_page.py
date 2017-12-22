@@ -249,7 +249,7 @@ class AllDataSendersPage(Page):
         self.wait_for_table_to_load()
 
     def wait_for_table_data_to_load(self):
-        self.driver.wait_until_element_is_not_present(UI_TEST_TIMEOUT, by_id("datasender_table_processing"))
+        self.driver.wait_until_element_is_not_present(UI_TEST_TIMEOUT * 2, by_id("datasender_table_processing"))
 
     def search_with(self, search_text):
         self.driver.find_text_box(by_css("div#datasender_table_filter input")).enter_text(search_text)

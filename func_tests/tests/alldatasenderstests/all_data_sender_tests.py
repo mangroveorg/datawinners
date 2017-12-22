@@ -150,9 +150,8 @@ class TestAllDataSenders(HeadlessRunnerTest):
             self.driver.is_element_present(self.all_datasenders_page.get_checkbox_selector_for_datasender_row(1)))
         self.all_datasenders_page.search_with(delete_datasender_id)
         self.all_datasenders_page.wait_for_table_to_load()
-        self.driver.create_screenshot("debug-ft-display-warning-dialog-alldstest-line155")
-        self.driver.wait_for_element(UI_TEST_TIMEOUT,
-                                     self.all_datasenders_page.get_checkbox_selector_for_datasender_row(1), True)
+        self.assertFalse(
+            self.driver.is_element_present(self.all_datasenders_page.get_checkbox_selector_for_datasender_row(1)))
 
 
 
@@ -167,7 +166,7 @@ class TestAllDataSenders(HeadlessRunnerTest):
         all_checked_ds_count = self.all_datasenders_page.get_checked_datasenders_count()
         self.assertEqual(all_checked_ds_count, 0)
 
-    @attr("functional_test")
+    @attr('functional_test')
     def test_actions_menu(self):
         self.all_datasenders_page.click_action_button()
         self.assert_action_menu_when_no_datasender_selected()
@@ -197,7 +196,7 @@ class TestAllDataSenders(HeadlessRunnerTest):
     def assert_action_menu_shown(self):
         self.assertFalse(self.all_datasenders_page.is_none_selected_shown())
 
-    @attr("functional_test")
+    @attr('functional_test')
     def test_should_check_checkall_when_all_cb_are_checked(self):
         self.all_datasenders_page.click_checkall_checkbox()
         self.assertTrue(self.all_datasenders_page.is_checkall_checked())
@@ -207,7 +206,7 @@ class TestAllDataSenders(HeadlessRunnerTest):
         self.driver.find(first_row_datasender).click()
         self.assertTrue(self.all_datasenders_page.is_checkall_checked())
 
-    @attr("functional_test")
+    @attr('functional_test')
     def test_should_show_updated_datasender_details_after_edit(self):
         self.all_datasenders_page.search_with(self.datasender_id_with_web_access)
         self.all_datasenders_page.select_a_data_sender_by_id(self.datasender_id_with_web_access)
@@ -223,7 +222,7 @@ class TestAllDataSenders(HeadlessRunnerTest):
         self.assertEqual(fetch_(MOBILE_NUMBER, EDITED_DATA_SENDER), self.all_datasenders_page.get_cell_value(1, 3))
 
 
-    @attr("functional_test")
+    @attr('functional_test')
     def test_should_give_web_and_smartphone_access(self):
         self.all_datasenders_page.search_with(self.datasender_id_without_web_access)
         self.assertFalse(self.all_datasenders_page.is_web_and_smartphone_device_checkmarks_present(
