@@ -69,6 +69,7 @@ class TestAddUser(HeadlessRunnerTest):
     def test_should_add_a_new_project_manager_as_ngo_admin(self):
         self.add_user_page.select_role_as_project_manager()
         questionnaires = self.add_user_page.select_questionnaires(2)
+        self.driver.create_screenshot("ft-debug-selected-qre-when-adding-user")
         user = generate_user()
         self.add_user_page.add_user_with(user)
         message = self.add_user_page.get_success_message()
@@ -78,6 +79,7 @@ class TestAddUser(HeadlessRunnerTest):
         self.new_user_credential = {USERNAME: self.username, PASSWORD: password}
         self.driver.go_to(ALL_USERS_URL)
         questionnaire_list_for_user = self.all_users_page.get_questionnaire_list_for(self.username)
+        self.driver.create_screenshot("ft-debug-user-list-check-questionnaire-for-%s" % self.username)
         role_for_user = self.all_users_page.get_role_for(self.username)
         self.assertEqual('Project Manager', role_for_user,
                          'Expected role to be Project Manager but was %s' % role_for_user)
