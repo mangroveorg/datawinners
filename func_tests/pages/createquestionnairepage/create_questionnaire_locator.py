@@ -125,3 +125,7 @@ SUCCESS_MESSAGE_LABEL = by_xpath(
 PERIOD_QUESTION_TIP_CSS_LOCATOR = "#periode_green_message"
 QUESTION_TYPE_CSS_LOCATOR = "[name=type][value='%s']"
 CURRENT_QUESTION_TYPE_LOCATOR = by_css("input[name='type']:checked")
+
+
+SEND_SMS_DIALOG = by_id("send-sms-section")
+SUCCESS_MSG_SENDIND_SMS = by_id("sms-success")

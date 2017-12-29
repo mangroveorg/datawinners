@@ -6,6 +6,7 @@ from pages.createquestionnairepage.create_questionnaire_locator import POLL_SMS_
     POLL_SMS_TABLE, SEND_SMS_LINK, PROJECT_LANGUAGE, SAVE_LANG_BTN, SUCCESS_MSG_BOX, \
     DEACTIVATE_BTN, ON_SWITCH, RECIPIENT_DROPDOWN, SEND_BUTTON, CANCEL_SMS, LANGUAGE_TEXT, ACTIVATE_BTN, activate_link, \
     ACTIVE_POLL_NAME, POLL_INFORMATION_BOX, ON_OFF_SWITCH, POLL_STATUS_BY_ID
+from pages.createquestionnairepage.create_questionnaire_locator import SEND_SMS_DIALOG, SUCCESS_MSG_SENDIND_SMS
 from pages.globalnavigationpage.global_navigation_locator import PROJECT_LINK
 from pages.page import Page
 from tests.projects.questionnairetests.project_questionnaire_data import POLL, POLL_RECIPIENTS, MY_POLL_RECIPIENTS, DATA_ANALYSIS
@@ -36,6 +37,7 @@ class PollQuestionnairePage(Page):
     def click_create_poll(self):
         self.driver.wait_for_element(UI_TEST_TIMEOUT, CREATE_POLL_BUTTON, True)
         self.driver.find(CREATE_POLL_BUTTON).click()
+        self.driver.wait_for_page_with_title(UI_TEST_TIMEOUT, "Data Analysis")
 
     def is_poll_created(self, poll_title):
         self.driver.wait_for_element(UI_TEST_TIMEOUT, POLL_TITLE, True)
@@ -81,13 +83,14 @@ class PollQuestionnairePage(Page):
             return False
 
     def get_automatic_reply_status(self):
+        self.driver.wait_for_element(UI_TEST_TIMEOUT, AUTOMATIC_REPLY_ACCORDIAN, True)
         automatic_reply_status = self.driver.find(AUTOMATIC_REPLY_ACCORDIAN).text
         reply_status_list = automatic_reply_status.split()
         status = reply_status_list[len(reply_status_list) - 1]
         return status
 
     def is_reply_sms_language_updated(self):
-        self.driver.wait_for_element(UI_TEST_TIMEOUT, SUCCESS_MSG_BOX, True)
+        self.driver.wait_for_element(UI_TEST_TIMEOUT * 2, SUCCESS_MSG_BOX, True)
         return self.driver.find(SUCCESS_MSG_BOX) is not None
 
     def change_autoamtic_reply_sms_status(self):
@@ -127,7 +130,7 @@ class PollQuestionnairePage(Page):
         self.driver.wait_for_element(UI_TEST_TIMEOUT, by_css("#poll_sms_table"), True)
         recipient_name = self.driver.find(by_css('#poll_sms_table>tbody>tr:nth-of-type(%s)>td:nth-of-type(%s)>span:nth-of-type(2)' % (row, column))).text
         return recipient_name in recipent
-
+    
     def deactivate_poll(self):
         self.select_element(POLL_TAB)
         self.select_element(poll_info_accordian)
@@ -140,21 +143,22 @@ class PollQuestionnairePage(Page):
         self.select_element(poll_info_accordian)
         self.driver.find(activate_link).click()
         self.driver.wait_for_element(UI_TEST_TIMEOUT, ACTIVATE_BTN, True)
-        self.driver.find_text_box(ACTIVATE_BTN).click()
         time.sleep(1)
         self.driver.find(ACTIVATE_BTN).click()
-
+        
     def select_send_sms(self):
         self.select_element(POLL_TAB)
         self.click_send_sms_link()
 
     def click_send_sms_link(self):
         self.select_element(SEND_SMS_LINK)
+        self.driver.wait_for_element(UI_TEST_TIMEOUT, SEND_SMS_DIALOG, True)
 
     def send_sms_to(self, recipient_type, recipient_name):
         self.select_recipient_type(RECIPIENT_DROPDOWN, recipient_type)
         self._configure_given_contacts(recipient_name)
         self.select_element(SEND_BUTTON)
+        self.driver.wait_for_element(UI_TEST_TIMEOUT, SUCCESS_MSG_SENDIND_SMS)
         self.select_element(CANCEL_SMS)
 
     def send_sms_to_my_poll_recipients(self):
@@ -195,6 +199,7 @@ class PollQuestionnairePage(Page):
     def delete_the_poll(self):
         self.select_element(by_css('.delete_project'))
         self.select_element(by_css('div.ui-dialog #confirm_delete_poll'))
+        self.driver.wait_for_page_with_title(UI_TEST_TIMEOUT, "Questionnaires & Polls")
 
     def all_recipients(self, column):
         div = by_xpath(".//*[@id='datasender_table_wrapper']/div[8]")
