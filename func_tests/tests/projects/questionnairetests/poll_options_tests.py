@@ -91,6 +91,7 @@ class TestPollOptions(HeadlessRunnerTest):
 
         self.poll_questionnaire_page.select_send_sms()
         self.poll_questionnaire_page.send_sms_to(GROUP, group_name)
+        sleep(2)
         self.assertTrue(self.poll_questionnaire_page.has_DS_received_sms(unique_id, SECOND_ROW, THIRD_COLUMN))
         self.poll_questionnaire_page.click_send_sms_link()
         self.poll_questionnaire_page.send_sms_to(GROUP, group_name)
@@ -196,6 +197,7 @@ class TestPollOptions(HeadlessRunnerTest):
         sleep(2)
         self.driver.wait_for_element(UI_TEST_TIMEOUT, DASHBOARD_PAGE_LINK, True)
         create_questionnaire_options_page = self.global_navigation.navigate_to_dashboard_page().navigate_to_create_project_page()
+        self.assertEqual(self.driver.get_title(), "Create Questionnaire")
         self.create_questionnaire_page = create_questionnaire_options_page.select_poll_questionnaire_option()
         self.create_questionnaire_page.set_poll_questionnaire_title("poll_questionnaire", generate_random=True)
         return group_name, unique_id

@@ -37,6 +37,7 @@ class PollQuestionnairePage(Page):
     def click_create_poll(self):
         self.driver.wait_for_element(UI_TEST_TIMEOUT, CREATE_POLL_BUTTON, True)
         self.driver.find(CREATE_POLL_BUTTON).click()
+        time.sleep(1)
         self.driver.wait_for_page_with_title(UI_TEST_TIMEOUT, "Data Analysis")
 
     def is_poll_created(self, poll_title):
@@ -128,9 +129,10 @@ class PollQuestionnairePage(Page):
         time.sleep(3)
         self.select_element(POLL_SMS_ACCORDIAN)
         self.driver.wait_for_element(UI_TEST_TIMEOUT, by_css("#poll_sms_table"), True)
+        self.driver.wait_until_modal_dissmissed()
         recipient_name = self.driver.find(by_css('#poll_sms_table>tbody>tr:nth-of-type(%s)>td:nth-of-type(%s)>span:nth-of-type(2)' % (row, column))).text
         return recipient_name in recipent
-    
+
     def deactivate_poll(self):
         self.select_element(POLL_TAB)
         self.select_element(poll_info_accordian)
@@ -148,6 +150,7 @@ class PollQuestionnairePage(Page):
         
     def select_send_sms(self):
         self.select_element(POLL_TAB)
+        time.sleep(3)
         self.click_send_sms_link()
 
     def click_send_sms_link(self):
@@ -160,6 +163,7 @@ class PollQuestionnairePage(Page):
         self.select_element(SEND_BUTTON)
         self.driver.wait_for_element(UI_TEST_TIMEOUT, SUCCESS_MSG_SENDIND_SMS)
         self.select_element(CANCEL_SMS)
+        self.driver.wait_for_page_load()
 
     def send_sms_to_my_poll_recipients(self):
         self.select_recipient_type(RECIPIENT_DROPDOWN, MY_POLL_RECIPIENTS)
