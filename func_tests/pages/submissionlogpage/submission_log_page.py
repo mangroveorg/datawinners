@@ -134,7 +134,7 @@ class SubmissionLogPage(Page):
         return self.driver.find(by_css('.submission_table .help_accordion')).text
 
     def wait_for_table_data_to_load(self):
-        self.driver.wait_until_element_is_not_present(UI_TEST_TIMEOUT, by_css(".dataTables_processing"))
+        self.driver.wait_until_element_is_not_present(UI_TEST_TIMEOUT * 2, by_css(".dataTables_processing"))
         return self
 
     def search(self, search_text):

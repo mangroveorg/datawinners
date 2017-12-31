@@ -18,7 +18,9 @@ class AddUserPage(Page):
         if click_submit:
             sleep(2)
             self.driver.find(by_css("button[id=submit]")).click()
-            self.driver.wait_until_element_is_not_present(UI_TEST_TIMEOUT, by_css(".loading"))
+            self.driver.wait_until_element_is_not_present(UI_TEST_TIMEOUT * 2, by_css(".loading"))
+        sleep(2)
+        self.driver.wait_for_page_load()
 
     def get_success_message(self):
         locator = self.driver.wait_for_element(UI_TEST_TIMEOUT * 2, FLASH_MESSAGE_LABEL, True)

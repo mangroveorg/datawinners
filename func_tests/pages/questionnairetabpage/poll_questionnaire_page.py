@@ -129,9 +129,14 @@ class PollQuestionnairePage(Page):
         time.sleep(3)
         self.select_element(POLL_SMS_ACCORDIAN)
         self.driver.wait_for_element(UI_TEST_TIMEOUT, by_css("#poll_sms_table"), True)
-        self.driver.wait_until_modal_dissmissed()
-        recipient_name = self.driver.find(by_css('#poll_sms_table>tbody>tr:nth-of-type(%s)>td:nth-of-type(%s)>span:nth-of-type(2)' % (row, column))).text
-        return recipient_name in recipent
+        self.driver.wait_until_modal_dismissed()
+        try:
+            recipient_name = self.driver.find(by_css('#poll_sms_table>tbody>tr:nth-of-type(%s)>td:nth-of-type(%s)>span:nth-of-type(2)' % (row, column))).text
+            return recipient_name in recipent
+        except Exception as e:
+            self.driver.create_screenshot("debug-ft-has-ds-received-sms-element-not-found")
+            raise e
+        
 
     def deactivate_poll(self):
         self.select_element(POLL_TAB)
@@ -159,6 +164,7 @@ class PollQuestionnairePage(Page):
 
     def send_sms_to(self, recipient_type, recipient_name):
         self.select_recipient_type(RECIPIENT_DROPDOWN, recipient_type)
+        time.sleep(2)
         self._configure_given_contacts(recipient_name)
         self.select_element(SEND_BUTTON)
         self.driver.wait_for_element(UI_TEST_TIMEOUT, SUCCESS_MSG_SENDIND_SMS)

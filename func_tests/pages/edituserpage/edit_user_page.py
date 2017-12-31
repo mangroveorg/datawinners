@@ -77,6 +77,8 @@ class EditUserPage(Page):
         locator = self.driver.find(CONFIRM_LEAVE_PAGE_BUTTON)
         if locator.is_displayed():
             locator.click()
+        else:
+            self.driver.create_screenshot("ft-debug-confirm-leave-button-is-not-present")
 
     def select_questionnaires_by_name(self, questionnaire_names):
         for name in questionnaire_names:

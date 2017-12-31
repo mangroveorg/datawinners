@@ -334,7 +334,7 @@ class AllDataSendersPage(Page):
 
     def check_links_should_open_dialog(self, link_locator, dialog_title_locator, close_dialog_locator):
         self.driver.find(by_css(link_locator)).click()
-        self.driver.wait_for_element(5, by_css(dialog_title_locator))
+        self.driver.wait_for_element(UI_TEST_TIMEOUT, by_css(dialog_title_locator), True)
         value = self.driver.find(by_css(dialog_title_locator)).is_displayed()
         self.driver.find(by_css(close_dialog_locator)).click()
         return value
