@@ -10,12 +10,12 @@
 
 {% block content %}
 <div>
-   <table class="styled_table">
+   <table class="styled_table" style="table-layout: fixed;">
     <thead>
-        <th width="15%"> {% trans "Data Sender" %} </th>
-        <th width="10%"> {% trans "Submission Date" %} </th>
-        <th width="10%"> {% trans "Questionnaire Code" %} </th>
-        <th width="20%"> {% trans "SMS Text" %} </th>
+        <th width="12%"> {% trans "Data Sender" %} </th>
+        <th width="11%"> {% trans "Submission Date" %} </th>
+        <th width="13%"> {% trans "Questionnaire Code" %} </th>
+        <th width="19%"> {% trans "SMS Text" %} </th>
         <th width="45%"> {% trans "Error Message" %} </th>
     </thead>
         {% for log in logs%}
@@ -23,8 +23,8 @@
                 <td>{{ log.from_number }}</td>
                 <td>{{ log.created_at_formatted }}</td>
                 <td>{{ log.form_code }}</td>
-                <td style="word-wrap: break-word; word-break: break-all; word-break: break-word; overflow-wrap: word-break;">{{ log.message }}</td>
-                <td style="word-wrap: break-word; word-break: break-all; word-break: break-word; overflow-wrap: word-break;">{{ log.error }}</td>
+                <td style=" word-wrap: break-word; word-wrap: break-all; ">{{ log.message }}</td>
+                <td style=" word-wrap: break-word; word-wrap: break-all; ">{{ log.error }}</td>
 
             </tr>
         {% endfor %}
