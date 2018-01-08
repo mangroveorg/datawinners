@@ -23,8 +23,8 @@
                 <td>{{ log.from_number }}</td>
                 <td>{{ log.created_at_formatted }}</td>
                 <td>{{ log.form_code }}</td>
-                <td style="word-wrap: break-word; word-break: break-all; word-break: break-word;">{{ log.message }}</td>
-                <td style="word-wrap: break-word; word-break: break-all; word-break: break-word;">{{ log.error }}</td>
+                <td style="word-wrap: break-word; word-break: break-all; word-break: break-word; overflow-wrap: word-break;">{{ log.message }}</td>
+                <td style="word-wrap: break-word; word-break: break-all; word-break: break-word; overflow-wrap: word-break;">{{ log.error }}</td>
 
             </tr>
         {% endfor %}
