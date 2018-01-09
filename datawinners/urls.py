@@ -36,6 +36,7 @@ urlpatterns = patterns('',
                        (r'', include('datawinners.blue.urls')),
                        (r'', include('datawinners.feature_toggle_demo_advanced_dashboard.urls')),
                        (r'', include('datawinners.feature_toggle_demo_secured_endpoint.urls')),
+                       (r'', include('datawinners.bot.urls')),
                        url(r'^admin-apis/', include('datawinners.admin_apis.urls')),
                        url(r'^admin/', include(admin.site.urls)),
                        
