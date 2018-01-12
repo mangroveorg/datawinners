@@ -86,5 +86,13 @@
             "name": "Extended Users",
             "permissions": []
         }
+    },
+    {
+        "pk": 7,
+        "model": "auth.group",
+        "fields":{
+            "name": "No Delete PM",
+            "permissions": []
+        }
     }
 ]
