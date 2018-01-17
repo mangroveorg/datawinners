@@ -12,50 +12,82 @@ from django.views.decorators.csrf import csrf_exempt
 from django.conf import settings
 from django.core.urlresolvers import reverse
 from mangrove.errors.MangroveException import MangroveException
+from django.contrib.auth.models import User
+from datawinners.main.database import get_database_manager
+from datawinners.project.view_models import ReporterEntity
+from mangrove.form_model.form_model import REPORTER
+from mangrove.datastore.entity import get_by_short_code
+from mangrove.errors.MangroveException import DataObjectNotFound
+from accountmanagement.models import NGOUserProfile
+from accountmanagement.models import Organization
+from accountmanagement.models import OrganizationSetting
 
 from atom.http_core import HttpRequest
 
 from datawinners.submission.views import sms
 
-
-#PAGE_ACCESS_TOKEN = settings.__getattr__('PAGE_ACCESS_TOKEN')
-PAGE_ACCESS_TOKEN = 'EAAFZCluSqoIYBAHMr9711zvXF98tdLRGx8CoPyQFWXjrf5Q6pvFMTMi3OZB6uwxaG2PX0NR0mTtNNsv5Trb9SZBvPBZAU20ITBGW6eA9IZAnfBkrkmEIcZBaG6yxCjw1Q5Oz3PRAJb2BxHo5VFyFzmv1a6I3EREWtGZAejBHRpK7QZDZD'
-#VERIFY_TOKEN = settings.__getattr__('VERIFY_TOKEN')
-VERIFY_TOKEN = 'tokitoki'
-
-questionnaires = {'ecole': ["""School Name. School Identification Number. Number of Students.""",
-                            """string.string.number"""],
-                  'sante': ["""Month and Year. Clinic name. Clinic Identification Number. Stock.""",
-                            """date.string.string.number"""],
-                  'agri': ["""Date of visit. Name of location visited. Type of Production.""",
-                           """date.string.string"""]}
+PAGE_ACCESS_TOKEN = "EAAFZCluSqoIYBANjdNs6HiWq95J19QDcZBTHCAeAZBHQcd2CEhgNOEyU3bsXRnsIDzUlIt9VTNtqu7jmKmtl5ohy6qE6SzNUCN2xPpwjXk6wrnbokyIu9y03CFYqwCkuPEOkRyhLZA5Yh0oVIeDAz1GyuvZB6Dbb9uthHmLYCGQZDZD"
+VERIFY_TOKEN = "tokitoki"
 
 
+# Helper function
 def post_facebook_message(fbid, received_message):
-    _message = received_message
-    _from = '123456789'
-    _to = '0323200534'
-    try:
-        submission_request = HttpRequest(uri=reverse(sms), method='POST')
-        if settings.USE_NEW_VUMI:
-            submission_request.POST = {"content": _message, "from_addr": _from, "to_addr": _to, "message_id":uuid.uuid1().hex}
+    response_text = ""
+    keywords = received_message.lower().split()
+    if keywords[0] == 'activate':
+        if len(keywords) == 4:
+            try:
+                user = User.objects.get(email=keywords[2])
+                manager = get_database_manager(user)
+                reporter_entity = ReporterEntity(get_by_short_code(manager, keywords[1], [REPORTER]))
+                if reporter_entity.email == user.email and reporter_entity.mobile_number == keywords[3]:
+                    try:
+                        ds = NGOUserProfile.objects.get(fb_id=fbid)
+                        ds.fb_id = ''
+                        ds.save()
+                    finally:
+                        datasender = NGOUserProfile.objects.get(user=user)
+                        datasender.fb_id = fbid
+                        datasender.save()
+                        response_text = 'ID saved for ' + reporter_entity.name
+            except User.DoesNotExist as e:
+                response_text = e.message
+            except DataObjectNotFound as e:
+                response_text = e.message
+            except NGOUserProfile.DoesNotExist as e:
+                response_text = e.message
         else:
-            submission_request.POST = {"message": _message, "from_msisdn": _from, "to_msisdn": _to, "message_id":uuid.uuid1().hex}
+            response_text = 'Please send your ID, email and mobile phone number'
+    else:
+        try:
+            ds = NGOUserProfile.objects.get(fb_id=fbid)
+            organization = Organization.objects.get(org_id=ds.org_id)
+            organization_settings = OrganizationSetting.objects.get(organization=organization)
+            _message = received_message
+            _from = ds.mobile_phone
+            _to = organization_settings.sms_tel_number
+            submission_request = HttpRequest(uri=reverse(sms), method='POST')
+            if settings.USE_NEW_VUMI:
+                submission_request.POST = {"content": _message, "from_addr": _from, "to_addr": _to, "message_id":uuid.uuid1().hex}
+            else:
+                submission_request.POST = {"message": _message, "from_msisdn": _from, "to_msisdn": _to, "message_id":uuid.uuid1().hex}
 
-        response = sms(submission_request)
-        message = response.content
+            try:
+                response = sms(submission_request)
+                response_text = response.content
+                #response_text = 'Got it!'
+            except:
+                response_text = 'There was an error'
 
-    except MangroveException as exception:
-        message = exception.message
-    response_text = message
-
-    #user_details_url = "https://graph.facebook.com/v2.6/%s" % fbid
-    #user_details_params = {'fields': 'first_name,last_name,profile_pic', 'access_token': PAGE_ACCESS_TOKEN}
-    #user_details = requests.get(user_details_url, user_details_params).json()
-    #response_text = 'Yo ' + user_details['first_name'] + '! ' + response_text
+        except MangroveException as exception:
+            response_text = exception.message
+        except NGOUserProfile.DoesNotExist:
+            response_text = "Facebook account not yet activated"
+        except Organization.DoesNotExist as exception:
+            response_text = exception.message
 
     params = {
-        "access_token": "EAAFZCluSqoIYBAHMr9711zvXF98tdLRGx8CoPyQFWXjrf5Q6pvFMTMi3OZB6uwxaG2PX0NR0mTtNNsv5Trb9SZBvPBZAU20ITBGW6eA9IZAnfBkrkmEIcZBaG6yxCjw1Q5Oz3PRAJb2BxHo5VFyFzmv1a6I3EREWtGZAejBHRpK7QZDZD"
+        "access_token": "EAAFZCluSqoIYBANjdNs6HiWq95J19QDcZBTHCAeAZBHQcd2CEhgNOEyU3bsXRnsIDzUlIt9VTNtqu7jmKmtl5ohy6qE6SzNUCN2xPpwjXk6wrnbokyIu9y03CFYqwCkuPEOkRyhLZA5Yh0oVIeDAz1GyuvZB6Dbb9uthHmLYCGQZDZD"
     }
     headers = {
         "Content-Type": "application/json"
@@ -70,13 +102,8 @@ def post_facebook_message(fbid, received_message):
     })
     requests.post("https://graph.facebook.com/v2.6/me/messages", params=params, headers=headers, data=data)
 
-    #post_message_url = 'https://graph.facebook.com/v2.6/me/messages?access_token=%s'%PAGE_ACCESS_TOKEN
-    #response_msg = json.dumps({"recipient":{"id":fbid}, "message":{"text":"response_text"}})
-    #requests.post(post_message_url, headers={"Content-Type": "application/json"},data=response_msg)
 
-    #bot.send_text_message(fbid, response_text)
-
-
+# Create your views here.
 class BotView(generic.View):
     def get(self, request, *args, **kwargs):
         if self.request.GET['hub.verify_token'] == VERIFY_TOKEN:
@@ -86,38 +113,24 @@ class BotView(generic.View):
 
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
-        try:
-            return generic.View.dispatch(self, request, *args, **kwargs)
-        except:
-            return None
+        return generic.View.dispatch(self, request, *args, **kwargs)
 
+    # Post function to handle Facebook messages
     def post(self, request, *args, **kwargs):
-        data = dict(self.request.POST.iterlists())
-        data = next(iter(data))
-        data = loads(data)
-
-        if data['object'] == 'page':
-            for entry in data['entry']:
-                for messaging_event in entry['messaging']:
-
-                    # IDs
-                    sender_id = messaging_event['sender']['id']
-                    recipient_id = messaging_event['recipient']['id']
-
-                    if messaging_event.get('message'):
-                        # Extracting text message
-                        if 'text' in messaging_event['message']:
-                            messaging_text = messaging_event['message']['text']
-                        else:
-                            messaging_text = 'no text'
-
-                        post_facebook_message(sender_id, messaging_text)
-
-        #incoming_message = dict(self.request.POST.iterlists())
-        #incoming_message = next(iter(incoming_message))
-        #incoming_message = loads(incoming_message)
-        #for entry in incoming_message['entry']:
-        #    for message in entry['messaging']:
-        #        if 'message' in message:
-        #            post_facebook_message(message['sender']['id'], message['message']['text'])
+        # Converts the text payload into a python dictionary
+        incoming_message = dict(self.request.POST.iterlists())
+        incoming_message = next(iter(incoming_message))
+        incoming_message = json.loads(incoming_message)
+        # Facebook recommends going through every entry since they might send
+        # multiple messages in a single call during high load
+        for entry in incoming_message['entry']:
+            for message in entry['messaging']:
+                # Check to make sure the received call is a message call
+                # This might be delivery, optin, postback for other events
+                if 'message' in message:
+                    # Print the message to the terminal
+                    #pprint(message)
+                    # Assuming the sender only sends text. Non-text messages like stickers, audio, pictures
+                    # are sent as attachments and must be handled accordingly.
+                    post_facebook_message(message['sender']['id'], message['message']['text'])
         return HttpResponse()

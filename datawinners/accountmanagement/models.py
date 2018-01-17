@@ -316,6 +316,7 @@ class NGOUserProfile(models.Model):
     org_id = models.TextField()
     mobile_phone = models.TextField()
     reporter_id = models.CharField(null=True, max_length=20)
+    fb_id = models.CharField(null=True, max_length=20)
 
     @property
     def reporter(self):
