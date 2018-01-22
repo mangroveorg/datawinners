@@ -1,5 +1,6 @@
 from __builtin__ import dict
 from operator import itemgetter
+import logging
 
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render_to_response
@@ -8,7 +9,9 @@ from django.core.urlresolvers import reverse
 from django.template.defaultfilters import slugify
 from django.utils.http import urlquote
 from django.utils.translation import ugettext as _, get_language
-from django.http import Http404
+from django.http import Http404, HttpResponse
+from django.views.decorators.csrf import csrf_response_exempt, csrf_view_exempt
+import jsonpickle
 
 from datawinners.accountmanagement.decorators import session_not_expired, is_not_expired, is_allowed_to_view_reports, \
     is_new_user, valid_web_user
@@ -25,7 +28,10 @@ from datawinners.utils import get_organization
 from datawinners.project.utils import is_quota_reached
 from mangrove.form_model.project import Project
 from mangrove.datastore.documents import ProjectDocument
+from collections import OrderedDict
 
+
+datawinners_logger = logging.getLogger("datawinners")
 
 REPORTER_ENTITY_TYPE = u'reporter'
 
@@ -190,24 +196,59 @@ def index(request):
                                   context_instance=RequestContext(request))
 
 
-def _get_failed_entries(organization):
-    org_logs = DatawinnerLog.objects.filter(organization=organization).order_by('-created_at')
+def _get_failed_entries(organization, display_start=0, display_length=25, sort_col=2, sort_dir='asc'):
+    header_dict = OrderedDict([('from_number', 'Data Sender'), ('created_at', 'Submission Date'),('form_code', 'Questionnaire Code'), ('message' , 'SMS Text'), ('error', 'Error message') ])
+    order = list(header_dict.keys())[sort_col-1]
+    total = DatawinnerLog.objects.filter(organization=organization).count()
+    i_start = display_start
+    i_end = display_start + display_length
+    if sort_dir=='desc':
+        order = '-' + order
+    org_logs = DatawinnerLog.objects.filter(organization=organization).order_by(order)[i_start:i_end]
     local_time_delta = get_country_time_delta(organization.country)
     for entry in org_logs:
         entry.created_at = convert_utc_to_localized(local_time_delta, entry.created_at)
-    return org_logs
 
+    org_logs_flat = org_logs.values_list('from_number','created_at','form_code','message','error')
+    return total, list(org_logs_flat)
+
+@csrf_view_exempt
+@csrf_response_exempt
+@login_required
+@session_not_expired
+@is_new_user
+@is_not_expired
+def failed_submissions_ajax(request):
+    try:
+        organization = get_organization(request)
+        total_display_records, org_logs = _get_failed_entries(organization,int(request.POST.get('iDisplayStart')),int(request.POST.get('iDisplayLength')),int(request.POST.get('iSortCol_0')),request.POST.get('sSortDir_0'))
+        return HttpResponse(
+        jsonpickle.encode(
+            {
+                'data': list(org_logs),
+                'iTotalDisplayRecords': total_display_records,
+                'iDisplayStart': int(request.POST.get('iDisplayStart')),
+                "iTotalRecords": org_logs.__len__(),
+                'iDisplayLength': int(request.POST.get('iDisplayLength'))
+            }, unpicklable=False), content_type='application/json')
+
+    except Exception as e:
+        datawinners_logger.error("All Failed Ajax failed")
+        datawinners_logger.error(request.POST)
+        datawinners_logger.exception(e)
+        raise
 
 @valid_web_user
 def failed_submissions(request):
     disable_link_class, hide_link_class, page_heading = projects_index(request)
+    header_dict = OrderedDict([('from_number', 'Data Sender'), ('created_at', 'Submission Date'),('form_code', 'Questionnaire Code'), ('message' , 'SMS Text'), ('error', 'Error message') ])
     organization = get_organization(request)
-    org_logs = _get_failed_entries(organization)
+
+    
 
     return render_to_response('alldata/failed_submissions.html',
-                              {'logs': org_logs,
-                               'page_heading': page_heading,
-                               'is_pro_sms': organization.is_pro_sms,
+                              {'page_heading': page_heading,
+                               'failedsubmissions_headers' : header_dict,
                                'disable_link_class': disable_link_class,
                                'hide_link_class': hide_link_class, 'is_crs_admin': is_crs_admin(request),
                                'project_links': get_alldata_project_links(),
