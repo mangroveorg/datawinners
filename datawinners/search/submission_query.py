@@ -258,7 +258,5 @@ def _remove_dot_zero_if_needed(value):
             return int(float_value)
         else:
             return value
-    except ValueError:
-        return value
-    except TypeError:
+    except Exception as e:
         return value
