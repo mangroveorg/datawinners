@@ -66,6 +66,10 @@ def post_facebook_message(fbid, received_message):
             _message = received_message
             _from = ds.mobile_phone
             _to = organization_settings.sms_tel_number
+            if isinstance(_to, list):
+                _to = _to[0]
+            if isinstance(_from, list):
+                _from = _from[0]
             submission_request = HttpRequest(uri=reverse(sms), method='POST')
             if settings.USE_NEW_VUMI:
                 submission_request.POST = {"content": _message, "from_addr": _from, "to_addr": _to, "message_id":uuid.uuid1().hex}
@@ -75,16 +79,13 @@ def post_facebook_message(fbid, received_message):
             try:
                 response = sms(submission_request)
                 response_text = response.content
-                #response_text = 'Got it!'
             except:
-                response_text = 'There was an error'
+                response_text = _to + ' ' + _from
 
-        except MangroveException as exception:
+        except (Organization.DoesNotExist, MangroveException) as exception:
             response_text = exception.message
         except NGOUserProfile.DoesNotExist:
             response_text = "Facebook account not yet activated"
-        except Organization.DoesNotExist as exception:
-            response_text = exception.message
 
     params = {
         "access_token": "EAAFZCluSqoIYBANjdNs6HiWq95J19QDcZBTHCAeAZBHQcd2CEhgNOEyU3bsXRnsIDzUlIt9VTNtqu7jmKmtl5ohy6qE6SzNUCN2xPpwjXk6wrnbokyIu9y03CFYqwCkuPEOkRyhLZA5Yh0oVIeDAz1GyuvZB6Dbb9uthHmLYCGQZDZD"
