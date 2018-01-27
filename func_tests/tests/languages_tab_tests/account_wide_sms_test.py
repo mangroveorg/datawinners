@@ -52,6 +52,7 @@ class TestAccountWideSMS(HeadlessRunnerTest):
         changed_messages = [message + "new message" for message in default_messages]
 
         self.change_account_messages()
+        time.sleep(4)
         self.driver.find(by_css("#global_subjects_link")).click()
         self.verify_warning_dialog_present()
         self.driver.find_visible_element(by_id("cancel_dialog")).click()
@@ -89,6 +90,7 @@ class TestAccountWideSMS(HeadlessRunnerTest):
         self.assertListEqual([u'Any changes you make to this text will apply for all Data Senders.']*6, [e.text for e in self.driver.find_visible_elements_(by_css(".account_message_warning_message"))])
         self.account_sms_page.clear_custom_message(DATA_SENDER_NOT_REGISTERED_LOCATOR)
         self.assertListEqual(['Enter reply SMS text.'], [e.text for e in self.driver.find_elements_(by_css(".validationText"))])
+        self.reset_account_messages()
         # self.language_page.set_custom_message_for(DATA_SENDER_NOT_REGISTERED_LOCATOR, "a"*160)
         # self.language_page.set_custom_message_for(DATA_SENDER_NOT_REGISTERED_LOCATOR, "a")
         # self.assertEquals("a" * 160, self.language_page.get_all_account_wide_messages()[0])
@@ -162,6 +164,7 @@ class TestAccountWideSMS(HeadlessRunnerTest):
         self.account_sms_page.revert_changes()
         self.assertListEqual(default_messages,  self.account_sms_page.get_all_account_wide_messages())
         self.assertListEqual([], [e.text for e in self.driver.find_visible_elements_(by_css(".account_message_warning_message"))])
+        self.reset_account_messages()
 
     def test_should_revert_to_original_text_when_reset(self):
         self.change_account_messages()

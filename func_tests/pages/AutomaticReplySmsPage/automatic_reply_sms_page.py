@@ -38,6 +38,8 @@ class AutomaticReplySmsPage(Page):
         except Exception:
             pass
         self.save_changes()
+        time.sleep(2)
+        self.driver.wait_for_page_load()
 
     def turn_on_reply_messages(self):
         try:
