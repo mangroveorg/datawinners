@@ -66,10 +66,8 @@ def post_facebook_message(fbid, received_message):
             _message = received_message
             _from = ds.mobile_phone
             _to = organization_settings.sms_tel_number
-            if isinstance(_to, list):
-                _to = _to[0]
-            if isinstance(_from, list):
-                _from = _from[0]
+            _to = _to.split(',')[0]
+            _from = _from.split(',')[0]
             submission_request = HttpRequest(uri=reverse(sms), method='POST')
             if settings.USE_NEW_VUMI:
                 submission_request.POST = {"content": _message, "from_addr": _from, "to_addr": _to, "message_id":uuid.uuid1().hex}
@@ -80,7 +78,7 @@ def post_facebook_message(fbid, received_message):
                 response = sms(submission_request)
                 response_text = response.content
             except:
-                response_text = _to + ' ' + _from
+                response_text = 'There was an error.'
 
         except (Organization.DoesNotExist, MangroveException) as exception:
             response_text = exception.message
