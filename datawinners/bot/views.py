@@ -78,7 +78,7 @@ def post_facebook_message(fbid, received_message):
                 response = sms(submission_request)
                 response_text = response.content
             except:
-                response_text = 'There was an error.'
+                response_text = 'There was an error'
 
         except (Organization.DoesNotExist, MangroveException) as exception:
             response_text = exception.message
