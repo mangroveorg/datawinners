@@ -57,7 +57,7 @@ def post_facebook_message(fbid, received_message):
             except NGOUserProfile.DoesNotExist as e:
                 response_text = e.message
         else:
-            response_text = 'Please send your ID, email and mobile phone number'
+            response_text = 'Please send your ID, email and mobile phone number.'
     else:
         try:
             ds = NGOUserProfile.objects.get(fb_id=fbid)
@@ -66,6 +66,8 @@ def post_facebook_message(fbid, received_message):
             _message = received_message
             _from = ds.mobile_phone
             _to = organization_settings.sms_tel_number
+            _to = _to.split(',')[0]
+            _from = _from.split(',')[0]
             submission_request = HttpRequest(uri=reverse(sms), method='POST')
             if settings.USE_NEW_VUMI:
                 submission_request.POST = {"content": _message, "from_addr": _from, "to_addr": _to, "message_id":uuid.uuid1().hex}
@@ -77,12 +79,12 @@ def post_facebook_message(fbid, received_message):
                 response_text = response.content
                 #response_text = 'Got it!'
             except:
-                response_text = 'There was an error'
+                response_text = 'There was an error.'
 
         except MangroveException as exception:
             response_text = exception.message
         except NGOUserProfile.DoesNotExist:
-            response_text = "Facebook account not yet activated"
+            response_text = "Facebook account not yet activated."
         except Organization.DoesNotExist as exception:
             response_text = exception.message
 
