@@ -79,7 +79,7 @@ def post_facebook_message(fbid, received_message):
                 response_text = response.content
                 #response_text = 'Got it!'
             except:
-                response_text = 'There was an error.'
+                response_text = 'There was an error'
 
         except MangroveException as exception:
             response_text = exception.message
