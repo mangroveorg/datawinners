@@ -10,7 +10,7 @@ from tests.testsettings import UI_TEST_TIMEOUT
 from tests.websubmissiontests.web_submission_data import *
 
 
-class WebSubmissionPage(Page):
+class WebSubmissionPage(Page): 
 
     def __init__(self, driver):
         Page.__init__(self, driver)
@@ -115,3 +115,13 @@ class WebSubmissionPage(Page):
 
     def save_change_datasender(self):
         self.driver.find(by_id('save_ds')).click()
+
+    def get_select_value(self, quest_code):
+        checkboxes = self.driver.execute_script("""
+        selected = [];
+        $("[name='%s']input:checked").each(function() {
+            selected.push($(this).attr('value'));
+        });
+        return selected.join(' ');
+        """ % quest_code)
+        return checkboxes.split(" ")

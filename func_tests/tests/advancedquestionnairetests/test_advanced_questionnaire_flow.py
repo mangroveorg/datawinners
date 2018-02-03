@@ -56,6 +56,10 @@ class TestAdvancedQuestionnaireEndToEnd(HeadlessRunnerTest):
     def tearDown(self):
         teardown_driver(self.driver)
 
+    @classmethod
+    def tearDownClass(cls):
+        pass
+
     def _update_submission(self, project_temp_name):
         text_answer_locator = by_css('input[name="/' + project_temp_name + '/text_widgets/my_string"]')
         advanced_web_submission_page = AdvancedWebSubmissionPage(self.driver).update_text_input(text_answer_locator,
@@ -475,3 +479,26 @@ class TestAdvancedQuestionnaireEndToEnd(HeadlessRunnerTest):
 
         self._verify_without_media(form_code)
         self._verify_with_media(form_code)
+
+
+    @attr('functional_test')
+    def test_edit_submisssion(self):
+        self.project_name = random_string()
+        self._setUp()
+        
+        form_code = self._verify_questionnaire_creation(self.project_name, 'multiple-choices.xlsx')
+        project_temp_name, web_submission_page = navigate_and_verify_web_submission_page_is_loaded(self.driver, self.global_navigation_page, self.project_name)
+        self._do_web_submission('edit_submission_ft-check-multiple-choices.xml', project_temp_name, form_code, self.admin_email_id, 'tester150411')
+
+        submission_log_page = self.global_navigation_page.navigate_to_all_data_page().navigate_to_submission_log_page(
+            self.project_name).wait_for_table_data_to_load()
+        
+        web_submission_page = submission_log_page.edit_nth_submission(1)
+        self.driver.create_screenshot("debug-ft-edit-sub-page")
+        actual = web_submission_page.get_select_value("/%s/idnr" % project_temp_name)
+        expected = [u'food', u'pet', u'rhinitis']
+        self.assertEqual(expected, actual)
+
+        actual = web_submission_page.get_select_value("/%s/enfant/select_enfant" % project_temp_name)
+        expected = [u'trad', u'other']
+        self.assertEqual(expected, actual)
