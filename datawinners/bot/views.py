@@ -2,8 +2,7 @@
 import json
 import requests
 import uuid
-
-from json import loads
+import re
 
 from django.http import HttpResponse, QueryDict
 from django.utils.decorators import method_decorator
@@ -76,7 +75,7 @@ def post_facebook_message(fbid, received_message):
 
             try:
                 response = sms(submission_request)
-                response_text = response.content
+                response_text = re.sub(r'SMS', 'message',response.content)
                 #response_text = 'Got it!'
             except:
                 response_text = 'There was an error.'
