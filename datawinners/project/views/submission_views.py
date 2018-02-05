@@ -4,9 +4,6 @@ import json
 import re
 import datetime
 import logging
-import numpy as np
-import pandas as pd
-#import matrix_factorization_utilities
 from string import capitalize
 
 from django.utils.translation import ugettext_lazy as _, get_language
@@ -299,71 +296,6 @@ def analysis(request, project_id, questionnaire_code=None):
         result_dict.update(project_info(request, questionnaire, questionnaire_code))
         return render_to_response('project/analysis.html', result_dict,
                                   context_instance=RequestContext(request))
-
-
-@login_required
-@session_not_expired
-@is_datasender
-@is_not_expired
-@is_project_exist
-@restrict_access
-def predict(request, project_id, questionnaire_code=None):
-    manager = get_database_manager(request.user)
-    questionnaire = Project.get(manager, project_id)
-    search_filters = {u'search_text': u'', u'duplicatesForFilter': None, u'datasenderFilter': u'', u'submissionDatePicker': u'All Dates', u'uniqueIdFilters': {u'customer': u'', u'movie': u''}, u'dateQuestionFilters': {}}
-    if request.method == 'GET':
-        query_params = {"search_filters": {},
-                    "start_result_number": 0,
-                    "number_of_results": 4000,
-                    "order": "",
-                    "sort_field": "date"
-                    }
-        search_text = ''
-        submission_type = 'analysis'
-        query_params.update({"search_text": search_text})
-        query_params.update({"filter": submission_type})
-        is_media = False
-        is_single_sheet = False
-
-        if request.POST.get('is_media') == u'true':
-            is_media = True
-
-        if request.POST.get('is_single_sheet') == u'true' and waffle.flag_is_active(request, "single_sheet_export"):
-            is_single_sheet = True
-
-        organization = get_organization(request)
-        local_time_delta = get_country_time_delta(organization.country)
-        project_name = questionnaire_code
-        current_language = get_language()
-
-        preferences = get_preferences(manager, request.user.id, questionnaire, submission_type, ugettext)
-        if questionnaire.xform:
-            return _advanced_questionnaire_export(current_language, questionnaire, is_media, is_single_sheet, local_time_delta, manager,
-                                                  project_name, query_params, submission_type, preferences)
-
-        submission_exporter =  SubmissionExporter(questionnaire, project_name, manager, local_time_delta, current_language, preferences)
-        return submission_exporter.create_excel_response(submission_type, query_params)
-        #columns, search_results = self.get_columns_and_search_results(query_params, submission_type)
-        # Load user ratings
-        #raw_dataset_df = pd.read_csv('movie_ratings_data_set.csv')
-
-        # Convert the running list of user ratings into a matrix
-        #ratings_df = pd.pivot_table(raw_dataset_df, index='user_id', columns='movie_id', aggfunc=np.max)
-
-        # Apply matrix factorization to find the latent features
-        #U, M = matrix_factorization_utilities.low_rank_matrix_factorization(ratings_df.as_matrix(),
-        #                                                                    num_features=15,
-        #                                                                    regularization_amount=0.1)
-
-        # Find all predicted ratings by multiplying the U by M
-        #predicted_ratings = np.matmul(U, M)
-
-        # Save all the ratings to a csv file
-        #predicted_ratings_df = pd.DataFrame(index=ratings_df.index,
-        #                                    columns=ratings_df.columns,
-        #                                    data=predicted_ratings)
-        #predicted_ratings_df.to_csv("predicted_ratings.csv")
-
 
 
 def get_survey_response_ids_from_request(dbm, request, form_model, local_time_delta):
