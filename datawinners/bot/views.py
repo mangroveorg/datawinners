@@ -49,6 +49,8 @@ def post_facebook_message(fbid, received_message):
                         datasender.fb_id = fbid
                         datasender.save()
                         response_text = 'ID saved for ' + reporter_entity.name
+                else:
+                    response_text = 'Credentials do not match'
             except User.DoesNotExist as e:
                 #response_text = e.message
                 response_text = 'User with that email address has not been found'
