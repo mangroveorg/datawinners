@@ -50,11 +50,14 @@ def post_facebook_message(fbid, received_message):
                         datasender.save()
                         response_text = 'ID saved for ' + reporter_entity.name
             except User.DoesNotExist as e:
-                response_text = e.message
+                #response_text = e.message
+                response_text = 'User with that email address has not been found'
             except DataObjectNotFound as e:
-                response_text = e.message
+                #response_text = e.message
+                response_text = 'User with that ID has not been found'
             except NGOUserProfile.DoesNotExist as e:
-                response_text = e.message
+                #response_text = e.message
+                response_text = 'No datasender with those credentials found'
         else:
             response_text = 'Please send your ID, email and mobile phone number.'
     else:
