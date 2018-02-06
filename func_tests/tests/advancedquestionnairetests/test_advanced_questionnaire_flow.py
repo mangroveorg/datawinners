@@ -492,9 +492,9 @@ class TestAdvancedQuestionnaireEndToEnd(HeadlessRunnerTest):
 
         submission_log_page = self.global_navigation_page.navigate_to_all_data_page().navigate_to_submission_log_page(
             self.project_name).wait_for_table_data_to_load()
-        
+        self.driver.create_screenshot("debug-ft-sub-log-edit-nth-sub")
         web_submission_page = submission_log_page.edit_nth_submission(1)
-        sleep(10)
+        sleep(15)
         self.driver.create_screenshot("debug-ft-edit-sub-page")
 
         actual = web_submission_page.get_select_value("/%s/idnr" % project_temp_name)
