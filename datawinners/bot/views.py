@@ -79,9 +79,9 @@ def post_facebook_message(fbid, received_message):
                 submission_request.POST = {"message": _message, "from_msisdn": _from, "to_msisdn": _to, "message_id":uuid.uuid1().hex}
 
             try:
-                response = sms(submission_request)
-                response_text = re.sub(r'SMS', 'message',response.content)
-                #response_text = 'Got it!'
+                #response = sms(submission_request)
+                #response_text = re.sub(r'SMS', 'message',response.content)
+                response_text = 'Got it!'
             except:
                 response_text = 'There was an error.'
 
