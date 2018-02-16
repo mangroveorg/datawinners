@@ -68,6 +68,8 @@ class SubmissionLogPage(Page):
         self.driver.wait_for_element(UI_TEST_TIMEOUT, ACTION_SELECT_CSS_LOCATOR, True)
         self.driver.find(ACTION_SELECT_CSS_LOCATOR).click()
         self.driver.wait_for_element(UI_TEST_TIMEOUT, action_button, True)
+        if action_button == EDIT_BUTTON:
+            self.driver.create_screenshot("debug-ft-select-edit-action")
         self.driver.find(action_button).click()
 
     def check_all_submissions(self):
