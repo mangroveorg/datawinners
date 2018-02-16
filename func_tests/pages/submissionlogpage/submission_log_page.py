@@ -218,6 +218,7 @@ class SubmissionLogPage(Page):
     def edit_nth_submission(self, index):
         self.driver.wait_for_page_load()
         self.driver.execute_script("$('.row_checkbox:eq(%d)').click();" % int(index - 1))
+        self.driver.create_screenshot("debug-ft-checkbox-checked")
         self.choose_on_dropdown_action(EDIT_BUTTON)
         from pages.websubmissionpage.web_submission_page import WebSubmissionPage
         return WebSubmissionPage(self.driver)
