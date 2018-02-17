@@ -64,11 +64,11 @@ class SubmissionLogPage(Page):
     def get_active_tab_text(self):
         return self.driver.find(ACTIVE_TAB_LOCATOR).text
 
-    def choose_on_dropdown_action(self, action_button):
+    def choose_on_dropdown_action(self, action_button, debug=False):
         self.driver.wait_for_element(UI_TEST_TIMEOUT, ACTION_SELECT_CSS_LOCATOR, True)
         self.driver.find(ACTION_SELECT_CSS_LOCATOR).click()
         self.driver.wait_for_element(UI_TEST_TIMEOUT, action_button, True)
-        if action_button == EDIT_BUTTON:
+        if debug:
             self.driver.create_screenshot("debug-ft-select-edit-action")
         self.driver.find(action_button).click()
 
@@ -221,6 +221,6 @@ class SubmissionLogPage(Page):
         self.driver.wait_for_page_load()
         self.driver.execute_script("$('.row_checkbox:eq(%d)').click();" % int(index - 1))
         self.driver.create_screenshot("debug-ft-checkbox-checked")
-        self.choose_on_dropdown_action(EDIT_BUTTON)
+        self.choose_on_dropdown_action(EDIT_BUTTON, True)
         from pages.websubmissionpage.web_submission_page import WebSubmissionPage
         return WebSubmissionPage(self.driver)
