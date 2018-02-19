@@ -496,6 +496,7 @@ class TestAdvancedQuestionnaireEndToEnd(HeadlessRunnerTest):
         web_submission_page = submission_log_page.edit_nth_submission(1)
         sleep(15)
         self.driver.create_screenshot("debug-ft-edit-sub-page")
+        self.asertEqual(self.driver.get_title(), "Dashboard")
 
         actual = web_submission_page.get_select_value("/%s/idnr" % project_temp_name)
         expected = [u'food', u'pet', u'rhinitis']
