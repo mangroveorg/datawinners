@@ -131,6 +131,7 @@ class PollQuestionnairePage(Page):
         self.driver.wait_for_element(UI_TEST_TIMEOUT, by_css("#poll_sms_table"), True)
         self.driver.wait_until_modal_dismissed()
         try:
+            self.driver.create_screenshot("debug-ft-before-has-ds-received-sms-element-not-found")
             recipient_name = self.driver.find(by_css('#poll_sms_table>tbody>tr:nth-of-type(%s)>td:nth-of-type(%s)>span:nth-of-type(2)' % (row, column))).text
             return recipient_name in recipent
         except Exception as e:
