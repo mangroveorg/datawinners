@@ -33,11 +33,19 @@ $(document).on("postFormLoadAction", function(){
 
 
 function _initializeWarningDialog() {
+    var calledAfterEdit = function() {
+        $('#success-message-box').show();
+        $(window).scrollTop($('#success-message-box').offset().top);
+    };
+
     var options = {
         successCallBack: function (callback) {
-            saveXformSubmission(callback);
+            saveXformSubmission(calledAfterEdit);
         },
         isQuestionnaireModified: function () {
+            if ($('#success-message-box').is(':visible')) {
+                return false;
+            }
             return true;
         },
         validate: function () {
