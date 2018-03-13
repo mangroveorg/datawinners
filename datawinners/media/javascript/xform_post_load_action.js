@@ -15,6 +15,7 @@ $(document).on("postFormLoadAction", function(){
     }
 
     $("form").change(function (){
+        DW.isFormChanged = true;
         if (typeof(cancelWarningPopUp) == "undefined")
             _initializeWarningDialog();
     });
@@ -32,21 +33,20 @@ $(document).on("postFormLoadAction", function(){
 });
 
 
+DW.calledAfterEdit = function() {
+    $('#success-message-box').show();
+    $(document).scrollTop(0);
+    DW.isFormChanged = false;
+};
+
 function _initializeWarningDialog() {
-    var calledAfterEdit = function() {
-        $('#success-message-box').show();
-        $(window).scrollTop($('#success-message-box').offset().top);
-    };
 
     var options = {
         successCallBack: function (callback) {
-            saveXformSubmission(calledAfterEdit);
+            saveXformSubmission(DW.calledAfterEdit);
         },
         isQuestionnaireModified: function () {
-            if ($('#success-message-box').is(':visible')) {
-                return false;
-            }
-            return true;
+            return typeof DW.isFormChanged ? DW.isFormChanged : true;
         },
         validate: function () {
             return true;
