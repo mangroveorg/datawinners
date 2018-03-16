@@ -497,7 +497,7 @@ class TestAdvancedQuestionnaireEndToEnd(HeadlessRunnerTest):
         sleep(2)
         data = self.driver.execute_script("return dataStrToEdit;")
         self.driver.create_screenshot("debug-ft-edit-sub-page")
-        expected = "<idnr>food pet rhinitis</idnr><enfant><naissance_enfant>no</naissance_enfant><poids_enfant>16</poids_enfant><nom_enfant>John</nom_enfant><date_enfant>2016-12-01</date_enfant><text>Setra</text><select_enfant>trad other</select_enfant><age_enfant>3</age_enfant></enfant><form_code>026</form_code>"
+        expected = "<idnr>food pet rhinitis</idnr><enfant><naissance_enfant>no</naissance_enfant><poids_enfant>16</poids_enfant><nom_enfant>John</nom_enfant><date_enfant>2016-12-01</date_enfant><text>Setra</text><select_enfant>trad other</select_enfant><age_enfant>3</age_enfant></enfant><form_code>%s</form_code>" % form_code
         self.assertIn(expected, data)
 
         actual = web_submission_page.get_select_value("/%s/idnr" % project_temp_name)

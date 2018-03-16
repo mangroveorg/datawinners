@@ -92,7 +92,7 @@ class WebSubmissionPage(Page):
         return labels, instructions
 
     def navigate_to_submission_log(self):
-        self.driver.wait_for_element(UI_TEST_TIMEOUT, by_id('submission_log_link'), True).click()
+        self.driver.wait_for_element(UI_TEST_TIMEOUT * 2, by_id('submission_log_link'), True).click()
         return SubmissionLogPage(self.driver)
 
     def navigate_to_datasenders_page(self):
