@@ -92,7 +92,11 @@ class WebSubmissionPage(Page):
         return labels, instructions
 
     def navigate_to_submission_log(self):
-        self.driver.wait_for_element(UI_TEST_TIMEOUT * 2, by_id('submission_log_link'), True).click()
+        try:
+            self.driver.wait_for_element(UI_TEST_TIMEOUT * 2, by_id('submission_log_link'), True).click()
+        except Exception as e:
+            self.driver.create_screenshot("ft-debug-navigate-to-sub-log-failing")
+            raise e
         return SubmissionLogPage(self.driver)
 
     def navigate_to_datasenders_page(self):
