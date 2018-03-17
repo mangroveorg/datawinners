@@ -66,8 +66,10 @@ class TestAdvancedQuestionnaireEndToEnd(HeadlessRunnerTest):
                                                                                                 '-edited').submit()
         return advanced_web_submission_page
 
-    def _edit_and_verify_submission(self, datasender_rep_id, project_temp_name):
+    def _edit_and_verify_submission(self, datasender_rep_id, project_temp_name, wait=False):
         advanced_web_submission_page = self._update_submission(project_temp_name)
+        if wait:
+            sleep(UI_TEST_TIMEOUT * 5)
         submission_log_page = advanced_web_submission_page.navigate_to_submission_log().wait_for_table_data_to_load()
         self.assertEqual(submission_log_page.get_total_number_of_rows(), 3)  # 2 rows + 1 hidden row for select all
         submission_log_page.search(datasender_rep_id)
@@ -264,7 +266,7 @@ class TestAdvancedQuestionnaireEndToEnd(HeadlessRunnerTest):
         submission_log_page.check_submission_by_row_number(1).click_action_button().choose_on_dropdown_action(
             EDIT_BUTTON)
         verify_advanced_web_submission_page_is_loaded(self.driver)
-        self._edit_and_verify_submission(datasender_rep_id, project_temp_name)
+        self._edit_and_verify_submission(datasender_rep_id, project_temp_name, True)
 
         self._verify_edit_of_questionnaire(file_name)
         self._verify_datawinners_university()
