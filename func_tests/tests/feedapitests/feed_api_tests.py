@@ -166,9 +166,10 @@ class TestFeeds(HeadlessRunnerTest):
         self.assert_feed_values(edited_feed_entry, expected_data_after_edit, rep_id, status)
 
         self.delete_submission()
+        time.sleep(5)
+
         end_date = self._get_encoded_date(add_time_delta=True)
         # sleep_until(lambda: len(self.get_feed_response(questionnaire_code, start_date, end_date)) == 2, 30)
-        time.sleep(5)
         response_list_after_delete = self.get_feed_response(questionnaire_code, start_date, end_date)
         self.assertEquals(2, len(response_list_after_delete))
         deleted_feed_entry = response_list_after_delete[-1]

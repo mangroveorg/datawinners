@@ -170,18 +170,23 @@ class TestAdvancedQuestionnaireEndToEnd(HeadlessRunnerTest):
         return zip_file
 
     def _verify_workbook_values(self, workbook):
+        if workbook._sheet_list[0]._cell_values[1][4] == u'1-locate.png':
+            self.assertEquals(workbook._sheet_list[0]._cell_values[2][4], u'2-locate.png')
+        else:
+            self.assertEquals(workbook._sheet_list[0]._cell_values[2][4], u'1-locate.png')
+            self.assertEquals(workbook._sheet_list[0]._cell_values[1][4], u'2-locate.png')
+
         self.assertEquals(workbook._sheet_list[0]._cell_values[1][0], u'Tester Pune')
         self.assertEquals(workbook._sheet_list[0]._cell_values[1][1], u'rep276')
         self.assertEquals(workbook._sheet_list[0]._cell_values[1][3], u'Success')
-        self.assertEquals(workbook._sheet_list[0]._cell_values[1][4], u'1-locate.png')
         self.assertEquals(workbook._sheet_list[0]._cell_values[1][5], u'name')
         self.assertEquals(workbook._sheet_list[0]._cell_values[1][6], u'11.02.2015 10:45:00')
         self.assertEquals(workbook._sheet_list[0]._cell_values[1][7], u'other')
         self.assertEquals(workbook._sheet_list[0]._cell_values[1][8], u'newOption')
+
         self.assertEquals(workbook._sheet_list[0]._cell_values[2][0], u'Tester Pune')
         self.assertEquals(workbook._sheet_list[0]._cell_values[2][1], u'rep276')
         self.assertEquals(workbook._sheet_list[0]._cell_values[2][3], u'Success')
-        self.assertEquals(workbook._sheet_list[0]._cell_values[2][4], u'2-locate.png')
         self.assertEquals(workbook._sheet_list[0]._cell_values[2][5], u'name')
         self.assertEquals(workbook._sheet_list[0]._cell_values[2][6], u'11.02.2015 10:45:00')
         self.assertEquals(workbook._sheet_list[0]._cell_values[2][7], u'other')
