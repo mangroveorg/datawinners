@@ -37,12 +37,16 @@ DW.calledAfterEdit = function() {
     $('#success-message-box').show();
     $(document).scrollTop(0);
     DW.isFormChanged = false;
+    if (typeof DW.calledAfterEdit.callback != 'undefined'){
+        DW.calledAfterEdit.callback();
+    }
 };
 
 function _initializeWarningDialog() {
 
     var options = {
         successCallBack: function (callback) {
+            DW.calledAfterEdit.callback = callback;
             saveXformSubmission(DW.calledAfterEdit);
         },
         isQuestionnaireModified: function () {

@@ -20,24 +20,22 @@ from pages.submissionlogpage.submission_log_locator import EDIT_BUTTON
 from pages.submissionlogpage.submission_log_page import LAST_MONTH, ALL_PERIODS
 from pages.warningdialog.submission_modified_dialog import SubmissionModifiedDialog
 from tests.activateaccounttests.activate_account_data import NEW_PASSWORD
-from tests.advancedquestionnairetests.advanced_questionnaire_test_helper import perform_submission, navigate_and_verify_web_submission_page_is_loaded, verify_advanced_web_submission_page_is_loaded, \
+from tests.advancedquestionnairetests.advanced_questionnaire_test_helper import perform_submission, navigate_and_verify_web_submission_page_is_loaded, verify_advanced_web_submission_page_is_loaded,\
     navigate_and_verify_advanced_web_submission_page_is_loaded
 from tests.alldatasenderstests.add_data_senders_data import VALID_DATA_WITH_EMAIL
 from tests.dashboardtests.dashboard_tests_data import USER_RASITEFA_CREDENTIALS
 from tests.logintests.login_data import VALID_CREDENTIALS
 from tests.testsettings import UI_TEST_TIMEOUT
 from time import sleep
+from pages.warningdialog.warning_dialog import WarningDialog
 
 DIR = os.path.dirname(__file__)
 
 regex_date_match = '\S{3}\.\W\d{2}\,\W\d{4}\,\W\d{2}:\d{2}'
 SUBMISSION_DATA = 'Tester Pune rep276 ' + regex_date_match + ' Success 11.09.2014 name multiline 8 11 8 12.08.2095 04.2014 2016 option a,option c option b,option c option 5,option 8 option 4 No option 5 neither agree nor disagree option a option c option c   Don\'t Know Don\'t Know Don\'t Know Don\'t Know sad happy sad happy The Netherlands Amsterdam Westerpark United States New York City Harlem 9.9,8.8 10.1,9.9 recoring nuthatch -3 Grand Cape Mount County Commonwealth 2 "What is your...\n: name1", "What is your...\n: 60", "Date within a...\n: 17.09.2014";'
-SUBMISSION_DATA_IMAGE = 'Tester Pune rep276 '+ regex_date_match + ' Success 1-locate.png'
-
+SUBMISSION_DATA_IMAGE = 'Tester Pune rep276 ' + regex_date_match + ' Success 1-locate.png'
 
 class TestAdvancedQuestionnaireEndToEnd(HeadlessRunnerTest):
-
-    
     def setUpPhantom(self):
         self.driver = setup_driver("phantom")
         self._setUp()
@@ -80,11 +78,13 @@ class TestAdvancedQuestionnaireEndToEnd(HeadlessRunnerTest):
     def _verify_date_filters(self, submission_log_page):
         self.assertEqual(submission_log_page.get_date_filter_count(), 5)  # 4 date filters + 1 submission date filter
         submission_log_page.show_all_filters()
-        submission_log_page.filter_by_date_question(LAST_MONTH, by_id('date-question-filter-date_time_widgets----my_date_month_year')) \
-            .wait_for_table_data_to_load()
+        submission_log_page.filter_by_date_question(LAST_MONTH, by_id(
+            'date-question-filter-date_time_widgets----my_date_month_year'))\
+        .wait_for_table_data_to_load()
         self.assertEqual(submission_log_page.get_total_number_of_records(), 0)
-        submission_log_page.filter_by_date_question(ALL_PERIODS, by_id('date-question-filter-date_time_widgets----my_date_month_year')) \
-            .wait_for_table_data_to_load()
+        submission_log_page.filter_by_date_question(ALL_PERIODS, by_id(
+            'date-question-filter-date_time_widgets----my_date_month_year'))\
+        .wait_for_table_data_to_load()
         self.assertEqual(submission_log_page.get_total_number_of_records(), 2)
 
     def _verify_edit_of_questionnaire(self, file_name, edit_flag=False):
@@ -101,7 +101,8 @@ class TestAdvancedQuestionnaireEndToEnd(HeadlessRunnerTest):
         DataSenderActivationPage(self.driver).activate_datasender(email, NEW_PASSWORD)
 
     def _do_web_submission(self, xml_file, project_temp_name, form_code, user, password, image_upload=False):
-        r = perform_submission(xml_file, project_temp_name, form_code, {'username': user, 'password': password}, image_upload)
+        r = perform_submission(xml_file, project_temp_name, form_code, {'username': user, 'password': password},
+                               image_upload)
         self.assertEquals(r.status_code, 201)
         self.assertNotEqual(r._container[0].find('submission_uuid'), -1)
 
@@ -112,7 +113,7 @@ class TestAdvancedQuestionnaireEndToEnd(HeadlessRunnerTest):
 
     def _verify_questionnaire_creation(self, project_name, file_name):
         response = self.client.post(
-            path='/xlsform/upload/?pname=' + project_name + '&qqfile='+file_name,
+            path='/xlsform/upload/?pname=' + project_name + '&qqfile=' + file_name,
             data=open(os.path.join(self.test_data, file_name), 'r').read(),
             content_type='application/octet-stream')
         self.assertEquals(response.status_code, 200)
@@ -152,10 +153,10 @@ class TestAdvancedQuestionnaireEndToEnd(HeadlessRunnerTest):
 
     def _verify_without_media(self, form_code):
         response = self.client.post('/project/export/log?type=all',
-                                    {'project_name': self.project_name,
-                                     'is_media': 'false',
-                                     'search_filters': "{\"search_text\":\"\",\"dateQuestionFilters\":{}}",
-                                     'questionnaire_code': form_code})
+                {'project_name': self.project_name,
+                 'is_media': 'false',
+                 'search_filters': "{\"search_text\":\"\",\"dateQuestionFilters\":{}}",
+                 'questionnaire_code': form_code})
         xlfile_fd, xlfile_name = tempfile.mkstemp(".xls")
         os.write(xlfile_fd, response.content)
         os.close(xlfile_fd)
@@ -213,10 +214,10 @@ class TestAdvancedQuestionnaireEndToEnd(HeadlessRunnerTest):
 
     def _verify_with_media(self, form_code):
         response_content = self.client.post('/project/export/log?type=all',
-                                            {'project_name': self.project_name,
-                                             'is_media': 'true',
-                                             'search_filters': "{\"search_text\":\"\",\"dateQuestionFilters\":{}}",
-                                             'questionnaire_code': form_code}).content
+                {'project_name': self.project_name,
+                 'is_media': 'true',
+                 'search_filters': "{\"search_text\":\"\",\"dateQuestionFilters\":{}}",
+                 'questionnaire_code': form_code}).content
         zip_file = self._write_response_to_file(response_content)
         zip_file_open = self._verify_file_names_in_zip(zip_file)
         xlfile_name = self._write_to_file_from_zip(zip_file_open)
@@ -230,21 +231,24 @@ class TestAdvancedQuestionnaireEndToEnd(HeadlessRunnerTest):
 
         file_name = 'ft_advanced_questionnaire.xls'
         form_code = self._verify_questionnaire_creation(self.project_name, file_name)
-        project_temp_name, web_submission_page = navigate_and_verify_web_submission_page_is_loaded(self.driver, self.global_navigation_page, self.project_name)
+        project_temp_name, web_submission_page = navigate_and_verify_web_submission_page_is_loaded(self.driver,
+                                                                                                   self.global_navigation_page
+                                                                                                   , self.project_name)
         self._verify_datawinners_university()
 
         web_submission_page.navigate_to_datasenders_page()
         self._verify_datawinners_university()
         datasender_page = ProjectDataSendersPage(self.driver)
-        datasender_page.search_with("1234123413"). \
-            select_a_data_sender_by_mobile_number("1234123413").perform_datasender_action(by_css(".remove"))
+        datasender_page.search_with("1234123413").\
+        select_a_data_sender_by_mobile_number("1234123413").perform_datasender_action(by_css(".remove"))
         datasender_page.refresh()
         datasender_page.navigate_to_analysis_page()
         self._verify_datawinners_university()
         DataAnalysisPage(self.driver).navigate_to_web_submission_tab()
 
         web_submission_page = AdvancedWebSubmissionPage(self.driver)
-        self._do_web_submission('submission_data.xml', project_temp_name, form_code, self.admin_email_id, 'tester150411')
+        self._do_web_submission('submission_data.xml', project_temp_name, form_code, self.admin_email_id,
+                                'tester150411')
         self._verify_submission_log_page(web_submission_page)
         datasender_rep_id, ds_email = self._register_datasender()
         self._verify_datawinners_university()
@@ -311,8 +315,8 @@ class TestAdvancedQuestionnaireEndToEnd(HeadlessRunnerTest):
 
         self._verify_edit_of_questionnaire(file_name=file_name, edit_flag=False)
 
-        submission_log_page = self.global_navigation_page.navigate_to_all_data_page() \
-            .navigate_to_submission_log_page(self.project_name).wait_for_table_data_to_load()
+        submission_log_page = self.global_navigation_page.navigate_to_all_data_page()\
+        .navigate_to_submission_log_page(self.project_name).wait_for_table_data_to_load()
         self.assertTrue(submission_log_page.get_total_number_of_records() == 0)
         self.assertEquals("Text widget", submission_log_page.get_header_text(6))
 
@@ -328,23 +332,31 @@ class TestAdvancedQuestionnaireEndToEnd(HeadlessRunnerTest):
         all_project_page.navigate_to_project_overview_page(self.project_name)
         self.assertEqual(self.driver.get_title(), u'Questionnaires - Overview')
 
-        project_temp_name, web_submission_page = navigate_and_verify_advanced_web_submission_page_is_loaded(self.driver, self.global_navigation_page, self.project_name)
-        self._do_web_submission('submission_test_data.xml', project_temp_name, form_code, self.admin_email_id, 'tester150411', image_upload=True)
+        project_temp_name, web_submission_page = navigate_and_verify_advanced_web_submission_page_is_loaded(self.driver,
+                                                                                                            self.global_navigation_page
+                                                                                                            ,
+                                                                                                            self.project_name)
+        self._do_web_submission('submission_test_data.xml', project_temp_name, form_code, self.admin_email_id,
+                                'tester150411', image_upload=True)
         self.assertEquals(11, web_submission_page.question_count())
 
         self._verify_edit_of_questionnaire(file_name='simple_advance_questionnaire_label_change.xls', edit_flag=True)
 
-        submission_log_page = self.global_navigation_page.navigate_to_all_data_page() \
-            .navigate_to_submission_log_page(self.project_name).wait_for_table_data_to_load()
+        submission_log_page = self.global_navigation_page.navigate_to_all_data_page()\
+        .navigate_to_submission_log_page(self.project_name).wait_for_table_data_to_load()
         self.assertFalse(submission_log_page.get_total_number_of_records() == 0)
         self.assertEquals("Updated Text widget", submission_log_page.get_header_text(6))
 
-        project_temp_name, web_submission_page = navigate_and_verify_advanced_web_submission_page_is_loaded(self.driver, self.global_navigation_page, self.project_name)
+        project_temp_name, web_submission_page = navigate_and_verify_advanced_web_submission_page_is_loaded(self.driver,
+                                                                                                            self.global_navigation_page
+                                                                                                            ,
+                                                                                                            self.project_name)
 
         self.assertEquals("No damn note to show", web_submission_page.get_note(0))
 
         self.assertEquals("Updated Text widget", web_submission_page.get_label(1))
-        self.assertEquals("Updated Can be short or long but always one line (type = text)", web_submission_page.get_hint(1))
+        self.assertEquals("Updated Can be short or long but always one line (type = text)",
+                          web_submission_page.get_hint(1))
 
         web_submission_page.set_input(3, 16)
         self.assertEquals("Updated Requires a number less than 10", web_submission_page.get_constraint_msg(3))
@@ -396,13 +408,20 @@ class TestAdvancedQuestionnaireEndToEnd(HeadlessRunnerTest):
         all_project_page.navigate_to_project_overview_page(self.project_name)
         self.assertEqual(self.driver.get_title(), u'Questionnaires - Overview')
 
-        project_temp_name, web_submission_page = navigate_and_verify_advanced_web_submission_page_is_loaded(self.driver, self.global_navigation_page, self.project_name)
+        project_temp_name, web_submission_page = navigate_and_verify_advanced_web_submission_page_is_loaded(self.driver,
+                                                                                                            self.global_navigation_page
+                                                                                                            ,
+                                                                                                            self.project_name)
 
-        self._do_web_submission('submission_test_data.xml', project_temp_name, form_code, self.admin_email_id, 'tester150411', image_upload=True)
+        self._do_web_submission('submission_test_data.xml', project_temp_name, form_code, self.admin_email_id,
+                                'tester150411', image_upload=True)
         self.assertEquals(11, web_submission_page.question_count())
 
         self._verify_edit_of_questionnaire(file_name='simple_advance_questionnaire_add_qn.xls', edit_flag=True)
-        project_temp_name, web_submission_page = navigate_and_verify_advanced_web_submission_page_is_loaded(self.driver, self.global_navigation_page, self.project_name)
+        project_temp_name, web_submission_page = navigate_and_verify_advanced_web_submission_page_is_loaded(self.driver,
+                                                                                                            self.global_navigation_page
+                                                                                                            ,
+                                                                                                            self.project_name)
         self.assertEquals(12, web_submission_page.question_count())
         self.assertTrue(web_submission_page.has_choice(9, "Tamilnadu"))
         web_submission_page.select_choice(9, 0)
@@ -410,9 +429,13 @@ class TestAdvancedQuestionnaireEndToEnd(HeadlessRunnerTest):
         self.global_navigation_page.navigate_to_all_data_page()
         SubmissionModifiedDialog(self.driver).ignore_changes()
 
-        self._do_web_submission('submission_test_data.xml', project_temp_name, form_code, self.admin_email_id, 'tester150411', image_upload=True)
+        self._do_web_submission('submission_test_data.xml', project_temp_name, form_code, self.admin_email_id,
+                                'tester150411', image_upload=True)
         self._verify_edit_of_questionnaire(file_name='simple_advance_questionnaire.xls', edit_flag=True)
-        project_temp_name, web_submission_page = navigate_and_verify_advanced_web_submission_page_is_loaded(self.driver, self.global_navigation_page, self.project_name)
+        project_temp_name, web_submission_page = navigate_and_verify_advanced_web_submission_page_is_loaded(self.driver,
+                                                                                                            self.global_navigation_page
+                                                                                                            ,
+                                                                                                            self.project_name)
         self.assertEquals(11, web_submission_page.question_count())
         self.assertTrue(web_submission_page.has_choice(9, "Bomi"))
         web_submission_page.select_choice(9, 0)
@@ -446,7 +469,10 @@ class TestAdvancedQuestionnaireEndToEnd(HeadlessRunnerTest):
         self.assertEqual(success_message, "Successfully updated", "Saving failed")
         questionnaire_tab_page.close_save_success_message()
 
-        project_temp_name, web_submission_page = navigate_and_verify_advanced_web_submission_page_is_loaded(self.driver, self.global_navigation_page, self.project_name)
+        project_temp_name, web_submission_page = navigate_and_verify_advanced_web_submission_page_is_loaded(self.driver,
+                                                                                                            self.global_navigation_page
+                                                                                                            ,
+                                                                                                            self.project_name)
         self.assertEquals("New Text Widget", web_submission_page.get_label(1))
         self.assertEquals("New Hint for Text Widget", web_submission_page.get_hint(1))
         self.assertEquals("New Integer Widget", web_submission_page.get_label(11))
@@ -458,7 +484,7 @@ class TestAdvancedQuestionnaireEndToEnd(HeadlessRunnerTest):
 
         file_name = 'ft_advanced_questionnaire_with_inexistent_question_name.xls'
         response = self.client.post(
-            path='/xlsform/upload/?pname=' + self.project_name + '&qqfile='+file_name,
+            path='/xlsform/upload/?pname=' + self.project_name + '&qqfile=' + file_name,
             data=open(os.path.join(self.test_data, file_name), 'r').read(),
             content_type='application/octet-stream')
         self.assertEquals(response.status_code, 200)
@@ -475,13 +501,17 @@ class TestAdvancedQuestionnaireEndToEnd(HeadlessRunnerTest):
         client.login(username=self.admin_email_id, password='tester150411')
 
         form_code = self._verify_questionnaire_creation(self.project_name, 'image.xlsx')
-        project_temp_name, web_submission_page = navigate_and_verify_web_submission_page_is_loaded(self.driver, self.global_navigation_page, self.project_name)
-        self._do_web_submission('submission_data_image.xml', project_temp_name, form_code, self.admin_email_id, 'tester150411', image_upload=True)
+        project_temp_name, web_submission_page = navigate_and_verify_web_submission_page_is_loaded(self.driver,
+                                                                                                   self.global_navigation_page
+                                                                                                   , self.project_name)
+        self._do_web_submission('submission_data_image.xml', project_temp_name, form_code, self.admin_email_id,
+                                'tester150411', image_upload=True)
         self.driver.find(by_id('submission_log_link')).click()
         self.driver.find_visible_element(by_id('ignore_changes')).click()
         self._verify_submission_log_page_images(web_submission_page)
 
-        self._do_web_submission('submission_data_image.xml', project_temp_name, form_code, self.admin_email_id, 'tester150411',image_upload=True)
+        self._do_web_submission('submission_data_image.xml', project_temp_name, form_code, self.admin_email_id,
+                                'tester150411', image_upload=True)
         self._verify_submission_log_page_image_2(web_submission_page)
 
         self._verify_without_media(form_code)
@@ -494,8 +524,11 @@ class TestAdvancedQuestionnaireEndToEnd(HeadlessRunnerTest):
         self._setUp()
 
         form_code = self._verify_questionnaire_creation(self.project_name, 'multiple-choices.xlsx')
-        project_temp_name, web_submission_page = navigate_and_verify_web_submission_page_is_loaded(self.driver, self.global_navigation_page, self.project_name)
-        self._do_web_submission('edit_submission_ft-check-multiple-choices.xml', project_temp_name, form_code, self.admin_email_id, 'tester150411')
+        project_temp_name, web_submission_page = navigate_and_verify_web_submission_page_is_loaded(self.driver,
+                                                                                                   self.global_navigation_page
+                                                                                                   , self.project_name)
+        self._do_web_submission('edit_submission_ft-check-multiple-choices.xml', project_temp_name, form_code,
+                                self.admin_email_id, 'tester150411')
 
         submission_log_page = self.global_navigation_page.navigate_to_all_data_page().navigate_to_submission_log_page(
             self.project_name).wait_for_table_data_to_load()
@@ -507,10 +540,31 @@ class TestAdvancedQuestionnaireEndToEnd(HeadlessRunnerTest):
         expected = "<idnr>food pet rhinitis</idnr><enfant><naissance_enfant>no</naissance_enfant><poids_enfant>16</poids_enfant><nom_enfant>John</nom_enfant><date_enfant>2016-12-01</date_enfant><text>Setra</text><select_enfant>trad other</select_enfant><age_enfant>3</age_enfant></enfant><form_code>%s</form_code>" % form_code
         self.assertIn(expected, data)
 
-        actual = web_submission_page.get_select_value("/%s/idnr" % project_temp_name)
-        expected = [u'food', u'pet', u'rhinitis']
-        #self.assertEqual(expected, actual)
+        text_answer_locator = by_css('input[name="/' + project_temp_name + '/enfant/nom_enfant"]')
+        web_submission_page.update_text_input(text_answer_locator, "a")
 
-        actual = web_submission_page.get_select_value("/%s/enfant/select_enfant" % project_temp_name)
-        expected = [u'trad', u'other']
-        #self.assertEqual(expected, actual)
+        self.assertFalse(web_submission_page.is_warning_dialog_displayed())
+        web_submission_page.navigate_to_submission_log()
+        sleep(1)
+        self.assertTrue(web_submission_page.is_warning_dialog_displayed())
+        warning_dialog = WarningDialog(self.driver,
+                                       cancel_link=by_css(
+                                           'div.ui-dialog[style*="block"] > div.ui-dialog-content > div > a#cancel_dialog'))
+        warning_dialog.cancel()
+
+        web_submission_page.submit()
+        web_submission_page.wait_until_modal_dismissed()
+        self.assertTrue(web_submission_page.is_success_message_tip_shown())
+
+        web_submission_page.update_text_input(text_answer_locator, "b")
+        web_submission_page.navigate_to_submission_log()
+        sleep(1)
+        self.assertTrue(web_submission_page.is_warning_dialog_displayed())
+
+        warning_dialog.confirm()
+
+        sleep(1)
+        self.driver.wait_for_page_load()
+        self.assertEqual(self.driver.get_title(), "Submission Log")
+
+        
