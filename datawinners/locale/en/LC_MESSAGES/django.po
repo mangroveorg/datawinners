@@ -5072,3 +5072,6 @@ msgstr ""
 
 msgid "All code fields must be unique, please check %s field"
 msgstr ""
+
+msgid "Failed Submission"
+msgstr ""

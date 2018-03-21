@@ -21,10 +21,10 @@
     <script>
     $(function(){
         
-
+        
         $("#failedsubmissions_table").dwTable({
                 "bFilter": false,
-                "concept": "failedsubmissions",
+                "concept": "{% trans "Failed Submission" %}",
                 "sAjaxSource": "/allfailedsubmissions/ajax/",
                 "sAjaxDataIdColIndex" : $("#failedsubmissions_table thead th.short_code").index(("#failedsubmissions_table thead th")),
                 "bServerSide": true,
