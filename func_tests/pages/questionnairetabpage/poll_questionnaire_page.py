@@ -1,10 +1,10 @@
 from framework.utils.common_utils import by_css, by_id, generateId, by_xpath
-from pages.createquestionnairepage.create_questionnaire_locator import POLL_SMS_DROPDOWN, \
-    POLL_VIA_SMS_RD_BUTTON, SMS_TEXTBOX, CREATE_POLL_BUTTON, POLL_TITLE, DATA_SENDER_TAB, POLL_TAB, DATA_TAB_BTN, \
-    POLL_VIA_BROADCAST_RD_BUTTON, poll_info_accordian, deactivate_link, POLL_STATUS_INFO, \
-    AUTOMATIC_REPLY_ACCORDIAN, POLL_SMS_ACCORDIAN, AUTOMATIC_REPLY_SMS_TEXT, ITALIC_GREY_COMMENT, \
-    POLL_SMS_TABLE, SEND_SMS_LINK, PROJECT_LANGUAGE, SAVE_LANG_BTN, SUCCESS_MSG_BOX, \
-    DEACTIVATE_BTN, ON_SWITCH, RECIPIENT_DROPDOWN, SEND_BUTTON, CANCEL_SMS, LANGUAGE_TEXT, ACTIVATE_BTN, activate_link, \
+from pages.createquestionnairepage.create_questionnaire_locator import POLL_SMS_DROPDOWN,\
+    POLL_VIA_SMS_RD_BUTTON, SMS_TEXTBOX, CREATE_POLL_BUTTON, POLL_TITLE, DATA_SENDER_TAB, POLL_TAB, DATA_TAB_BTN,\
+    POLL_VIA_BROADCAST_RD_BUTTON, poll_info_accordian, deactivate_link, POLL_STATUS_INFO,\
+    AUTOMATIC_REPLY_ACCORDIAN, POLL_SMS_ACCORDIAN, AUTOMATIC_REPLY_SMS_TEXT, ITALIC_GREY_COMMENT,\
+    POLL_SMS_TABLE, SEND_SMS_LINK, PROJECT_LANGUAGE, SAVE_LANG_BTN, SUCCESS_MSG_BOX,\
+    DEACTIVATE_BTN, ON_SWITCH, RECIPIENT_DROPDOWN, SEND_BUTTON, CANCEL_SMS, LANGUAGE_TEXT, ACTIVATE_BTN, activate_link,\
     ACTIVE_POLL_NAME, POLL_INFORMATION_BOX, ON_OFF_SWITCH, POLL_STATUS_BY_ID
 from pages.createquestionnairepage.create_questionnaire_locator import SEND_SMS_DIALOG, SUCCESS_MSG_SENDIND_SMS
 from pages.globalnavigationpage.global_navigation_locator import PROJECT_LINK
@@ -14,7 +14,6 @@ from tests.testsettings import UI_TEST_TIMEOUT
 import time
 
 class PollQuestionnairePage(Page):
-
     def __init__(self, driver):
         Page.__init__(self, driver)
 
@@ -25,7 +24,7 @@ class PollQuestionnairePage(Page):
         self.driver.find_radio_button(POLL_VIA_BROADCAST_RD_BUTTON).click()
 
     def enter_sms_text(self):
-        self.driver.find_text_box(SMS_TEXTBOX).enter_text("what"+generateId()+"?")
+        self.driver.find_text_box(SMS_TEXTBOX).enter_text("what" + generateId() + "?")
 
     def select_receipient(self, recipient_type, receipient_name):
         self.select_recipient_type(POLL_SMS_DROPDOWN, recipient_type)
@@ -110,6 +109,7 @@ class PollQuestionnairePage(Page):
             poll_sent_sms = self.is_sent_poll_sms_table()
             return poll_info & automatic_reply_sms & poll_sent_sms
         except:
+            self.driver.create_screenshot("debug-ft-some-of-3-accordians-not-found")
             return False
 
     def are_broadcast_poll_accordians_present(self):
@@ -131,12 +131,13 @@ class PollQuestionnairePage(Page):
         self.driver.wait_for_element(UI_TEST_TIMEOUT, by_css("#poll_sms_table"), True)
         self.driver.wait_until_modal_dismissed()
         try:
-            recipient_name = self.driver.find(by_css('#poll_sms_table>tbody>tr:nth-of-type(%s)>td:nth-of-type(%s)>span:nth-of-type(2)' % (row, column))).text
+            recipient_name = self.driver.find(by_css(
+                '#poll_sms_table>tbody>tr:nth-of-type(%s)>td:nth-of-type(%s)>span:nth-of-type(2)' % (row, column))).text
             return recipient_name in recipent
         except Exception as e:
             self.driver.create_screenshot("debug-ft-has-ds-received-sms-element-not-found")
             raise e
-        
+
 
     def deactivate_poll(self):
         self.select_element(POLL_TAB)
@@ -152,7 +153,7 @@ class PollQuestionnairePage(Page):
         self.driver.wait_for_element(UI_TEST_TIMEOUT, ACTIVATE_BTN, True)
         time.sleep(1)
         self.driver.find(ACTIVATE_BTN).click()
-        
+
     def select_send_sms(self):
         self.select_element(POLL_TAB)
         time.sleep(3)
@@ -161,6 +162,7 @@ class PollQuestionnairePage(Page):
     def click_send_sms_link(self):
         self.select_element(SEND_SMS_LINK)
         self.driver.wait_for_element(UI_TEST_TIMEOUT, SEND_SMS_DIALOG, True)
+        self.driver.create_screenshot("debug-ft-sms-sent-or-not")
 
     def send_sms_to(self, recipient_type, recipient_name):
         self.select_recipient_type(RECIPIENT_DROPDOWN, recipient_type)
@@ -182,24 +184,29 @@ class PollQuestionnairePage(Page):
 
     def is_another_poll_active(self, poll_title):
         self.driver.wait_for_element(UI_TEST_TIMEOUT, ACTIVE_POLL_NAME, True)
-        return (self.driver.find(POLL_INFORMATION_BOX) is not None) & (self.driver.find(ACTIVE_POLL_NAME).text == poll_title)
+        return (self.driver.find(POLL_INFORMATION_BOX) is not None) & (
+            self.driver.find(ACTIVE_POLL_NAME).text == poll_title)
 
     def _configure_given_contacts(self, recipient_name):
         """
         Function to select Group option To whom to send
         return self
         """
-        self.driver.wait_for_element(UI_TEST_TIMEOUT, by_xpath("//input[@type='checkbox' and @value='%s']" % recipient_name),
+        self.driver.wait_for_element(UI_TEST_TIMEOUT,
+                                     by_xpath("//input[@type='checkbox' and @value='%s']" % recipient_name),
                                      True)
         self.driver.find(by_xpath("//input[@type='checkbox' and @value='%s']" % recipient_name)).click()
         return self
 
     def select_element(self, element):
-        self.driver.wait_for_element(UI_TEST_TIMEOUT, element, True)
-        self.driver.find(element).click()
+        try:
+            self.driver.wait_for_element(UI_TEST_TIMEOUT, element, True)
+            self.driver.find(element).click()
+        except Exception as e:
+            self.driver.create_screenshot("debug-ft-select-element-failed")
 
     def get_cell_value(self, column, row):
-        cell = by_xpath(".//*[@id='datasender_table']/tbody/tr[%s]/td[%s]" % (row+1, column+1))
+        cell = by_xpath(".//*[@id='datasender_table']/tbody/tr[%s]/td[%s]" % (row + 1, column + 1))
         self.driver.wait_for_element(UI_TEST_TIMEOUT, cell, True)
         return self.driver.find(cell).text
 

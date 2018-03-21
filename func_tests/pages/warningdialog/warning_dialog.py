@@ -14,7 +14,11 @@ class WarningDialog(Page):
         self.message_link = message_link
 
     def cancel(self):
-        self.driver.find(self.cancel_link).click()
+        try:
+            self.driver.find(self.cancel_link).click()
+        except Exception as e:
+            self.driver.create_screenshot("debug-ft-cancel-button-not-found")
+            raise e
 
     def confirm(self):
         self.driver.find(self.confirm_link).click()
