@@ -314,7 +314,26 @@ class AdvancedQuestionnaireSubmissionExporter():
                         process_preferences=preference.get('children'), is_single_sheet=is_single_sheet, search_start_index=search_start_index)
                     if child_excel_headers:
                         for sheet_name,child_columns in child_excel_headers.iteritems():
-                            dict_extend_list_value(excel_headers, sheet_name, child_columns)
+                            
+                            if child_columns == None:
+                                for field in self.form_model.fields:
+                                    if field.is_field_set:
+                                        if field.code == sheet_name:
+                                            for child_field in field.fields: #current support only to first level children of repeat. Not recursive.
+                                                dict_extend_list_value(excel_headers, sheet_name.lower(), [child_field.label])
+                                            dict_extend_list_value(excel_headers, sheet_name.lower(), ['_index',"_parent_index"])
+                                        else:
+                                            for child_field2 in field.fields:
+                                                if child_field2.is_field_set and child_field2.code == sheet_name:
+                                                    for child_field3 in child_field2.fields: #current support only to first level children of repeat. Not recursive.
+                                                        dict_extend_list_value(excel_headers, sheet_name.lower(), [child_field3.label])
+                                                    dict_extend_list_value(excel_headers, sheet_name.lower(), ['_index',"_parent_index"])
+
+
+
+
+                            else:
+                                dict_extend_list_value(excel_headers, sheet_name, child_columns)
                 elif self.columns.get(key) and self.columns.get(key).get('type') == 'field_set':
                     field_code = self.columns.get(key).get('code')
                     excel_headers.update({field_code: precomputed_excel_headers.get(field_code)})
@@ -365,6 +384,8 @@ class AdvancedQuestionnaireSubmissionExporter():
         else:
             header_columns.append(label)
         return header_columns
+
+
 
 
 class AdvanceSubmissionFormatter(SubmissionFormatter):
