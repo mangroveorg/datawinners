@@ -77,3 +77,28 @@ class Page(object):
         if wmsg.is_displayed():
             return wmsg.text
         return ""
+
+
+    def is_warning_dialog_displayed(self):
+        from framework.utils.common_utils import by_css
+        try:
+            self.driver.find_visible_element(by_css(".ui-dialog-titlebar"))
+            return True
+        except Exception:
+            return False
+
+
+    def is_success_message_tip_shown(self):
+        from framework.utils.common_utils import by_css
+        SUCCESS_MESSAGE_TIP = by_css(".success-message-box")
+        try:
+            self.driver.find_visible_element(SUCCESS_MESSAGE_TIP)
+            return True
+        except Exception as e:
+            raise e
+            return False
+
+
+    def wait_until_modal_dismissed(self):
+        from framework.utils.common_utils import by_css
+        self.driver.wait_until_element_is_not_present(UI_TEST_TIMEOUT, by_css(".loading"))

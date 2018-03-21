@@ -84,6 +84,11 @@
             </div>
         {% endif %}
     {% include "flash_message.html" %}
+    {% if not messages %}
+        <div style="clear: both;display:none" class="success-message-box"  id="success-message-box" >
+            <span class="message-span">{% trans "Successfully submitted" %}</span>
+        </div>
+    {% endif %}
     </div>
 
         {% include "project/_xform_web_submission.html" %}

@@ -128,6 +128,7 @@ class TestFeeds(HeadlessRunnerTest):
         end_date = self._get_encoded_date(add_time_delta=True)
         # sleep_until(lambda: len(self.get_feed_response(questionnaire_code, start_date, end_date)) > 0, 30)
         response_list = self.get_feed_response(questionnaire_code, start_date, end_date)
+        start_date = end_date
         self.assertEquals(1, len(response_list))
         feed_entry = response_list[-1]
         expected_data = {'q3': '5', 'q2': 'wp01', 'q5': 'a', 'q4': '25.12.2010', 'q7': 'f', 'q6': 'admin',
@@ -140,7 +141,8 @@ class TestFeeds(HeadlessRunnerTest):
         end_date = self._get_encoded_date(add_time_delta=True)
         # sleep_until(lambda: len(self.get_feed_response(questionnaire_code, start_date, end_date)) == 2, 30)
         response_list = self.get_feed_response(questionnaire_code, start_date, end_date)
-        self.assertEquals(2, len(response_list))
+        start_date = end_date
+        self.assertEquals(1, len(response_list))
         feed_entry = response_list[-1]
         # expected_data = {'q2': {'deleted': False, 'id': 'wp01', 'name': 'Test'}, 'q3': '5.0', 'q5': ['a'], 'q4': '24.12.2010', 'q7': ['b'],
         #                 'q6': 'admin', 'q8': '12.0,12.0'}
@@ -154,8 +156,9 @@ class TestFeeds(HeadlessRunnerTest):
         end_date = self._get_encoded_date(add_time_delta=True)
         # sleep_until(lambda: len(self.get_feed_response(questionnaire_code, start_date, end_date)) == 2, 30)
         edited_response_list = self.get_feed_response(questionnaire_code, start_date, end_date)
+        start_date = end_date
         edited_response_list.sort()
-        self.assertEquals(2, len(edited_response_list))
+        self.assertEquals(1, len(edited_response_list))
         edited_feed_entry = edited_response_list[-1]
         #expected_data_after_edit = {"q3": "8.0", "q2": {"deleted": False, "id": "wp01", "name": "Test"},
         #                            "q5": ["b"], "q4": "24.12.2012",  "q7": ["a", "b"], "q6": "admin1",
@@ -166,11 +169,12 @@ class TestFeeds(HeadlessRunnerTest):
         self.assert_feed_values(edited_feed_entry, expected_data_after_edit, rep_id, status)
 
         self.delete_submission()
+        time.sleep(5)
+
         end_date = self._get_encoded_date(add_time_delta=True)
         # sleep_until(lambda: len(self.get_feed_response(questionnaire_code, start_date, end_date)) == 2, 30)
-        time.sleep(5)
         response_list_after_delete = self.get_feed_response(questionnaire_code, start_date, end_date)
-        self.assertEquals(2, len(response_list_after_delete))
+        self.assertEquals(1, len(response_list_after_delete))
         deleted_feed_entry = response_list_after_delete[-1]
         #expected_data_after_delete = {'q2': {"deleted": False, "id": "wp01", "name": "Test"}, 'q3': '8.0', 'q5': ['b'], 'q4': '24.12.2012',
         #                              'q7': ['a', 'b'],

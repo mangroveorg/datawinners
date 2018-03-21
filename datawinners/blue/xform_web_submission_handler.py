@@ -107,7 +107,6 @@ class XFormWebSubmissionHandler():
                               'created': py_datetime_to_js_datestring(response.created)})
         success_response = HttpResponse(content, status=201, content_type='application/json')
         success_response['submission_id'] = response.survey_response_id
-        messages.success(self.request, ugettext('Successfully submitted'), extra_tags='success')
 
         check_quotas_and_update_users(self.organization)
         return success_response

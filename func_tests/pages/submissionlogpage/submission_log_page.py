@@ -219,5 +219,5 @@ class SubmissionLogPage(Page):
         self.driver.wait_for_page_load()
         self.driver.execute_script("$('.row_checkbox:eq(%d)').click();" % int(index - 1))
         self.choose_on_dropdown_action(EDIT_BUTTON)
-        from pages.websubmissionpage.web_submission_page import WebSubmissionPage
-        return WebSubmissionPage(self.driver)
+        from pages.advancedwebsubmissionpage.advanced_web_submission_page import AdvancedWebSubmissionPage
+        return AdvancedWebSubmissionPage(self.driver)
