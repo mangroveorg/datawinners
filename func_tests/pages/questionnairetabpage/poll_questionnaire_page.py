@@ -162,7 +162,6 @@ class PollQuestionnairePage(Page):
     def click_send_sms_link(self):
         self.select_element(SEND_SMS_LINK)
         self.driver.wait_for_element(UI_TEST_TIMEOUT, SEND_SMS_DIALOG, True)
-        self.driver.create_screenshot("debug-ft-sms-sent-or-not")
 
     def send_sms_to(self, recipient_type, recipient_name):
         self.select_recipient_type(RECIPIENT_DROPDOWN, recipient_type)

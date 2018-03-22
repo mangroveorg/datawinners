@@ -29,7 +29,7 @@ class TestPollOptions(HeadlessRunnerTest):
 
     def tearDown(self):
         self.driver.wait_for_page_load()
-        self.poll_questionnaire_page.delete_the_poll()
+        #self.poll_questionnaire_page.delete_the_poll()
         
 
     @classmethod
@@ -105,6 +105,8 @@ class TestPollOptions(HeadlessRunnerTest):
         self.poll_questionnaire_page.click_create_poll()
         self.poll_questionnaire_page.select_send_sms()
         self.poll_questionnaire_page.send_sms_to(MY_POLL_RECIPIENTS, REP7)
+        sleep(2)
+        self.driver.create_screenshot("debug-ft-sms-sent-or-not")
         self.assertTrue(self.poll_questionnaire_page.has_DS_received_sms(REP7, SECOND_ROW, THIRD_COLUMN))
 
     @attr('functional_test')
