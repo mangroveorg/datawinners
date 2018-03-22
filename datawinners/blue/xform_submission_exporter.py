@@ -335,7 +335,7 @@ class AdvancedQuestionnaireSubmissionExporter():
                             else:
                                 dict_extend_list_value(excel_headers, sheet_name, child_columns)
                 elif self.columns.get(key) and self.columns.get(key).get('type') == 'field_set':
-                    field_code = self.columns.get(key).get('code')
+                    field_code = self.columns.get(key).get('code').lower()
                     excel_headers.update({field_code: precomputed_excel_headers.get(field_code)})
                     if is_single_sheet:
                         search_start_index['index'] = self._add_already_ordered_repeat_columns_from_single_sheet_headers(excel_headers, field_code,
