@@ -29,7 +29,7 @@ class TestPollOptions(HeadlessRunnerTest):
 
     def tearDown(self):
         self.driver.wait_for_page_load()
-        #self.poll_questionnaire_page.delete_the_poll()
+        self.poll_questionnaire_page.delete_the_poll()
         
 
     @classmethod
