@@ -169,6 +169,7 @@ class PollQuestionnairePage(Page):
         self._configure_given_contacts(recipient_name)
         self.select_element(SEND_BUTTON)
         self.driver.wait_for_element(UI_TEST_TIMEOUT, SUCCESS_MSG_SENDIND_SMS)
+        self.driver.create_screenshot("debug-ft-sms-sent-via-poll")
         self.select_element(CANCEL_SMS)
         self.driver.wait_for_page_load()
 
