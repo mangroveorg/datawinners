@@ -14,6 +14,7 @@ class WarningDialog(Page):
         self.message_link = message_link
 
     def cancel(self):
+        self.driver.create_screenshot("debug-ft-before-hitting-cancel-button")
         try:
             self.driver.find(self.cancel_link).click()
         except Exception as e:
