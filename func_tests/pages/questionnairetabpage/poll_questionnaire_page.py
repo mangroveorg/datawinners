@@ -33,11 +33,12 @@ class PollQuestionnairePage(Page):
     def select_recipient_type(self, dropdown, recipient_type):
         self.driver.find_drop_down(dropdown).set_selected(recipient_type)
 
-    def click_create_poll(self):
+    def click_create_poll(self, debug=False):
         self.driver.wait_for_element(UI_TEST_TIMEOUT, CREATE_POLL_BUTTON, True)
-        self.driver.create_screenshot("debug-ft-poll-created-successfully")
         self.driver.find(CREATE_POLL_BUTTON).click()
         time.sleep(1)
+        if debug:
+            self.driver.create_screenshot("debug-ft-poll-created-successfully")
         self.driver.wait_for_page_with_title(UI_TEST_TIMEOUT, "Data Analysis")
 
     def is_poll_created(self, poll_title):

@@ -550,7 +550,7 @@ class TestAdvancedQuestionnaireEndToEnd(HeadlessRunnerTest):
         warning_dialog = WarningDialog(self.driver,
                                        cancel_link=by_css(
                                            'div.ui-dialog[style*="block"] > div.ui-dialog-content > div > a.dialog_cancel_link'))
-        warning_dialog.cancel()
+        warning_dialog.cancel(True)
 
         web_submission_page.submit()
         web_submission_page.wait_until_modal_dismissed()
