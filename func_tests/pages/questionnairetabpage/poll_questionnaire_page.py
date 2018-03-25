@@ -126,12 +126,15 @@ class PollQuestionnairePage(Page):
         except:
             return False
 
-    def has_DS_received_sms(self, recipent, row, column):
+    def has_DS_received_sms(self, recipent, row, column, debug=False):
         self.select_element(POLL_TAB)
         time.sleep(3)
         self.select_element(POLL_SMS_ACCORDIAN)
         self.driver.wait_for_element(UI_TEST_TIMEOUT, by_css("#poll_sms_table"), True)
         self.driver.wait_until_modal_dismissed()
+        if debug:
+            time.sleep(2)
+            self.driver.create_screenshot("debug-ft-before-checking-that-ds-received-sms")
         try:
             recipient_name = self.driver.find(by_css(
                 '#poll_sms_table>tbody>tr:nth-of-type(%s)>td:nth-of-type(%s)>span:nth-of-type(2)' % (row, column))).text

@@ -68,9 +68,13 @@ class AdvancedWebSubmissionPage(WebSubmissionPage):
     def get_input_value(self, index):
         return self._get_input(index).get_attribute("value")
 
-    def submit(self):
+    def submit(self, debug=False):
         self.driver.find_visible_element(by_id('validate-form')).click()
-        self.driver.wait_for_element(UI_TEST_TIMEOUT, by_css('.success-message-box'), True)
+        try:
+            self.driver.wait_for_element(UI_TEST_TIMEOUT * 2, by_css('.success-message-box'), True)
+        except Exception as e:
+            self.driver.create_screenshot("debug-ft-no-success-msg-after-submit")
+            raise e
         self.driver.wait_for_page_load()
         return self
 

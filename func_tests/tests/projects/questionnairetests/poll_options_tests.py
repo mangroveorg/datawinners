@@ -107,7 +107,7 @@ class TestPollOptions(HeadlessRunnerTest):
         self.poll_questionnaire_page.send_sms_to(MY_POLL_RECIPIENTS, REP7)
         sleep(2)
         self.driver.create_screenshot("debug-ft-sms-sent-or-not")
-        self.assertTrue(self.poll_questionnaire_page.has_DS_received_sms(REP7, SECOND_ROW, THIRD_COLUMN))
+        self.assertTrue(self.poll_questionnaire_page.has_DS_received_sms(REP7, SECOND_ROW, THIRD_COLUMN, True))
 
     @attr('functional_test')
     def test_send_sms_to_people_should_add_linked_contact_recipients_to_my_data_senders_of_poll(self):
