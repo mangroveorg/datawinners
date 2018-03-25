@@ -540,8 +540,10 @@ class TestAdvancedQuestionnaireEndToEnd(HeadlessRunnerTest):
         expected = "<idnr>food pet rhinitis</idnr><enfant><naissance_enfant>no</naissance_enfant><poids_enfant>16</poids_enfant><nom_enfant>John</nom_enfant><date_enfant>2016-12-01</date_enfant><text>Setra</text><select_enfant>trad other</select_enfant><age_enfant>3</age_enfant></enfant><form_code>%s</form_code>" % form_code
         self.assertIn(expected, data)
 
+        self.driver.create_screenshot("debug-ft-edit-adv-submission-before-change")
         text_answer_locator = by_css('input[name="/' + project_temp_name + '/enfant/nom_enfant"]')
         web_submission_page.update_text_input(text_answer_locator, "a")
+        self.driver.create_screenshot("debug-ft-edit-adv-submission-after-change")
 
         self.assertFalse(web_submission_page.is_warning_dialog_displayed())
         web_submission_page.navigate_to_submission_log()
@@ -551,6 +553,7 @@ class TestAdvancedQuestionnaireEndToEnd(HeadlessRunnerTest):
                                        cancel_link=by_css(
                                            'div.ui-dialog[style*="block"] > div.ui-dialog-content > div > a.dialog_cancel_link'))
         warning_dialog.cancel(True)
+        self.driver.create_screenshot("debug-ft-edit-adv-submission-after-cancel-dialog")
 
         web_submission_page.submit()
         web_submission_page.wait_until_modal_dismissed()
@@ -563,7 +566,7 @@ class TestAdvancedQuestionnaireEndToEnd(HeadlessRunnerTest):
 
         warning_dialog.confirm()
 
-        sleep(1)
+        sleep(5)
         self.driver.wait_for_page_load()
         self.assertEqual(self.driver.get_title(), "Submission Log")
 

@@ -104,7 +104,7 @@ class TestPollOptions(HeadlessRunnerTest):
         self.poll_questionnaire_page.select_receipient(LINKED_CONTACTS, CLINIC_ALL_DS)
         self.poll_questionnaire_page.click_create_poll()
         self.poll_questionnaire_page.select_send_sms()
-        self.poll_questionnaire_page.send_sms_to(MY_POLL_RECIPIENTS, REP7)
+        self.poll_questionnaire_page.send_sms_to(MY_POLL_RECIPIENTS, REP7, True)
         sleep(2)
         self.driver.create_screenshot("debug-ft-sms-sent-or-not")
         self.assertTrue(self.poll_questionnaire_page.has_DS_received_sms(REP7, SECOND_ROW, THIRD_COLUMN, True))
