@@ -136,7 +136,7 @@ class TestCreatePollQuestionnaire(HeadlessRunnerTest):
         self.poll_Questionnaire_page.select_sms_option()
         self.poll_Questionnaire_page.enter_sms_text()
         self.poll_Questionnaire_page.select_receipient(CONTACTS_LINKED, CLINIC_ALL_DS)
-        self.poll_Questionnaire_page.click_create_poll(True)
+        self.poll_Questionnaire_page.click_create_poll(True, "create-poll-test")
         self.driver.wait_for_element(UI_TEST_TIMEOUT, DATA_SENDER_TAB, True)
         self.poll_Questionnaire_page.select_element(DATA_SENDER_TAB)
         recipient = [REP5, REP6, REP7, REP35]
