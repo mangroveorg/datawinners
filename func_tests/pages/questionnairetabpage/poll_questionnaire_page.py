@@ -36,10 +36,15 @@ class PollQuestionnairePage(Page):
     def click_create_poll(self, debug=False):
         self.driver.wait_for_element(UI_TEST_TIMEOUT, CREATE_POLL_BUTTON, True)
         self.driver.find(CREATE_POLL_BUTTON).click()
-        time.sleep(1)
-        self.driver.wait_for_page_with_title(UI_TEST_TIMEOUT, "Data Analysis")
         if debug:
-            self.driver.create_screenshot("debug-ft-poll-created-successfully")
+            self.driver.create_screenshot("debug-ft-poll-created-successfully-after-click")
+        time.sleep(2)
+        if debug:
+            self.driver.create_screenshot("debug-ft-poll-created-successfully-after-wait2")
+        self.driver.wait_for_page_with_title(UI_TEST_TIMEOUT, "Data Analysis")
+
+        if debug:
+            self.driver.create_screenshot("debug-ft-poll-created-successfully-redirected-to-analysis")
 
     def is_poll_created(self, poll_title):
         self.driver.wait_for_element(UI_TEST_TIMEOUT, POLL_TITLE, True)

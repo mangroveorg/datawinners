@@ -102,7 +102,7 @@ class TestPollOptions(HeadlessRunnerTest):
         self.poll_questionnaire_page.select_sms_option()
         self.poll_questionnaire_page.enter_sms_text()
         self.poll_questionnaire_page.select_receipient(LINKED_CONTACTS, CLINIC_ALL_DS)
-        self.poll_questionnaire_page.click_create_poll()
+        self.poll_questionnaire_page.click_create_poll(True)
         self.poll_questionnaire_page.select_send_sms()
         self.poll_questionnaire_page.send_sms_to(MY_POLL_RECIPIENTS, REP7, True)
         sleep(2)

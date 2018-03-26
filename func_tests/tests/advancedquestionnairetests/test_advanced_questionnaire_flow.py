@@ -534,11 +534,12 @@ class TestAdvancedQuestionnaireEndToEnd(HeadlessRunnerTest):
             self.project_name).wait_for_table_data_to_load()
         self.driver.create_screenshot("debug-ft-sub-log-edit-nth-sub")
         web_submission_page = submission_log_page.edit_nth_submission(1)
-        sleep(2)
+        sleep(5)
         data = self.driver.execute_script("return dataStrToEdit;")
         self.driver.create_screenshot("debug-ft-edit-sub-page")
         expected = "<idnr>food pet rhinitis</idnr><enfant><naissance_enfant>no</naissance_enfant><poids_enfant>16</poids_enfant><nom_enfant>John</nom_enfant><date_enfant>2016-12-01</date_enfant><text>Setra</text><select_enfant>trad other</select_enfant><age_enfant>3</age_enfant></enfant><form_code>%s</form_code>" % form_code
         self.assertIn(expected, data)
+        self.driver.wait_for_page_load()
 
         self.driver.create_screenshot("debug-ft-edit-adv-submission-before-change")
         text_answer_locator = by_css('input[name="/' + project_temp_name + '/enfant/nom_enfant"]')
@@ -555,7 +556,7 @@ class TestAdvancedQuestionnaireEndToEnd(HeadlessRunnerTest):
         warning_dialog.cancel(True)
         self.driver.create_screenshot("debug-ft-edit-adv-submission-after-cancel-dialog")
 
-        web_submission_page.submit()
+        web_submission_page.submit(True)
         web_submission_page.wait_until_modal_dismissed()
         self.assertTrue(web_submission_page.is_success_message_tip_shown())
 
