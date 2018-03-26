@@ -231,7 +231,7 @@ class DriverWrapper(object):
     def wait_for_page_load(self):
         WebDriverWait(self._driver, UI_TEST_TIMEOUT).until(lambda driver:  u"complete" == driver.execute_script("return document.readyState"))
 
-    def wait_for_page_with_title(self, time_out_in_seconds, title):
+    def wait_for_page_with_title(self, time_out_in_seconds, title, debug=False):
         current_time = datetime.datetime.now()
         end_time = current_time + datetime.timedelta(0, time_out_in_seconds)
 
@@ -240,6 +240,7 @@ class DriverWrapper(object):
                 return title
             else:
                 current_time = datetime.datetime.now()
+                self.driver.create_screenshot("debug-ft-page-title-yet-%s" % self.title)
                 if current_time >= end_time:
                     raise CouldNotLocatePageException(
                         "Could not locate page with title %s after %s seconds" % (title, time_out_in_seconds))
