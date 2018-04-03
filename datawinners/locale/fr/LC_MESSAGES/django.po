@@ -6249,6 +6249,9 @@ msgstr "Adresse email de l'Expéditeur de Données"
 msgid "Data Sender Location"
 msgstr "Localisation de l'Expéditeur de Données"
 
+msgid "Data Sender GPS Coordinates"
+msgstr "Coordonnées GPS de l'Expediteur de Données"
+
 msgid "Data Sender Groups"
 msgstr "Groupes d'Expéditeurs de Données"
 
