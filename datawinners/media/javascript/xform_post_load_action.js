@@ -37,8 +37,11 @@ DW.calledAfterEdit = function() {
     $('#success-message-box').show();
     $(document).scrollTop(0);
     DW.isFormChanged = false;
+
     if (typeof DW.calledAfterEdit.callback != 'undefined'){
         DW.calledAfterEdit.callback();
+    } else if (dataStrToEdit === "") {
+        window.location.reload();
     }
 };
 

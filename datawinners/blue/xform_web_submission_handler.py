@@ -61,7 +61,7 @@ class XFormWebSubmissionHandler():
                 raise e
         player_response = self.player.add_survey_response(self.mangrove_request, self.user_profile.reporter_id,
                                                           logger=sp_submission_logger)
-        return self._post_save(player_response)
+        return self._post_save(player_response, True)
 
     def _send_media_error_mail(self, message):
         email_message = ''
@@ -94,7 +94,7 @@ class XFormWebSubmissionHandler():
 
         return self._post_save(player_response)
 
-    def _post_save(self, response):
+    def _post_save(self, response, new_submission=False):
         mail_feed_errors(response, self.manager.database_name)
         if response.errors:
             logger.error("Error in submission : \n%s" % get_errors(response.errors))
@@ -107,6 +107,9 @@ class XFormWebSubmissionHandler():
                               'created': py_datetime_to_js_datestring(response.created)})
         success_response = HttpResponse(content, status=201, content_type='application/json')
         success_response['submission_id'] = response.survey_response_id
+
+        if new_submission:
+            messages.success(self.request, ugettext('Successfully submitted'), extra_tags='success')
 
         check_quotas_and_update_users(self.organization)
         return success_response

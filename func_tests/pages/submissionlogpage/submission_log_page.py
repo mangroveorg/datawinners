@@ -64,10 +64,12 @@ class SubmissionLogPage(Page):
     def get_active_tab_text(self):
         return self.driver.find(ACTIVE_TAB_LOCATOR).text
 
-    def choose_on_dropdown_action(self, action_button):
+    def choose_on_dropdown_action(self, action_button, debug=False):
         self.driver.wait_for_element(UI_TEST_TIMEOUT, ACTION_SELECT_CSS_LOCATOR, True)
         self.driver.find(ACTION_SELECT_CSS_LOCATOR).click()
         self.driver.wait_for_element(UI_TEST_TIMEOUT, action_button, True)
+        if debug:
+            self.driver.create_screenshot("debug-ft-edit-nth-submission-action")
         self.driver.find(action_button).click()
 
     def check_all_submissions(self):
@@ -218,6 +220,6 @@ class SubmissionLogPage(Page):
     def edit_nth_submission(self, index):
         self.driver.wait_for_page_load()
         self.driver.execute_script("$('.row_checkbox:eq(%d)').click();" % int(index - 1))
-        self.choose_on_dropdown_action(EDIT_BUTTON)
+        self.choose_on_dropdown_action(EDIT_BUTTON, True)
         from pages.advancedwebsubmissionpage.advanced_web_submission_page import AdvancedWebSubmissionPage
         return AdvancedWebSubmissionPage(self.driver)

@@ -691,6 +691,9 @@ msgstr "Pour commençer à utiliser DataWinners"
 msgid "order_to_create_project"
 msgstr "créez un nouveau Questionnaire"
 
+msgid "order_to_create_project_and_poll"
+msgstr "créez un nouveau Questionnaire ou Sondage"
+
 msgid "Add a data sender"
 msgstr "Ajouter un Expéditeur"
 
@@ -6245,6 +6248,9 @@ msgstr "Adresse email de l'Expéditeur de Données"
 
 msgid "Data Sender Location"
 msgstr "Localisation de l'Expéditeur de Données"
+
+msgid "Data Sender GPS Coordinates"
+msgstr "Coordonnées GPS de l'Expediteur de Données"
 
 msgid "Data Sender Groups"
 msgstr "Groupes d'Expéditeurs de Données"

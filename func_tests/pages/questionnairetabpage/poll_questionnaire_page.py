@@ -33,11 +33,19 @@ class PollQuestionnairePage(Page):
     def select_recipient_type(self, dropdown, recipient_type):
         self.driver.find_drop_down(dropdown).set_selected(recipient_type)
 
-    def click_create_poll(self):
+    def click_create_poll(self, debug=False, page=""):
         self.driver.wait_for_element(UI_TEST_TIMEOUT, CREATE_POLL_BUTTON, True)
         self.driver.find(CREATE_POLL_BUTTON).click()
-        time.sleep(1)
-        self.driver.wait_for_page_with_title(UI_TEST_TIMEOUT, "Data Analysis")
+        self.driver.wait_until_modal_dismissed()
+        if debug:
+            self.driver.create_screenshot("debug-ft-poll-created-successfully-after-click-" + page)
+        time.sleep(2)
+        if debug:
+            self.driver.create_screenshot("debug-ft-poll-created-successfully-after-wait2-" + page)
+        self.driver.wait_for_page_with_title(UI_TEST_TIMEOUT, "Data Analysis", True)
+
+        if debug:
+            self.driver.create_screenshot("debug-ft-poll-created-successfully-redirected-to-analysis-" + page)
 
     def is_poll_created(self, poll_title):
         self.driver.wait_for_element(UI_TEST_TIMEOUT, POLL_TITLE, True)
@@ -124,12 +132,15 @@ class PollQuestionnairePage(Page):
         except:
             return False
 
-    def has_DS_received_sms(self, recipent, row, column):
+    def has_DS_received_sms(self, recipent, row, column, debug=False):
         self.select_element(POLL_TAB)
         time.sleep(3)
         self.select_element(POLL_SMS_ACCORDIAN)
         self.driver.wait_for_element(UI_TEST_TIMEOUT, by_css("#poll_sms_table"), True)
         self.driver.wait_until_modal_dismissed()
+        if debug:
+            time.sleep(2)
+            self.driver.create_screenshot("debug-ft-before-checking-that-ds-received-sms")
         try:
             recipient_name = self.driver.find(by_css(
                 '#poll_sms_table>tbody>tr:nth-of-type(%s)>td:nth-of-type(%s)>span:nth-of-type(2)' % (row, column))).text
@@ -162,14 +173,15 @@ class PollQuestionnairePage(Page):
     def click_send_sms_link(self):
         self.select_element(SEND_SMS_LINK)
         self.driver.wait_for_element(UI_TEST_TIMEOUT, SEND_SMS_DIALOG, True)
-        self.driver.create_screenshot("debug-ft-sms-sent-or-not")
 
-    def send_sms_to(self, recipient_type, recipient_name):
+    def send_sms_to(self, recipient_type, recipient_name, debug=False):
         self.select_recipient_type(RECIPIENT_DROPDOWN, recipient_type)
         time.sleep(2)
         self._configure_given_contacts(recipient_name)
         self.select_element(SEND_BUTTON)
         self.driver.wait_for_element(UI_TEST_TIMEOUT, SUCCESS_MSG_SENDIND_SMS)
+        if debug:
+            self.driver.create_screenshot("debug-ft-sms-sent-via-poll")
         self.select_element(CANCEL_SMS)
         self.driver.wait_for_page_load()
 
