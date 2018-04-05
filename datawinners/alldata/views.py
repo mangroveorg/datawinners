@@ -241,7 +241,7 @@ def failed_submissions_ajax(request):
 @valid_web_user
 def failed_submissions(request):
     disable_link_class, hide_link_class, page_heading = projects_index(request)
-    header_dict = OrderedDict([('from_number', 'Data Sender'), ('created_at', 'Submission Date'),('form_code', 'Questionnaire Code'), ('message' , 'SMS Text'), ('error', 'Error message') ])
+    header_dict = OrderedDict([('from_number', 'Data Sender'), ('created_at', 'Submission Date'),('form_code', 'Questionnaire Code'), ('message' , 'SMS Text'), ('error1', 'Error Message') ])
     organization = get_organization(request)
 
     

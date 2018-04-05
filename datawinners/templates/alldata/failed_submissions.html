@@ -47,7 +47,7 @@
         {#        empty th for check-all box#}
         <td></td>
         {% for header_name, header_label in failedsubmissions_headers.items %}
-            <th class="{{ header_name }}">{{ header_label }} </th>
+            <th class="{{ header_name }}">{% trans header_label %} </th>
         {% endfor %}
     </thead>
         

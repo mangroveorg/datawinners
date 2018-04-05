@@ -6397,4 +6397,4 @@ msgid "All code fields must be unique, please check %s field"
 msgstr "Tous les champs de code doivent être uniques, veuillez vérifier le champs %s "
 
 msgid "Failed Submission"
-msgstr "Erreur d'envoi"
+msgstr "Erreurs d'envoi"

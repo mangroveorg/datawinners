@@ -4018,6 +4018,9 @@ msgstr "View and manage unsuccessful Submissions for this project. Also view the
 msgid "Error Messages"
 msgstr ""
 
+msgid "Error Message"
+msgstr ""
+
 msgid "Answer must be 20 characters maximum"
 msgstr ""
 
