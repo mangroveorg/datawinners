@@ -201,6 +201,8 @@ class XlsFormParser():
                     info.append(e.message)
                 except LabelForFieldNotPresentException as e:
                     errors.append(e.message)
+                except ForbiddenWordInFieldNameException as e:
+                    errors.append(e.message)
         return questions, set(errors), set(info)
 
     def _validate_group(self, errors, field):
@@ -368,6 +370,9 @@ class XlsFormParser():
                 return field['name']
             else:
                 raise LabelForFieldNotPresentException(field_name=field['name'])
+
+        if field['name'].lower() in ['form']:
+            raise ForbiddenWordInFieldNameException(field_name=field['name'])
 
         if isinstance(field['label'], dict):
             if field['label'].get(self.default_language):
@@ -836,6 +841,14 @@ class PrefetchCSVNotSupportedException(Exception):
 class LabelForFieldNotPresentException(Exception):
     def __init__(self, field_name):
         self.message = _("Label mandatory for question with name [%s]") % field_name
+
+    def __str__(self):
+        return self.message
+
+
+class ForbiddenWordInFieldNameException(Exception):
+    def __init__(self, field_name):
+        self.message = _("Field name can't be [%s]") % field_name
 
     def __str__(self):
         return self.message

@@ -5604,6 +5604,9 @@ msgstr "Nous avons désactivé vos Messages de Rappel (si configurés auparavant
 msgid "Label mandatory for question with name [%s]"
 msgstr "Labels optionnels. \"Label\" est une cellule obligatoire pour une question comportant un nom [%s]"
 
+msgid "Field name can't be [%s]"
+msgstr "Erreur dans la feuille survey. \"%s\" n'est pas pris en charge pour la colonne \"name\"."
+
 msgid "Label mandatory for choice option with name %s"
 msgstr "Labels optionnels. \"Label\" est une cellule obligatoire pour l'option choix comportant un nom [%s]"
 

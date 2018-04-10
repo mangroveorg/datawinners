@@ -4698,6 +4698,9 @@ msgstr " instead."
 msgid "Label mandatory for question with name [%s]"
 msgstr "optional labels. Label is a mandatory field for question with name [%s]"
 
+msgid "Field name can't be [%s]"
+msgstr "Error in the survey sheet. \"%s\" is not supported for question names."
+
 msgid "Please upload an excel file"
 msgstr "The file you are trying to upload is unsupported. DataWinners only support .xls and .xlsx files."
 
