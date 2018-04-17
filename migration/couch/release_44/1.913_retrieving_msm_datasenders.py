@@ -5,7 +5,7 @@ from datawinners.entity.views import _set_email_for_contacts
 from django.test import RequestFactory
 import json
 
-test_env = True
+test_env = False
 
 get_deleted_ds_map = """
 function(doc) {
