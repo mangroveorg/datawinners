@@ -203,6 +203,8 @@ class XlsFormParser():
                     errors.append(e.message)
                 except ForbiddenWordInFieldNameException as e:
                     errors.append(e.message)
+                except ErrorSyntaxInRelevantException as e:
+                    errors.append(e.message)
         return questions, set(errors), set(info)
 
     def _validate_group(self, errors, field):
@@ -381,6 +383,29 @@ class XlsFormParser():
         else:
             return field['label']
 
+    def _get_relevant(self, field):
+        relevant = field.get("bind").get("relevant") if field.get("bind") else None
+        if relevant:
+            vanilla_pattern = r"^\$\{\w+\}(>|>=|=|<=|<)(\d+|'\w+')$"
+            selected_pattern = r"^selected\(\$\{\w+\},( |)(\d+|'\w+'|'\d+')\)$"
+            if 'and' in relevant or 'or' in relevant:
+                statements = re.split(' and | or ', relevant)
+                for phrase in statements:
+                    if 'selected' in phrase:
+                        pattern = selected_pattern
+                    else:
+                        pattern = vanilla_pattern
+                    if not re.match(pattern, phrase):
+                        raise ErrorSyntaxInRelevantException(field_name=relevant, specific=phrase)
+            else:
+                if 'selected' in relevant:
+                    pattern = selected_pattern
+                else:
+                    pattern = vanilla_pattern
+                if not re.match(pattern, relevant):
+                    raise ErrorSyntaxInRelevantException(field_name=relevant, specific=None)
+        return relevant
+
     def _group(self, field, parent_field_code=None):
         group_label = self._get_label(field)
 
@@ -454,7 +479,7 @@ class XlsFormParser():
         appearance = self._get_appearance(field)
         default = field.get('default')
         xform_constraint = field.get("bind").get("constraint") if field.get("bind") else None
-        relevant = field.get("bind").get("relevant") if field.get("bind") else None
+        relevant = self._get_relevant(field)
         question = {'title': name, 'type': xform_dw_type_dict.get(type, type), "is_entity_question": False,
                     "code": code, "name": name, 'required': self.is_required(field), "hint": hint,
                     "constraint_message": constraint_message, "parent_field_code": parent_field_code, "appearance": appearance, "default": default,
@@ -849,6 +874,17 @@ class LabelForFieldNotPresentException(Exception):
 class ForbiddenWordInFieldNameException(Exception):
     def __init__(self, field_name):
         self.message = _("Field name can't be [%s]") % field_name
+
+    def __str__(self):
+        return self.message
+
+
+class ErrorSyntaxInRelevantException(Exception):
+    def __init__(self, field_name, specific):
+        if not specific:
+            self.message = _("Syntax error in relevant column: [%s]") % field_name
+        else:
+            self.message = _("Syntax error in relevant column: [%s] near [%s]") % (field_name, specific)
 
     def __str__(self):
         return self.message
