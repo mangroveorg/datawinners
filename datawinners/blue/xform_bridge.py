@@ -739,7 +739,7 @@ class XFormSubmissionProcessor():
         formatted_field_values = convert_date_values(form_model_fields, self._format_field_answers_for(form_model_fields, submission_values))
         answer_dict.update(formatted_field_values)
         edit_model_dict.update({project_name: answer_dict})
-        return xmldict.dict_to_xml(edit_model_dict)
+        return re.sub(r'\n', r'\\n', xmldict.dict_to_xml(edit_model_dict))
 
     def _format_date_time(self, value):
         return datetime.strptime(value, '%d.%m.%Y %H:%M:%S').strftime('%Y-%m-%dT%H:%M:%S')
