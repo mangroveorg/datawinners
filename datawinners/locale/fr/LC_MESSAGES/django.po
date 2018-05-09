@@ -5718,6 +5718,9 @@ msgstr "Espaces dans la colonne name (feuille choices)"
 msgid "duplicate names within one list (choices sheet)"
 msgstr "Doublon au niveau des noms dans une seule liste (feuille choices)"
 
+msgid "duplicate names within list [%s] (choices sheet)"
+msgstr "Doublon au niveau des noms dans la liste [%s] (feuille choices)"
+
 msgid "Sorry! Current version of DataWinners does not support"
 msgstr "Désolé ! La version actuelle de DataWinners ne prend pas en charge"
 

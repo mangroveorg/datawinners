@@ -301,7 +301,7 @@ class XlsFormParser():
                 name_list_without_duplicates = list(name_set)
                 self._validate_default_value(errors, field, name_set)
                 if len(name_list) != len(name_list_without_duplicates):
-                    errors.append(_("duplicate names within one list (choices sheet)"))
+                    errors.append(_("duplicate names within list [%s] (choices sheet)") % choice['name'])
                 if filter(lambda name: " " in unicode(name), name_list):
                     errors.append(_("spaces in name column (choice sheet)"))
         return errors
