@@ -146,7 +146,7 @@ class TestXformBridge(unittest.TestCase):
 
             xls_parser_response = xls_form_parser.parse()
 
-            self.assertEquals(xls_parser_response.errors, {"duplicate names within list [%s] (choices sheet)",
+            self.assertEquals(xls_parser_response.errors, {"duplicate names within list [yes 1] (choices sheet)",
                                                            "spaces in name column (choice sheet)"})
 
     def test_should_populate_error_when_default_choice_name_not_in_choice_list(self):
