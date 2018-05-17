@@ -453,7 +453,7 @@ def questionnaire(request, project_id):
         #First as normal request, Second time as ajax request
         questionnaire = Project.get(manager, project_id)
         if questionnaire.is_poll:
-         return HttpResponseRedirect('/project/'+ project_id + '/results/'+questionnaire.form_code)
+            return HttpResponseRedirect('/project/'+ project_id + '/results/'+questionnaire.form_code)
 
         if questionnaire.is_void():
             return HttpResponseRedirect(settings.HOME_PAGE + "?deleted=true")

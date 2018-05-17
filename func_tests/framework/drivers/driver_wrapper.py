@@ -34,7 +34,7 @@ def get_default_browser_name():
 
 def get_driver_for_browser(browser):
     browser = browser if browser else get_default_browser_name()
-    sys.stderr.write("using driver for browser: %s\n" % browser)
+    #sys.stderr.write("using driver for browser: %s\n" % browser)
     if browser == "firefox":
         fprofile = FirefoxProfile()
         driver = webdriver.Firefox(fprofile)
@@ -240,7 +240,8 @@ class DriverWrapper(object):
                 return title
             else:
                 current_time = datetime.datetime.now()
-                self.driver.create_screenshot("debug-ft-page-title-yet-%s" % self.title)
+                if debug:
+                    self.driver.create_screenshot("debug-ft-page-title-yet-%s" % self.title)
                 if current_time >= end_time:
                     raise CouldNotLocatePageException(
                         "Could not locate page with title %s after %s seconds" % (title, time_out_in_seconds))
