@@ -127,6 +127,23 @@ class TestXformBridge(unittest.TestCase):
             self.assertEquals(xls_parser_response.errors,
                               {"optional labels. Label is a mandatory field for choice option with name [yes]"})
 
+    def test_should_populate_error_when_relevant_field_has_syntax_error(self):
+        with patch('datawinners.blue.xform_bridge.parse_file_to_json') as get_xform_dict:
+            fields = {'children': [{u'bind': {u'required': u'yes', u'relevant': u'and ${district}>1'}, u'type': u'text', u'name': u'is_student',
+                                    u'label': u'1. Are you a student?'}],
+                      'title': 'asdasx',
+                      'name': 'asdasx',
+                      'id_string': 'asdasx',
+                      'default_language': 'english'
+                      }
+            get_xform_dict.return_value = fields
+            xls_form_parser = XlsFormParser('some_path', 'questionnaire_name')
+
+            xls_parser_response = xls_form_parser.parse()
+
+            self.assertEquals(xls_parser_response.errors,
+                              {"Incorrect syntax for the relevant column of [and ${district}>1] near [and ${district}>1]. Please review and upload again."})
+
     def test_should_populate_error_when_choice_name_has_spaces_and_unique_name(self):
         with patch('datawinners.blue.xform_bridge.parse_file_to_json') as get_xform_dict:
             fields = {'children': [{u'bind': {u'required': u'yes'}, u'type': u'select one', u'name': u'is_student',
