@@ -118,7 +118,6 @@ def get_count(h, key):
 @csrf_response_exempt
 @login_required
 @session_not_expired
-@is_new_user
 @is_datasender
 @is_not_expired
 def all_subject_types(request):
