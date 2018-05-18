@@ -386,10 +386,11 @@ class XlsFormParser():
     def _get_relevant(self, field):
         relevant = field.get("bind").get("relevant") if field.get("bind") else None
         if relevant:
+            stripped_relevant = relevant.replace(' ', '')
             vanilla_pattern = r"^\$\{\w+\}(>|>=|=|<=|<)(\d+|'\w+')$"
             selected_pattern = r"^selected\(\$\{\w+\},( |)(\d+|'\w+'|'\d+')\)$"
-            if 'and' in relevant or 'or' in relevant:
-                statements = re.split(' and | or ', relevant)
+            if 'and' in stripped_relevant or 'or' in stripped_relevant:
+                statements = re.split('and|or', stripped_relevant)
                 for phrase in statements:
                     if 'selected' in phrase:
                         pattern = selected_pattern
@@ -398,11 +399,11 @@ class XlsFormParser():
                     if not re.match(pattern, phrase):
                         raise ErrorSyntaxInRelevantException(field_name=relevant, specific=phrase)
             else:
-                if 'selected' in relevant:
+                if 'selected' in stripped_relevant:
                     pattern = selected_pattern
                 else:
                     pattern = vanilla_pattern
-                if not re.match(pattern, relevant):
+                if not re.match(pattern, stripped_relevant):
                     raise ErrorSyntaxInRelevantException(field_name=relevant, specific=None)
         return relevant
 
