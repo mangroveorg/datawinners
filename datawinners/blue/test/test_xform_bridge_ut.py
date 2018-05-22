@@ -142,7 +142,7 @@ class TestXformBridge(unittest.TestCase):
             xls_parser_response = xls_form_parser.parse()
 
             self.assertEquals(xls_parser_response.errors,
-                              {"Incorrect syntax for the relevant column of [and ${district}>1] near [and ${district}>1]. Please review and upload again."})
+                              {"Incorrect syntax for the relevant column of [and ${district}>1]. Please review and upload again."})
 
     def test_should_populate_error_when_choice_name_has_spaces_and_unique_name(self):
         with patch('datawinners.blue.xform_bridge.parse_file_to_json') as get_xform_dict:
