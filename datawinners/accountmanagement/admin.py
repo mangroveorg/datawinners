@@ -71,6 +71,8 @@ class OrganizationSettingAdmin(DatawinnerAdmin):
 
         return "--"
 
+
+
     def type(self, obj):
         return obj.organization.account_type
 
@@ -249,7 +251,7 @@ class OrganizationChangeList(ChangeList):
 
 class OrganizationAdmin(DatawinnerAdmin):
     list_display = (
-        'name', 'org_id', 'complete_address', 'office_phone', 'website', 'paid', 'active_date', 'admin_name',
+        'name', 'org_id', 'complete_address', 'office_phone', 'website', 'paid', 'active_date', 'account_type', 'payment_period', 'admin_name',
         'admin_email', 'admin_mobile_number', 'sms_api_users', 'status')
     actions = ['deactivate_organizations', 'activate_organizations', 'delete_organizations']
     search_fields = ['name', 'address', 'addressline2', 'city', 'zipcode', 'state', 'office_phone', 'website']
@@ -342,6 +344,14 @@ class OrganizationAdmin(DatawinnerAdmin):
         if obj:
             return self.readonly_fields + ('status',)
         return self.readonly_fields
+
+    def payment_period(self, obj):
+        organization = obj
+        payment_period = PaymentDetails.objects.filter(organization=organization)
+        if not is_empty(payment_period):
+            return payment_period[0].invoice_period + ' / ' + payment_period[0].preferred_payment
+
+        return "--"
 
 
 class NullAdmin:
