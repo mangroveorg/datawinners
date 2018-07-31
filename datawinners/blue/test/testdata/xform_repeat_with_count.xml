@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?><html:html xmlns="http://www.w3.org/2002/xforms" xmlns:html="http://www.w3.org/1999/xhtml">
+  <html:head>
+    <html:title>Project</html:title>
+    <model>
+      <instance>
+        <tmpdh2cPz id="tmpdh2cPz">
+          <my_repeat_count />
+          <my_repeat>
+            <my_name />
+          </my_repeat>
+          <meta>
+            <instanceID />
+          </meta>
+        </tmpdh2cPz>
+      </instance>
+      <bind calculate="2" nodeset="/tmpc6HXY2/my_repeat_count" readonly="true()" type="string" />
+      <bind nodeset="/tmpdh2cPz/my_repeat/my_name" type="select1" />
+      <bind calculate="concat('uuid:', uuid())" nodeset="/tmpdh2cPz/meta/instanceID" readonly="true()" type="string" />
+    </model>
+  </html:head>
+  <html:body>
+    <group ref="/tmpdh2cPz/my_repeat">
+      <label>My Repeat</label>
+      <repeat nodeset="/tmpdh2cPz/my_repeat">
+        <select1 appearance="autocomplete" ref="/tmpdh2cPz/my_repeat/my_name">
+          <label>Vegetable</label>
+          <item>
+            <label>Artichoke</label>
+            <value>artichoke</value>
+          </item>
+          <item>
+            <label>Asparagus</label>
+            <value>asparagus</value>
+          </item>
+          <item>
+            <label>Beetroot</label>
+            <value>beetroot</value>
+          </item>
+          <item>
+            <label>Bell pepper</label>
+            <value>bell_pepper</value>
+          </item>
+          <item>
+            <label>Brocolli</label>
+            <value>brocolli</value>
+          </item>
+          <item>
+            <label>Brussels sprout</label>
+            <value>brussels_sprout</value>
+          </item>
+          <item>
+            <label>Cabbage</label>
+            <value>cabbage</value>
+          </item>
+          <item>
+            <label>Carrot</label>
+            <value>carrot</value>
+          </item>
+          <item>
+            <label>Cauliflower</label>
+            <value>cauliflower</value>
+          </item>
+          <item>
+            <label>Celery</label>
+            <value>celery</value>
+          </item>
+        </select1>
+      </repeat>
+    </group>
+  </html:body>
+</html:html>
