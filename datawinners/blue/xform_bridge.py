@@ -387,9 +387,11 @@ class XlsFormParser():
         relevant = field.get("bind").get("relevant") if field.get("bind") else None
         if relevant:
             stripped_relevant = relevant.replace(' ', '')
+            very_stripped_relevant = re.sub('{\w+\}', '', relevant)
+            very_stripped_relevant = re.sub('[^A-Za-z]+', ' ', very_stripped_relevant)
             vanilla_pattern = r"^\$\{\w+\}(>|>=|=|<=|<)(\d+|'\w+')$"
             selected_pattern = r"^selected\(\$\{\w+\},( |)(\d+|'\w+'|'\d+')\)$"
-            if 'and' in stripped_relevant or 'or' in stripped_relevant:
+            if ' and ' in very_stripped_relevant or ' or ' in very_stripped_relevant:
                 statements = re.split('and|or', stripped_relevant)
                 for phrase in statements:
                     if 'selected' in phrase:
