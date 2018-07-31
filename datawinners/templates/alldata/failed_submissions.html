@@ -16,7 +16,8 @@
     <script src="/media/javascript/data_tables/js/dw_pagination_plugin.js"></script>
     <script src="/media/javascript/jquery-dropdown/jquery.dropdown.js"></script>
     <script src="/media/javascript/data_tables/js/dwtable.js"></script>
-
+    <script src="/media/javascript/dw_dialog.js"></script>
+    <script src="/media/javascript/alldata/analysis.js"></script>
 
     <script>
     $(function(){
@@ -30,15 +31,14 @@
                 "bServerSide": true,
                 "asSorting": [ [ $('#failedsubmissions_table th.name').index('#failedsubmissions_table th'), "asc"] ],
                 "aaSorting": [ [ "2", "desc"] ]
-
-
-          });
-
         });
+
+    });
     </script>
 
 {% endcompress %}
 
+{% include "alldata/export_options.html" %}
 
 <div>
    <table id="failedsubmissions_table" class="styled_table">
@@ -53,4 +53,7 @@
         
     </table>
 </div>
+
+{% include "alldata/export_submission.html" %}
+
 {% endblock %}
