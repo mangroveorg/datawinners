@@ -33,6 +33,7 @@ class NoteRule(Rule):
             parent_node = old_xform.get_body_node() if parent_node == new_xform.get_body_node() else parent_node
             old_xform.add_node_given_parent_node(parent_node, node)
             old_xform.add_instance_node(parent_node, instance_node)
+            add_node(parent_node, node)
 
     def remove(self, parent_node, node, xform, old_field, activity_log_detail):
         pass
