@@ -199,6 +199,41 @@ def export_to_new_excel(headers, raw_data, file_name, formatter=None, hide_codes
 
     return response
 
+def failed_export_to_new_excel(file_name, headers, raw_data):
+    file_name_normalized = slugify(file_name)
+    output = tempfile.TemporaryFile()
+    workbook = xlsxwriter.Workbook(output, {'constant_memory': True})
+    worksheet = workbook.add_worksheet()
+    bold = workbook.add_format({'bold': True})
+    date_format = workbook.add_format({'num_format': 'dd/mm/yy hh:mm'})
+
+    col = 0
+
+    for label in headers:
+        worksheet.write(0, col, label, bold)
+        col += 1
+
+    row = 1
+    col = 0
+
+    for log in raw_data:
+        for item in log:
+            if col == 1:
+                worksheet.write(row, col, item, date_format)
+            else:
+                worksheet.write(row, col, item)
+            col += 1
+        row += 1
+        col = 0
+
+    workbook.close()
+    output.seek(0)
+    response = HttpResponse(FileWrapper(output), mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+
+    response['Content-Disposition'] = "attachment; filename=%s.xlsx" % file_name_normalized
+
+    return response
+
 
 def create_excel_sheet_with_data(raw_data_list, headers, wb, sheet_name_prefix, formatter):
     total_column_count = len(headers)
