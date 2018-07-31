@@ -4,7 +4,7 @@ import unittest
 import xml.etree.ElementTree as ET
 
 from mangrove.datastore.documents import ProjectDocument
-from mangrove.form_model.field import Field, FieldSet, SelectField
+from mangrove.form_model.field import Field, FieldSet, SelectField, TextField
 from mangrove.form_model.project import Project
 from mangrove.form_model.tests.test_form_model_unit_tests import DatabaseManagerStub
 from mangrove.form_model.xform import Xform
@@ -18,6 +18,7 @@ from datawinners.blue.rules.instance_rule import EditDefaultRule
 from datawinners.blue.rules.node_attribute_rule import EditAppearanceRule
 from datawinners.blue.rules.node_rule import EditLabelRule, EditHintRule
 from datawinners.blue.rules.remove_rule import RemoveRule
+from datawinners.blue.rules.repeat_count_rule import EditRepeatCountRule
 
 DIR = os.path.dirname(__file__)
 
@@ -310,6 +311,7 @@ class TestEditRule(unittest.TestCase):
 
         add_rule.update_xform(old_questionnaire, new_questionnaire, {})
         self.assertEqual(old_questionnaire.xform, new_questionnaire.xform)
+        
     def test_should_ignore_type_change_for_choice_field(self):
         add_rule = ChoiceRule()
         self.maxDiff = None
@@ -533,6 +535,43 @@ class TestEditRule(unittest.TestCase):
                                         %s\
                                     </item>" % (cascade['id'], index, option['val'], parents)
         return instance_start_str + instance_items_str + instance_end_str
+
+
+    #@unittest.SkipTest
+    def test_should_insert_repeat_count(self):
+        repeat_count_rule = EditRepeatCountRule()
+        self.maxDiff = None
+
+        old_questionnaire = self._get_repeat_questionnaire()
+        new_questionnaire = self._get_repeat_questionnaire(repeat_count=2)
+
+        repeat_count_rule.update_xform(old_questionnaire, new_questionnaire, {})
+
+        self.assertEqual(old_questionnaire.xform, new_questionnaire.xform)
+
+
+    def _get_repeat_questionnaire(self, repeat_count=False):
+        field = SelectField(appearance="autocomplete", code="my_name", single_select_flag=True, label="Vegetable",
+                            name="my_name", options=[{'text':'Artichoke', 'val': 'Artichoke'}])
+        if repeat_count:
+            file_name = os.path.join(DIR, "testdata/xform_repeat_with_count.xml")
+            fields = [TextField(code="my_repeat_count", name="my_repeat_count", label="my_repeat_count",
+                            appearance=None, is_calculated=True)]
+        else:
+            file_name = os.path.join(DIR, "testdata/xform_repeat_without_count.xml")
+            fields = []
+        repeat_field = FieldSet(code="my_repeat", label="My Repeat", name="My Repeat", field_set=[field])
+        fields.append(repeat_field)
+        f = open(file_name, "r")
+        
+        xform = f.read()
+        doc = ProjectDocument()
+        doc.xform = xform
+        questionnaire = Project.new_from_doc(DatabaseManagerStub(), doc)
+        questionnaire.name = "q1"
+        questionnaire.form_code = "007"
+        questionnaire.fields.extend(fields)
+        return questionnaire
 
 def _replace_node_name_with_xpath(value, xform_as_string):
     xform = Xform(xform_as_string)
