@@ -4,6 +4,7 @@ from datawinners.alldata.views import  get_entity_list_by_type
 from datawinners.alldata.views import smart_phone_instruction
 from datawinners.alldata.views import index, reports, projects_ajax
 from datawinners.alldata.views import failed_submissions, failed_submissions_ajax
+from datawinners.alldata.views import export, export_count
 
 urlpatterns = patterns('',
     url(r'^alldata/$', index, name="alldata_index"),
@@ -14,6 +15,8 @@ urlpatterns = patterns('',
     (r'^alldata/reports/$', reports),
     (r'^allfailedsubmissions/$', failed_submissions),
     (r'^allfailedsubmissions/ajax/$', failed_submissions_ajax),
+    (r'^allfailedsubmissions/export/log$', export),
+    (r'^allfailedsubmissions/export/log-count$', export_count),
     url(r'^smartphoneinstruction$', smart_phone_instruction, name="smart_phone_instruction"),
     url(r'^smartphoneinstruction/(?P<project_id>.+?)/$', smart_phone_instruction, name="smart_phone_instruction"),
 )

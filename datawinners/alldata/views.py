@@ -1,6 +1,7 @@
 from __builtin__ import dict
 from operator import itemgetter
 import logging
+import json
 
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render_to_response
@@ -29,6 +30,8 @@ from datawinners.project.utils import is_quota_reached
 from mangrove.form_model.project import Project
 from mangrove.datastore.documents import ProjectDocument
 from collections import OrderedDict
+from datawinners.project.submission.exporter import FailedSubmissionExporter
+from django.utils.translation import ugettext
 
 
 datawinners_logger = logging.getLogger("datawinners")
@@ -273,6 +276,38 @@ def failed_submissions(request):
                                'project_links': get_alldata_project_links(),
                                'is_quota_reached': is_quota_reached(request, organization=organization)},
                               context_instance=RequestContext(request))
+
+def _create_export_artifact(request):
+    try:
+        organization = get_organization(request)
+        total_display_records, org_logs = _get_failed_entries(organization)
+        columns = [ugettext('Data Sender'), ugettext('Submission Date'), ugettext('Questionnaire Code'),
+                   ugettext('SMS Text'), ugettext('Error message')]
+        filename = ugettext('Failed Submissions')
+
+    except Exception as e:
+        datawinners_logger.error("All Failed Ajax failed")
+        datawinners_logger.error(request.POST)
+        datawinners_logger.exception(e)
+        raise
+
+    return FailedSubmissionExporter(filename, columns, org_logs).create_excel_response()
+
+
+@valid_web_user
+def export(request):
+    if request.method == 'GET':  # To handle django error #3480
+        return HttpResponse(status=405)
+
+    return _create_export_artifact(request)
+
+@valid_web_user
+def export_count(request):
+    if request.method == 'GET':
+        return HttpResponse(status=405)
+
+    submission_count = 4000
+    return HttpResponse(mimetype='application/json', content=json.dumps({"count": submission_count}))
 
 
 @valid_web_user
