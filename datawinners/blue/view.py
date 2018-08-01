@@ -25,7 +25,7 @@ from mangrove.datastore.entity_type import get_unique_id_types
 from pyxform.errors import PyXFormError, BindError
 
 from mangrove.errors.MangroveException import ExceedSubmissionLimitException, QuestionAlreadyExistsException
-from datawinners.exceptions import QuestionCodeAlreadyExistsException
+from mangrove.errors.MangroveException import QuestionCodeAlreadyExistsException
 from mangrove.form_model.form_model import get_form_model_by_code
 from mangrove.form_model.project import Project
 from mangrove.transport.repository.survey_responses import get_survey_response_by_id, get_survey_responses, \
@@ -118,7 +118,7 @@ class ProjectUpload(View):
             return HttpResponse(content_type='application/json', content=json.dumps({
                 'success': False,
                 'error_msg': [
-                    _(e.message)
+                    _(e.message) % e.data[0]
                 ]
             }))
         
@@ -364,7 +364,7 @@ class ProjectUpdate(View):
             return HttpResponse(content_type='application/json', content=json.dumps({
                 'success': False,
                 'error_msg': [
-                    _(e.message)
+                    _(e.message) % e.data[0]
                 ]
             }))
 
