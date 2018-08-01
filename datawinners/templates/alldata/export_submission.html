@@ -1,0 +1,27 @@
+{% load i18n %}
+<div id="export_submission_multiple_sheet_dialog" style="display: none;">
+    {% trans "The current version of DataWinners supports the export of Submissions to Excel with up to 256 columns per Excel sheet. Your Submissions will be exported to several Excel sheets." %}<br/><br/>
+    <div class="text_align_right padding_top_20">
+        <a id="cancel_dialog" class="dialog_cancel_button dialog-link" href="javascript:void(0);">{% trans "Cancel" %}</a>
+        <a id="save_changes" class="button yes_button">{% trans "OK, Got it!" %}</a>
+    </div>
+</div>
+
+<div id="export_submission_limit_dialog" style="display: none;">
+    {% trans "The Number of Submissions you are trying to export is exceeding the limit of 20,000 in one export. Use filters (Date filter recommended) to limit the number of Submissions." %}<br/>
+    <div class="text_align_right padding_top_20">
+        <a id="save_changes" class="button yes_button">{% trans "OK, Got it!" %}</a>
+    </div>
+</div>
+
+<form id="export_form" method="POST">
+    {% csrf_token %}
+    <input id="questionnaire_code" name='questionnaire_code' type="hidden" value="{{ questionnaire_code }}"/>
+    <input id='project_name' name='project_name' type="hidden" value="{{ project.name }}"/>
+</form>
+
+<form id="export_form_without_zip" method="POST">
+    {% csrf_token %}
+    <input id="questionnaire_code" name='questionnaire_code' type="hidden" value="{{ questionnaire_code }}"/>
+    <input id='project_name' name='project_name' type="hidden" value="{{ project.name }}"/>
+</form>
