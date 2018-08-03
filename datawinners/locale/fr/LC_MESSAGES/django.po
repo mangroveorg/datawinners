@@ -5607,11 +5607,11 @@ msgstr "Labels optionnels. \"Label\" est une cellule obligatoire pour une questi
 msgid "Field name can't be [%s]"
 msgstr "Erreur dans la feuille survey. \"%s\" n'est pas pris en charge pour la colonne \"name\"."
 
-msgid "Syntax error in relevant column: [%s]"
+msgid "Syntax error in relevant column of [%s]: [%s]"
 msgstr "Syntaxe incorrecte pour la colonne relevant de [%s]. Vérifiez votre fichier et téléchargez une nouvelle fois."
 
-msgid "Syntax error in relevant column: [%s] near [%s]"
-msgstr "Syntaxe incorrecte pour la colonne relevant de [%s] près de [%s]. Vérifiez votre fichier et téléchargez une nouvelle fois."
+msgid "Syntax error in relevant column of [%s]: [%s] near [%s]"
+msgstr "Syntaxe incorrecte pour la colonne relevant de [%s] [%s] près de [%s]. Vérifiez votre fichier et téléchargez une nouvelle fois."
 
 msgid "Label mandatory for choice option with name %s"
 msgstr "Labels optionnels. \"Label\" est une cellule obligatoire pour l'option choix comportant un nom [%s]"
