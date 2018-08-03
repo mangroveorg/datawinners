@@ -385,6 +385,7 @@ class XlsFormParser():
 
     def _get_relevant(self, field):
         relevant = field.get("bind").get("relevant") if field.get("bind") else None
+        name = field.get("name")
         if relevant:
             stripped_relevant = relevant.replace(' ', '')
             very_stripped_relevant = re.sub('{\w+\}', '', relevant)
@@ -399,14 +400,14 @@ class XlsFormParser():
                     else:
                         pattern = vanilla_pattern
                     if not re.match(pattern, phrase):
-                        raise ErrorSyntaxInRelevantException(field_name=relevant, specific=phrase)
+                        raise ErrorSyntaxInRelevantException(question=name, field_name=relevant, specific=phrase)
             else:
                 if 'selected' in stripped_relevant:
                     pattern = selected_pattern
                 else:
                     pattern = vanilla_pattern
                 if not re.match(pattern, stripped_relevant):
-                    raise ErrorSyntaxInRelevantException(field_name=relevant, specific=None)
+                    raise ErrorSyntaxInRelevantException(question=name, field_name=relevant, specific=None)
         return relevant
 
     def _group(self, field, parent_field_code=None):
@@ -883,11 +884,11 @@ class ForbiddenWordInFieldNameException(Exception):
 
 
 class ErrorSyntaxInRelevantException(Exception):
-    def __init__(self, field_name, specific):
+    def __init__(self, question, field_name, specific):
         if not specific:
-            self.message = _("Syntax error in relevant column: [%s]") % field_name
+            self.message = _("Syntax error in relevant column of [%s]: [%s]") % (question, field_name)
         else:
-            self.message = _("Syntax error in relevant column: [%s] near [%s]") % (field_name, specific)
+            self.message = _("Syntax error in relevant column of [%s]: [%s] near [%s]") % (question, field_name, specific)
 
     def __str__(self):
         return self.message
