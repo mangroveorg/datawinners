@@ -204,7 +204,10 @@ def _get_failed_entries(organization, display_start=0, display_length=25, sort_c
     order = list(header_dict.keys())[sort_col-1]
     total = DatawinnerLog.objects.filter(organization=organization).count()
     i_start = display_start
-    i_end = display_start + display_length
+    if display_length == 0:
+        i_end =  total
+    else:
+        i_end = display_start + display_length
     if sort_dir=='desc':
         order = '-' + order
     org_logs = DatawinnerLog.objects.filter(organization=organization).order_by(order)[i_start:i_end]
@@ -261,7 +264,7 @@ def failed_submissions(request):
 def _create_export_artifact(request):
     try:
         organization = get_organization(request)
-        total_display_records, org_logs = _get_failed_entries(organization)
+        total_display_records, org_logs = _get_failed_entries(organization, display_length=0)
         columns = [ugettext('Data Sender'), ugettext('Submission Date'), ugettext('Questionnaire Code'),
                    ugettext('SMS Text'), ugettext('Error message')]
         filename = ugettext('Failed Submissions')
