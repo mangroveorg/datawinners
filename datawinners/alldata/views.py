@@ -211,6 +211,8 @@ def _get_failed_entries(organization, display_start=0, display_length=25, sort_c
     if sort_dir=='desc':
         order = '-' + order
     org_logs = DatawinnerLog.objects.filter(organization=organization).order_by(order)[i_start:i_end]
+#    import IPython
+#    IPython.embed()
     local_time_delta = get_country_time_delta(organization.country)
     for entry in org_logs:
         entry.created_at = convert_utc_to_localized(local_time_delta, entry.created_at)
@@ -264,7 +266,7 @@ def failed_submissions(request):
 def _create_export_artifact(request):
     try:
         organization = get_organization(request)
-        total_display_records, org_logs = _get_failed_entries(organization, display_length=0)
+        total_display_records, org_logs = _get_failed_entries(organization, display_start=0, display_length=0)
         columns = [ugettext('Data Sender'), ugettext('Submission Date'), ugettext('Questionnaire Code'),
                    ugettext('SMS Text'), ugettext('Error message')]
         filename = ugettext('Failed Submissions')
