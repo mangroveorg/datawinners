@@ -322,7 +322,7 @@ class XlsFormParser():
         if not errors and not questions:
             errors.add("Uploaded file is empty!")
         if errors:
-            return XlsParserResponse(errors)
+            return XlsParserResponse(sorted(errors))
         _map_unique_id_question_to_select_one(self.xform_dict)
         survey = create_survey_element_from_dict(self.xform_dict)
         itemsets_csv = None
