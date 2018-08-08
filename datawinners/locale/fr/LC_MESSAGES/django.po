@@ -5614,7 +5614,7 @@ msgid "Syntax error in relevant column: [%s] near [%s]"
 msgstr "Syntaxe incorrecte pour la colonne relevant de [%s] près de [%s]. Vérifiez votre fichier et téléchargez une nouvelle fois."
 
 msgid "Label mandatory for choice option with name %s"
-msgstr "Labels optionnels. \"Label\" est une cellule obligatoire pour l'option choix comportant un nom [%s]"
+msgstr "labels optionnels. \"Label\" est une cellule obligatoire pour l'option choix comportant un nom [%s]"
 
 msgid "Upload an XLSForm to Create a Questionnaire"
 msgstr "Télécharger un XLSForm pour créer un Questionnaire"
