@@ -5608,7 +5608,7 @@ msgid "Field name can't be [%s]"
 msgstr "Erreur dans la feuille survey. \"%s\" n'est pas pris en charge pour la colonne \"name\"."
 
 msgid "Syntax error in relevant column of [%s]: [%s]"
-msgstr "Syntaxe incorrecte pour la colonne relevant de [%s]. Vérifiez votre fichier et téléchargez une nouvelle fois."
+msgstr "Syntaxe incorrecte pour la colonne relevant de [%s] [%s]. Vérifiez votre fichier et téléchargez une nouvelle fois."
 
 msgid "Syntax error in relevant column of [%s]: [%s] near [%s]"
 msgstr "Syntaxe incorrecte pour la colonne relevant de [%s] [%s] près de [%s]. Vérifiez votre fichier et téléchargez une nouvelle fois."
