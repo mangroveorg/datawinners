@@ -125,7 +125,7 @@ class TestXformBridge(unittest.TestCase):
             xls_parser_response = xls_form_parser.parse()
 
             self.assertEquals(xls_parser_response.errors,
-                              {"optional labels. Label is a mandatory field for choice option with name [yes]"})
+                              ["optional labels. Label is a mandatory field for choice option with name [yes]"])
 
     def test_should_populate_error_when_relevant_field_has_syntax_error(self):
         with patch('datawinners.blue.xform_bridge.parse_file_to_json') as get_xform_dict:
@@ -142,7 +142,7 @@ class TestXformBridge(unittest.TestCase):
             xls_parser_response = xls_form_parser.parse()
 
             self.assertEquals(xls_parser_response.errors,
-                              {"Incorrect syntax for the relevant column of [is_student] [and ${district}>1]. Please review and upload again."})
+                              ["Incorrect syntax for the relevant column of [is_student] [and ${district}>1]. Please review and upload again."])
 
     def test_should_populate_error_when_choice_name_has_spaces_and_unique_name(self):
         with patch('datawinners.blue.xform_bridge.parse_file_to_json') as get_xform_dict:
@@ -163,8 +163,8 @@ class TestXformBridge(unittest.TestCase):
 
             xls_parser_response = xls_form_parser.parse()
 
-            self.assertEquals(xls_parser_response.errors, {"duplicate names within list [yes 1] (choices sheet)",
-                                                           "spaces in name column (choice sheet)"})
+            self.assertEquals(xls_parser_response.errors, ["duplicate names within list [yes 1] (choices sheet)",
+                                                           "spaces in name column (choice sheet)"])
 
     def test_should_populate_error_when_default_choice_name_not_in_choice_list(self):
         with patch('datawinners.blue.xform_bridge.parse_file_to_json') as get_xform_dict:
@@ -186,8 +186,8 @@ class TestXformBridge(unittest.TestCase):
 
             xls_parser_response = xls_form_parser.parse()
 
-            self.assertEquals(xls_parser_response.errors, {
-                'Entered default value is not defined in the choices list.'})
+            self.assertEquals(xls_parser_response.errors, [
+                'Entered default value is not defined in the choices list.'])
 
     def test_should_not_populate_error_when_default_choice_for_multi_select_is_present_in_choice_list(self):
         with patch('datawinners.blue.xform_bridge.parse_file_to_json') as get_xform_dict:
@@ -228,7 +228,7 @@ class TestXformBridge(unittest.TestCase):
 
             xls_parser_response = xls_form_parser.parse()
 
-            self.assertEquals(xls_parser_response.errors, {"preloading of CSV data (the PullData() function)."})
+            self.assertEquals(xls_parser_response.errors, ["preloading of CSV data (the PullData() function)."])
 
     def test_should_populate_error_when_settings_sheet_present_with_form_title(self):
         with patch('datawinners.blue.xform_bridge.parse_file_to_json') as get_xform_dict:
@@ -248,7 +248,7 @@ class TestXformBridge(unittest.TestCase):
             xls_parser_response = xls_form_parser.parse()
 
             self.assertEquals(xls_parser_response.errors,
-                              {("%s" % SETTINGS_ERROR)})
+                              [("%s" % SETTINGS_ERROR)])
 
     def test_should_populate_error_when_settings_sheet_present_with_form_id(self):
         with patch('datawinners.blue.xform_bridge.parse_file_to_json') as get_xform_dict:
@@ -268,7 +268,7 @@ class TestXformBridge(unittest.TestCase):
             xls_parser_response = xls_form_parser.parse()
 
             self.assertEquals(xls_parser_response.errors,
-                              {SETTINGS_ERROR})
+                              [SETTINGS_ERROR])
 
     def test_should_populate_error_when_settings_sheet_present_with_public_key(self):
         with patch('datawinners.blue.xform_bridge.parse_file_to_json') as get_xform_dict:
@@ -289,7 +289,7 @@ class TestXformBridge(unittest.TestCase):
             xls_parser_response = xls_form_parser.parse()
 
             self.assertEquals(xls_parser_response.errors,
-                              {SETTINGS_ERROR})
+                              [SETTINGS_ERROR])
 
     # def test_should_populate_error_when_settings_sheet_present_with_default_language(self):
     #     with patch('datawinners.blue.xform_bridge.parse_file_to_json') as get_xform_dict:
@@ -330,7 +330,7 @@ class TestXformBridge(unittest.TestCase):
             xls_parser_response = xls_form_parser.parse()
 
             self.assertEquals(xls_parser_response.errors,
-                              {SETTINGS_ERROR})
+                              [SETTINGS_ERROR])
 
     def test_should_not_create_question_for_select_that_are_only_labels(self):
         with patch('datawinners.blue.xform_bridge.parse_file_to_json') as get_xform_dict:
@@ -466,7 +466,7 @@ class TestXformBridge(unittest.TestCase):
 
             xls_parser_response = xls_form_parser.parse()
 
-            self.assertEquals(xls_parser_response.errors, {"geoshape as a datatype"})
+            self.assertEquals(xls_parser_response.errors, ["geoshape as a datatype"])
 
     def test_should_populate_error_when_media_type_present_as_a_data_type(self):
         with patch('datawinners.blue.xform_bridge.parse_file_to_json') as get_xform_dict:
@@ -489,7 +489,7 @@ class TestXformBridge(unittest.TestCase):
 
             xls_parser_response = xls_form_parser.parse()
 
-            self.assertEquals(xls_parser_response.errors, {"XLSForm media type (audio) in survey sheet."})
+            self.assertEquals(xls_parser_response.errors, ["XLSForm media type (audio) in survey sheet."])
 
     def test_should_populate_error_when_choice_answer_has_media_present(self):
         with patch('datawinners.blue.xform_bridge.parse_file_to_json') as get_xform_dict:
@@ -513,7 +513,7 @@ class TestXformBridge(unittest.TestCase):
 
             xls_parser_response = xls_form_parser.parse()
 
-            self.assertEquals(xls_parser_response.errors, {"XLSForm media type (image) in choices sheet."})
+            self.assertEquals(xls_parser_response.errors, ["XLSForm media type (image) in choices sheet."])
 
     def test_should_not_populate_errors_when_choice_answer_has_no_media_present(self):
         with patch('datawinners.blue.xform_bridge.parse_file_to_json') as get_xform_dict:
