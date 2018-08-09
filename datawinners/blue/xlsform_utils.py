@@ -6,7 +6,9 @@ from pyexcel.ext import xls #This import is needed for loading excel. Please don
 from collections import OrderedDict
 
 XLSFORM_PREDEFINED_COLUMN_NAMES={
-                                 "survey": ['type','name','label','calculation','hint','required','appearance','constraint','constraint_message','relevant','default', 'choice_filter','required_message'],
+                                 "survey": ['type','name','label','calculation','hint','required','appearance',
+                                            'constraint','constraint_message','relevant','default', 'choice_filter',
+                                            'required_message', 'repeat_count'],
                                  "choices": ['list_name','name', 'label']
                                  }
 XLSFORM_EXCLUDE_COLUMN_NAMES={
