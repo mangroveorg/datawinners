@@ -59,15 +59,16 @@ class FormCodeDoesNotMatchException(Exception):
 
 
 class FilePlayer(Player):
-    def __init__(self, dbm, parser, channel_name, location_tree=None, is_datasender=False):
+    def __init__(self, dbm, parser, channel_name, location_tree=None, is_datasender=False, is_update=False):
         Player.__init__(self, dbm, location_tree)
         self.parser = parser
         self.channel_name = channel_name
         self.form_code = None
         self.is_datasender = is_datasender
+        self.is_update = is_update
 
     @classmethod
-    def build(cls, manager, extension, default_parser=None, form_code=None, is_datasender=False):
+    def build(cls, manager, extension, default_parser=None, form_code=None, is_datasender=False, is_update=False):
         channels = dict({".xls": Channel.XLS, ".xlsx": Channel.XLSX, ".csv": Channel.CSV})
         try:
             channel = channels[extension]
@@ -84,7 +85,8 @@ class FilePlayer(Player):
         else:
             raise InvalidFileFormatException()
         location_bridge = LocationBridge(get_location_tree(), get_loc_hierarchy=get_location_hierarchy)
-        player = FilePlayer(manager, parser, channel, location_tree=location_bridge, is_datasender=is_datasender)
+        player = FilePlayer(manager, parser, channel, location_tree=location_bridge, is_datasender=is_datasender,
+                            is_update=is_update)
         player.form_code = form_code
         return player
 
@@ -175,7 +177,7 @@ class FilePlayer(Player):
                 response = self._import_data_sender(form_model, organization, values)
             else:
                 SubjectTemplateValidator(form_model).validate(values)
-                response = self.submit(form_model, values, [])
+                response = self.submit(form_model, values, [], self.is_update)
 
             if not response.success:
                 response.errors = dict(error=response.errors, row=values)
@@ -426,10 +428,11 @@ def load_all_entities_of_type(manager, type=REPORTER):
     return load_entity_registration_data(manager, type)
 
 
-def _handle_uploaded_file(file_name, file, manager, default_parser=None, form_code=None, is_datasender=False):
+def _handle_uploaded_file(file_name, file, manager, default_parser=None, form_code=None, is_datasender=False,
+                          is_update=False):
     base_name, extension = os.path.splitext(file_name)
     player = FilePlayer.build(manager, extension, default_parser=default_parser, form_code=form_code,
-                              is_datasender=is_datasender)
+                              is_datasender=is_datasender, is_update=is_update)
     responses = player.accept(file)
     return responses
 
@@ -452,7 +455,7 @@ def _get_successful_responses(responses):
     return [response for response in responses if response.success]
 
 
-def import_data(request, manager, default_parser=None, form_code=None, is_datasender=False):
+def import_data(request, manager, default_parser=None, form_code=None, is_datasender=False, is_update=False):
     response_message = ''
     error_message = None
     failure_imports = None
@@ -462,7 +465,7 @@ def import_data(request, manager, default_parser=None, form_code=None, is_datase
         file_name, file = get_filename_and_contents(request)
         responses = _handle_uploaded_file(file_name=file_name, file=file, manager=manager,
                                           default_parser=default_parser, form_code=form_code,
-                                          is_datasender=is_datasender)
+                                          is_datasender=is_datasender, is_update=is_update)
 
         imported_entities_dict = _get_imported_entities(responses)
 
