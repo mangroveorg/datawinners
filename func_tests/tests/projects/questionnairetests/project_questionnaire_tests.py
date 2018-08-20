@@ -26,6 +26,7 @@ from tests.submissionlogtests.submission_log_tests import send_sms_with
 from tests.editusertests.edit_user_data import SMS_TO_TEST_PERMISSION, SMS
 from tests.dashboardtests.dashboard_tests_data import USER_RASITEFA_CREDENTIALS
 from tests.alldatasenderstests.all_data_sender_data import *
+from time import sleep
 
 CLOSE_WARNING_DIALOGUE_LINK = by_css(
     'div.ui-dialog[style*="block"] > div.ui-dialog-titlebar>a.ui-dialog-titlebar-close')
@@ -38,13 +39,17 @@ def verify_on_edit_project_page(verify_edit_page_functionality):
 
 class TestProjectQuestionnaire(HeadlessRunnerTest):
 
-    @classmethod
-    def setUpClass(cls):
-        HeadlessRunnerTest.setUpClass()
-        cls.driver.go_to(DATA_WINNER_LOGIN_PAGE)
-        login_page = LoginPage(cls.driver)
-        cls.global_navigation = login_page.do_successful_login_with(VALID_CREDENTIALS)
-        cls.project_name, cls.questionnaire_code = cls._create_project(EDIT_PROJECT_DATA, EDIT_PROJECT_QUESTIONNAIRE_DATA)
+    def setUp(self):
+        self.driver.go_to(DATA_WINNER_LOGIN_PAGE)
+        login_page = LoginPage(self.driver)
+        self.driver.create_screenshot("debug-setup-test-project-questionnaire")
+        self.global_navigation = login_page.do_successful_login_with(VALID_CREDENTIALS)
+        project_questionnaire_data = EDIT_PROJECT_QUESTIONNAIRE_DATA.copy()
+        project_questionnaire_data[QUESTIONS][8][NEW_UNIQUE_ID_TYPE] = 'new type'+random_number(3)
+        self.project_name, self.questionnaire_code = self._create_project(EDIT_PROJECT_DATA, project_questionnaire_data)
+
+    def tearDown(self):
+        self.global_navigation.sign_out()
 
     @classmethod
     def _create_project(cls, project_data, questionnaire_data):
@@ -61,7 +66,7 @@ class TestProjectQuestionnaire(HeadlessRunnerTest):
     @attr('functional_test')
     def test_editing_existing_questionnaire(self):
         self.global_navigation.navigate_to_view_all_project_page()
-        ProjectsPage(self.driver).navigate_to_project_overview_page(TestProjectQuestionnaire.project_name)\
+        ProjectsPage(self.driver).navigate_to_project_overview_page(self.project_name)\
                                  .navigate_to_questionnaire_tab()
         questionnaire_tab_page = self.questionnaire_tab_page
         self.assertEqual(questionnaire_tab_page.get_select_or_edit_question_message(),
@@ -103,7 +108,7 @@ class TestProjectQuestionnaire(HeadlessRunnerTest):
         questionnaire_tab_page.submit_questionnaire()
         self._expect_empty_questionnaire_dialog_to_be_shown()
         questionnaire_tab_page.add_questions(ADDITIONAL_TAB_QUESTIONNAIRE_DATA)
-        questionnaire_tab_page.set_questionnaire_code(TestProjectQuestionnaire.questionnaire_code)
+        questionnaire_tab_page.set_questionnaire_code(self.questionnaire_code)
         self.driver.find_element_by_name("question_title")
         questionnaire_tab_page.submit_questionnaire()
         self.assertEqual(questionnaire_tab_page.get_error_message(), DUPLICATE_QUESTIONNAIRE_CODE_MESSAGE,"Duplicate error message not shown")
@@ -115,8 +120,9 @@ class TestProjectQuestionnaire(HeadlessRunnerTest):
         self._verify_users_added_to_project()
 
     @attr('functional_test')
-    def test_should_show_warning_popup_when_exiting_a_modified_questionnaire(self):
+    def test_should_show_warning_popup_when_exiting_a_modified_questionnaire_qre(self):
         modified_warning_dialog = QuestionnaireModifiedDialog(self.driver)
+        sleep(2)
         self._verify_edit_dialog_cancel(modified_warning_dialog)
         self._verify_edit_dialog_ignore_changes(modified_warning_dialog)
         self._verify_edit_dialog_save_changes(modified_warning_dialog)
@@ -479,6 +485,7 @@ class TestProjectQuestionnaire(HeadlessRunnerTest):
         self._validate_duplicate_unique_id(create_questionnaire_page)
         #cleaning up state
         create_questionnaire_page.delete_question(10)
+        self.driver.refresh()
 
 
     def _validate_errored_unique_id_input(self, create_questionnaire_page):
@@ -544,6 +551,7 @@ class TestProjectQuestionnaire(HeadlessRunnerTest):
         all_projects_page = ProjectsPage(self.driver)
         self.assertEqual(len(dashboard_page.get_projects_list()), 3)
         self.assertFalse(all_projects_page.is_project_present(project_name))
+        
     
 
 

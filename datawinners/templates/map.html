@@ -1,0 +1,59 @@
+<link rel="stylesheet" href="/media/javascript/OpenLayers-v3.17.1-dist/ol.css" media="screen">
+<link rel="stylesheet" href="/media/javascript/OpenLayers-v3.17.1-dist/ol3-popup.css" media="screen">
+<link rel="stylesheet" href="/media/css/scss/ol3_css/ol3-layerswitcher.css" media="screen">
+<link rel="stylesheet" type="text/css" href="/media/css/plugins/jqueryUI/jquery-ui-1.8.13.custom.css" media="screen">
+<link rel="stylesheet" type="text/css" href="/media/css/scss/section_map.css" media="screen">
+
+<script type="text/javascript" src="/media/javascript/jquery.js"></script>
+<script type="text/javascript" src="/media/javascript/jqueryUI/jquery-ui-1.8.13.custom.min.js"></script>
+<script type="text/javascript" src="/media/javascript/OpenLayers-v3.17.1-dist/ol-debug.js"></script>
+<script type="text/javascript" src="/media/javascript/OpenLayers-v3.17.1-dist/ol3-popup.js"></script>
+<script type="text/javascript" src="/media/javascript/ol3-layerswitcher.js"></script>
+<script type="text/javascript" src="/media/javascript/mapping.js"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        new Map({{fallback_location|safe}}).init('{{ entity_type }}', {{ geo_jsons|safe }}, '{{mapbox_api_key|safe}}');
+    });
+</script>
+
+<form id="fmap">
+<div id="filter-control" class="filter-control">
+    <div id="filters" class="filters">
+        <div class="filters-content">
+            {% for filter in filters %}
+                <h3>{{ filter.label }}</h3>
+                <div id="{{ filter.code }}" class="filter-choices">
+                    {% for choice in filter.choices %}
+                        <label style="float:left;"><input type="checkbox" name="{{ filter.code }}" id="{{ choice.val }}">{{ choice.text }}</label>
+                    {% endfor %}
+                    <br style="clear:left;" />
+                </div>
+            {% endfor %}
+        </div>
+        <div class="filters-content">
+            {% for filter in idnr_filters %}
+                <h3>{{ filter.label }}</h3>
+                <div id="{{ filter.code }}" class="filter-choices">
+                    <select style="width: 160px;">
+                        <option value="">All</option>
+                        {% for choice in filter.choices %}
+                            <option value="{{ choice.0 }}">{{ choice.1 }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<div id="map" class="map-control"></div>
+<input type="hidden" value="" id="map-center" />
+<input type="hidden" value="" id="map-zoom" />
+
+<div id="popup" style="display:none;">
+    <!--<h3 id="header">%s</h3>-->
+    <ul id="pop-details">
+        <!--<li><p class="question">%s</p><p class="answer">%s</p></li>-->
+    </ul>
+</div>
+</form>

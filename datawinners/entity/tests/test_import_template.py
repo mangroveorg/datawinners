@@ -36,7 +36,7 @@ class TestImportTemplate(TestCase):
                         import_template(request, '001')
 
                         workbook_response_factory.assert_called_with('001','file','file',is_entity_registration=True, browser=None)
-                        get_subject_headers.assert_called_with([{'code': 'cli001'}])
+                        get_subject_headers.assert_called_with(form_model)
                         workbook_response_factory.create_workbook_response.assert_called_with([['What is the subject']],['cli001'])
 
     def test_should_create_workbook_response_with_submission_headers_when_importing_submissions(self):

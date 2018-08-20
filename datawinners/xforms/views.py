@@ -22,7 +22,7 @@ from mangrove.transport.contract.transport_info import TransportInfo
 from mangrove.transport.player.new_players import XFormPlayerV2
 from mangrove.transport.player.parser import XFormParser
 from mangrove.transport.services.MediaSubmissionService import MediaAttachmentNotFoundException
-from mangrove.transport.xforms.xform import list_all_forms, xform_for
+from mangrove.transport.xforms.xform import list_all_forms, xform_for, itemset_for
 from datawinners.accountmanagement.models import Organization, NGOUserProfile
 from datawinners.messageprovider.messages import SMART_PHONE
 from datawinners.project.utils import is_quota_reached
@@ -70,7 +70,7 @@ def formList(request):
     if is_admin(user):
         reporter_id = None
     rows = get_all_form_models(get_database_manager(user), reporter_id)
-    form_tuples = [(row['value']['name'], row['id']) for row in rows]
+    form_tuples = [(row['value']['name'], row['id'], (row['value'].get('_attachments').get('itemsets.csv') is not None if row['value'].get('_attachments') else False)) for row in rows]
     xform_base_url = request.build_absolute_uri('/xforms')
     response = HttpResponse(content=list_all_forms(form_tuples, xform_base_url), mimetype="text/xml")
     response['X-OpenRosa-Version'] = '1.0'
@@ -191,6 +191,12 @@ def xform(request, questionnaire_code=None):
     request_user = request.user
     form = xform_for(get_database_manager(request_user), questionnaire_code, request_user.get_profile().reporter_id)
     return HttpResponse(content=form, mimetype="text/xml")
+
+@csrf_exempt
+@httpdigest
+def itemset(request, questionnaire_code=None):
+    request_user = request.user
+    return itemset_for(get_database_manager(request_user), questionnaire_code)
 
 
 def send_email_for_duplicate_unique_id_registration(request, unique_id_type, unique_id_code):

@@ -21,7 +21,6 @@
 	width: auto;
 	position: relative;
 	padding: 5px 5px 40px 0;
-	margin-left: 10px;
 }
 .ui-daterangepicker .range-start, .ui-daterangepicker .range-end {
 	margin-left: 5px;
@@ -51,6 +50,9 @@
 }
 .ui-daterangepicker li.preset_0 {
 	margin-bottom: 1.5em !important;
+}
+.ui-widget-content{
+	margin-right: 5px !important;
 }
 .ui-daterangepicker .ui-widget-content a {
 	text-decoration: none !important;

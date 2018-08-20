@@ -2,6 +2,7 @@ SITE_ID = 2
 DEBUG = False
 TEMPLATE_DEBUG = False
 COMPRESS_ENABLED = True
+EXTERNAL_APPS_ORGS = ["hni_marie-stopes-cambodia_mxc944582"]
 
 ADMINS = (('DW Devs', 'datawinners-devs@googlegroups.com'),)
 COMPRESS = False
@@ -19,6 +20,11 @@ DATABASES = {
 
 API_KEYS = {
     'uat.datawinners.com': 'AIzaSyCr4DDqoKgR5MzPci7GHWaXms8bYNprY-g'
+}
+
+
+MAPBOX_API_KEYS = {
+    'uat.datawinners.com': 'pk.eyJ1IjoicmFqYnNhaGFqIiwiYSI6ImNpcnlpcDI2NTAxeGMyenFmYjdwZmd6Z2MifQ.86zQkw3aBlHuVkUBdSi4Ag'
 }
 
 HNI_SUPPORT_EMAIL_ID = 'hery.imiary@gmail.com'

@@ -148,7 +148,7 @@ WITHOUT_PREFERRED_PAYMENT = {ORGANIZATION_NAME: u"ÑGÓ 001",
                              PAY_MONTHLY: PAY_MONTHLY,
                              PRO: PRO}
 
-WITHOUT_ENTERING_REQUIRED_FIELDS_ERROR_MESSAGE = u"Organization Name This field is required.Address This field is required.City This field is required.Postal \/ Zip Code This field is required.Country.*Islands This field is required.Name This field is required.Email address This field is required.Password This field is required. Example: Minimum of 6 characters in lengthPassword \(again\) This field is required.Account Type Pro Collect unlimited data via 2 channels: Android \\(Smartphone, Tablet\\) \\& Web Pro SMS Collect unlimited data via 3 channels: SMS, Android \\(Smartphone, Tablet\\) \\& Web This field is required."
+WITHOUT_ENTERING_REQUIRED_FIELDS_ERROR_MESSAGE = u"Organization Name This field is required\.Address This field is required\.City This field is required\.Postal \/ Zip Code This field is required\.Country *"
 
 INVALID_WEBSITE_URL = {ORGANIZATION_NAME: u"NGO 001",
                        ORGANIZATION_SECTOR: u"PublicHealth",

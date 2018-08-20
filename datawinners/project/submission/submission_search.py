@@ -1,15 +1,22 @@
+import copy
+
 from elasticsearch import Elasticsearch, helpers
 from elasticsearch_dsl import Search, Q, F
 import elasticutils
+from elasticsearch_dsl.search import AggsProxy
+
 from datawinners.search.filters import SubmissionDateRangeFilter, DateQuestionRangeFilter
 from datawinners.search.index_utils import es_unique_id_code_field_name, es_questionnaire_field_name
 from datawinners.search.query import ElasticUtilsHelper
 from datawinners.search.submission_headers import HeaderFactory
+from datawinners.search.submission_query import SubmissionQueryResponseCreator
 from datawinners.settings import ELASTIC_SEARCH_URL, ELASTIC_SEARCH_TIMEOUT, ELASTIC_SEARCH_HOST, ELASTIC_SEARCH_PORT
 import logging
 from elasticsearch_dsl.aggs import A
+from mangrove.form_model.form_model import EntityFormModel
 
 logger = logging.getLogger("datawinners")
+
 
 def _add_sort_criteria(search_parameters, search):
     if 'sort_field' not in search_parameters:
@@ -27,15 +34,89 @@ def _add_pagination_criteria(search_parameters, search):
     return search.extra(from_=start_result_number, size=number_of_results)
 
 
+def _aggregate_duplicates(form_model, search_parameters, search):
+    if search_parameters == 'exactmatch':
+        search = search.params(search_type="count")
+        form_fields_to_be_filtered = []
+        aggs = _aggregate_exact_match_duplicates(form_model.form_fields, form_model.id, search.aggs, search,
+                                                 form_fields_to_be_filtered)
+        aggs.bucket('tag', 'terms', field='ds_id_exact', size=0, min_doc_count=2)\
+            .bucket('tag', 'top_hits', size=(2 ** 7))
+        setattr(form_model, "filter_fields", form_fields_to_be_filtered)
+
+    elif search_parameters == 'datasender':
+        search = search.params(search_type="count")
+        a = A("terms", field='ds_id_exact', size=0, min_doc_count=2)
+        b = A("top_hits", size=(2 ** 10))
+        search.aggs.bucket('tag', a).bucket('tag', b)
+
+    else:
+        search = search.params(search_type="count")
+        a = A("terms", field=form_model.id + '_' + search_parameters + '_unique_code_exact', size=0, min_doc_count=2)
+        b = A("top_hits", size=(2 ** 10))
+        search.aggs.bucket('tag', a).bucket('tag', b)
+    return search
+
+
+def _fields_with_empty_submissions(fields, questionnaire_id, search):
+    newfields = []
+    if fields:
+        newsearch = copy.copy(search)
+        newsearch.aggs = AggsProxy(newsearch)
+        for field in fields:
+            field_name = _get_field_name(field, questionnaire_id)
+            newsearch.aggs.bucket('by_'+field['code'], 'value_count', field=field_name)
+        result = newsearch.execute()
+        for key in result.aggregations:
+            if result.aggregations[key].value != result.hits.total:
+                field_code = key.replace('by_','')
+                field = next(field for field in fields if field['code'] == field_code)
+                newfields.append(field)
+    return newfields
+
+
+def _aggregate_exact_match_duplicates(fields, questionnaire_id, aggs, search, form_fields_to_be_filtered):
+    fields_with_empty_submissions = _fields_with_empty_submissions(
+        list(filter(lambda f: f['type'] not in ['select', 'field_set'], fields)), questionnaire_id, search
+    )
+    for field in fields:
+        if field['type'] == 'field_set':
+            aggs = _aggregate_exact_match_duplicates(field['fields'], questionnaire_id, aggs, search,
+                                                     form_fields_to_be_filtered)
+            continue
+
+        if field['type'] == 'select':
+            form_fields_to_be_filtered.append(field)
+            continue
+
+        if field in fields_with_empty_submissions:
+            form_fields_to_be_filtered.append(field)
+            continue
+
+        field_name = _get_field_name(field, questionnaire_id)
+        aggs = aggs.bucket('tag', 'terms', field=field_name, size=0, min_doc_count=2)
+
+    return aggs
+
+
+def _get_field_name(field, questionnaire_id):
+    parent_code = field.get('parent_field_code') if field.get('parent_field_code') else None
+    field_name = es_questionnaire_field_name(field['code'], questionnaire_id, parent_code)
+    field_suffix = '_value' if field['type'] == 'date' \
+        else '_unique_code' if field['type'] == 'unique_id_exact' \
+        else '_exact'
+    return field_name + field_suffix
+
+
 def _query_by_submission_type(submission_type_filter, search):
     if submission_type_filter == 'deleted':
         return search.query('term', void=True)
-    elif submission_type_filter == 'all':
+    elif submission_type_filter == 'all' or submission_type_filter == 'identification_number':
         return search.query('term', void=False)
 
-    if submission_type_filter == 'analysis':
+    if submission_type_filter == 'analysis' or submission_type_filter == 'duplicates':
         search = search.query('match', status='Success')
-    else:
+    elif submission_type_filter is not None:
         search = search.query('term', status=submission_type_filter)
     return search.query('term', void=False)
 
@@ -64,15 +145,16 @@ def _add_unique_id_filters(form_model, unique_id_filters, search):
                 for question in [question for question in form_model.entity_questions if
                                  question.unique_id_type == uniqueIdType]:
                     es_field_code = es_unique_id_code_field_name(
-                        es_questionnaire_field_name(question.code, form_model.id, parent_field_code=question.parent_field_code)) + "_exact"
+                        es_questionnaire_field_name(question.code, form_model.id,
+                                                    parent_field_code=question.parent_field_code)) + "_exact"
                     unique_id_filters.append(F("term", **{es_field_code: uniqueIdFilter}))
                 search = search.filter(F('or', unique_id_filters))
     return search
 
 
-def _add_search_filters(search_filter_param, form_model, local_time_delta, query_fields, search):
+def _add_search_filters(search_filter_param, form_model, local_time_delta, search):
     if not search_filter_param:
-        return
+        return search
 
     query_text = search_filter_param.get("search_text")
     query_text_escaped = ElasticUtilsHelper().replace_special_chars(query_text)
@@ -93,8 +175,7 @@ def _add_search_filters(search_filter_param, form_model, local_time_delta, query
 def _add_filters(form_model, search_parameters, local_time_delta, search):
     search = _query_by_submission_type(search_parameters.get('filter'), search)
     query_fields = _get_query_fields(form_model, search_parameters.get('filter'))
-    search = _add_search_filters(search_parameters.get('search_filters'), form_model, local_time_delta, query_fields,
-                                 search)
+    search = _add_search_filters(search_parameters.get('search_filters'), form_model, local_time_delta, search)
     return query_fields, search
 
 
@@ -111,16 +192,24 @@ def _add_response_fields(search_parameters, search):
 
 def _create_query(dbm, form_model, local_time_delta, search_parameters):
     es = Elasticsearch(hosts=[{"host": ELASTIC_SEARCH_HOST, "port": ELASTIC_SEARCH_PORT}])
-    search = Search(using=es, index=dbm.database_name, doc_type=form_model.id)
+    doc_type = form_model.id
+    if isinstance(form_model, EntityFormModel):
+        doc_type = form_model.name
+    search = Search(using=es, index=dbm.database_name, doc_type=doc_type)
     search = _add_pagination_criteria(search_parameters, search)
     search = _add_sort_criteria(search_parameters, search)
     search = _add_response_fields(search_parameters, search)
+    if search_parameters.get('filter') == 'identification_number':
+        search = _add_search_filters(search_parameters,form_model,local_time_delta,search)
     query_fields, search = _add_filters(form_model, search_parameters, local_time_delta, search)
     return query_fields, search
 
 
 def get_submissions_paginated(dbm, form_model, search_parameters, local_time_delta):
     query_fields, search = _create_query(dbm, form_model, local_time_delta, search_parameters)
+    if search_parameters.get('filter') == 'duplicates':
+        search = _aggregate_duplicates(form_model, search_parameters.get('search_filters').get('duplicatesForFilter'),
+                                       search)
     search_results = search.execute()
     return search_results, query_fields
 
@@ -134,8 +223,8 @@ def _create_search(dbm, form_model, local_time_delta, pagination_params, sort_pa
     search = search.query('term', void=False)
     if search_parameters.get('data_sender_filter'):
         search = search.query(
-                              "term", 
-                              **{"datasender.id": search_parameters.get('data_sender_filter')})
+            "term",
+            **{"datasender.id": search_parameters.get('data_sender_filter')})
     if search_parameters.get('unique_id_filters'):
         search = _add_unique_id_filters(form_model, search_parameters.get('unique_id_filters'), search)
     if search_parameters.get('date_question_filters'):
@@ -146,13 +235,15 @@ def _create_search(dbm, form_model, local_time_delta, pagination_params, sort_pa
     if search_parameters.get('search_text'):
         query_text_escaped = ElasticUtilsHelper().replace_special_chars(search_parameters.get('search_text'))
         search = search.query("query_string", query=query_text_escaped)
-    submission_date_query = SubmissionDateRangeFilter(search_parameters.get('submission_date_range'), local_time_delta).build_filter_query()
+    submission_date_query = SubmissionDateRangeFilter(search_parameters.get('submission_date_range'),
+                                                      local_time_delta).build_filter_query()
     if submission_date_query:
         search = search.query(submission_date_query)
     return search
-    
 
-def get_submissions_paginated_simple(dbm, form_model, pagination_params, local_time_delta, sort_params=None, search_parameters={}):
+
+def get_submissions_paginated_simple(dbm, form_model, pagination_params, local_time_delta, sort_params=None,
+                                     search_parameters={}):
     search = _create_search(dbm, form_model, local_time_delta, pagination_params, sort_params, search_parameters)
     search_results = None
     try:
@@ -162,25 +253,42 @@ def get_submissions_paginated_simple(dbm, form_model, pagination_params, local_t
     return search_results
 
 
+def _get_aggregate_response(form_model, search, search_parameters, local_time_delta):
+    search = _aggregate_duplicates(form_model, search_parameters.get('search_filters').get('duplicatesForFilter'),
+                                   search)
+    search_results = search.execute()
+    submission_response = SubmissionQueryResponseCreator(form_model, local_time_delta).create_aggregate_response(
+        search_results,
+        search_parameters)
+    for submission in submission_response:
+        yield submission.to_dict()
+
+
 def get_scrolling_submissions_query(dbm, form_model, search_parameters, local_time_delta):
     """
     Efficient way to fetch large number of submissions from ElasticSearch
     """
     query_fields, search = _create_query(dbm, form_model, local_time_delta, search_parameters)
+    if search_parameters.get('filter') == 'duplicates':
+        return _get_aggregate_response(form_model, search, search_parameters, local_time_delta), query_fields
     query_dict = search.to_dict()
     # if search_parameters.get('get_only_id', False):
     #     query_dict["fields"] = []
-    scan_response = helpers.scan(client=Elasticsearch(hosts=[{"host": ELASTIC_SEARCH_HOST, "port": ELASTIC_SEARCH_PORT}]), index=dbm.database_name, doc_type=form_model.id,
+    doc_type = form_model.id
+    if isinstance(form_model, EntityFormModel):
+        doc_type = form_model.name
+
+    scan_response = helpers.scan(client=
+                                 Elasticsearch(
+                                               hosts=[
+                                                      {
+                                                       "host": ELASTIC_SEARCH_HOST,
+                                                       "port": ELASTIC_SEARCH_PORT}]
+                                               ),
+                                 index=dbm.database_name,
+                                 doc_type=doc_type,
                                  query=query_dict, timeout="3m", size=4000)
     return scan_response, query_fields
-
-
-def get_submissions_without_user_filters_count(dbm, form_model, search_parameters):
-    es = Elasticsearch(hosts=[{"host": ELASTIC_SEARCH_HOST, "port": ELASTIC_SEARCH_PORT}])
-    search = Search(using=es, index=dbm.database_name, doc_type=form_model.id)
-    search = _query_by_submission_type(search_parameters.get('filter'), search)
-    body = search.to_dict()
-    return es.search(index=dbm.database_name, doc_type=form_model.id, body=body, search_type='count')['hits']['total']
 
 
 def get_submission_count(dbm, form_model, search_parameters, local_time_delta):
@@ -215,16 +323,17 @@ def _get_aggregation_result(field_name, search_results):
     return agg_result
 
 
-def get_aggregations_for_choice_fields(dbm, form_model, 
-                                       local_time_delta, pagination_params, 
+def get_aggregations_for_choice_fields(dbm, form_model,
+                                       local_time_delta, pagination_params,
                                        sort_params, search_parameters):
-    search = _create_search(dbm, form_model, local_time_delta, 
-                            pagination_params, sort_params, 
+    search = _create_search(dbm, form_model, local_time_delta,
+                            pagination_params, sort_params,
                             search_parameters)
+    search = search.params(search_type="count")
     field_names = []
     for field in form_model.choice_fields:
         field_name = es_questionnaire_field_name(field.code, form_model.id)
-        a = A("terms", field=field_name+'_exact')
+        a = A("terms", field=field_name + '_exact', size=0)
         search.aggs.bucket(field_name, a)
         field_names.append(field_name)
     search_results = search.execute()
@@ -241,4 +350,3 @@ def get_all_submissions_ids_by_criteria(dbm, form_model, search_parameters, loca
     body = search.to_dict()
     result = es.search(index=dbm.database_name, doc_type=form_model.id, body=body)
     return [entry['_id'] for entry in result['hits']['hits']]
-

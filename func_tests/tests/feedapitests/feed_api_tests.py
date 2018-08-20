@@ -62,7 +62,6 @@ class TestFeeds(HeadlessRunnerTest):
 
         submission_page = project_overview_page.navigate_to_web_questionnaire_page()
         submission_page.fill_and_submit_answer(ANSWERS_TO_BE_SUBMITTED)
-        self.driver.create_screenshot("api_feed_sub_success.png")
         self.assertEqual(submission_page.get_success_message(), "Successfully submitted", "Web submission failed")
 
 
@@ -72,7 +71,7 @@ class TestFeeds(HeadlessRunnerTest):
         submission_log_page.check_submission_by_row_number(1)
         submission_log_page.choose_on_dropdown_action(EDIT_BUTTON)
         submission_page = WebSubmissionPage(self.driver)
-        submission_page.fill_and_submit_answer(EDITED_ANSWERS)
+        submission_page.fill_and_submit_answer(EDITED_ANSWERS, True)
         self.assertEqual(submission_page.get_success_message(), "Your changes have been saved.",
                          "Edit of web submission failed")
 
@@ -169,6 +168,7 @@ class TestFeeds(HeadlessRunnerTest):
         self.delete_submission()
         end_date = self._get_encoded_date(add_time_delta=True)
         # sleep_until(lambda: len(self.get_feed_response(questionnaire_code, start_date, end_date)) == 2, 30)
+        time.sleep(5)
         response_list_after_delete = self.get_feed_response(questionnaire_code, start_date, end_date)
         self.assertEquals(2, len(response_list_after_delete))
         deleted_feed_entry = response_list_after_delete[-1]

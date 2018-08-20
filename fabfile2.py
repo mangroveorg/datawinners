@@ -14,6 +14,7 @@ couch_db_feed_service_name = 'couchdbfeed'
 
 ENVIRONMENT_CONFIGURATIONS = {
     "prod": "../../datawinners-conf/datawinners/local_settings_ec2.py",
+    "preprod": "../../local_settings_preprod.py",
 }
 
 ENVIRONMENT_VES = "/home/mangrover/virtual_env/datawinners"
@@ -72,6 +73,12 @@ def prod():
     env.warn_only = True
 
 
+def preprod():
+    env.user = "mangrover"
+    env.hosts = ["preprod.datawinners.com:51986"]
+    env.key_filename = ["/home/jenkins/.ssh/id_rsa"]
+    env.warn_only = True
+
 def anonymous():
     run("uname -a")
 
@@ -86,6 +93,7 @@ def _project_dir(code_dir, project_name):
 def checkout_project(context):
     run("git fetch -t")
     run("git checkout -f %s" % context.branch)
+    run("git pull")
 
 
 def post_checkout_datawinners(virtual_env):
@@ -180,7 +188,9 @@ def _deploy_datawinners(context, sync_views):
         if sync_views:
             activate_and_run(context.virtual_env, "python manage.py syncviews syncall")
             activate_and_run(context.virtual_env, "python manage.py syncfeedviews syncall")
+            activate_and_run(context.virtual_env, "python manage.py createdynamicviews hni_marie-stopes-int-cambodia_ejn610045")
         activate_and_run(context.virtual_env, "python manage.py compile_css")
+
 
     with cd(os.path.join(context.code_dir, DATAWINNERS)):
         activate_and_run(context.virtual_env, "git submodule update --init")
@@ -247,7 +257,7 @@ def production_deploy(mangrove_build_number="lastSuccessfulBuild",
                       couch_migration_file=None,
                       couch_migrations_folder=None,
                       backup=False,
-                      sync_views = True
+                      sync_views = False
 ):
     stop_servers()
     virtual_env = ENVIRONMENT_VES

@@ -42,6 +42,10 @@ class HeadlessRunnerTest(unittest.TestCase):
         cls.driver = setup_driver(browser)
 
     @classmethod
+    def setUpClassFirefox(cls):
+        cls.driver = setup_driver("firefox")
+
+    @classmethod
     def tearDownClass(cls):
         teardown_driver(cls.driver)
 

@@ -8,6 +8,7 @@ from pages.languagespage.customized_languages_page import CustomizedLanguagePage
 from pages.page import Page
 from pages.projectspage.projects_page import ProjectsPage
 from pages.alldatasenderspage.all_data_senders_page import AllDataSendersPage
+from pages.reportspage.reports_page import ReportsPage
 from tests.testsettings import UI_TEST_TIMEOUT
 
 
@@ -70,7 +71,11 @@ class GlobalNavigationPage(Page):
          """
         self.driver.wait_for_element(UI_TEST_TIMEOUT, DASHBOARD_PAGE_LINK, True)
         self.driver.find(DASHBOARD_PAGE_LINK).click()
-        self.driver.wait_for_page_with_title(UI_TEST_TIMEOUT, "Dashboard")
+        try:
+            self.driver.wait_for_page_with_title(UI_TEST_TIMEOUT, "Dashboard")
+        except Exception as e:
+            self.driver.create_screenshot("debug-ft-navigate-to-dashboard-fails")
+            raise e
         return DashboardPage(self.driver)
 
     def navigate_to_all_data_page(self):
@@ -87,11 +92,16 @@ class GlobalNavigationPage(Page):
         """
         Function to sign out from any account
         """
+        self.driver.wait_for_element(UI_TEST_TIMEOUT, SIGN_OUT_LINK, True)
         self.driver.find(SIGN_OUT_LINK).click()
+        self.driver.wait_for_page_load()
 
     def navigate_to_languages_page(self):
         self.driver.find(LANGUAGES_LINK).click()
         return CustomizedLanguagePage(self.driver)
 
-
+    def navigate_to_reports_page(self):
+        self.driver.find(REPORTS_LINK).click()
+        self.driver.wait_for_page_load()
+        return ReportsPage(self.driver)
 

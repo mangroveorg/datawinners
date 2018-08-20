@@ -31,6 +31,11 @@ class TestProjectTestSMSPreview(HeadlessRunnerTest):
         cls.message_tracker.month = datetime.strftime(datetime.today(), "%Y-%m-01")
         cls.message_tracker.save()
         # doing successful login with valid credentials
+        from datawinners.accountmanagement.models import Organization
+        org = Organization.objects.get(org_id="YDC120930")
+        org.active_date = datetime.now()
+        org.status_changed_datetime = datetime.now()
+        org.save()
         login(cls.driver, VALID_CREDENTIALS)
 
     @classmethod

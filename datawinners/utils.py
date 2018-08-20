@@ -1,5 +1,6 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 import re
+import json
 from datetime import datetime
 import random
 import unicodedata
@@ -158,6 +159,13 @@ def get_map_key(host):
     except :
         return ""
 
+
+def get_mapbox_api_key(host):
+    try:
+        return settings.MAPBOX_API_KEYS.get(host)
+    except :
+        return ""
+
 def random_string(length=6):
     return ''.join(random.sample('abcdefghijklmnopqrs', length))
 
@@ -167,3 +175,10 @@ def is_empty_string(value):
 
 def is_admin(user):
     return user.groups.filter(name="NGO Admins").count() > 0
+
+def is_json(str):
+    try:
+        json.loads(str)
+    except ValueError:
+        return False
+    return True

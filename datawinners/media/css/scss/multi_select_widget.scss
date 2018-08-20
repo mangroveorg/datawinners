@@ -1,0 +1,86 @@
+.dw-multi-select-widget {
+
+    .header-area {
+        position: relative;
+        color: #0070ac;
+
+        &.highlight {
+            z-index: 1000;
+            background: white;
+            border-radius: 4px 4px 0 0;
+            padding: 0 5px;
+            border: 1px solid #ccc;
+            border-bottom: none;
+        }
+    }
+
+    .header-area:hover {
+        text-decoration: underline;
+        cursor: pointer;
+    }
+
+    .content-area {
+        position: absolute;
+        z-index: 1000;
+        background: white;
+        padding: 19px 19px 35px 19px;
+        border: 1px solid #ccc;
+        border-top: none;
+        border-radius: 0 5px 5px 5px;
+
+        span {
+            color: grey;
+            display: block;
+            padding-bottom: 5px;
+        }
+
+        .close-btn {
+            display: block;
+            padding: 0 6px;
+            font-weight: bold;
+            position: absolute;
+            text-decoration: none;
+            top: 0;
+            right: 0;
+            color: grey;
+        }
+
+        .done-btn {
+            position: absolute;
+            bottom: 0.5em;
+            right: 0.5em;
+        }
+
+        ul > li > label {
+            font-size: 13px;
+            font-weight: normal;
+            input {
+                position: absolute;
+            }
+            p {
+                padding-left: 25px;
+            }
+        }
+    }
+
+    .hide {
+        display: none;
+    }
+
+    .blue-btn {
+        width: 62px;
+        height: 25px;
+        border: 1px solid #5087b4;
+        border-radius: 3px;
+        background: #cce3ee;
+        color: grey;
+        cursor: pointer;
+        font-weight: normal;
+        padding: 4px 15px 4px 15px;
+
+        &:hover {
+            color: black;
+        }
+    }
+}
+

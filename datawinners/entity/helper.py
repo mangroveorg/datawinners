@@ -7,9 +7,10 @@ from datawinners import utils
 
 from django.contrib.auth.models import User
 from django.utils.encoding import smart_unicode
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import ugettext_lazy as _, ugettext
 from mangrove.transport import Request, TransportInfo
-
+from mangrove.form_model.field import TextField, IntegerField, DateField, GeoCodeField, SelectField, \
+    HierarchyField, TelephoneNumberField, UniqueIdField, ShortCodeField
 from datawinners.utils import get_organization_from_manager
 from mangrove.contrib.deletion import ENTITY_DELETION_FORM_CODE
 from mangrove.datastore.entity import get_by_short_code_include_voided
@@ -104,6 +105,81 @@ def _create_registration_form(manager, entity_name=None, form_code=None, entity_
         entity_type=entity_type)
     return form_model
 
+
+
+def get_subject_field_instruction(field, entity_type):
+    if field.name == FIRSTNAME_FIELD:
+        instruction = _("Enter a %(entity_type)s first name") % {'entity_type': entity_type}
+    elif field.name == NAME_FIELD:
+        instruction = _("Enter a %(entity_type)s last name") % {'entity_type': entity_type}
+    elif field.name == LOCATION_TYPE_FIELD_NAME:
+        instruction = _("Enter a region, district, or commune") % {'entity_type': entity_type}
+    elif field.name == GEO_CODE_FIELD_NAME:
+        instruction = _("Answer must be GPS coordinates in the following format (latitude,longitude). Example: -18.1324,27.6547")
+    elif field.name == MOBILE_NUMBER_FIELD:
+        instruction = _("Enter the (%(entity_type)s)'s number with the country code and telephone number. Example: 261333745269") % {'entity_type': entity_type}
+    elif field.name == SHORT_CODE_FIELD:
+        instruction = _("Enter an id, or allow us to generate it")
+    else:
+        instruction = get_field_instruction(field)
+    return instruction
+
+def get_field_instruction(field):
+    if type(field) == ShortCodeField and field.constraint[0].max == 20:
+        instruction = ugettext("Answer must be 20 characters maximum")
+
+    if type(field) == TextField:
+        constraint = field.constraints
+        constraint = constraint[0]
+
+        if constraint.max:
+            instruction = ugettext("Answer must be a word %d characters maximum") % int(constraint.max)
+        else:
+            instruction = ugettext("Answer must be a word")
+
+    if type(field) == TelephoneNumberField:
+        instruction = ugettext("Answer must be country code plus telephone number. Example: 261333745269")
+
+    if type(field) == HierarchyField:
+        instruction = ugettext("Answer must be a word")
+
+    if type(field) == IntegerField:
+        instruction = ugettext("Answer must be a number.")
+        constraint = field.constraints
+        if len(constraint):
+            constraint = constraint[0]
+            if constraint.max and constraint.min:
+                instruction = ugettext("Answer must be a number between %d-%d.") % (int(constraint.min), int(constraint.max))
+            elif constraint.min:
+                instruction = ugettext("Answer must be a number. The minimum is %d.") % int(constraint.min)
+            elif constraint.max:
+                instruction = ugettext("Answer must be a number. The maximum is %d.") % int(constraint.max)
+
+    if type(field) == DateField:
+        example = {
+            "mm.yyyy": ('12.2011'),
+            "dd.mm.yyyy": ('25.12.2011'),
+            "mm.dd.yyyy": ('12.25.2011')
+        }
+        date = {
+            "mm.yyyy": ugettext("month.year"),
+            "dd.mm.yyyy": ugettext("day.month.year"),
+            "mm.dd.yyyy": ugettext("month.day.year")
+        }
+        example = example.get(field.date_format)
+        date_format = date.get(field.date_format)
+        instruction = ugettext("Answer must be a date in the following format: %s. Example: %s") % (date_format, example)
+    if type(field) == GeoCodeField:
+        instruction = ugettext("Answer must be GPS coordinates in the following format (latitude,longitude). Example: -18.1324,27.6547")
+    if type(field) == SelectField:
+        if field.is_single_select:
+            instruction = ugettext("Choose 1 answer from the list. Example: a")
+        else:
+            instruction = ugettext("Choose 1 or more answers from the list. Example: a or ab ")
+    if type(field) == UniqueIdField:
+        instruction = ugettext("Answer must be the Identification Number of the %s you are reporting on.") \
+        % field.unique_id_type
+    return instruction
 
 def _get_form_code_prefix(entity_name):
     return entity_name.lower().replace(" ", "")[:3]
@@ -248,7 +324,7 @@ def rep_id_name_dict_of_users(manager):
     user_id_name_map = {}
     for u in orgUsers:
         rep_id_map.update({u[0]: u[1]})
-    users = User.objects.filter(groups__name__in=['Project Managers', 'NGO Admins', "Extended Users"], id__in=rep_id_map.keys()).values()
+    users = User.objects.filter(groups__name__in=['Project Managers', 'NGO Admins', "Extended Users", 'No Delete PM'], id__in=rep_id_map.keys()).values()
 
     for user in users:
         user_id_name_map[rep_id_map[user["id"]]] = user["first_name"]

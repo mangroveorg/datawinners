@@ -64,10 +64,12 @@ class SubmissionLogPage(Page):
     def get_active_tab_text(self):
         return self.driver.find(ACTIVE_TAB_LOCATOR).text
 
-    def choose_on_dropdown_action(self, action_button):
+    def choose_on_dropdown_action(self, action_button, debug=False):
         self.driver.wait_for_element(UI_TEST_TIMEOUT, ACTION_SELECT_CSS_LOCATOR, True)
         self.driver.find(ACTION_SELECT_CSS_LOCATOR).click()
         self.driver.wait_for_element(UI_TEST_TIMEOUT, action_button, True)
+        if debug:
+            self.driver.create_screenshot("debug-ft-select-edit-action")
         self.driver.find(action_button).click()
 
     def check_all_submissions(self):
@@ -98,7 +100,13 @@ class SubmissionLogPage(Page):
         return self.get_cell_value_anchor(row, column)
 
     def click_on_nth_header(self, index):
-        self.driver.find(by_css(HEADER_CELL_CSS_LOCATOR % str(index))).click()
+        self._get_header(index).click()
+
+    def _get_header(self, index):
+        return self.driver.find(by_css(HEADER_CELL_CSS_LOCATOR % str(index)))
+
+    def get_header_text(self, index):
+        return self._get_header(index).text
 
     def click_on_success_tab(self):
         self.driver.find(SUCCESS_TAB_CSS_LOCATOR).click()
@@ -128,7 +136,7 @@ class SubmissionLogPage(Page):
         return self.driver.find(by_css('.submission_table .help_accordion')).text
 
     def wait_for_table_data_to_load(self):
-        self.driver.wait_until_element_is_not_present(UI_TEST_TIMEOUT, by_css(".dataTables_processing"))
+        self.driver.wait_until_element_is_not_present(UI_TEST_TIMEOUT * 2, by_css(".dataTables_processing"))
         return self
 
     def search(self, search_text):
@@ -207,3 +215,12 @@ class SubmissionLogPage(Page):
     def navigate_to_datasenders_page(self):
         self.driver.find(DATASENDERS_TAB).click()
         return ProjectDataSendersPage(self.driver)
+
+
+    def edit_nth_submission(self, index):
+        self.driver.wait_for_page_load()
+        self.driver.execute_script("$('.row_checkbox:eq(%d)').click();" % int(index - 1))
+        self.driver.create_screenshot("debug-ft-checkbox-checked")
+        self.choose_on_dropdown_action(EDIT_BUTTON, True)
+        from pages.websubmissionpage.web_submission_page import WebSubmissionPage
+        return WebSubmissionPage(self.driver)

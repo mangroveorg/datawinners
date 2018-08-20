@@ -1,0 +1,83 @@
+{% extends 'entity/subjects_header.html' %}
+{% load i18n %}
+
+{% block page_scss %}
+    {{ block.super }}
+    <link rel="stylesheet" type="text/css" href="/media/css/scss/section_map_edit.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="/media/css/scss/multi_select_widget.css" media="screen">
+{% endblock %}
+
+{% block page_js %}
+    {{ block.super }}
+    <script type="text/javascript" src="/media/javascript/mapping_edit.js"></script>
+    <script type="text/javascript" src="/media/javascript/multi_select_widget.js"></script>
+    <script type="text/javascript" src="/media/javascript/common/util.js"></script>
+    <script type="text/javascript" src="/media/javascript/jquery.tinycolorpicker.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('.secondary_tab li').attr('class', 'inactive');
+            $('.secondary_tab li:nth-child(3)').attr('class', 'active');
+            new DW.MappingEditor('{{ entity_type }}', {{ filters|safe }}, {{ details|safe }}, {{ specials|safe }}).init();
+        });
+    </script>
+{% endblock %}
+
+{% block secondary_navigation %}
+    <li class="float_left"><a href="{% url all_subject_type_page %}">
+        « {% trans "Back to Identification Number List" %}</a>
+    </li>
+    <br/>
+{% endblock %}
+
+{% block page_content %}
+    <div class="float_right" style="position: relative;">
+        <div id="share-widget" class="hide share-widget">
+            <span>Share this link or embed it on your site:</span>
+            <input type="text" readonly />
+            <button id="share-widget-done" class="done-btn blue-btn">Done</button>
+        </div>
+        <a id="share-button">Share Map</a>
+    </div>
+    <div class="float_right customize_section">
+        <div>Customize Map:</div>
+        <div id="customize" class="customize">
+            <div id="customize-widget">
+                <span>{{ entity_type|title }} {% trans "Details" %}</span>
+            </div>
+        </div>
+        <div>|</div>
+        <div id="filterable-questions" class="filterable-questions">
+            <div id="filters-widget">
+                <span>{% trans "Filters" %}</span>
+            </div>
+        </div>
+        <div>|</div>
+        <div id="special-idnrs" class="special-idnrs">
+            <div id="special-idnrs-widget">
+                <span>{{ entity_type|title }} {% trans "Colors" %}</span>
+            </div>
+            <ul class="choices hide">
+                <!--<li><label><input type="checkbox" value="%s" style="background-color:%s" %s><p>%s</p></label></li>-->
+            </ul>
+            <div class="colorpicker">
+                <div class="track hide"></div>
+                <input type="hidden" class="colorInput">
+            </div>
+        </div>
+        <div>|</div>
+        <div id="freeze-map" class="freeze-map">
+            <span>{% trans "Default Map" %}</span>
+            <div class="tooltip" style="visibility: visible;position: absolute;opacity: 0.8; left: 25px; bottom: 20px;">
+                <p>
+                    {% trans "You can click to capture the location to be used as preview for users without location tracking." %}
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <input type="text" value="" id="map-center" class="hide" />
+    <input type="text" value="" id="map-zoom" class="hide" />
+
+    <div id="share-overlay" class="share-overlay"></div>
+    <iframe id="map-preview" height="{{ height_frame }}px" width="100%" src="/entity/{{ entity_type }}/map"></iframe>
+{% endblock %}

@@ -3,6 +3,7 @@
 from __builtin__ import type
 import os
 import unittest
+import json
 from xml.etree import ElementTree as ET
 from django.contrib.auth.models import User
 
@@ -54,19 +55,23 @@ class TestXFormBridge(unittest.TestCase):
     def test_should_convert_cascaded_select_field(self):
         xls_parser_response  = XlsFormParser(self.CASCADE, "My questionnaire").parse()
 
-        expected_json = [{'code': 'name', 'name': 'What is your name?', 'title': 'What is your name?', 'required': False,
-          'is_entity_question': False, 'instruction': 'Answer must be a word', 'parent_field_code': None, 'type': 'text'},
-         {'code': 'respondent_district_counties', 'parent_field_code': None, 'title': 'Please select the county', 'required': False,
-          'has_other': False,
-          'choices': [{'value': {'text': 'Bomi', 'val': 'bomi'}},
-                      {'value': {'text': 'Grand Bassa', 'val': 'grand_bassa'}}], 'is_entity_question': False,
-          'type': 'select1'},
-         {'code': 'respondent_district', 'parent_field_code': None, 'title': 'Please select the district', 'required': False,
-          'has_other': False,
-          'choices': [{'value': {'text': 'Klay', 'val': 'klay'}},
-                      {'value': {'text': 'Commonwealth 1', 'val': 'commonwealth_1'}}], 'is_entity_question': False,
-          'type': 'select1'}]
-
+        expected_json = [{"code": "name", "constraint_message": None, "is_entity_question": False, "xform_constraint": None,
+                          "relevant": None, "instruction": "Answer must be a word", "name": "What is your name?",
+                          "parent_field_code": None, "title": "What is your name?", "default": None, "hint": None,
+                          "appearance": None, "required": False, "type": "text"},
+                         {"code": "respondent_district_counties", "constraint_message": None, "is_cascade": True,
+                          "has_other": False,
+                          "required": False, "xform_constraint": None, "relevant": None, "parent_field_code": None,
+                          "title": "Please select the county", "default": None, "hint": None, "appearance": None,
+                          "choices": [{"value": {"text": "Bomi", "val": "bomi"}},
+                                      {"value": {"text": "Grand Bassa", "val": "grand_bassa"}}],
+                          "is_entity_question": False, "type": "select1"},
+                         {"code": "respondent_district", "constraint_message": None, "is_cascade": True,
+                          "has_other": False, "required": False, "xform_constraint": None, "relevant": None,
+                          "parent_field_code": None, "title": "Please select the district", "default": None, "hint": None, "appearance": None,
+                          "choices": [{"value": {"text": "Klay", "val": "klay"}},
+                                      {"value": {"text": "Commonwealth 1", "val": "commonwealth_1"}}],
+                          "is_entity_question": False, "type": "select1"}]
         self.assertEqual(expected_json, xls_parser_response.json_xform_data)
 
     @attr('functional_test')
@@ -103,38 +108,32 @@ class TestXFormBridge(unittest.TestCase):
         xls_parser_response = XlsFormParser(self.ALL_FIELDS, "My questionnaire").parse()
 
         expected_json = \
-            [{'code': 'name', 'parent_field_code': None, 'name': 'What is your name?', 'title': 'What is your name?', 'required': True, 'is_entity_question': False, 'instruction': 'Answer must be a word', 'type': 'text'},
+            [{"code": "name", "constraint_message": None, "is_entity_question": False, "xform_constraint": None, "relevant": None, "instruction": "Answer must be a word", "name": "What is your name?", "parent_field_code": None, "title": "What is your name?", "default": None, "hint": None, "appearance": None, "required": True, "type": "text"},
                 # repeat
-             {'code': 'education', 'parent_field_code': None, 'instruction': 'No answer required', 'name': 'Education', 'title': 'Education',
-                'fields': [{'code': 'degree', 'parent_field_code': u'education', 'name': 'Degree name', 'title': 'Degree name', 'required': True, 'is_entity_question': False, 'instruction': 'Answer must be a word', 'type': 'text'},
-                         {'code': 'completed_on', 'parent_field_code': u'education', 'date_format': 'dd.mm.yyyy', 'name': 'Degree completion year', 'title': 'Degree completion year', 'required': True, 'is_entity_question': False, 'instruction': 'Answer must be a date in the following format: day.month.year. Example: 25.12.2011','event_time_field_flag': False, 'type': 'date'}], 'is_entity_question': False,
-                          'type': 'field_set', 'required': False, 'fieldset_type': 'repeat'},
+             {"code": "education", "is_entity_question": False, "relevant": None, "fieldset_type": "repeat", "name": "Education", "parent_field_code": None, "title": "Education", "default": None,
+              "fields": [{"code": "degree", "constraint_message": None, "is_entity_question": False, "xform_constraint": None, "relevant": None, "instruction": "Answer must be a word", "name": "Degree name", "parent_field_code": "education", "title": "Degree name", "default": None, "hint": None, "appearance": None, "required": True, "type": "text"},
+                         {"code": "completed_on", "constraint_message": None, "is_entity_question": False, "xform_constraint": None, "relevant": None, "instruction": "Answer must be a date in the following format: day.month.year. Example: 25.12.2011", "event_time_field_flag": False, "date_format": "dd.mm.yyyy", "name": "Degree completion year", "parent_field_code": "education", "title": "Degree completion year", "default": None, "hint": None, "appearance": None, "required": True, "type": "date"}],
+                            "instruction": "No answer required", "appearance": None, "required": False, "type": "field_set"},
                 # end repeat
-            {'code': 'age', 'parent_field_code': None, 'name': 'What is your age?', 'title': 'What is your age?', 'required': False, 'is_entity_question': False, 'instruction': 'Answer must be a number', 'type': 'integer'},
-             {'code': 'height', 'parent_field_code': None, 'name': 'What is your height?', 'title': 'What is your height?', 'required': False, 'is_entity_question': False, 'instruction': 'Answer must be a decimal or number', 'type': 'integer'},
-             {'code': 'fav_color', 'parent_field_code': None, 'title': 'Which colors you like?', 'required': True, 'has_other': False,
-                'choices': [{'value':{'text': 'Red', 'val': 'a'}}, {'value': {'text': 'Blue', 'val': 'b'}},
-                          {'value':{'text': 'Green', 'val': 'c'}}], 'is_entity_question': False, 'type': 'select'},
+             {"code": "age", "constraint_message": None, "is_entity_question": False, "xform_constraint": None, "relevant": None, "instruction": "Answer must be a number", "name": "What is your age?", "parent_field_code": None, "title": "What is your age?", "default": None, "hint": None, "appearance": None, "required": False, "type": "integer"},
+             {"code": "height", "constraint_message": None, "is_entity_question": False, "xform_constraint": None, "relevant": None, "instruction": "Answer must be a decimal or number", "name": "What is your height?", "parent_field_code": None, "title": "What is your height?", "default": None, "hint": None, "appearance": None, "required": False, "type": "integer"},
+             {"code": "fav_color", "constraint_message": None, "is_cascade": False, "has_other": False, "required": True, "xform_constraint": None, "relevant": None, "parent_field_code": None, "title": "Which colors you like?", "default": None, "hint": None, "appearance": None,
+              "choices": [{"value": {"text": "Red", "val": "a"}},
+                          {"value": {"text": "Blue", "val": "b"}},
+                          {"value": {"text": "Green", "val": "c"}}], "is_entity_question": False, "type": "select"},
                 #group
-            {'code': u'pizza_test_group', 'parent_field_code': None, 'instruction': 'No answer required', 'name': u'Pizza fan', 'title': u'Pizza fan',
-              'fields': [{'code': u'pizza_fan', 'parent_field_code': u'pizza_test_group', 'title': u'Do you like pizza?', 'required': True, 'has_other': False,
-                          'choices': [{'value': {'text': u'Yes', 'val': u'a'}}, {'value': {'text': u'No', 'val': u'b'}}],
-                          'is_entity_question': False, 'type': 'select1'},
-                         #group
-                         {'code': u'like_group', 'parent_field_code': u'pizza_test_group', 'instruction': 'No answer required', 'name': u'Like group', 'title': u'Like group',
-                          'fields': [
-                              {'code': u'other', 'parent_field_code': u'like_group', 'name': u'What else you like?', 'title': u'What else you like?', 'required': False,
-                               'is_entity_question': False, 'instruction': 'Answer must be a word', 'type': u'text'},
-                              {'code': u'pizza_type', 'parent_field_code': u'like_group', 'name': u'Which pizza type you like?', 'title': u'Which pizza type you like?',
-                               'required': False, 'is_entity_question': False, 'instruction': 'Answer must be a word',
-                               'type': u'text'}], 'is_entity_question': False, 'type': 'field_set', 'fieldset_type': 'group',
-                          'required': False}], 'is_entity_question': False, 'type': 'field_set', 'fieldset_type': 'group', 'required': False},
-
-             {'code': 'location', 'parent_field_code': None, 'name': 'Your location?', 'title': 'Your location?', 'required': False, 'is_entity_question': False, 'instruction': 'Answer must be a geopoint', 'type': 'geocode'},
-             {'code': 'add_age_height', 'parent_field_code': None, 'name': 'Age and height', 'title': 'Age and height', 'required': False, 'is_calculated': True, 'is_entity_question': False, 'instruction': 'Answer must be a calculated field', 'type': 'text'},
-             {'code': 'ab','parent_field_code': None, 'title': 'A or B?', 'required': True, 'has_other': False,
-                'choices': [{'value':{'text': 'A', 'val': 'a'}}, {'value':{'text': 'B', 'val': 'b'}}], 'is_entity_question': False, 'type': 'select1'}]
-
+             {"code": "pizza_test_group", "is_entity_question": False, "relevant": None, "fieldset_type": "group", "name": "Pizza fan", "parent_field_code": None, "title": "Pizza fan", "default": None,
+              "fields": [{"code": "pizza_fan", "constraint_message": None, "is_cascade": False, "has_other": False, "required": True, "xform_constraint": None, "relevant": None, "parent_field_code": "pizza_test_group", "title": "Do you like pizza?", "default": None, "hint": None, "appearance": None,
+                          "choices": [{"value": {"text": "Yes", "val": "a"}}, {"value": {"text": "No", "val": "b"}}],
+                          "is_entity_question": False, "type": "select1"},
+                            #group
+                         {"code": "like_group", "is_entity_question": False, "relevant": None, "fieldset_type": "group", "name": "Like group", "parent_field_code": "pizza_test_group", "title": "Like group", "default": None,
+                          "fields": [{"code": "other", "constraint_message": None, "is_entity_question": False, "xform_constraint": None, "relevant": "${pizza_fan} = 'b'", "instruction": "Answer must be a word", "name": "What else you like?", "parent_field_code": "like_group", "title": "What else you like?", "default": None, "hint": None, "appearance": None,
+                                      "required": False, "type": "text"}, {"code": "pizza_type", "constraint_message": None, "is_entity_question": False, "xform_constraint": None, "relevant": "${pizza_fan} = 'a'", "instruction": "Answer must be a word", "name": "Which pizza type you like?", "parent_field_code": "like_group", "title": "Which pizza type you like?", "default": None, "hint": None, "appearance": None, "required": False, "type": "text"}], "instruction": "No answer required", "appearance": None, "required": False, "type": "field_set"}], "instruction": "No answer required", "appearance": None, "required": False, "type": "field_set"},
+             {"code": "location", "constraint_message": None, "is_entity_question": False, "xform_constraint": None, "relevant": None, "instruction": "Answer must be a geopoint", "name": "Your location?", "parent_field_code": None, "title": "Your location?", "default": None, "hint": None, "appearance": None, "required": False, "type": "geocode"},
+             {"code": "add_age_height", "is_calculated": True, "constraint_message": None, "is_entity_question": False, "xform_constraint": None, "relevant": None, "instruction": "Answer must be a calculated field", "name": "Age and height", "parent_field_code": None, "title": "Age and height", "default": None, "hint": None, "appearance": None, "required": False, "type": "text"},
+             {"code": "ab", "constraint_message": None, "is_cascade": False, "has_other": False, "required": True, "xform_constraint": None, "relevant": None, "parent_field_code": None, "title": "A or B?", "default": None, "hint": None, "appearance": None,
+              "choices": [{"value": {"text": "A", "val": "a"}}, {"value": {"text": "B", "val": "b"}}], "is_entity_question": False, "type": "select1"}]
         self.assertEqual(expected_json, xls_parser_response.json_xform_data)
         self.assertIsNotNone(xls_parser_response.xform_as_string)
 
@@ -247,15 +246,3 @@ class TestXFormBridge(unittest.TestCase):
         self.assertEqual('true()', binds[0])
         self.assertEqual(None, binds[1])
 
-    #integration
-    def test_should_create_project_when_xlsform_is_uploaded(self):
-        project_name = random_string()
-        client = Client()
-        client.login(username='tester150411@gmail.com', password='tester150411')
-
-        r = client.post(path='/xlsform/upload/?pname='+project_name+'&qqfile=text_and_integer.xls',
-                        data=open(os.path.join(self.test_data, 'text_and_integer.xls'), 'r').read(),
-                                  content_type='application/octet-stream')
-
-        self.assertEquals(r.status_code, 200)
-        self.assertNotEqual(r._container[0].find('project_name'), -1)

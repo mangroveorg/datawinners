@@ -22,7 +22,8 @@ from django.utils.http import base36_to_int
 from rest_framework.authtoken.models import Token
 from django.contrib.sites.models import Site
 
-from datawinners.accountmanagement.helper import get_all_users_for_organization, update_corresponding_datasender_details
+from datawinners.accountmanagement.helper import get_all_users_for_organization, \
+    update_corresponding_datasender_details, make_user_data_sender_with_project
 from datawinners.accountmanagement.localized_time import get_country_time_delta, convert_utc_to_localized
 from datawinners.project.couch_view_helper import get_all_projects
 from datawinners.project.templatetags.filters import friendly_name
@@ -51,6 +52,12 @@ from datawinners.accountmanagement.registration_views import get_previous_page_l
 from mangrove.datastore.user_permission import UserPermission, \
     get_user_permission, get_questionnaires_for_user, update_user_permission
 from collections import OrderedDict
+from django.db import transaction
+import logging
+from datawinners.feature_toggle.services import handle_feature_toggle_impact_for_new_user,\
+    handle_feature_toggle_impact_for_deleted_user
+from datawinners.accountmanagement.user_tasks import link_user_to_all_projects, link_user_to_some_projects
+datawinners_logger = logging.getLogger("datawinners")
 
 
 def registration_complete(request):
@@ -145,12 +152,6 @@ def associate_user_with_all_projects_of_organisation(manager, reporter_id):
         make_user_data_sender_with_project(manager, reporter_id, row['value']['_id'])
 
 
-def make_user_data_sender_with_project(manager, reporter_id, project_id):
-    questionnaire = Project.get(manager, project_id)
-    reporters_to_associate = [reporter_id]
-    questionnaire.associate_data_sender_to_project(manager, reporters_to_associate)
-    for data_senders_code in reporters_to_associate:
-        update_datasender_index_by_id(data_senders_code, manager)
 
 
 def associate_user_with_projects(manager, reporter_id, user_id, project_ids):
@@ -177,7 +178,7 @@ def activity_log_detail(name, role, questionnaires=None):
 @is_not_expired
 def new_user(request):
     org = get_organization(request)
-    add_user_success = False
+    add_user_success = True
     manager = get_database_manager(request.user)
     if request.method == 'GET':
         profile_form = UserProfileForm()
@@ -192,51 +193,78 @@ def new_user(request):
         post_parameters = request.POST
         org = get_organization(request)
         form = UserProfileForm(organization=org, data=request.POST)
+        errors = {}
 
         if form.is_valid():
-            username = post_parameters['username']
+            username = post_parameters['username'].lower()
             role = post_parameters['role']
             if not form.errors:
-                user = User.objects.create_user(username, username, 'test123')
-                user.first_name = post_parameters['full_name']
-                group = Group.objects.filter(name=role)
-                user.groups.add(group[0])
-                user.save()
-                mobile_number = post_parameters['mobile_phone']
-                ngo_user_profile = NGOUserProfile(user=user, title=post_parameters['title'],
-                                                  mobile_phone=mobile_number,
-                                                  org_id=org.org_id)
-                ngo_user_profile.reporter_id = make_user_as_a_datasender(manager=manager, organization=org,
-                                                                         current_user_name=user.get_full_name(),
-                                                                         mobile_number=mobile_number, email=username)
-                ngo_user_profile.save()
-                reset_form = PasswordResetForm({"email": username})
+                with transaction.commit_manually():
+                    sid = transaction.savepoint()
+                    try:
+                        user = User.objects.create_user(username, username, 'test123')
+                        user.first_name = post_parameters['full_name']
+                        group = Group.objects.filter(name=role)
+                        user.groups.add(group[0])
+                        user.save()
+                        mobile_number = post_parameters['mobile_phone']
+                        ngo_user_profile = NGOUserProfile(user=user, title=post_parameters['title'],
+                                                          mobile_phone=mobile_number,
+                                                          org_id=org.org_id)
+                        ngo_user_profile.reporter_id = make_user_as_a_datasender(manager=manager, organization=org,
+                                                                                 current_user_name=user.get_full_name(),
+                                                                                 mobile_number=mobile_number, email=username)
+                        ngo_user_profile.save()
+                        handle_feature_toggle_impact_for_new_user(ngo_user_profile)
+                        reset_form = PasswordResetForm({"email": username})
+        
+                        name = post_parameters["full_name"]
+                        if role == 'Extended Users':
+                            link_user_to_all_projects.delay(ngo_user_profile.user_id)
+                            UserActivityLog().log(request, action=ADDED_USER, detail=activity_log_detail(name, friendly_name(role)))
+                        elif role in ['Project Managers', "No Delete PM"]:
+                            selected_questionnaires = post_parameters.getlist('selected_questionnaires[]')
+                            selected_questionnaire_names = post_parameters.getlist('selected_questionnaire_names[]')
+                            if selected_questionnaires is not None:
+                                link_user_to_some_projects.delay(ngo_user_profile.user_id, *tuple(selected_questionnaires))
+                            UserActivityLog().log(request, action=ADDED_USER, detail=activity_log_detail(name, friendly_name(role), selected_questionnaire_names))
+                            transaction.savepoint_commit(sid)
+    
+                    except Exception as e:
+                        transaction.savepoint_rollback(sid)
+                        datawinners_logger.exception(e.message)
+                        add_user_success = False
+                    transaction.commit()#Mandatory for manually managed transaction blocks. Here it won't save anything    
 
-                name = post_parameters["full_name"]
-
-                if role == 'Extended Users':
-                    associate_user_with_all_projects_of_organisation(manager, ngo_user_profile.reporter_id)
-                    UserActivityLog().log(request, action=ADDED_USER, detail=activity_log_detail(name, friendly_name(role)))
-                elif role == 'Project Managers':
-                    selected_questionnaires = post_parameters.getlist('selected_questionnaires[]')
-                    selected_questionnaire_names = post_parameters.getlist('selected_questionnaire_names[]')
-                    if selected_questionnaires is None:
-                        selected_questionnaires = []
-                    associate_user_with_projects(manager, ngo_user_profile.reporter_id, user.id,
-                                                 selected_questionnaires)
-                    UserActivityLog().log(request, action=ADDED_USER, detail=activity_log_detail(name, friendly_name(role), selected_questionnaire_names))
-                if reset_form.is_valid():
+                if add_user_success and reset_form.is_valid():
                     send_email_to_data_sender(reset_form.users_cache[0], request.LANGUAGE_CODE, request=request,
                                               type="created_user", organization=org)
 
                     form = UserProfileForm()
-                    add_user_success = True
+                else:
+                    add_user_success = False
+        else:
+            errors = form.errors
+            add_user_success = False
+            
         if len(request.user.groups.filter(name__in=["NGO Admins"])) < 1:
             current_user_type = "Administrator"
         else:
             current_user_type = "Account-Administrator"
-        data = {"add_user_success": add_user_success, "errors": form.errors, "current_user": current_user_type}
+        data = {"add_user_success": add_user_success, "errors": errors, "current_user": current_user_type}
         return HttpResponse(json.dumps(data), mimetype="application/json", status=201)
+
+#TODO need to be removed when the flow is correctly working...
+def roll_back_user_creation(user, reporter_id, role, organization):
+    manager = get_database_manager(user)
+    transport_info = TransportInfo("web", user.username, "")
+    dissociate_user_as_datasender_with_projects(reporter_id, user, role, [])
+    if organization.in_trial_mode:
+        delete_datasender_for_trial_mode(manager, [reporter_id], REPORTER)
+        
+    delete_entity_instance(manager, [reporter_id], REPORTER, transport_info)
+    delete_datasender_users_if_any([reporter_id], organization)
+    user.delete()
 
 
 @valid_web_user
@@ -376,6 +404,9 @@ def delete_users(request):
     else:
         detail = user_activity_log_details(User.objects.filter(id__in=django_ids))
         delete_datasenders_from_project(manager, all_ids)
+        for user_id in django_ids:
+            handle_feature_toggle_impact_for_deleted_user(user_id)
+            
         delete_entity_instance(manager, all_ids, REPORTER, transport_info)
         delete_datasender_users_if_any(all_ids, organization)
 
@@ -426,9 +457,9 @@ def _update_user_and_profile(form, user_name, role=None):
 def dissociate_user_as_datasender_with_projects(reporter_id, user, previous_role, selected_questionnaires):
     manager = get_database_manager(user)
 
-    if previous_role == 'Project Managers':
+    if previous_role == 'Project Managers' or previous_role == "No Delete PM":
         user_permission = get_user_permission(user.id, manager)
-        project_ids = user_permission.project_ids
+        project_ids = user_permission.project_ids if user_permission else []
     elif previous_role == 'Extended Users':
         rows = get_all_projects(manager)
         project_ids = []
@@ -443,7 +474,8 @@ def remove_user_as_datasender_for_projects(manager, project_ids, selected_questi
     removed_questionnaires = list(set(project_ids) - set(selected_questionnaires))
     for questionnaire in removed_questionnaires:
         project = Project.get(manager, questionnaire)
-        project.delete_datasender(manager, reporter_id)
+        if not project.is_void():
+            project.delete_datasender(manager, reporter_id)
         update_datasender_index_by_id(reporter_id, manager)
 
 
@@ -527,7 +559,7 @@ def edit_user_profile(request, user_id=None):
 
             name = post_parameters["full_name"]
 
-            if role == 'Project Managers':
+            if role == 'Project Managers' or role == 'No Delete PM':
                 selected_questionnaires = post_parameters.getlist('selected_questionnaires[]')
                 selected_questionnaire_names = post_parameters.getlist('selected_questionnaire_names[]')
                 if selected_questionnaires is None or len(selected_questionnaires) < 1:
@@ -539,7 +571,7 @@ def edit_user_profile(request, user_id=None):
                 UserActivityLog().log(request, action=UPDATED_USER, detail=activity_log_detail(name, friendly_name(role), selected_questionnaire_names))
             elif role == 'Extended Users':
                 if previous_role != 'Extended Users':
-                    associate_user_with_all_projects_of_organisation(manager, reporter_id)
+                    link_user_to_all_projects.delay(user.id)
                     update_user_permission(manager, user_id=user.id, project_ids=[])
                 UserActivityLog().log(request, action=UPDATED_USER, detail=activity_log_detail(name, friendly_name(role)))
 
@@ -557,3 +589,5 @@ def access_denied(request):
     return render_to_response("accountmanagement/account/access_denied.html", {'is_pro_sms': org.is_pro_sms,
                                                                                'current_lang': get_language()},
                               context_instance=(RequestContext(request)))
+
+    

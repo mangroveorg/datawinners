@@ -248,7 +248,7 @@ SMS_DATA_LOG = {
     UNIQUE_VALUE: "Mr.Tessy"}
 
 WEB_ANSWER_LOG = {
-    SUBMISSION: "Mickey Duck rep3 " + regex_date_match + " Success 25.12.2010 5.0 12.2010 02.12.2010 LIGHT RED web admin Bacteroids 12.0,12.0 Strike game1 last school1",
+    SUBMISSION: "Mickey Duck rep3 " + regex_date_match + " Success 25.12.2010 5 12.2010 02.12.2010 LIGHT RED web admin Bacteroids 12.0,12.0 Strike game1 last school1",
     UNIQUE_VALUE: 'web admin'
 }
 
@@ -259,7 +259,7 @@ EDITED_WEB_ANSWER_LOG = {
 
 VALID_DATA_FOR_SMS = {SENDER: "1234567890",
                       RECEIVER: "",
-                      SMS: "WPS01 11.10.2011 98 04.2011 04.12.2011 C Mr.Tessy AB 27.178057,-78.007789 game1 school1",
+                      SMS: "WPS01 11.10.2011 98 04.2011 04.12.2011 c Mr.Tessy ab 27.178057,-78.007789 game1 school1",
                       SUCCESS_MESSAGE: 'Thank you'}
 
 VALID_DATA_FOR_SMS_LIGHT_BOX = {

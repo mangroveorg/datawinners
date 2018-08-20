@@ -1,3 +1,8 @@
+@charset "utf-8";
+
+body{
+  margin: 0;
+}
 .labelSpan{
   display: inline;
   text-transform: capitalize;
@@ -14,4 +19,115 @@ div.dataLayersDiv input{
 }
 .olControlLayerSwitcher .layersDiv{
   background-color: rgba(100, 100, 100, 0.8);
+}
+.ol-zoom{
+  bottom: 3.5em;
+  right: 0.5em;
+  top: initial;
+  left: initial;
+}
+.ol-attribution{
+  z-index: 1;
+}
+
+.filter-control{
+  .filters{
+    background-color: rgba(255, 255, 255, 0.4);
+    .filters-content{
+      font-size: 80%;
+      font-family: Helvetica, Arial, sans-serif;
+      h3{
+        padding: 0 1.8em;
+        border: none;
+        margin: 0;
+      }
+      .filter-choices{
+        border: none;
+        padding: 0.4em 2.2em;
+        label{
+          margin: 0 0.5em;
+        }
+      }
+    }
+    .filters-content:not(:empty){
+      padding: 1em 0;
+    }
+  }
+}
+
+.map-control{
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+}
+
+h3#header {
+    white-space: pre-wrap;
+    word-break: break-word;
+    margin: 0 1em 0 0;
+    padding-bottom: 0.45em;
+    border-bottom: 1px solid #ccc;
+    width: 90%;
+    font-size: 0.95em;
+}
+
+ul#pop-details {
+    padding: 0;
+    font-family: Helvetica, Arial, sans-serif;
+    height: 75%;
+    width: 100%;
+    overflow-x: auto;
+    margin-bottom: 0;
+    li {
+        list-style-type: none;
+        font-size: 0.8em;
+        margin-bottom: 5px;
+        word-wrap: break-word;
+        white-space: pre-wrap;
+        word-break: break-word;
+        .answer {
+            display: inline-block;
+            white-space: pre-wrap;
+            word-break: break-word;
+            width: 80%;
+            color: #009fda;
+        }
+
+        .question {
+            margin: 0;
+            font-weight: bold;
+            
+        }
+    }
+}
+
+.ol-popup {
+    padding-right: 10px;
+    opacity: 0.82;
+}
+
+.ol-popup-closer{
+    top: 8px;
+    &:after {
+        content: unquote("\"")+unquote(str-insert('2715',"\\", 1))+unquote("\"");
+        font-size: 0.6em;
+    }
+}
+
+.ol-popup-content {
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 12pt;
+    overflow: initial;
+}
+
+.layer-switcher {
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 0.7em;
+    max-height: none;
+
+    .panel {
+        max-height: 20em;
+        width: 18em;
+        
+    }
 }

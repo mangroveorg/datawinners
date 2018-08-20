@@ -44,11 +44,10 @@ $(document).ready(function () {
                         var date_filters = {};
                         $('input.date-question-filter').each(function(index, element){
                             var question_code = $(element).data('questionCode');
-                            var format = $(element).data('questionCode');
-                            var question_code = element.getAttribute('data-question-code');
+                            var format = $(element).data('format');
                             date_filters[question_code] = {
                                 'dateRange': element.value,
-                                'format': $(element).data('format')
+                                'format': format
                             };
                         });
                         d.dateQuestionFilters = JSON.stringify(date_filters);
@@ -141,11 +140,6 @@ $(document).ready(function () {
         return AnalysisPageDataTable;
     })($, tableElement);
 
-    $.getJSON(headerUrl, function (columns) {
-        analysisTable = new AnalysisPageDataTable(columns);
-    });
-
-
     /*Column Customization Widget*/
 
     var ColCustomWidget = (function ($) {
@@ -178,7 +172,6 @@ $(document).ready(function () {
             var customizationOverlayHeight;
 
             this.$colWidgetActions.on("click", function (event) {
-                console.log("clicked customization");
                 if (self.$customizationIcon.hasClass("active")) {
                     self.$columnWidget.hide();
                     self.$customizationOverlay.hide();
@@ -186,13 +179,7 @@ $(document).ready(function () {
                     self.submit();
                 } else {
                     self.$columnWidget.show();
-                    customizationOverlayHeight = self.$pageHeader.outerHeight() + self.$pageContent.outerHeight() + 30;
-                    if(customizationOverlayHeight > 970) {
-                        customizationOverlayHeight = customizationOverlayHeight + 5;
-                    } else {
-                        customizationOverlayHeight = 970;
-                    }
-                    self.$customizationOverlay.height(customizationOverlayHeight).show();
+                    self.$customizationOverlay.height(getOverlayHeight()).show();
                     self.$customizationIcon.addClass("active");
                 }
                 event.stopPropagation();
@@ -241,18 +228,22 @@ $(document).ready(function () {
         ColCustomWidget.prototype.handleCheckBoxes = function(element) {
             var self = this;
 
-            if($(element).parent("ul").length == 0) {
+            if($(element).parent("ul").length == 0 || $(element).is("ul")) {
 
-                var $parentElement =$(element).closest("ul"),
-                    $listElements = $parentElement.children("li"),
-                    $inputElementsLength = $listElements.find("input[type=checkbox]").length;
+                var $parentElement =$(element).parent().closest("ul"),
+                    $listElements = $parentElement.children("li,ul"),
+                    $inputElementsLength = $listElements.find("> input[type=checkbox]").length;
 
-                if($listElements.find("input:checkbox:checked").length != $inputElementsLength) {
+                if($listElements.find("> input:checkbox:checked").length != $inputElementsLength) {
                     $parentElement.find("> input:checkbox").prop('checked', false);
                 } else {
                     $parentElement.find("> input:checkbox").prop('checked', true);
                 }
 
+            }
+
+            if($(element).parents("ul").length > 0) {
+                self.handleCheckBoxes($(element).parents("ul")[0]);
             }
 
             $(element).parent().find('input[type=checkbox]').prop('checked', element.checked);
@@ -282,9 +273,27 @@ $(document).ready(function () {
             column.visible(visibility);
         };
 
+        ColCustomWidget.prototype.getVisibility = function (children) {
+            var self = this;
+            var visibility = true;
+            $.each(children, function(index, child) {
+                if(!visibility) return false;
+                if(child.hasOwnProperty('children') && child.children.length > 0) {
+                    visibility = visibility && self.getVisibility(child.children);
+                } else {
+                    visibility = visibility && child.visibility;
+                }
+            });
+            return visibility;
+        };
+
         ColCustomWidget.prototype.constructItems = function (customizationHeader) {
             var self = this;
             $.each(customizationHeader, function (index, value) {
+                if (value.hasOwnProperty('children') && (value.children.length > 0)) {
+                    value.visibility = self.getVisibility(value.children);
+                }
+
                 var $newParentElement = self.createColItems("ul", value, self.$custMenu);
 
                 if (value.hasOwnProperty('children') && (value.children.length > 0)) {
@@ -325,6 +334,7 @@ $(document).ready(function () {
             var self = this;
             $.each(sortedItems, function (index, value) {
                 if (value.hasOwnProperty('children') && (value.children.length > 0)) {
+                    value.visibility = self.getVisibility(value.children);
                     var $newParentElement = self.createColItems("ul", value, $parentElement);
                     self.constructChildNodes(value, $newParentElement);
                 } else {
@@ -342,26 +352,60 @@ $(document).ready(function () {
         };
 
         ColCustomWidget.prototype.submit = function () {
+            var form = $("#customization-form");
+            var content = form.serialize();
+            form.find('input[type=checkbox]:not(:checked)').each(function() {
+                content += '&' + this.name + '=False';
+            });
             $.ajax({
                 type: "POST",
                 url: preferenceUrl,
-                data: $("#customization-form").serialize(),
+                data: content,
                 success: self.submitSuccess,
                 dataType: 'json'
             });
         };
 
         ColCustomWidget.prototype.submitSuccess = function () {
-            //reload the table
-            //TODO
+            //Placeholder to add any onSuccess logic
         };
 
         return ColCustomWidget;
     })($);
 
+    var _transform_header_item = function(item) {
+        var result = [];
+        if(item.children) {
+            var children = [];
+            $.each(item.children, function(index, item){
+                $.merge(children,_transform_header_item(item));
+            });
+            return $.merge(result,children);
+        }
+        //inconsistency between customization widget & DataTable., could be cleaned up
+        item.visible = item.visibility;
+        item.name = item.data; //Datatable doesn't support finding by data attribute
+        item.defaultContent = "";
+        result.push(item)
+        return result;
+    };
+
+    var transform_customization_to_dataTableHeader = function(customizationHeader) {
+        var dataTableHeader = []
+        $.each(customizationHeader, function(index, item){
+            $.merge(dataTableHeader,_transform_header_item(item));
+        });
+        return dataTableHeader;
+    };
+    
     $.getJSON(preferenceUrl, function (customizationHeader) {
+    	var dataTableHeader = transform_customization_to_dataTableHeader(customizationHeader)
+        analysisTable = new AnalysisPageDataTable(dataTableHeader);
+
         colCustomization = new ColCustomWidget(customizationHeader);
     });
+    
+    
 
 
     DW.SubmissionAnalysisView = function(){
@@ -451,7 +495,7 @@ $(document).ready(function () {
         self.generateCharts = function() {
             var subject_filter = {};
             $('input.subject_filter').each(function(index, element){
-                var entity_type = element.getAttribute('search-key');
+                var entity_type = element.getAttribute('entity_type');
                 var data = $(element).data('value');
                 if(data != '')
                     subject_filter[entity_type] = data;
@@ -459,13 +503,10 @@ $(document).ready(function () {
             var date_filters = {};
             $('input.date-question-filter').each(function(index, element){
                 var question_code = $(element).data('questionCode');
-                var searchKey = element.getAttribute('search-key');
-                var format = $(element).data('questionCode');
-                var question_code = element.getAttribute('data-question-code');
+                var format = $(element).data('format');
                 date_filters[question_code] = {
                     'dateRange': element.value,
-                    'searchKey': searchKey,
-                    'format': $(element).data('format')
+                    'format': format
                 };
             });
         	

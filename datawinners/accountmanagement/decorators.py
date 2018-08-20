@@ -206,9 +206,20 @@ def restrict_access(f):
     @wraps(f)
     def wrapper(request, project_id, *args, **kw):
         user = request.user
-        if user.is_project_manager() and not has_permission(get_database_manager(user), user.id, project_id):
+        if (user.is_project_manager() or user.is_no_delete_pm()) and not has_permission(get_database_manager(user), user.id, project_id):
             return HttpResponseRedirect(django_settings.ACCESS_DENIED_PAGE)
 
         return f(request, project_id, *args, **kw)
+
+    return wrapper
+
+
+def has_delete_permission(f):
+    def wrapper(*args, **kw):
+        user = args[0].user
+        if user.is_no_delete_pm():
+            return HttpResponseRedirect(django_settings.HOME_PAGE)
+
+        return f(*args, **kw)
 
     return wrapper

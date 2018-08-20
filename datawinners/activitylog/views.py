@@ -11,7 +11,7 @@ from datawinners.activitylog.models import UserActivityLog
 from datawinners.utils import convert_dmy_to_ymd, get_organization
 from datetime import date, datetime, timedelta
 from mangrove.utils.json_codecs import encode_json
-from django.utils.translation import ugettext
+from django.utils.translation import ugettext as _, activate, get_language
 
 def convert_to_ymd(date):
     return datetime.strftime(date, "%Y-%m-%d")
@@ -36,7 +36,7 @@ def show_log(request):
         for key, value in filter.items():
             if value != "":
                 if key == "daterange":
-                    dates = value.split(" %s " % ugettext("to"))
+                    dates = value.split(" %s " % _("to"))
                     # args["log_date__gte"] = convert_dmy_to_ymd(dates[0])
                     args["log_date__gte"] = convert_local_to_utc(dates[0] + " 00:00:00", time_delta, "%d-%m-%Y %H:%M:%S")
                     try:
@@ -54,6 +54,61 @@ def show_log(request):
     log_data = UserActivityLog.objects.select_related().filter(**args).order_by("-log_date")
     for entry in log_data:
         entry.log_date = convert_utc_to_localized(time_delta, entry.log_date)
+        action  = entry.action
+        if action == "Updated reminders":
+            try:
+                current_lang = get_language()
+                activate(current_lang)
+                details = json.loads(entry.detail)
+                text_details = ""
+                text_details += "<ul class='bulleted'>"
+                for key,value in details.iteritems():
+                    if value != "":
+                        text_details += "<li>"+ _(key) % value + "</li>"
+                    else:
+                        text_details += "<li>"+ _(key) + "</li>"
+                text_details += "</ul>"
+                entry.detail = text_details
+            except ValueError:
+                entry.detail = _(entry.detail)
+
+        if action == "Set Deadline":
+            try:
+                current_lang = get_language()
+                activate(current_lang)
+                entry.detail = _(entry.detail)
+
+            except ValueError:
+                entry.detail = _(entry.detail)
+
+        if action == "Edited Data Submission(s) for advanced questionnaire":
+            try:
+                current_lang = get_language()
+                activate(current_lang)
+                details = json.loads(entry.detail)
+                text_details = ""
+                text_details += _("Changed Answers:")
+                text_details += "<ul class='bulleted'>"
+                for key,value in details.iteritems():
+                    question = unicode(value['question'])
+                    #if value['old'] and value['new']:
+                    try:
+                        old_data_value = str(value['old'].encode('UTF-8'))
+                        new_data_value = str(value['new'].encode('UTF-8'))
+                        text_details += '<li>'+ question + ': "' + old_data_value.decode('UTF-8') + '" ' + _("to") + ' "' + new_data_value.decode('UTF-8') +'"</li>'
+                    #except :
+                        #new_data_value = str(value['new'])
+                        #text_details += '<li>'+ _("New node: ") + '</br>' + question + ':' + new_data_value +'"</li>'
+                    #else :
+                        #old_data_value = str(value['old'])
+                        #text_details += '<li>'+ _("Delete node: ") + '</br>' + question + ':' + old_data_value +'"</li>'
+                    except (ValueError, IndexError):
+                        entry.detail = _(entry.detail)
+                text_details += "</ul>"
+                entry.detail = text_details
+
+            except :
+                entry.detail = _(entry.detail)
     return render_to_response("activitylog/activitylog.html",
                               {
                                 'form': form,

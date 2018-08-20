@@ -9,8 +9,9 @@ from pages.loginpage.login_page import login
 from pages.questionnairetabpage.poll_questionnaire_page import PollQuestionnairePage
 from tests.projects.questionnairetests.project_questionnaire_data import LANGUAGES, CLINIC_ALL_DS, PT, FR, \
     REP7, REP5, REP6, THIRD_COLUMN, SECOND_ROW, GROUP, THIRD_ROW, MY_POLL_RECIPIENTS, CLINIC_TEST_PROJECT, REP8, REP3, \
-    REP1, SIXTH_COLUMN, FIRST_ROW, FOURTH_ROW, SIXTH_ROW, FIFTH_ROW
+    REP1, SIXTH_COLUMN, FIRST_ROW, FOURTH_ROW, SIXTH_ROW, FIFTH_ROW, REP35, REP10
 from tests.testsettings import UI_TEST_TIMEOUT
+import time
 
 
 class TestPollOptions(HeadlessRunnerTest):
@@ -27,7 +28,14 @@ class TestPollOptions(HeadlessRunnerTest):
         self.poll_questionnaire_page = PollQuestionnairePage(driver=self.driver)
 
     def tearDown(self):
+        self.driver.wait_for_page_load()
         self.poll_questionnaire_page.delete_the_poll()
+        
+
+    @classmethod
+    def tearDownClass(cls):
+        cls.global_navigation.sign_out()
+        HeadlessRunnerTest.tearDownClass()
 
     @attr('functional_test')
     def test_should_change_automatic_reply_sms_language_for_poll_with_linked_contacts(self):
@@ -64,7 +72,9 @@ class TestPollOptions(HeadlessRunnerTest):
         self.poll_questionnaire_page.click_create_poll()
         self.poll_questionnaire_page.select_send_sms()
         self.poll_questionnaire_page.send_sms_to(LINKED_CONTACTS, CLINIC_TEST_PROJECT)
-        recipients = [REP8, REP3, REP1, REP5, REP6]
+        recipients = [REP8, REP3, REP1, REP5, REP6, REP35, REP10]
+        result = self.poll_questionnaire_page.has_DS_received_sms(recipients, FIRST_ROW, THIRD_COLUMN)
+
         self.assertTrue(self.poll_questionnaire_page.has_DS_received_sms(recipients, FIRST_ROW, THIRD_COLUMN))
         self.assertTrue(self.poll_questionnaire_page.has_DS_received_sms(recipients, FIRST_ROW, THIRD_COLUMN))
         self.assertTrue(self.poll_questionnaire_page.has_DS_received_sms(recipients, FIRST_ROW, THIRD_COLUMN))
@@ -81,6 +91,7 @@ class TestPollOptions(HeadlessRunnerTest):
 
         self.poll_questionnaire_page.select_send_sms()
         self.poll_questionnaire_page.send_sms_to(GROUP, group_name)
+        sleep(2)
         self.assertTrue(self.poll_questionnaire_page.has_DS_received_sms(unique_id, SECOND_ROW, THIRD_COLUMN))
         self.poll_questionnaire_page.click_send_sms_link()
         self.poll_questionnaire_page.send_sms_to(GROUP, group_name)
@@ -135,18 +146,7 @@ class TestPollOptions(HeadlessRunnerTest):
         self.poll_questionnaire_page.click_create_poll()
         self.poll_questionnaire_page.deactivate_poll()
         sleep(2)
-        self.assertEquals(self.poll_questionnaire_page.get_poll_status(), 'Deactivated')
-
-    @attr('functional_test')
-    def test_should_activate_the_poll(self):
-        self.poll_questionnaire_page.select_broadcast_option()
-        self.poll_questionnaire_page.click_create_poll()
-        self.poll_questionnaire_page.deactivate_poll()
-        sleep(2)
-        self.assertEquals(self.poll_questionnaire_page.get_poll_status(), 'Deactivated')
-        self.poll_questionnaire_page.activate_poll()
-        sleep(2)
-        self.assertEquals(self.poll_questionnaire_page.get_poll_status(), 'Active')
+        self.assertEquals(self.poll_questionnaire_page.get_poll_status(), 'deactivated')
 
     @attr('functional_test')
     def test_warning_message_should_come_while_activating_a_poll_when_another_poll_is_active(self):
@@ -154,16 +154,35 @@ class TestPollOptions(HeadlessRunnerTest):
         self.poll_questionnaire_page.select_broadcast_option()
         self.poll_questionnaire_page.click_create_poll()
         self.poll_questionnaire_page.deactivate_poll()
-        self.global_navigation.navigate_to_dashboard_page().navigate_to_create_project_page().select_poll_questionnaire_option()
+        sleep(1)
+        dashboard = self.global_navigation.navigate_to_dashboard_page()
+        sleep(1)
+        project = dashboard.navigate_to_create_project_page()
+        sleep(1)
+        project.select_poll_questionnaire_option()
+        sleep(1)
         poll_title_2 = self.create_questionnaire_page.set_poll_questionnaire_title("poll_questionnaire", generate_random=True)
         self.poll_questionnaire_page.select_broadcast_option()
         self.poll_questionnaire_page.click_create_poll()
+        sleep(2)
         self.global_navigation.navigate_to_all_data_page()
         previous_poll = by_xpath(FIRST_CREATED_POLL_XPATH % poll_title_1)
         self.driver.find(previous_poll).click()
         self.poll_questionnaire_page.activate_poll()
         self.assertTrue(self.poll_questionnaire_page.is_another_poll_active(poll_title_2))
         self.driver.find(ACTIVE_POLL_NAME).click()
+
+    @attr('functional_test')
+    def test_should_activate_the_poll(self):
+        self.poll_questionnaire_page.select_broadcast_option()
+        self.poll_questionnaire_page.click_create_poll()
+        sleep(3)
+        self.poll_questionnaire_page.deactivate_poll()
+        sleep(3)
+        self.assertEquals(self.poll_questionnaire_page.get_poll_status(), 'deactivated')
+        self.poll_questionnaire_page.activate_poll()
+        sleep(3)
+        self.assertEquals(self.poll_questionnaire_page.get_poll_status(), 'active')
 
     def create_group_with_one_contact(self):
         all_contacts_page = self.global_navigation.navigate_to_all_data_sender_page()
@@ -175,8 +194,10 @@ class TestPollOptions(HeadlessRunnerTest):
         add_group_page.enter_group_name(group_name)
         add_group_page.click_on_add_group_button()
         all_contacts_page.add_contact_to_group(unique_id, group_name)
+        sleep(2)
         self.driver.wait_for_element(UI_TEST_TIMEOUT, DASHBOARD_PAGE_LINK, True)
         create_questionnaire_options_page = self.global_navigation.navigate_to_dashboard_page().navigate_to_create_project_page()
+        self.assertEqual(self.driver.get_title(), "Create Questionnaire")
         self.create_questionnaire_page = create_questionnaire_options_page.select_poll_questionnaire_option()
         self.create_questionnaire_page.set_poll_questionnaire_title("poll_questionnaire", generate_random=True)
         return group_name, unique_id

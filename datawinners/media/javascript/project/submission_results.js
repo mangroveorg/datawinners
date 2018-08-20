@@ -1,7 +1,7 @@
-DW.SubmissionTabs = function () {
+    DW.SubmissionTabs = function () {
     var self = this;
 
-    var tabList = ["all", "success", "error", "deleted", "analysis"];
+    var tabList = ["all", "success", "error", "duplicates", "deleted", "analysis"];
     var active_tab_index = 0;
 
     self.updateActiveTabIndexBasedOnCurrentLocation = function () {
@@ -30,11 +30,15 @@ DW.SubmissionTabs = function () {
     };
 
     self.isTableEntriesCheckable = function () {
-        return active_tab_index != 3;
+        return active_tab_index != 4;
+    };
+
+    self.isDuplicatesTab = function () {
+        return active_tab_index == 3;
     };
 
     self.setToAnalysisTab = function () {
-        active_tab_index = 4;
+        active_tab_index = 5;
     };
 };
 
@@ -44,7 +48,8 @@ DW.SubmissionLogTable = function (options) {
         url: options.header_url,
         data: {"type": options.tabName, "no_cache": new Date() },
         success: function (columnDef) {
-            _init_submission_log_table(columnDef)
+            _init_submission_log_table(columnDef);
+
         },
         dataType: "json"
     });
@@ -53,18 +58,23 @@ DW.SubmissionLogTable = function (options) {
         "analysis": "<span>" + gettext("Once your Data Senders have sent in Submissions, they will appear here.") + "</span>",
         "success": "<span>" + gettext("Once your Data Senders have sent in Submissions successfully, they will appear here.") + "</span>",
         "error": gettext("No unsuccessful Submissions!"),
-        "deleted": gettext("No deleted Submissions.")
+        "deleted": gettext("No deleted Submissions."),
+        "duplicates": gettext("No Duplicates are currently available for the given time period based on your choice.") + "</span>"
     };
+
+    var paginateGroups = {"duplicates": true}
+    var concept = {"duplicates":"Duplicate"}
 
     function _init_submission_log_table(cols) {
         $(".submission_table").dwTable({
                 aoColumns: cols,
-                "concept": "Submission",
+                "concept": concept[options.tabName]? concept[options.tabName]: "Submission",
                 "sDom": "iprtipl",
                 "sAjaxSource": options.table_source_url,
                 "sAjaxDataIdColIndex": 1,
                 "remove_id": true,
                 "bServerSide": true,
+                "paginateGroups": paginateGroups[options.tabName]? true: false,
                 "oLanguage": {"sEmptyTable": no_data_help[options.tabName]},
                 "aaSorting": [
                     [ options.sortCol, "desc"]
@@ -81,6 +91,22 @@ DW.SubmissionLogTable = function (options) {
                 },
                 "fnHeaderCallback": function (head) {
                 },
+                "fnRowCallback": function(row, data, dataIndex) {
+                    if (dataIndex == 0) {
+                        return row;
+                    }
+
+                    table = $(".submission_table").dataTable();
+                    prevRow = $(table.fnGetNodes(dataIndex-1));
+                    prevRowData = table.fnGetData(dataIndex-1);
+                    if (
+                        (prevRow.hasClass("odd_group") && (data[data.length-1] == prevRowData[data.length-1])) ||
+                        (!prevRow.hasClass("odd_group") && (data[data.length-1] != prevRowData[data.length-1]))
+                       ) {
+                      $(row).addClass("odd_group");
+                    }
+                    return row;
+                },
                 "getFilter": filter_as_json
             }
         );
@@ -93,6 +119,8 @@ DW.SubmissionLogExport = function () {
 
     self.init = function () {
         self.exportLink = $('.export_link');
+        self.exportSingleSheetLink = $('.export_single_sheet_link');
+        self.exportSingleSheetWithMediaLink = $('.export_single_sheet_with_media_link');
         self.exportForm = $('#export_form');
         _initialize_dialogs();
         _initialize_events();
@@ -111,7 +139,7 @@ DW.SubmissionLogExport = function () {
         });
     };
 
-    var _updateAndSubmitForm = function(is_export_with_media){
+    var _updateAndSubmitForm = function(is_export_with_media, is_single_sheet){
         if (is_export_with_media)
         {
             self._show_export_message();
@@ -119,12 +147,13 @@ DW.SubmissionLogExport = function () {
         self.exportForm.appendJson(
             {
                 "search_filters": JSON.stringify(filter_as_json()),
-                "is_media":is_export_with_media
+                "is_media": is_export_with_media,
+                "is_single_sheet": is_single_sheet
             }
         ).attr('action', self.url).submit();
     };
 
-    var _check_limit_and_export = function(is_export_with_media){
+    var _check_limit_and_export = function(is_export_with_media, is_single_sheet){
         $.post(self.count_url, {
                 'data': JSON.stringify({"questionnaire_code": $("#questionnaire_code").val(),
                                         "search_filters": filter_as_json()
@@ -133,7 +162,7 @@ DW.SubmissionLogExport = function () {
             }
         ).done(function(data){
                 if(data['count'] <= 20000){
-                   _updateAndSubmitForm(is_export_with_media);
+                   _updateAndSubmitForm(is_export_with_media, is_single_sheet);
                 }
                 else{
                     DW.trackEvent('export-submissions', 'export-exceeded-limit', user_email + ":" + organization_name);
@@ -159,15 +188,71 @@ DW.SubmissionLogExport = function () {
     var _initialize_events = function () {
         $('.with_media').click(function(){
                DW.trackEvent('export-submissions-with-images', 'export-submissions-single-sheet', user_email + ":" + organization_name);
-               _check_limit_and_export(true);
+               _check_limit_and_export(true, false);
          });
 
         self.exportLink.click(function () {
                DW.trackEvent('export-submissions', 'export-submissions-single-sheet', user_email + ":" + organization_name);
-               _check_limit_and_export(false);
+               _check_limit_and_export(false, false);
+        });
+
+        self.exportSingleSheetLink.click(function () {
+               DW.trackEvent('export-submissions', 'export-submissions-single-sheet', user_email + ":" + organization_name, 'single sheet');
+               _check_limit_and_export(false, true);
+        });
+        self.exportSingleSheetWithMediaLink.click(function () {
+                DW.trackEvent('export-submissions', 'export-submissions-single-sheet', user_email + ":" + organization_name, 'single sheet');
+               _check_limit_and_export(true, true);
         });
 
     };
+};
+
+DW.DuplicatesForFilter = function(postFilterSelectionCallBack) {
+    var self = this;
+
+    self.init = function() {
+        $("#duplicates_for").change(postFilterSelectionCallBack);
+        $("#duplicates_for").on('change', function(){
+            DW.trackEvent('submissions', 'searched-by-duplicates-for', $("#duplicates_for option:selected").val());
+        });
+    };
+}
+
+DW.DuplicatesHelpSection = function(){
+
+    function _closeDialogHandler(){
+        $("#duplicates_learn_more_text").dialog('close');
+    }
+
+    function _initializeDialog(dialogSection){
+        dialogSection.dialog({
+                autoOpen: false,
+                width: 940,
+                modal: true,
+                position:"top",
+                title: gettext("Learn More About Duplicates"),
+                zIndex: 1100,
+                open: function(){
+                    $(".learn_more_accordion").accordion({collapsible: true,active: false});
+                },
+                close: function(){
+                    $(".learn_more_accordion").accordion( "destroy" );
+                }
+        });
+        dialogSection.off('click', '#close_duplicates_learn_more_section', _closeDialogHandler);
+        dialogSection.on('click', '#close_duplicates_learn_more_section', _closeDialogHandler);
+    }
+
+    this.init = function(){
+        $("#duplicates_learn_more_link").on('click', function(){
+            var dialogSection = $("#duplicates_learn_more_text");
+            _initializeDialog(dialogSection);
+            dialogSection.removeClass("none");
+            dialogSection.dialog("open");
+            dialogSection.parent(".ui-dialog")[0].scrollIntoView();
+        });
+    }
 };
 
 DW.DataSenderFilter = function (postFilterSelectionCallBack) {

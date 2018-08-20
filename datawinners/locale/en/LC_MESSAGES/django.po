@@ -3880,6 +3880,9 @@ msgstr ""
 msgid "De-Activated Reminders"
 msgstr ""
 
+msgid "Updated reminders"
+msgstr ""
+
 msgid "Set Deadline"
 msgstr ""
 
@@ -4213,6 +4216,10 @@ msgstr ""
 msgid "Minimum of 6 characters in length"
 msgstr ""
 
+msgid "Example: Minimum of 6 characters in length"
+msgstr ""
+
+
 msgid "Thank you %(datasender)s. We received your SMS for %(subject_info)s"
 msgstr ""
 
@@ -4258,13 +4265,16 @@ msgstr ""
 msgid "To reactivate it, subscribe to a monthly subscription by contacting your Project Manager or DW Support at <a href='mailto:support@datawinners.com'>support@datawinners.com</a>."
 msgstr ""
 
-msgid "Get the Most out of Datawinners!"
+msgid "Datawinners | Become a DataWinners Pro in Two Weeks"
 msgstr ""
 
-msgid "Find Out What Datawinners Can Do For You!"
+msgid "Datawinners | Authorize your DataWinners Data Senders to Submit Data"
 msgstr ""
 
-msgid "Datawinners | We're here to Help!"
+msgid "Datawinners | Use Advanced Logic and Collect Media Files with DataWinners"
+msgstr ""
+
+msgid "Datawinners | Collect and View Your Data with DataWinners"
 msgstr ""
 
 msgid "Datawinners | Join our Online Community!"
@@ -4412,6 +4422,7 @@ msgstr "<div class='radio_title'>Pro</div>"
 msgid "pro_sms_subtitle"
 msgstr "<div class='radio_title'>Pro SMS</div>"
 "<div class='subtitle_for_radio_button pro_sms_account'>Collect unlimited data via 3 channels: SMS, Android (Smartphone, Tablet) & Web</div>"
+"<div class='pro_sms_selected_country_note'>* Pro SMS is available in selected countries only, please contact <a href=\"mailto:support@datawinners.com\">support@datawinners.com</a> for more information.</div>"
 
 msgid "Account Type"
 msgstr ""
@@ -4720,6 +4731,9 @@ msgstr ""
 msgid "Change"
 msgstr ""
 
+msgid "Change_button"
+msgstr "Change"
+
 msgid "You decide who has permission to submit data using SMS for this Questionnaire:"
 msgstr ""
 
@@ -4915,6 +4929,9 @@ msgstr ""
 msgid "Activated Poll"
 msgstr ""
 
+msgid "Edited Poll"
+msgstr ""
+
 msgid "alert_message_for_project_manager"
 msgstr "If you revoke access to a Questionnaire or Poll, the person will also be removed as a Data Sender. You can add this person as a Data Sender to a Questionnaire or Poll on the Contacts page."
 
@@ -4926,3 +4943,132 @@ msgstr "Customize View"
 
 msgid "analysis_table_empty_text3"
 msgstr "to add columns."
+
+msgid "Add existing Contacts from the"
+msgstr ""
+
+msgid "All Contacts view"
+msgstr ""
+
+msgid "Import new Contacts"
+msgstr ""
+
+msgid "Add a new Contact"
+msgstr ""
+
+msgid "The template you are using is not correct, please use DataWinners template and try again"
+msgstr ""
+
+msgid "Answer must be a date in the following format: %s. Example: %s"
+msgstr ""
+
+msgid "Show Duplicates For"
+msgstr ""
+
+msgid "Duplicates"
+msgstr ""
+
+msgid "Exact Match"
+msgstr ""
+
+msgid "help_text_for_duplicates_oneliner"
+msgstr "This feature will identify possible duplicated Submissions. Removing or editing the duplicated Submissions will help you clean up and improve the quality of the collected data.Only Successful Submissions are analyzed for duplicates."
+
+msgid "help_text_for_duplicates_expand_header"
+msgstr "How does this work"
+
+msgid "help_text_for_duplicates_expand_content_1"
+msgstr "1) Choose the period using \"Submission Date\" filter"
+
+msgid "help_text_for_duplicates_expand_content_2"
+msgstr "2) Choose what case of duplicate Submissions you are looking for - use the drop down \"Show Duplicates For\""
+
+msgid "help_text_for_duplicates_expand_content_2a"
+msgstr "a. Submissions with the exact same answers for each question"
+
+msgid "help_text_for_duplicates_expand_content_2b"
+msgstr "b. Submissions with the exact same Identification Number (only matched on the Identification Number Question)."
+
+msgid "help_text_for_duplicates_expand_content_2c"
+msgstr "c. Submissions made by the same Data Sender"
+
+msgid "help_text_for_duplicates_expand_content_3"
+msgstr "3) Delete or edit the submission using the Action drop down"
+
+msgid "help_text_for_duplicates_expand_content_note"
+msgstr "Note: the repeated set (nested Questions) are not considered in the duplicates check in this version"
+
+msgid "help_text_for_duplicates_near_filter_header"
+msgstr "Choose what case of duplicate Submissions you are looking for"
+
+msgid "help_text_for_duplicates_near_filter_content_1"
+msgstr "1) Submissions with the exact same answers for each question"
+
+msgid "help_text_for_duplicates_near_filter_content_2"
+msgstr "2) Submissions with the exact same unique Identification Number (per question)"
+
+msgid "help_text_for_duplicates_near_filter_content_3"
+msgstr "3) Submissions made by the same Data Sender"
+
+msgid "Before-deadline reminder updated: %s Day(s)"
+msgstr ""
+
+msgid "After-deadline reminder updated: %s Day(s)"
+msgstr ""
+
+msgid "Text updated for before-deadline reminder: %s"
+msgstr ""
+
+msgid "Text updated for on-deadline reminder: %s"
+msgstr ""
+
+msgid "Text updated for after-deadline reminder: %s"
+msgstr ""
+
+msgid "Before-deadline reminder activated"
+msgstr ""
+
+msgid "Before-deadline reminder deactivated"
+msgstr ""
+
+msgid "On-deadline reminder activated"
+msgstr ""
+
+msgid "On-deadline reminder deactivated"
+msgstr ""
+
+msgid "After-deadline reminder activated"
+msgstr ""
+
+msgid "After-deadline reminder deactivated"
+msgstr ""
+
+msgid "Deadline updated: weekday"
+msgstr ""
+
+msgid "Reminders updated to:  All My Data Senders"
+msgstr ""
+
+msgid "Reminders updated to: My Data Senders who have not yet submitted for this deadline"
+msgstr ""
+
+msgid "Deadline updated: month"
+msgstr ""
+
+msgid "Deadline updated: week"
+msgstr ""
+
+msgid "Edited Data Submission(s) for advanced questionnaire"
+msgstr ""
+
+msgid "Deadline updated: month day"
+msgstr ""
+
+msgid "Project Manager (Permission to Delete Questionnaire removed)"
+msgstr ""
+
+msgid "Permission to Delete Questionnaires"
+msgstr ""
+
+msgid "All code fields must be unique, please check %s field"
+msgstr ""

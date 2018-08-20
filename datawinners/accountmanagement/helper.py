@@ -9,11 +9,13 @@ from mangrove.datastore.entity import get_by_short_code, contact_by_short_code
 from mangrove.errors.MangroveException import NumberNotRegisteredException
 from mangrove.utils.types import is_empty
 from mangrove.transport.repository.reporters import find_reporters_by_from_number
-from datawinners.accountmanagement.models import Organization, NGOUserProfile,\
+from datawinners.accountmanagement.models import Organization, NGOUserProfile, \
     get_data_senders_on_trial_account_with_mobile_number, DataSenderOnTrialAccount
 from datawinners.utils import get_database_manager_for_org
 from django.contrib.auth.models import User, Group
-from mangrove.form_model.form_model import REPORTER, NAME_FIELD
+from mangrove.form_model.form_model import REPORTER, NAME_FIELD, REGISTRATION_FORM_CODE
+from mangrove.form_model.project import Project
+from datawinners.search.datasender_index import update_datasender_index_by_id
 
 
 def get_trial_account_user_phone_numbers():
@@ -24,13 +26,17 @@ def get_trial_account_user_phone_numbers():
         phone_numbers.extend([profile.mobile_phone for profile in profiles])
     return phone_numbers
 
+
 def get_unique_mobile_number_validator(organization):
     if organization.in_trial_mode:
         return is_mobile_number_unique_for_trial_account
     return is_mobile_number_unique_for_paid_account
 
+
 def is_mobile_number_unique_for_trial_account(org, mobile_number):
-    return is_empty(get_data_senders_on_trial_account_with_mobile_number(org, mobile_number)) and mobile_number not in get_trial_account_user_phone_numbers()
+    return is_empty(get_data_senders_on_trial_account_with_mobile_number(org,
+                                                                         mobile_number)) and mobile_number not in get_trial_account_user_phone_numbers()
+
 
 def is_mobile_number_unique_for_paid_account(org, mobile_number, reporter_id=None):
     manager = get_database_manager_for_org(org)
@@ -43,6 +49,7 @@ def is_mobile_number_unique_for_paid_account(org, mobile_number, reporter_id=Non
         return True
     return False
 
+
 def get_all_registered_phone_numbers_on_trial_account():
     return DataSenderOnTrialAccount.objects.values_list('mobile_number', flat=True)
 
@@ -50,16 +57,20 @@ def get_all_registered_phone_numbers_on_trial_account():
 def is_org_user(user):
     return user.groups.filter(name__in=["NGO Admins", "Project Managers", "Extended Users"]).count() > 0
 
+
 def get_all_users_for_organization(org_id):
     viewable_users = User.objects.exclude(groups__name__in=['Data Senders', 'SMS API Users']).values_list('id',
                                                                                                           flat=True)
     return NGOUserProfile.objects.filter(org_id=org_id, user__in=viewable_users)
 
+
 def get_all_user_repids_for_org(org_id):
-    viewable_users = User.objects.exclude(groups__name__in=['Data Senders', 'SMS API Users', 'Project Managers']).values_list('id',
-                                                                                                          flat=True)
+    viewable_users = User.objects.exclude(
+        groups__name__in=['Data Senders', 'SMS API Users', 'Project Managers']).values_list('id',
+                                                                                            flat=True)
     users = NGOUserProfile.objects.filter(org_id=org_id, user__in=viewable_users)
     return [user.reporter_id for user in users]
+
 
 def update_user_name_if_exists(email, new_name):
     try:
@@ -69,12 +80,30 @@ def update_user_name_if_exists(email, new_name):
     except User.DoesNotExist as e:
         pass
 
-def update_corresponding_datasender_details(user,ngo_user_profile,old_phone_number):
+
+def _create_data_from_entity(reporter_entity, name, mobile_number):
+    return [('name', name), ("mobile_number", mobile_number),
+            ('geo_code', reporter_entity.geometry.get('coordinates')),
+            ('entity_type', reporter_entity.type_path),
+            ('short_code', reporter_entity.short_code),
+            ('location', reporter_entity.location_path),
+            ('email', reporter_entity.email)]
+
+
+def _void_existing_data_records(dbm, short_code):
+    data_records = dbm.view.data_record_by_form_code(key=[REGISTRATION_FORM_CODE, short_code])
+    for data_record in data_records:
+        data_record_doc = data_record.value
+        data_record_doc['void'] = True
+        dbm.database.save(data_record_doc)
+
+def update_corresponding_datasender_details(user, ngo_user_profile, old_phone_number):
     manager = get_database_manager(user)
     reporter_entity = contact_by_short_code(manager, ngo_user_profile.reporter_id)
     current_phone_number = ngo_user_profile.mobile_phone
-    reporter_entity.update_latest_data([('name',user.first_name),("mobile_number", current_phone_number)])
-
+    _void_existing_data_records(manager, ngo_user_profile.reporter_id)
+    reporter_entity.add_data(data=_create_data_from_entity(reporter_entity, user.first_name, current_phone_number),
+                             submission={"form_code": "reg"})
     datasender_dict = {'name': user.first_name, 'mobile_number': current_phone_number}
     update_submission_search_for_datasender_edition(manager, ngo_user_profile.reporter_id, datasender_dict)
 
@@ -91,7 +120,7 @@ def _check_uniqueness_of_email_addresses(reporter_details):
         count = datasender_count_with(existent_email_address)
         if count > 0:
             success = False
-            errors.append("User with email %s already exists" %existent_email_address)
+            errors.append("User with email %s already exists" % existent_email_address)
     return success, errors
 
 
@@ -145,3 +174,11 @@ def validate_and_create_web_users(org_id, reporter_details, language_code):
 
 def get_org_id(request):
     return request.user.get_profile().org_id
+
+
+def make_user_data_sender_with_project(manager, reporter_id, project_id):
+    questionnaire = Project.get(manager, project_id)
+    reporters_to_associate = [reporter_id]
+    questionnaire.associate_data_sender_to_project(manager, reporters_to_associate)
+    for data_senders_code in reporters_to_associate:
+        update_datasender_index_by_id(data_senders_code, manager)

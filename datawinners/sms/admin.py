@@ -11,8 +11,8 @@ from datawinners.common.admin.utils import get_text_search_filter, get_admin_pan
 
 class SMSAdmin(admin.ModelAdmin):
     list_display = (
-    'message_id', 'organization', 'status', 'delivered_at', 'message', 'msg_from', 'msg_to', 'msg_type', 'smsc')
-    list_filter = ['delivered_at', "status", "smsc", "msg_type"]
+    'message_id', 'organization', 'status', 'created_at','delivered_at', 'message', 'msg_from', 'msg_to', 'msg_type', 'smsc')
+    list_filter = ['delivered_at','created_at', "status", "smsc", "msg_type"]
     search_fields = ['msg_to', 'organization__org_id']
 
     def export_sms_details_to_excel(modeladmin, request, query_set):
@@ -25,9 +25,11 @@ class SMSAdmin(admin.ModelAdmin):
         for sms in filteredSms:
             delivered_date_time = ExcelDate(datetime.combine(sms.delivered_at, datetime.min.time()),
                                             'dd.mm.yyyy') if sms.delivered_at else None
-            list.append([sms.organization_id, sms.status, delivered_date_time, sms.msg_from, sms.msg_to, sms.msg_type, sms.message])
+            creation_date_time = ExcelDate(datetime.combine(sms.created_at, datetime.min.time()),
+                                            'dd.mm.yyyy') if sms.created_at else None
+            list.append([sms.organization_id, sms.status,creation_date_time, delivered_date_time, sms.msg_from, sms.msg_to, sms.msg_type, sms.message])
 
-        headers = ['Organisation Id', 'Status', 'Delivery Date', 'Message from Number', 'Message to Number', 'Message Type', 'Content']
+        headers = ['Organisation Id', 'Status','Creation Date', 'Delivery Date', 'Message from Number', 'Message to Number', 'Message Type', 'Content']
         response = export_to_new_excel(headers, list, 'sms_list')
         return response
 

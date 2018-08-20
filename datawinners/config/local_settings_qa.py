@@ -20,6 +20,13 @@ API_KEYS = {
     '54.163.243.239': 'AIzaSyDE7V6tcY34e5uAB7eYS7AcSStty87vulQ'
 }
 
+
+MAPBOX_API_KEYS = {
+    '172.18.9.6': 'pk.eyJ1IjoicmFqYnNhaGFqIiwiYSI6ImNpcnlpcDI2NTAxeGMyenFmYjdwZmd6Z2MifQ.86zQkw3aBlHuVkUBdSi4Ag',
+    '54.163.243.239': 'pk.eyJ1IjoicmFqYnNhaGFqIiwiYSI6ImNpcnlpcDI2NTAxeGMyenFmYjdwZmd6Z2MifQ.86zQkw3aBlHuVkUBdSi4Ag'
+}
+
+
 GOOGLE_ANALYTICS_ENABLED = False
 
 TRIAL_REGISTRATION_ENABLED = True

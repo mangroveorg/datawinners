@@ -2,7 +2,8 @@
 from django.test import TestCase
 from mock import Mock, patch, PropertyMock
 
-from datawinners.accountmanagement.helper import get_trial_account_user_phone_numbers, get_all_users_for_organization
+from datawinners.accountmanagement.helper import get_trial_account_user_phone_numbers, get_all_users_for_organization,\
+    is_mobile_number_unique_for_trial_account
 from datawinners.tests.data import TRIAL_ACCOUNT_USERS_MOBILE_NUMBERS
 
 
@@ -19,4 +20,10 @@ class TestHelper(TestCase):
             type(user_class).objects = PropertyMock(return_value=objects)
             get_all_users_for_organization("SLX364903")
             objects.exclude.assert_called_once_with(groups__name__in=['Data Senders', 'SMS API Users'])
+
+    def test_should_validate_the_mobile_number_for_trial_account_if_not_unique(self):
+        from datawinners.accountmanagement.models import Organization
+        org = Mock(spec=Organization)
+        org.in_trial_mode = True
+        self.assertFalse(is_mobile_number_unique_for_trial_account(org, TRIAL_ACCOUNT_USERS_MOBILE_NUMBERS))
 

@@ -62,6 +62,7 @@ LINKED_CONTACTS = 'linked'
 OTHERS = 'others'
 ACTIVE_POLL_NAME = by_id('active_poll_name')
 poll_info_accordian = by_id('poll_status_info')
+POLL_STATUS_BY_ID = by_id("poll_status")
 deactivate_link = by_xpath(".//*[@id='deactivate_link']")
 activate_link = by_id('activate_link')
 POLL_INFORMATION_BOX = by_css(".information_box")
@@ -124,3 +125,7 @@ SUCCESS_MESSAGE_LABEL = by_xpath(
 PERIOD_QUESTION_TIP_CSS_LOCATOR = "#periode_green_message"
 QUESTION_TYPE_CSS_LOCATOR = "[name=type][value='%s']"
 CURRENT_QUESTION_TYPE_LOCATOR = by_css("input[name='type']:checked")
+
+
+SEND_SMS_DIALOG = by_id("send-sms-section")
+SUCCESS_MSG_SENDIND_SMS = by_id("sms-success")

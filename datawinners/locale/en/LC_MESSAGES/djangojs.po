@@ -1202,3 +1202,48 @@ msgstr ""
 
 msgid "Add to Questionnaires"
 msgstr ""
+
+msgid "Add to new Group"
+msgstr ""
+
+msgid "Identification Number"
+msgstr ""
+
+msgid "Duplicate"
+msgstr ""
+
+msgid "No Duplicates are currently available for the given time period based on your choice"
+msgstr ""
+
+msgid "Learn More About Duplicates"
+msgstr ""
+
+msgid "Sorry, the user registration failed due to a unknown system error, please try again."
+msgstr "Sorry, the user registration failed due to a unknown system error, please try again. If the error persists please get in touch with our support team: support@datawinners.com"
+
+msgid "User has been added successfully"
+msgstr "User has been added successfully"
+
+msgid "The following Identification Number(s) are linked to <b>"
+msgstr ""
+
+msgid "</b>, you need to remove the Identification Number question(s) "
+msgstr ""
+
+msgid "from the above-mentioned Questionnaire(s)"
+msgstr ""
+
+msgid "from linked Identification Number(s)"
+msgstr ""
+
+msgid " and "
+msgstr ""
+
+msgid " first."
+msgstr ""
+
+msgid "From: "
+msgstr ""
+
+msgid " To: "
+msgstr ""

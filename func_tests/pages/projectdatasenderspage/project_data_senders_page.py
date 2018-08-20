@@ -163,7 +163,7 @@ class ProjectDataSendersPage(Page):
 
 
     def wait_for_table_data_to_load(self):
-        self.driver.wait_until_element_is_not_present(UI_TEST_TIMEOUT, by_css(".dataTables_processing"))
+        self.driver.wait_until_element_is_not_present(UI_TEST_TIMEOUT +60, by_css(".dataTables_processing"))
         return self
 
     def open_setting_popup(self):
@@ -180,6 +180,7 @@ class ProjectDataSendersPage(Page):
 
     def save_setting(self):
         self.driver.find(by_css("#save_ds_setting")).click()
+        self.driver.wait_for_element(UI_TEST_TIMEOUT, by_id("success-message-box"), True)
 
     def set_setting_to_open_datasender(self):
         self.set_setting_value("open")

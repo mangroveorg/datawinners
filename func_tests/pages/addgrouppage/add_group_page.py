@@ -47,7 +47,12 @@ class AddGroupPage(Page):
 
     def create_a_group(self, group_name):
         self.enter_group_name(group_name)
+        dialog_title = self.get_dialog_title()
         self.click_on_add_group_button()
+        return dialog_title
+
+    def get_dialog_title(self):
+        return self.driver.find(by_css("#ui-dialog-title-1")).text
 
 class AddContactPage(AddGroupPage):
 

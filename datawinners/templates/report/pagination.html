@@ -1,0 +1,12 @@
+<script type="text/javascript" src="/media/javascript/pagination_widget.js"></script>
+<script type="text/javascript" src="/media/javascript/report/pagination.js"></script>
+<script type="text/javascript" src="/media/javascript/report/sort.js"></script>
+<script>
+    $(function(){
+        var rows = doSort($("{{data|safe}}"), {{sort_columns}});
+        updateCurrentPageData(0, rows);
+        initPaginationWidget("{{report_id}}", rows);
+    });
+</script>
+
+<div id="pagination-{{report_id}}" style="text-align: center;"></div>

@@ -10,6 +10,7 @@ var viewModel = function () {
     this.editUserSuccess = ko.observable(false);
     this.questionnaireRevoked = ko.observable(false);
     this.hasFetchedQuestionnaires = ko.observable(false);
+    this.deletePermission = ko.observable(true);
     this.hasFormEdited = ko.observable(false);
     this.userId = 0;
     this.hasEditedPermission = false;
@@ -84,8 +85,17 @@ var viewModel = function () {
         }
     });
 
+    this.getRole = function(){
+        if (self.role() == "Project Managers" && !self.deletePermission()) {
+            return "No Delete PM";
+        }
+        return self.role();
+    }
+
     this.role.subscribe(function(){
-        if(data_from_django['role'] != self.role()) {
+        
+        if ((data_from_django['role'] == 'No Delete PM' && (self.role() != 'Project Managers' || !self.deletePermission()))
+            || (data_from_django['role'] != self.role())) {
             self.hasFormEdited(true);
         } else {
             self.hasFormEdited(false);
@@ -99,7 +109,7 @@ var viewModel = function () {
             'title': self.title(),
             'full_name': self.fullName(),
             'username': self.email(),
-            'role': self.role(),
+            'role': self.getRole(),
             'mobile_phone': self.mobilePhone(),
             'selected_questionnaires': self.selectedQuestionnaires() || [],
             'selected_questionnaire_names': self.selectedQuestionnaireNames() || [],
@@ -170,7 +180,15 @@ $(document).ready(function () {
     userModel.email(data_from_django['username']);
     userModel.mobilePhone(data_from_django['mobile_phone']);
     userModel.title(data_from_django['title']);
-    userModel.role(data_from_django['role']);
+    
+    if (data_from_django['role'] == 'No Delete PM') {
+        userModel.role('Project Managers');
+        userModel.deletePermission(false);
+    } else {
+        userModel.role(data_from_django['role']);
+        userModel.deletePermission(true);
+    }
+
     userModel.userId = data_from_django['id'];
     var selectedQuestionnaires = [];
     data_from_django['questionnaires'].forEach(function (q) {

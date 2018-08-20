@@ -130,6 +130,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.locale.LocaleMiddleware',
     'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
     'datawinners.middleware.exception_middleware.ExceptionMiddleware',
+    'waffle.middleware.WaffleMiddleware',
 )
 
 ROOT_URLCONF = 'datawinners.urls'
@@ -148,7 +149,8 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'datawinners.accountmanagement.context_processors.add_feature_flags',
     'datawinners.accountmanagement.context_processors.add_help_link',
     'django.contrib.messages.context_processors.messages',
-    'datawinners.accountmanagement.context_processors.current_active_language'
+    'datawinners.accountmanagement.context_processors.current_active_language',
+    'django.core.context_processors.request',
 )
 
 INDEX_PAGE = '/home'
@@ -178,6 +180,7 @@ INSTALLED_APPS = (
     'datawinners',
     'datawinners.main',
     'datawinners.project',
+    'datawinners.public',
     'datawinners.dashboard',
     'datawinners.location',
     'datawinners.entity',
@@ -185,6 +188,7 @@ INSTALLED_APPS = (
     'datawinners.xforms',
     'datawinners.dataextraction',
     'datawinners.admin_apis',
+    'datawinners.report',
     'django_extensions',
     'django.contrib.flatpages',
     'south',
@@ -198,6 +202,9 @@ INSTALLED_APPS = (
     'celery',
     'datawinners.smstester',
     'datawinners.preferences',
+    'waffle',
+    'datawinners.feature_toggle_demo_advanced_dashboard',
+    'datawinners.feature_toggle',
 )
 
 WAYBILL_SENT_QUESTIONNAIRE_CODE = 'way1'
@@ -255,6 +262,10 @@ LOGGING = {
             'propagate': True,
         },
     }
+}
+
+SOUTH_MIGRATION_MODULES = {
+    'waffle': 'waffle.south_migrations',
 }
 
 SCHEDULER_HOUR = 5

@@ -1,6 +1,6 @@
 {% extends 'project/tab_navigation.html' %}
 {% load i18n %}
-
+{% load waffle_tags %}
 {% block page_title %}{% trans "Project - Questionnaire" %} {% endblock %}
 
 {% load dw_tabs %}
@@ -15,32 +15,84 @@
     {{ block.super }}
 {% endblock %}
 
-{% block page_scss %}
+{% block page_css %}
     {{ block.super }}
     <link href="/media/css/scss/section_questionnaire_preview.css" rel="stylesheet"/>
     <link href="/media/css/scss/section_questionnaire.css" rel="stylesheet"/>
     <link href="/media/css/scss/section_new_create_project.css" rel="stylesheet"/>
     <link href="/media/css/scss/smart_phone_instruction.css" rel="stylesheet" />
+  {% flag "questionnaire_builder"%}
+    <link href="/media/css/questionnaire_builder/dist/bundle.css" rel="stylesheet"/>
+  {% endflag %}
+
 {% endblock %}
 
 {% block page_js %}
     {{ block.super }}
+    <script type="text/javascript">
+        var message_text = "";
+        DW.help_url = "https://www.datawinners.com/{% trans 'wp_language' %}/find-answers-app/category/qrs/?template=help";
+    </script>
+    <script type="text/javascript" src="/media/javascript/file_uploader/fileuploader.js"></script>
+    <script type="text/javascript" src="/media/javascript/dw_dialog.js"></script>
+    <script type="text/javascript" src="/media/javascript/accordion_dialog.js"></script>
+    <script type="text/javascript" src="/media/javascript/project/upload_questionnaire.js"></script>
+    <script type="text/javascript" src="/media/javascript/project/edit_project_index.js"></script>
 
-        <script type="text/javascript">
-            var project_id = "{{ project_id }}"
-            var message_text = "";
-            DW.help_url = "https://www.datawinners.com/{% trans 'wp_language' %}/find-answers-app/category/qrs/?template=help";
-        </script>
-        <script type="text/javascript" src="/media/javascript/file_uploader/fileuploader.js"></script>
-        <script type="text/javascript" src="/media/javascript/dw_dialog.js"></script>
-        <script type="text/javascript" src="/media/javascript/accordion_dialog.js"></script>
-        <script type="text/javascript" src="/media/javascript/project/upload_questionnaire.js"></script>
-        <script type="text/javascript" src="/media/javascript/project/edit_project_index.js"></script>
+    <script type="text/javascript">
+        var project_id = "{{ project_id }}";
+        var reload = "{{reload}}";
+    </script>
 
+{% flag "xlsform_edit"%}
+    <script type="text/javascript">
+        var xlsform_edit_enabled = true;
+    </script>
+{% endflag %}
 
 {% endblock %}
 
 {% block content %}
+
+{% flag "questionnaire_builder"%}
+    <script defer async type="text/javascript" src="/media/javascript/questionnaire_builder/dist/bundle.js" ></script>
+    <script type="text/javascript">
+        var xlsform_edit_enabled = true;
+        var questionnaire_builder_enabled = true;
+        var raiseUploadFileCompletedEvent = function (response) {
+            if (typeof(questionnaire_builder_enabled) != 'undefined') {
+                    var event = new CustomEvent("uploadFileComplete", { detail : response });
+                    document.dispatchEvent(event);
+                    return;
+               }
+           };
+    </script>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<div id="questionnaire_builder"></div>
+
+    <noscript>
+        <p>{% trans "Please enable JavaScript to use file uploader." %}</p>
+    </noscript>
+    <div id="file_uploader" class="button upload_xls"></div>
+    </div>
+    <div id="cancel_questionnaire_edit" style="display: none;">
+        {% trans "If you edit your XLSForm and upload it again, any previously collected data for this Questionnaire will be lost!" %}<br/><br/>
+        <p class="font_size_13">{% trans "You can" %} <a class='dialog-link' href='{{ project_links.submission_log_link }}'> {% trans "Export Your Submissions" %}</a> {% trans "first or" %} <a class='dialog-link' href="{% url create_project %}?prev=ques#questionnaire/xlsupload/">{% trans "Create a New Questionnaire"%}</a>{% trans 'instead.'%} </p><br/>
+
+
+        {% trans "Do you want to continue uploading the edited XLSForm ?" %}
+        <div class="text_align_right padding_top_20">
+            <a id="cancel_dialog" class="dialog_cancel_button dialog-link" href="javascript:void(0);">{% trans "Cancel" %}</a>
+            <a id="save_changes" class="button yes_button">{% trans "Continue" %}</a>
+        </div>
+    </div>
+	</div>
+    <form id="download_form" method="POST">
+        {% csrf_token %}
+        <input id="questionnaire_code" name='questionnaire_code' type="hidden" value="{{ questionnaire_code }}"/>
+        <input id='project_name' name='project_name' type="hidden" value="{{ project.name }}"/>
+    </form>
+{% else %} <!-- if builder is not enabled, default flow -->
     <div>
         <div class="grid_8 alpha">
             <h2>{% trans "Questionnaire" %}</h2>
@@ -111,13 +163,14 @@
             <a id="save_changes" class="button yes_button">{% trans "Continue" %}</a>
         </div>
     </div>
-    <div style="display: none">
-        {% include "project/inform_datasender_of_excel_questionnaire_changes.html" %}
-    </div>
 
     <div id="survey" style="height: 200px;"></div>
     <div id="choices" style="height: 200px;"></div>
     <div id="cascades" style="height: 200px;"></div>
     <div id="other" style="height: 200px;"></div>
+{% endflag %}
+    <div style="display: none">
+        {% include "project/inform_datasender_of_excel_questionnaire_changes.html" %}
+    </div>
 
 {% endblock %}

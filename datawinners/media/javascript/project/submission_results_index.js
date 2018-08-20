@@ -25,8 +25,7 @@ $(document).ready(function () {
         new DW.SubmissionLogTable(submission_table_options);
     };
 
-    function _activate_tab(submissionTabs) {
-
+    function _activate_tab() {
         $('#search_box .dataTables_filter').remove();
         $.each($(".repeat_ans").find('.repeat_qtn_label'), function (index, element) {
 
@@ -44,13 +43,26 @@ $(document).ready(function () {
         new DW.DataSenderFilter(_postFilterSelection).init();
         new DW.SubjectFilter(_postFilterSelection).init();
         new DW.SearchTextFilter(_postFilterSelection).init();
+        new DW.DuplicatesForFilter(_postFilterSelection).init();
     };
 
     var _postFilterSelection = function(){
         $(".submission_table").dataTable().fnDraw();
     };
 
+    var _show_hide_duplicates_filter = function() {
+        if (submissionTabs.isDuplicatesTab()) {
+            $("#duplicates-for-dropdown").show();
+            $("#duplicates_learn_more").show();
+        } else {
+            $("#duplicates-for-dropdown").hide();
+            $("#duplicates_learn_more").hide();
+        }
+    }
+
     _initTable(submissionTabs);
+    new DW.DuplicatesHelpSection(). init();
+    _show_hide_duplicates_filter();
     _initialize_filters();
     $('#page_hint_section').text($('#page_hint').find('>div:first').text());
 
@@ -64,9 +76,11 @@ $(document).ready(function () {
         if (submissionTabs.getActiveTabIndex() === tab_index) {
             return;
         }
+
         submissionTabs.setActiveTabIndex(tab_index);
+        _show_hide_duplicates_filter();
         submissionLogExport.update_tab(submissionTabs.getActiveTabName());
-        _activate_tab(submissionTabs);
+        _activate_tab();
         return true;
     });
 

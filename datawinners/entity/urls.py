@@ -1,4 +1,5 @@
 from django.conf.urls.defaults import patterns, url
+
 from datawinners.entity.view.all_datasenders import AllDataSendersView, AllDataSendersAjaxView, AssociateDataSendersView, DisassociateDataSendersView, delete_data_senders, UsersInSearchedDataSender
 from datawinners.entity.view.datasenders import EditDataSenderView
 from datawinners.entity.view.datasenders import RegisterDatasenderView
@@ -9,22 +10,27 @@ from datawinners.entity.view.import_template import import_template
 from datawinners.entity.view.questionnaires import get_existing_questionnaires, get_questionnaires_and_polls
 from datawinners.entity.view.send_sms import SendSMS, get_all_mobile_numbers
 from datawinners.entity.view.unique_id import delete_subjects
-from datawinners.entity.views import create_multiple_web_users, edit_subject_questionnaire, save_questionnaire, edit_subject, get_questionnaire_details_ajax, \
-    create_group
+from datawinners.entity.views import all_subject_types, all_subjects, all_subjects_ajax, map_data, map_data_for_reports
+from datawinners.entity.views import create_multiple_web_users, edit_subject_questionnaire, save_questionnaire, edit_subject, get_questionnaire_details_ajax, create_group, \
+    share_token, save_preference, map_admin
 from datawinners.entity.views import create_subject, subject_autocomplete
 from datawinners.entity.views import create_type
-from datawinners.entity.views import all_subject_types, all_subjects, all_subjects_ajax
-from datawinners.entity.views import import_subjects_from_project_wizard
-from datawinners.entity.views import export_subject
 from datawinners.entity.views import delete_subject_types
+from datawinners.entity.views import export_subject
+from datawinners.entity.views import import_subjects_from_project_wizard
 
 urlpatterns = patterns('',
                        url(r'datasender/register', RegisterDatasenderView.as_view(), name="register_data_sender"),
                        (r'datasender/edit/(?P<reporter_id>.+?)/$', EditDataSenderView.as_view()),
                        (r'webuser/create', create_multiple_web_users),
                        url(r'subject/create/(?P<entity_type>.+?)/$', create_subject, name='create_subject'),
+                       url(r'subject/map/(?P<entity_type>.+?)/$', map_admin, name='map_admin'),
                        url(r'subject/edit/(?P<entity_type>.+?)/(?P<entity_id>.+?)/$', edit_subject,
                            name="edit_subject"),
+                       (r'(?P<entity_type>.+?)/map$', map_data),
+                       (r'(?P<entity_type>.+?)/map/(?P<report_id>.+?)$', map_data_for_reports),
+                       (r'(?P<entity_type>.+?)/sharetoken$', share_token),
+                       (r'(?P<entity_type>.+?)/save_preference$', save_preference),
                        (r'type/create', create_type),
                        (r'group/create', create_group),
                        (r'subjects/delete/$', delete_subjects),
@@ -37,10 +43,8 @@ urlpatterns = patterns('',
                        url(r'(?P<entity_type>.+?)/autocomplete/$', subject_autocomplete),
                        (r'disassociate/$', DisassociateDataSendersView.as_view()),
                        (r'associate/$', AssociateDataSendersView.as_view()),
-                       url(r'subject/import/(?P<form_code>.+?)/$', import_subjects_from_project_wizard,
-                           name='import_subjects'),
-                       url(r'subject/edit/(?P<entity_type>.+?)/$', edit_subject_questionnaire,
-                           name="edit_subject_questionnaire"),
+                       url(r'subject/import/(?P<form_code>.+?)/$', import_subjects_from_project_wizard, name='import_subjects'),
+                       url(r'subject/edit/(?P<entity_type>.+?)/$', edit_subject_questionnaire, name="edit_subject_questionnaire"),
                        (r'subject/details/(?P<entity_type>.+?)/$', get_questionnaire_details_ajax),
                        (r'questionnaire/save$', save_questionnaire),
                        url(r'subject/export/', export_subject, name="export_subject"),
@@ -57,4 +61,4 @@ urlpatterns = patterns('',
                        url(r'group-ds-count/$', group_ds_count, name="group_ds_count"),
                        url(r'delete-group/$', delete_group, name="group_delete"),
                        url(r'rename-group/$', rename_group, name="group_rename")
-)
+                       )

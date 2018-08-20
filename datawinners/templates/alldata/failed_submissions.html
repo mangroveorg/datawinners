@@ -7,27 +7,50 @@
     {% activetab "tab_nav" "failed_submissions" %}
     {{ block.super }}
 {% endblock %}
-
 {% block content %}
-<div>
-   <table class="styled_table">
-    <thead>
-        <th width="15%"> {% trans "Data Sender" %} </th>
-        <th width="10%"> {% trans "Submission Date" %} </th>
-        <th width="10%"> {% trans "Questionnaire Code" %} </th>
-        <th width="20%"> {% trans "SMS Text" %} </th>
-        <th width="45%"> {% trans "Error Message" %} </th>
-    </thead>
-        {% for log in logs%}
-            <tr>
-                <td>{{ log.from_number }}</td>
-                <td>{{ log.created_at_formatted }}</td>
-                <td>{{ log.form_code }}</td>
-                <td>{{ log.message }}</td>
-                <td>{{ log.error }}</td>
+<link href="/media/javascript/data_tables/css/dwtable.css" rel="stylesheet"/>
+<link href="/media/javascript/jquery-dropdown/jquery.dropdown.css" rel="stylesheet"/>
+{% load compress %}
+{% compress js %}
+    <script src="/media/javascript/data_tables/js/jquery.dataTables.min.js"></script>
+    <script src="/media/javascript/data_tables/js/dw_pagination_plugin.js"></script>
+    <script src="/media/javascript/jquery-dropdown/jquery.dropdown.js"></script>
+    <script src="/media/javascript/data_tables/js/dwtable.js"></script>
 
-            </tr>
+
+    <script>
+    $(function(){
+        
+
+        $("#failedsubmissions_table").dwTable({
+                "bFilter": false,
+                "concept": "failedsubmissions",
+                "sAjaxSource": "/allfailedsubmissions/ajax/",
+                "sAjaxDataIdColIndex" : $("#failedsubmissions_table thead th.short_code").index(("#failedsubmissions_table thead th")),
+                "bServerSide": true,
+                "asSorting": [ [ $('#failedsubmissions_table th.name').index('#failedsubmissions_table th'), "asc"] ],
+                "aaSorting": [ [ "2", "desc"] ]
+
+
+          });
+
+        });
+    </script>
+
+{% endcompress %}
+
+
+<div>
+   <table id="failedsubmissions_table" class="styled_table">
+    <thead>
+        
+        {#        empty th for check-all box#}
+        <td></td>
+        {% for header_name, header_label in failedsubmissions_headers.items %}
+            <th class="{{ header_name }}">{{ header_label }} </th>
         {% endfor %}
+    </thead>
+        
     </table>
 </div>
 {% endblock %}

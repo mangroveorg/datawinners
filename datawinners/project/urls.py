@@ -1,7 +1,10 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 from django.conf.urls.defaults import patterns, url
+
 from datawinners.entity.view.all_datasenders import DisassociateDataSendersView
 from datawinners.project import create_poll
+from datawinners.project.preview_views import sms_preview, web_preview, smart_phone_preview
+from datawinners.project.views import submission_views
 from datawinners.project.views.change_language import QuestionnaireLanguageView
 from datawinners.project.views.create_questionnaire import create_project
 from datawinners.project.views.datasenders import MyDataSendersAjaxView, registered_datasenders
@@ -9,13 +12,10 @@ from datawinners.project.views.import_submissions_views import ImportSubmissionV
 from datawinners.project.views.poll_views import get_poll_info, deactivate_poll, activate_poll, get_poll_sent_messages, \
     my_poll_recipients_count
 from datawinners.project.views.registered_datasenders import registered_ds_count
-
-from datawinners.project.wizard_view import edit_project, reminder_settings, get_templates, get_template_details
-from datawinners.project.preview_views import sms_preview, web_preview, smart_phone_preview
-from datawinners.project.views import submission_views
 from datawinners.project.views.views import questionnaire, create_data_sender_and_web_user, questionnaire_preview, subject_registration_form_preview, sender_registration_form_preview, project_overview, \
     registered_subjects, broadcast_message, sent_reminders, delete_project, undelete_project, edit_my_subject_questionnaire, project_has_data, subject_web_questionnaire, survey_web_questionnaire, edit_my_subject, get_questionnaire_ajax, \
-    rename_project, change_ds_group
+    rename_project, change_ds_group, geo_json_for_project
+from datawinners.project.wizard_view import edit_project, reminder_settings, get_templates, get_template_details
 
 js_info_dict = {
     'domain': 'djangojs',
@@ -86,13 +86,13 @@ urlpatterns = patterns('',
                            name="submissions_delete"),
                        (r'^project/export/log$', submission_views.export),
                        (r'^project/export/log-count$', submission_views.export_count),
-                       (r'^project/analysis/(?P<form_code>.+?)/headers$', submission_views.analysis_headers),
                        (r'^project/analysis/(?P<form_code>.+?)/preferences$', submission_views.analysis_user_preferences),
                        (r'^project/submissions/(?P<form_code>.+?)/headers$', submission_views.headers),
                        (r'^project/submissions/(?P<form_code>.+?)/analysis$', submission_views.get_stats),
                        (r'^project/submissions/(?P<form_code>.+?)$', submission_views.get_submissions),
                        (r'^project/analysis/(?P<form_code>.+?)$', submission_views.get_analysis_data),
-                       
+                       (r'^get_geojson/(?P<project_id>.+?)/$', geo_json_for_project),
+                       (r'^get_geojson/(?P<project_id>.+?)/(?P<entity_type>.+?)$', geo_json_for_project),
                        url(r'^project/import-submissions/(?P<form_code>.+?)$', ImportSubmissionView.as_view(), name="import_submissions"),
                        url(r'^project/change-group/$', change_ds_group),
                        url(r'^project/registered-ds-count/$', registered_ds_count, name="registered_ds_count"),

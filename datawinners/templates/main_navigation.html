@@ -1,6 +1,8 @@
 {% load i18n %}
 {% load dw_tabs %}
 {% block main_navigation %}
+{% load waffle_tags %}
+
     <div id="main_tab">
         <div class="grid_3 alpha logo">
                 <a href="{% url dashboard %}"><img src="/media/images/datawinners_logo.png"/></a>
@@ -9,6 +11,17 @@
             <li class ="{% ifactivetab 'main_nav' 'dashboard' %}active{% else %}inactive{% endifactivetab %}">
                 <a id="global_dashboard_link" href="{% url datawinners.dashboard.views.dashboard %}" class="{{ disable_link_class }}">{% trans "Dashboard" %}</a>
             </li>
+            {% flag "reports"%}
+            <li  class ="{% ifactivetab 'main_nav' 'reports' %}active{% else %}inactive{% endifactivetab %}">
+                <a id="global_reports_link" href="{% url all_reports %}" class="{{ disable_link_class }}">{% trans "Reports" %}</a>
+            </li>
+            {% endflag %}
+            {% flag "advanced_dashboard"%}
+	            <li class ="{% ifactivetab 'main_nav' 'advanced_dashboard' %}active{% else %}inactive{% endifactivetab %}">
+	                <a id="global_dashboard_link" href="/advanced_dashboard" class="{{ disable_link_class }}">{% trans "Advanced Dashboard" %}</a>
+	            </li>
+            {% endflag %}
+            
             <li class ="{% ifactivetab 'main_nav' 'questionnaires' %}active{% else %}inactive{% endifactivetab %}">
                 {% if is_pro_sms %}
                     <a id="global_all_data_link" href="/alldata/">{% trans "Questionnaires & Polls" %}</a>

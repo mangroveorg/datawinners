@@ -1,0 +1,48 @@
+{% extends 'layout_application.html' %}
+
+{% load i18n %}
+{% load dw_tabs %}
+
+{% block page_title %}{% trans "Reports" %}{% endblock %}
+{% block section_title %}{% trans "Reports" %}{% endblock %}
+{% block section_help %}{% endblock %}
+{% block body %}
+    {% activetab "main_nav" "reports" %}
+    {{ block.super }}
+{% endblock %}
+
+{% block page_css %}
+    <link href="/media/css/plugins/chosen/chosen.min.css" rel="stylesheet"/>
+    <link href="/media/javascript/dateRangePicker/css/ui.daterangepicker.css" rel="stylesheet" />
+    <link href="/media/javascript/dateRangePicker/css/ui-lightness/jquery-ui-1.8.12.custom.css" rel="stylesheet" />
+    <link href="/media/css/scss/pagination_widget.css" rel="stylesheet"/>
+    <link href="/media/css/scss/section_filter.css" rel="stylesheet"/>
+{% endblock %}
+
+{% block page_js %}
+    <script type="text/javascript" src="/media/javascript/jquery-chosen/chosen.jquery.min.js"></script>
+    <script type="text/javascript" src="/media/javascript/dateRangePicker/js/daterangepicker.jQuery.withoutdrilldown.js"></script>
+    <script type="text/javascript" src="/media/javascript/dateRangePicker/js/jquery-ui-1.8.12.custom.min.js"></script>
+    <script type="text/javascript" src="/media/javascript/report/lib/jszip.min.js"></script>
+    <script type="text/javascript" src="/media/javascript/report/lib/xlsx.core.min.js"></script>
+    <script type="text/javascript" src="/media/javascript/report/lib/blob.js"></script>
+    <script type="text/javascript" src="/media/javascript/report/lib/filesaver.js"></script>
+    <script type="text/javascript" src="/media/javascript/report/report.js"></script>
+{% endblock %}
+
+{% block navigation %}
+    <div class="tab_navigation">
+    {% for config_line in configs %}
+        <ul id="report_navigation">
+            {% for config in config_line %}
+                <li class="{% if forloop.first %}active{% else %}inactive{% endif %}" title="{{config.description}}">
+                    <a id="{{ config.id }}" class="report_fixed_width">{{ config.name }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endfor %}
+    </div>
+{% endblock %}
+{% block content %}
+    <div id="report_container" style="margin:0; padding:0; overflow:scroll"></div>
+{% endblock %}

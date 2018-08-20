@@ -3,7 +3,7 @@ from django.conf.urls.defaults import patterns, url
 from datawinners.alldata.views import  get_entity_list_by_type
 from datawinners.alldata.views import smart_phone_instruction
 from datawinners.alldata.views import index, reports
-from datawinners.alldata.views import failed_submissions
+from datawinners.alldata.views import failed_submissions, failed_submissions_ajax
 
 urlpatterns = patterns('',
     url(r'^alldata/$', index, name="alldata_index"),
@@ -12,6 +12,7 @@ urlpatterns = patterns('',
     (r'^questionnaire/reports/$', reports),
     (r'^alldata/reports/$', reports),
     (r'^allfailedsubmissions/$', failed_submissions),
+    (r'^allfailedsubmissions/ajax/$', failed_submissions_ajax),
     url(r'^smartphoneinstruction$', smart_phone_instruction, name="smart_phone_instruction"),
     url(r'^smartphoneinstruction/(?P<project_id>.+?)/$', smart_phone_instruction, name="smart_phone_instruction"),
 )

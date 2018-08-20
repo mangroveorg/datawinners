@@ -2,6 +2,11 @@
 {% load i18n %}
 {% load questionnaire_preview_tags %}
 
+{% block page_scss %}
+    {{ block.super }}
+    <link href="/media/css/scss/section_web_questionnaire.css" rel="stylesheet"/>
+{% endblock %}
+
 {% block secondary_navigation %}
     {{ block.super }}
     <li>

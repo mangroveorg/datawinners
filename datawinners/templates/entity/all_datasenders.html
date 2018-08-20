@@ -160,6 +160,12 @@
     </div>
     <div id="no_datasenders_message" class="none">
         {% trans "Once you have added Contacts to your Group, they will appear here." %}
+        <br/><br/>
+        {% trans "To get started" %}
+        <ul class="bulleted">
+            <li class="margin_left_30">{% trans "Add existing Contacts from the" %} <a href="javascript:groupViewModel.setSelectedGroupToDefault();">{% trans "All Contacts view" %}</a>.</li>
+            <li class="margin_left_30"><a href="javascript:void(0);" onclick="register_datasender();">{% trans "Add a new Contact" %}</a> {% trans "or" %} <a href="javascript:void(0);" onclick="open_import_contacts_dialog();">{% trans "Import new Contacts" %}</a>.</li>
+        </ul>
     </div>
     {% include "entity/delete_datasenders_warning_dialog.html" %}
     {% include 'entity/all_data_senders/all_project_blocks.html' %}

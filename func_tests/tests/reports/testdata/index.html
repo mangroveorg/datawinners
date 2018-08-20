@@ -1,0 +1,16 @@
+<div id="{{config.id}}">
+    {% load report_tags %}
+    <table>
+      <tr>
+        <th>Age</th>
+        <th>Name</th>
+      </tr>
+        {% loop %}
+            <tr>
+                <td>"q1.age"</td>
+                <td>"q1.name"</td>
+            </tr>
+        {% endloop %}
+    </table>
+    {% pagination %}
+</div>

@@ -7,9 +7,20 @@ var viewModel = function () {
     this.questionnaires = ko.observableArray([]);
     this.selectedQuestionnaires = ko.observableArray([]);
     this.role = DW.ko.createValidatableObservable({value: ""});
+    this.deletePermission = ko.observable(true);
     this.hasFetchedQuestionnaires = ko.observable(false);
     this.addUserSuccess = ko.observable(false);
     this.hasFormChanged = ko.observable(false);
+    this.showFlashMessage = ko.observable(false);
+    this.flashMessage = ko.computed(function () {
+        if (!self.addUserSuccess()) {
+            return gettext("Sorry, the user registration failed due to a unknown system error, please try again.");
+        }
+        return gettext("User has been added successfully");
+    });
+    this.classFlashMessage = ko.computed(function (){
+        return self.addUserSuccess() ? 'success-message-box' : 'message-box';
+    });
 
     this.fullName.subscribe(function () {
         DW.ko.mandatoryValidator(self.fullName, 'This field is required');
@@ -29,13 +40,34 @@ var viewModel = function () {
     });
 
     this.role.subscribe(function () {
+        self.deletePermission(true);
         self.hasFormChanged(true);
         self.role.setError(null);
     });
 
     this.title.subscribe(function(){
+        if(!self.title() || self.title().length <= 100){
+            self.title.setError(null);
+        }
        self.hasFormChanged(true);
     });
+
+    self.showSuccessMessage = function () {
+        self.addUserSuccess(true);
+        self.clearFields();
+        self.showFlashMessage(true);
+    }
+
+    self.showErrorMessage = function () {
+        self.showFlashMessage(true);
+    }
+
+    self.getRole = function(){
+        if (self.role() == "Project Managers" && !self.deletePermission()) {
+            return "No Delete PM";
+        }
+        return self.role();
+    }
 
     this.submit = function () {
         $.blockUI({
@@ -47,7 +79,7 @@ var viewModel = function () {
             'title': self.title(),
             'full_name': self.fullName(),
             'username': self.email(),
-            'role': self.role(),
+            'role': self.getRole(),
             'mobile_phone': self.mobilePhone(),
             'selected_questionnaires': self.selectedQuestionnaires() || [],
             'selected_questionnaire_names': self.selectedQuestionnaireNames() || [],
@@ -56,8 +88,7 @@ var viewModel = function () {
         $.post('/account/user/new/', formData, function (response) {
             var responseJson = $.parseJSON(JSON.stringify(response));
             if (responseJson['add_user_success'] == true) {
-                self.addUserSuccess(true);
-                self.clearFields();
+                self.showSuccessMessage()
                 $('html, body').animate({scrollTop: '0px'}, 0);
                 DW.trackEvent('account-management', responseJson['current_user'] +'add-user', self.role());
             } else {
@@ -80,10 +111,18 @@ var viewModel = function () {
         if (errors['role']) {
             self.role.setError(errors['role'][0]);
         }
+        if (errors['title']) {
+            self.title.setError(errors['title'][0]);
+        }
+
+        if ($.isEmptyObject(errors)) {
+            self.showErrorMessage();
+        }
+        
     };
 
     this.fetchQuestionnaires = function () {
-        if (self.role() == 'Project Managers') {
+        if (self.role() == 'Project Managers' || self.role() == 'No Delete PM') {
             $.getJSON('/entity/questionnairesandpolls/', {}, function (data) {
                 $('#container_content').height('auto');
                 self.hasFetchedQuestionnaires(true);
@@ -98,16 +137,19 @@ var viewModel = function () {
         this.email(null);
         this.email.setError(null);
         this.title(null);
-        this.role(null);
+        this.title.setError(null);
+        this.role(self.role());
         this.mobilePhone(null);
         this.mobilePhone.setError(null);
         this.fullName.setError(null);
         this.questionnaires([]);
         this.hasFetchedQuestionnaires(false);
+        this.fetchQuestionnaires();
         this.selectedQuestionnaires([]);
         this.hasFormChanged(false);
         setTimeout(function () {
             self.addUserSuccess(false);
+            self.showFlashMessage(false);
         }, 10000)
     };
     

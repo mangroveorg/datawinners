@@ -52,7 +52,10 @@
                 {% if not project.is_poll %}
                     {% include 'project/sms_tester_form.html' %}
                     <script src="/media/javascript/project/sms_tester.js" type="text/javascript"></script>
-                    <a href="#" class='sms_tester'>{% trans "Test SMS Questionnaire" %}</a>&nbsp&nbsp|&nbsp
+                    <a href="#" class='sms_tester'>{% trans "Test SMS Questionnaire" %}</a>&nbsp&nbsp
+                    {% if user|in_group:"NGO Admins,Project Managers,Extended Users" %}
+                        |&nbsp
+                    {% endif %}
                 {% endif %}
             {% endif %}
         {% if user|in_group:"NGO Admins,Project Managers,Extended Users" %}

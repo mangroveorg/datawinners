@@ -2,25 +2,25 @@
 import json
 
 from django.contrib import messages
-from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
+from django.http import HttpResponse
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from django.utils.translation import ugettext as _, ugettext, get_language
 from django.views.decorators.csrf import csrf_exempt
-from mangrove.errors.MangroveException import DataObjectNotFound
-from mangrove.datastore.entity import get_all_entities, by_short_codes, Contact
 
 from datawinners.accountmanagement.decorators import is_datasender, session_not_expired, is_not_expired, valid_web_user
-from datawinners.main.database import get_database_manager
-from datawinners.project.submission.util import submission_stats
 from datawinners.accountmanagement.models import NGOUserProfile, Organization, PaymentDetails
-from datawinners.utils import get_map_key, get_organization
+from datawinners.main.database import get_database_manager
+from datawinners.preferences.models import UserPreferences
+from datawinners.project.submission.util import submission_stats
+from datawinners.utils import get_organization
+from mangrove.datastore.entity import Contact
+from mangrove.datastore.user_permission import get_questionnaires_for_user
 from mangrove.form_model.project import Project
 from mangrove.utils.types import is_empty
-from datawinners.preferences.models import UserPreferences
-from mangrove.datastore.user_permission import get_questionnaires_for_user
+
 
 def _find_reporter_name(dbm, row):
     try:
@@ -86,6 +86,7 @@ COST_MAP = {
                }
     }
 
+
 def _fetch_amount(organization):
     payment_details = PaymentDetails.objects.filter(organization=organization)
     if is_empty(payment_details) or organization.account_type == 'Basic':
@@ -123,7 +124,7 @@ def dashboard(request):
                       extra_tags='error')
     user = request.user.id
     show_help = False if (UserPreferences.objects.filter(user=user)).count() > 0 else True
-    
+
 
     context = {
         "show_help":show_help,
@@ -150,6 +151,7 @@ def dashboard(request):
     return render_to_response('dashboard/home.html',
                               context, context_instance=RequestContext(request))
 
+
 def hide_help_element(request):
     user_id = request.user.id
     preference_name = "hide_help_element"
@@ -157,6 +159,7 @@ def hide_help_element(request):
     help_element_preference = UserPreferences(user_id=user_id, preference_name=preference_name, preference_value=preference_value)
     help_element_preference.save()
     return HttpResponse(json.dumps({'success': True}))
+
 
 @valid_web_user
 def start(request):
@@ -173,7 +176,7 @@ def start(request):
                      'datasenders': 'https://www.datawinners.com/%s/find-answers-app/category/allds/?template=help',
                      'subjects': 'https://www.datawinners.com/%s/find-answers-app/category/idnos/?template=help',
                      'alldata': 'https://www.datawinners.com/%s/find-answers-app/category/proj/?template=help'}
-    
+
     page = request.GET['page']
     page = page.split('/')
     url_tokens = [each for each in page if each != '']
@@ -184,73 +187,3 @@ def start(request):
                               {'text': text, 'title': title, 'active_tab': tabs_dict[url_tokens[-1]],
                                'help_url': help_url, 'is_pro_sms': get_organization(request).is_pro_sms},
                               context_instance=RequestContext(request))
-
-
-def _get_first_geocode_field_for_entity_type(dbm, entity_type):
-    geocode_fields = [f for f in
-                      dbm.view.registration_form_model_by_entity_type(key=[entity_type], include_docs=True)[0]["doc"][
-                          "json_fields"] if
-                      f["type"] == "geocode"]
-    return geocode_fields[0] if len(geocode_fields) > 0 else None
-
-
-def to_json_point(value):
-    point_json = {"type": "Feature", "geometry":
-        {
-            "type": "Point",
-            "coordinates": [
-                value[1],
-                value[0]
-            ]
-        }
-    }
-    return point_json
-
-
-def get_location_list_for_entities(first_geocode_field, unique_ids):
-    location_list = []
-    for entity in unique_ids:
-        value_dict = entity.data.get(first_geocode_field["name"])
-        if value_dict and value_dict.has_key('value'):
-            value = value_dict["value"]
-            location_list.append(to_json_point(value))
-    return location_list
-
-
-@valid_web_user
-def geo_json_for_project(request, project_id, entity_type=None):
-    dbm = get_database_manager(request.user)
-    location_list = []
-
-    try:
-        if entity_type:
-            first_geocode_field = _get_first_geocode_field_for_entity_type(dbm, entity_type)
-            if first_geocode_field:
-                unique_ids = get_all_entities(dbm, [entity_type], limit=1000)
-                location_list.extend(get_location_list_for_entities(first_geocode_field, unique_ids))
-        else:
-            questionnaire = Project.get(dbm, project_id)
-            unique_ids = by_short_codes(dbm, questionnaire.data_senders, ["reporter"], limit=1000)
-            location_list.extend(get_location_list_for_datasenders(unique_ids))
-
-    except DataObjectNotFound:
-        pass
-
-    location_geojson = {"type": "FeatureCollection", "features": location_list}
-    return HttpResponse(json.dumps(location_geojson))
-
-
-def render_map(request):
-    map_api_key = get_map_key(request.META['HTTP_HOST'])
-    return render_to_response('maps/entity_map.html', {'map_api_key': map_api_key},
-                              context_instance=RequestContext(request))
-
-
-def get_location_list_for_datasenders(datasenders):
-    location_list = []
-    for entity in datasenders:
-        geocode = entity.geometry
-        if geocode:
-            value = (geocode["coordinates"][0], geocode["coordinates"][1])
-            location_list.append(to_json_point(value))
-    return location_list

@@ -1,0 +1,37 @@
+{% extends "admin/base_site.html" %}
+
+{% block content%}
+<h4> 
+    <link href="/media/javascript/data_tables/css/jquery.dataTables.min.css" rel="stylesheet"/>
+    <link href="/media/css/plugins/jqueryUI/jquery-ui-1.8.13.custom.css" rel="stylesheet" />
+    
+    <style>
+    /* Big Button Style */
+ 
+		.big {
+		    height: 45px;
+		    font: bold 20px/22px Arial, sans-serif;
+		    background: lightgreen !important;
+		}
+		 
+    </style>
+    
+	<script type="text/javascript" src="/media/javascript/jquery.js"></script>
+    <script type="text/javascript" src="/media/javascript/jqueryUI/jquery-ui-1.8.13.custom.min.js"></script>
+    <script type="text/javascript" src="/media/javascript/data_tables/js/jquery.dataTables.js"></script>
+    <script type="text/javascript" src="/media/javascript/admin/reindex.js"></script>
+    
+      <script type="text/javascript">
+	      var dataUrl = '/admin-apis/reindex/list';
+	      var reload = '{{reload}}';
+	      if (reload){
+	    	  dataUrl = dataUrl + '?reload='+reload;
+	      }
+      </script>
+	
+	<h4>Reindex current status</h4>
+	
+     <table id="reindex_table" class="dataTable display">
+     </table>	
+</h4>
+{% endblock%}

@@ -146,10 +146,11 @@ class TestQuestionBuilder(unittest.TestCase):
         self.assertEquals(q4._to_json_view()["type"], "select1")
         self.assertEquals(q5._to_json_view()["type"], "text")
 
-    def test_should_populate_name_as_title_if_name_is_not_present(self):
+    def test_should_populate_name_as_code_if_name_is_not_present(self):
         post = {"title": "q2", "type": "text"}
-        q1 = self.question_builder.create_question(post, code="q1")
-        self.assertEqual('q2', q1.name)
+        code = "q1"
+        q1 = self.question_builder.create_question(post, code)
+        self.assertEqual('q1', code)
 
     def test_should_honour_name(self):
         post = {"name": "name", "title": 'q2', "type": "text"}

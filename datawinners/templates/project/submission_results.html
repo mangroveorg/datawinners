@@ -48,6 +48,11 @@
     <script type="text/javascript" src="/media/javascript/project/submission_results_index.js"></script>
     <script type="text/javascript" src="/media/javascript/project/import_submission.js"></script>
     <script type="text/javascript" src="/media/javascript/project/submission_log_actions.js"></script>
+    <script>
+        function resize_iframe(event) {
+            $("#help_iframe").height(event.data);
+        }
+    </script>
 {% endblock %}
 
 {% block page_css %}
@@ -119,7 +124,9 @@
                             href="#tab_template">{% trans 'All' %}</a><a class="tab-separator"></a></li>
                     <li class="ui-state-default"><a href="#tab_template" class="tab-middle">{% trans 'Success' %}</a><a
                             class="tab-separator"></a></li>
-                    <li class="ui-state-default"><a href="#tab_template">{% trans 'Errors' %}</a></li>
+                    <li class="ui-state-default"><a href="#tab_template">{% trans 'Errors' %}</a><a
+                            class="tab-separator"></a></li>
+                    <li class="ui-state-default"><a href="#tab_template">{% trans 'Duplicates' %}</a></li>
                     <li style="float:right" class="ui-state-default"><a
                             href="#tab_template">{% trans 'Deleted Submissions' %}</a></li>
                 {% else %}
@@ -132,6 +139,13 @@
                 {% endif %}
             </ul>
             <div id="tab_template" style="padding: 0px;" class="ui-tabs-panel ui-widget-content ui-corner-bottom">
+                <div id="duplicates_learn_more" class="duplicates_learn_more">
+                    <p>
+                        {% trans "help_text_for_duplicates_oneliner" %}
+                        <a id= "duplicates_learn_more_link" href="javascript:void(0);">{% trans "Learn More" %}</a>
+                    </p>
+                    {% include "project/duplicates_learn_more.html" %}
+                </div>
                 {% include 'project/log_table.html' %}
             </div>
         </div>

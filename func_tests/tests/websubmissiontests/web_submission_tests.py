@@ -1,7 +1,7 @@
 from nose.plugins.attrib import attr
 
 from framework.utils.data_fetcher import fetch_, from_
-from framework.base_test import HeadlessRunnerTest
+from framework.base_test import HeadlessRunnerTest, setup_driver
 from pages.globalnavigationpage.global_navigation_page import GlobalNavigationPage
 from pages.loginpage.login_page import login
 from tests.websubmissiontests.web_submission_data import *
@@ -11,7 +11,8 @@ from tests.logintests.login_data import VALID_CREDENTIALS
 class TestWebSubmission(HeadlessRunnerTest):
     @classmethod
     def setUpClass(cls):
-        HeadlessRunnerTest.setUpClass()
+        #cls.driver = setup_driver("firefox")
+        cls.driver = setup_driver("phantom")
         login(cls.driver, VALID_CREDENTIALS)
 
     dashboard_page = None

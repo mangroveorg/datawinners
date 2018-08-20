@@ -22,7 +22,7 @@ class Query(object):
         query = self.query_builder.get_query(self._getDatabaseName(user), entity_type)
         paginated_query = self.query_builder.create_paginated_query(query, self.query_params)
         search_text = lower(self.query_params.get("search_text"))
-        query_with_criteria = self.query_builder.add_query_criteria(entity_headers, paginated_query, search_text,
+        query_with_criteria = self.query_builder.add_query_criteria(query_fields=None, query=paginated_query, query_text=search_text,
                                                                     query_params=self.query_params)
         return entity_headers, paginated_query, query_with_criteria
 
@@ -52,10 +52,11 @@ class QueryBuilder(object):
             query_text_escaped = self.elastic_utils_helper.replace_special_chars(query_text)
             raw_query = {
                 "query_string": {
-                    "fields": tuple(query_fields),
                     "query": query_text_escaped
                 }
             }
+            if query_fields:
+                raw_query["query_string"]["fields"] = tuple(query_fields)
             return query.query_raw(raw_query)
 
         return query.query()

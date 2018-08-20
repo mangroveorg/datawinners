@@ -1,0 +1,24 @@
+{% load i18n %}
+<div class="filter-question" id="duplicates-for-dropdown">
+    <div class="filter_label duplicate_dropdown">
+        <label>{% trans "Show Duplicates For" %}<img src="/media/images/help_icon.png" class="help_icon submission_date_help_icon"></label>
+        <div class="tooltip"><p>
+            <strong>{% trans "What is this?" %}</strong><br/>
+            {% trans "help_text_for_duplicates_near_filter_header" %}<br/>
+                {% trans "help_text_for_duplicates_near_filter_content_1" %}<br/>
+                {% trans "help_text_for_duplicates_near_filter_content_2" %}<br/>
+                {% trans "help_text_for_duplicates_near_filter_content_3" %}
+        </p></div>
+    </div>
+    <div class="float_left">
+        <select id="duplicates_for">
+            {% for field in duplicates_for %}
+                {% if field.type == 'unique_id' %}
+                    <option value="{{field.code}}">{{ field.entity_type|capfirst }} - {{ field.label|capfirst }}</option>
+                {% else %}
+                    <option value="{{field.entity_type}}">{{ field.label|capfirst }}</option>
+                {% endif %}
+            {% endfor %}
+        </select>
+    </div>
+</div>

@@ -57,7 +57,7 @@ function restore_couchdb_and_postgres {
 function unit_test {
 	echo "running unit test"
 	#compile_messages && \
-	(cd "$DWROOT_DIR/datawinners" && python manage.py test --verbosity=2 --with-xunit --xunit-file=/tmp/nosetests.xml)
+	(cd "$DWROOT_DIR/datawinners" && python manage.py test --with-coverage --verbosity=0 --with-xunit --xunit-file=/tmp/nosetests.xml --cover-html --cover-package=datawinners --cover-branches)
 }
 
 function mangrove_unit_test {
@@ -170,4 +170,8 @@ function recreate_search_index {
 
 function compile_css {
   cd "$DWROOT_DIR/datawinners" && python manage.py compile_css
+}
+
+function createdynamicviews {
+   cd "$DWROOT_DIR/datawinners" && python manage.py createdynamicviews
 }

@@ -1,6 +1,5 @@
 DW.UploadQuestionnaire = function(options){
-    var self = this;
-    self._init(options);
+    this._init(options);
 };
 DW.showError = function(errors,message_prefix,message_suffix){
     var error_message_prefix = '';
@@ -51,39 +50,55 @@ DW.showSuccess = function(message){
 
 DW.UploadQuestionnaire.prototype._init = function(options){
     var self = this;
-    var preUploadValidation =  options.preUploadValidation || function(){ return true;};
-
     var uploadButton = $("#uploadXLS");
-    var spinner = $(".upload_spinner");
-    var initialUploadButtonText = uploadButton.text();
-    var cancelUploadLink = $("#cancel-xlx-upload");
+    if (!!uploadButton) {
+        var spinner = $(".upload_spinner");
+        var initialUploadButtonText = uploadButton.text();
+        var cancelUploadLink = $("#cancel-xlx-upload");
+    }
     var warningMessageBox = $(".warning-message-box");
     var flash_message = $("#xlx-message");
-    new qq.FileUploader({
+    self.file_uploader = new qq.FileUploader({
         element: document.getElementById('file_uploader'),
         action: options.postUrl(),
-        params: {},
         buttonText: options.buttonText,
         onSubmit: function () {
             $('.information_box').remove();
-            cancelUploadLink.removeClass("none");
-            spinner.removeClass("none");
+
+            if (!!uploadButton) {
+                cancelUploadLink.removeClass("none");
+                spinner.removeClass("none");
+                uploadButton.text(gettext("Uploading..."));
+                uploadButton.attr("disabled","disabled");
+                uploadButton.addClass("disabled_yellow_submit_button");
+            }
+
+            // Create the event
+            var event = new CustomEvent("uploadFile", { "detail": "File is currently uploaded" });
+
+            // Dispatch/Trigger/Fire the event
+            document.dispatchEvent(event);
+
             flash_message.addClass("none");
-            uploadButton.text(gettext("Uploading..."));
-            uploadButton.attr("disabled","disabled");
-            uploadButton.addClass("disabled_yellow_submit_button");
-            this.params = (options.params && options.params()) || {};
+            this.params = options.params || {};
             options.onSubmit && options.onSubmit();
         },
         onComplete: function (id, fileName, responseJSON) {
             warningMessageBox.addClass("none");
-            cancelUploadLink.addClass("none");
-            spinner.addClass("none");
-            uploadButton.text(initialUploadButtonText);
-            uploadButton.removeClass("disabled_yellow_submit_button");
-            uploadButton.removeAttr("disabled");
+            if (!!uploadButton) {
+                cancelUploadLink.addClass("none");
+                spinner.addClass("none");
+                uploadButton.text(initialUploadButtonText);
+                uploadButton.removeClass("disabled_yellow_submit_button");
+                uploadButton.removeAttr("disabled");
+            }
+
             if (!responseJSON['success']) {
-                options.postErrorHandler(responseJSON);
+                if (responseJSON['unsupported']) {
+                    options.promptOverwrite(responseJSON, self.file_uploader, self.file_input);
+                } else {
+                    options.postErrorHandler(responseJSON);
+                }
             }
             else {
                 (options.onSuccess && options.onSuccess());
@@ -95,28 +110,31 @@ DW.UploadQuestionnaire.prototype._init = function(options){
         }
     });
 
-    uploadButton.on("click", function() {
-        if(!preUploadValidation()){
+    self.file_input = $("input[name=file]");
+    if (!!uploadButton) {
+        uploadButton.on("click", function() {
+            if(!options.preUploadValidation()){
+                return false;
+            }
+            $("input[name=file]").click();
             return false;
-        }
+        });
 
-        $("input[name=file]").click();
-        return false;
-    });
+        cancelUploadLink.on("click", function(){
+            $(".qq-upload-cancel")[0].click();
+            cancelUploadLink.addClass("none");
+            spinner.addClass("none");
+            uploadButton.text(initialUploadButtonText);
+            uploadButton.removeAttr("disabled");
+            uploadButton.removeClass("disabled_yellow_submit_button")
+            warningMessageBox.removeClass("none");
+            flash_message.addClass("none");
+            DW.trackEvent('advanced-questionnaire', 'cancel-upload');
+            options.postCancelCallBack && options.postCancelCallBack();
+            return false;
+        });
+    }
 
-    cancelUploadLink.on("click", function(){
-        $(".qq-upload-cancel")[0].click();
-        cancelUploadLink.addClass("none");
-        spinner.addClass("none");
-        uploadButton.text(initialUploadButtonText);
-        uploadButton.removeAttr("disabled");
-        uploadButton.removeClass("disabled_yellow_submit_button")
-        warningMessageBox.removeClass("none");
-        flash_message.addClass("none");
-        DW.trackEvent('advanced-questionnaire', 'cancel-upload');
-        options.postCancelCallBack && options.postCancelCallBack();
-        return false;
-    });
 };
 
 DW.XLSHelpSection = function(){

@@ -18,6 +18,11 @@ function QuestionnaireViewModel(){
     self.projectName = DW.ko.createValidatableObservable();
     self.questionnaireCode = DW.ko.createValidatableObservable();
     self.isOpenSurvey = ko.observable();
+    self.uniqueIdTypes = ko.observableArray(uniqueIdTypes);
+    self.showUniqueIdTypeList = ko.computed(function(){
+        return self.uniqueIdTypes().length == 0;
+    }, self);
+    self.isUniqueIdTypeVisible = ko.observable(false);
 
     self.showQuestionnaireForm = ko.observable();
 

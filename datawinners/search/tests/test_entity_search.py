@@ -11,17 +11,17 @@ class TestSubjectQueryResponseCreator(TestCase):
         query = Mock()
 
         query.values_dict.return_value = [{
-                                              "field_name1": ["field_value11"],
-                                              "field_name2": ["field_value12"]
+                                              "field_name1": "field_value11",
+                                              "field_name2": "field_value12"
                                           }, {
-                                              "field_name1": ["field_value21"],
-                                              "field_name2": ["field_value22"]
+                                              "field_name1": "field_value21",
+                                              "field_name2": "field_value22"
                                           }]
 
         actualSubjects = SubjectQueryResponseCreator().create_response(
             required_field_names=["field_name1", "field_name2"], query=query)
 
-        query.values_dict.assert_called_with("field_name1", "field_name2")
+        query.values_dict.assert_called_with()
         self.assertEquals(actualSubjects, [["field_value11", "field_value12"], ["field_value21", "field_value22"]])
 
 
@@ -134,8 +134,8 @@ class TestSubjectQuery(TestCase):
 
                 subject_query_builder.create_paginated_query.assert_called_once_with(query, query_params)
                 response_creator.create_response.assert_called_with(subject_headers, query_with_criteria)
-                subject_query_builder.add_query_criteria.assert_called_with(subject_headers, paginated_query,
-                                                                            "query_text", query_params=query_params)
+                subject_query_builder.add_query_criteria.assert_called_with(query_fields=None, query=paginated_query,
+                                                                            query_text="query_text", query_params=query_params)
                 self.assertEquals(actualSubjects, "expected subjects")
                 self.assertEquals(filtered_count, expected_filtered_result_count)
                 self.assertEquals(total_count, expected_total_result_count)

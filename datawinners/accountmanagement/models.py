@@ -193,7 +193,7 @@ class Organization(models.Model):
 
     def deactivate(self):
         self.get_related_users().update(is_active=False)
-        self.status = 'Deativated'
+        self.status = 'Deactivated'
         self.save()
 
     def get_related_users(self):
@@ -322,7 +322,7 @@ class NGOUserProfile(models.Model):
         return self._is("Data Senders")
 
     def _is(self, role_name):
-        user = User.objects.get(email=self.user)
+        user = User.objects.get(username=self.user)
         return True if user.groups.filter(name=role_name).count() else False
 
 

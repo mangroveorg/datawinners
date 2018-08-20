@@ -3,80 +3,102 @@ import unittest
 from nose.plugins.attrib import attr
 
 from framework.utils.data_fetcher import fetch_
-from framework.base_test import HeadlessRunnerTest
+from framework.base_test import HeadlessRunnerTest, teardown_driver
 from pages.loginpage.login_page import login
 from tests.logintests.login_data import VALID_CREDENTIALS, PASSWORD
 from pages.alluserspage.all_users_page import AllUsersPage
+from pages.edituserpage.edit_user_page import EditUserPage
 from tests.editusertests.edit_user_data import *
 from tests.addusertests.add_user_data import *
 from tests.alluserstests.all_users_data import ALL_USERS_URL
 from tests.submissionlogtests.submission_log_tests import send_sms_with
+import time
+from framework.utils.common_utils import random_string, random_number
 
 
 class TestEditUser(HeadlessRunnerTest):
-    @attr('functional_test')
-    def test_should_edit_an_extended_user_as_ngo_admin(self):
+    def setUp(self):
         self.global_navigation = login(self.driver, VALID_CREDENTIALS)
+        self.edit_user_page = EditUserPage(self.driver)
+            
+
+    def tearDown(self):
+        try:
+            self.global_navigation.sign_out()
+            self.assertEqual(self.driver.get_title(), "Sign out")
+        except Exception as e:
+            self.edit_user_page.confirm_leave_page()
+
+    def create_user_and_open_it_on_edit_page(self, isAdmin=True, questionnaires=[]):
         self.driver.go_to(ALL_USERS_URL)
-        all_users_page = AllUsersPage(self.driver)
-        add_user_page = all_users_page.navigate_to_add_user()
+        self.all_users_page = AllUsersPage(self.driver)
+        add_user_page = self.all_users_page.navigate_to_add_user()
         user = generate_user()
-        add_user_page.select_role_as_administrator()
+        if isAdmin:
+            add_user_page.select_role_as_administrator()
+        else:
+            add_user_page.select_role_as_project_manager()
+            add_user_page.select_questionnaires(*questionnaires)
         add_user_page.add_user_with(user)
         message = add_user_page.get_success_message()
-        username = fetch_(USERNAME, user)
+        self.username = fetch_(USERNAME, user)
         self.driver.go_to(ALL_USERS_URL)
-        all_users_page.select_user_with_username(username)
-        edit_user_page = all_users_page.select_edit_action()
-        self.assertTrue(edit_user_page.is_user_name_is_prefetched(username))
-        self.assertTrue(edit_user_page.is_role_administrator())
-        edit_user_page.save_changes({
+        self.user_questionnaire_list = self.all_users_page.get_questionnaire_list_for(self.username)
+        self.assertTrue(self.all_users_page.is_editable(self.username),
+                        '%s user was expected to be editable but was not editable')
+        self.all_users_page.select_user_with_username(self.username)
+        self.edit_user_page = self.all_users_page.select_edit_action()
+
+    @attr('functional_test')
+    def test_should_edit_an_extended_user_as_ngo_admin(self):
+        self.create_user_and_open_it_on_edit_page()
+        self.assertTrue(self.edit_user_page.is_user_name_is_prefetched(self.username))
+        self.assertTrue(self.edit_user_page.is_role_administrator())
+        self.edit_user_page.save_changes({
             "mobile_phone": random_number(9)
         })
-        success_message = edit_user_page.get_success_message()
+        success_message = self.edit_user_page.get_success_message()
+        time.sleep(1)
         self.assertEqual(USER_EDITED_SUCCESS_MESSAGE, success_message,
                          'Expected "User has been updated successfully" message but was not found')
-        self.global_navigation.sign_out()
+
 
     @attr('functional_test')
     def test_should_edit_a_project_manager_as_ngo_admin(self):
-        self.global_navigation = login(self.driver, VALID_CREDENTIALS)
-        self.driver.go_to(ALL_USERS_URL)
-        all_users_page = AllUsersPage(self.driver)
-        add_user_page = all_users_page.navigate_to_add_user()
-        user = generate_user()
-        add_user_page.select_role_as_project_manager()
-        add_user_page.select_questionnaires(2, 4)
-        add_user_page.add_user_with(user)
-        add_user_page.get_success_message()
-        username = fetch_(USERNAME, user)
-        self.driver.go_to(ALL_USERS_URL)
-        questionnaire_list_for_user = all_users_page.get_questionnaire_list_for(username)
-        all_users_page.select_user_with_username(username)
-        edit_user_page = all_users_page.select_edit_action()
-        self.assertTrue(edit_user_page.is_user_name_is_prefetched(username))
-        self.assertTrue(edit_user_page.is_role_project_manager())
-        self.assertTrue(edit_user_page.are_questionnaires_preselected(questionnaire_list_for_user))
-        selected_questionnaires = edit_user_page.select_questionnaires(3)
-        edit_user_page.save_changes({
+        self.create_user_and_open_it_on_edit_page(False, [2,4])
+        self.assertTrue(self.edit_user_page.is_user_name_is_prefetched(self.username))
+        self.assertTrue(self.edit_user_page.is_role_project_manager())
+        self.assertTrue(self.edit_user_page.are_questionnaires_preselected(self.user_questionnaire_list))
+        selected_questionnaires = self.edit_user_page.select_questionnaires(3)
+        self.edit_user_page.save_changes({
             "mobile_phone": random_number(9),
             "full_name": 'New User Name'
         })
-        success_message = edit_user_page.get_success_message()
+        success_message = self.edit_user_page.get_success_message()
         self.assertEqual(USER_EDITED_SUCCESS_MESSAGE, success_message,
                          'Expected "User has been updated successfully" message but was not found')
 
         self.driver.go_to(ALL_USERS_URL)
-        self.assertEqual('New User Name', all_users_page.get_full_name_for(username))
+        self.assertEqual('New User Name', self.all_users_page.get_full_name_for(self.username))
         self.assertEqual(3, len(selected_questionnaires),
                          'Expected the questionnaires length to be 3 but was %s' %
                          len(selected_questionnaires))
-        self.global_navigation.sign_out()
+
 
     @attr('functional_test')
     def test_should_edit_a_project_manager_as_extended_user(self):
-        user = generate_user()
-        new_user = generate_user()
+        user = {
+            TITLE: "Developer",
+            NAME: random_string(7),
+            USERNAME: random_string(7)+"@mailinator.com",
+            MOBILE_PHONE: random_number(9)
+        }
+        new_user = {
+            TITLE: "Developer",
+            NAME: random_string(7),
+            USERNAME: random_string(7)+"@mailinator.com",
+            MOBILE_PHONE: random_number(9)
+        }
 
         # create extended user
         self._create_extended_user(user)
@@ -105,6 +127,7 @@ class TestEditUser(HeadlessRunnerTest):
         self.assertTrue(self.all_users_page.is_editable(username),
                         '%s user was expected to be editable but was not editable')
         questionnaire_list_for_user = self.all_users_page.get_questionnaire_list_for(username)
+        time.sleep(10)
         self.all_users_page.select_user_with_username(username)
         edit_user_page = self.all_users_page.select_edit_action()
         self.assertTrue(edit_user_page.is_user_name_is_prefetched(username))
@@ -124,7 +147,7 @@ class TestEditUser(HeadlessRunnerTest):
         self.assertEqual(3, len(selected_questionnaires),
                          'Expected the questionnaires length to be 3 but was %s' %
                          len(selected_questionnaires))
-        self.global_navigation.sign_out()
+
 
     @attr('functional_test')
     def test_should_change_a_extended_user_to_project_manager(self):
@@ -133,8 +156,7 @@ class TestEditUser(HeadlessRunnerTest):
         username = fetch_(USERNAME, user)
         self.driver.go_to(ALL_USERS_URL)
         self.all_users_page = AllUsersPage(self.driver)
-        self.assertTrue(self.all_users_page.is_editable(username),
-                        '%s user was expected to be editable but was not editable')
+
         self.all_users_page.select_user_with_username(username)
         edit_user_page = self.all_users_page.select_edit_action()
         self.assertTrue(edit_user_page.is_user_name_is_prefetched(username))
@@ -146,38 +168,24 @@ class TestEditUser(HeadlessRunnerTest):
         self.driver.go_to(ALL_USERS_URL)
         questionnaire_list_for_user = self.all_users_page.get_questionnaire_list_for(username)
         self.assertEqual(set(questionnaire_list_for_user), set(selected_questionnaires))
-        self.assertEqual('Project Manager', self.all_users_page.get_role_for(username))
-        self.global_navigation.sign_out()
+        role = self.all_users_page.get_role_for(username)
+        self.assertEqual('Project Manager', role)
+
 
     @attr('functional_test')
     def test_should_change_a_project_manager_to_extended_user(self):
-        self.global_navigation = login(self.driver, VALID_CREDENTIALS)
-        self.driver.go_to(ALL_USERS_URL)
-        all_users_page = AllUsersPage(self.driver)
-        add_user_page = all_users_page.navigate_to_add_user()
-        user = generate_user()
-        add_user_page.select_role_as_project_manager()
-        add_user_page.select_questionnaires(2, 4)
-        add_user_page.add_user_with(user)
-        message = add_user_page.get_success_message()
-        self.assertEqual(message, ADDED_USER_SUCCESS_MSG)
-        self.driver.go_to(ALL_USERS_URL)
-        self.all_users_page = AllUsersPage(self.driver)
-        username = fetch_(USERNAME, user)
-        self.assertTrue(self.all_users_page.is_editable(username),
-                        '%s user was expected to be editable but was not editable')
-        self.all_users_page.select_user_with_username(username)
-        edit_user_page = self.all_users_page.select_edit_action()
+        self.create_user_and_open_it_on_edit_page(False, [2,4])
 
-        self.assertTrue(edit_user_page.is_user_name_is_prefetched(username))
-        self.assertTrue(edit_user_page.is_role_project_manager())
-        edit_user_page.select_role_as_administrator()
-        edit_user_page.save_changes()
-        edit_user_page.get_success_message()
+        self.assertTrue(self.edit_user_page.is_user_name_is_prefetched(self.username))
+        self.assertTrue(self.edit_user_page.is_role_project_manager())
+        self.edit_user_page.select_role_as_administrator()
+        self.edit_user_page.save_changes()
+        self.edit_user_page.get_success_message()
         self.driver.go_to(ALL_USERS_URL)
-        self.assertEqual('Administrator', self.all_users_page.get_role_for(username))
-        self.assertEqual('All', self.all_users_page.get_questionnaire_list_for(username)[0])
-        self.global_navigation.sign_out()
+        self.assertEqual('Administrator', self.all_users_page.get_role_for(self.username))
+        questionnaire_list = self.all_users_page.get_questionnaire_list_for(self.username)[0]
+        self.assertEqual('All', questionnaire_list)
+
 
     @attr('functional_test')
     def test_should_check_validations_while_editing_an_user(self):
@@ -229,11 +237,10 @@ class TestEditUser(HeadlessRunnerTest):
 
         message = edit_user_page.get_error_messages()
         self.assertEqual(message, u'This phone number is already in use. Please supply a different phone number')
-        self.global_navigation.sign_out()
-        edit_user_page.confirm_leave_page()
+
+
 
     def _create_extended_user(self, user):
-        self.global_navigation = login(self.driver, VALID_CREDENTIALS)
         self.driver.go_to(ALL_USERS_URL)
         self.all_users_page = AllUsersPage(self.driver)
         self.add_user_page = self.all_users_page.navigate_to_add_user()
@@ -242,7 +249,6 @@ class TestEditUser(HeadlessRunnerTest):
         self.add_user_page.get_success_message()
 
     def _create_project_manager(self, user):
-        self.global_navigation = login(self.driver, VALID_CREDENTIALS)
         self.driver.go_to(ALL_USERS_URL)
         self.all_users_page = AllUsersPage(self.driver)
         self.add_user_page = self.all_users_page.navigate_to_add_user()
@@ -253,7 +259,6 @@ class TestEditUser(HeadlessRunnerTest):
 
     @attr('functional_test')
     def test_should_make_sure_that_ds_permission_is_removed_in_the_same_time_as_user_permission_is_removed(self):
-        self.global_navigation = login(self.driver, VALID_CREDENTIALS)
         self.driver.go_to(ALL_USERS_URL)
         all_users_page = AllUsersPage(self.driver)
         all_users_page.select_user_with_username("rasitefa@mailinator.com")
@@ -265,21 +270,20 @@ class TestEditUser(HeadlessRunnerTest):
         self.assertEqual(response, ERROR_MESSAGE)
         edit_user_page.select_questionnaires_by_name(["clinic test project1"])
         edit_user_page.save_changes()
+        
         edit_user_page.get_success_message()
         response = send_sms_with(SMS_TO_TEST_PERMISSION)
         self.assertEqual(response, SUCCESS_MESSAGE)
 
     @attr('functional_test')
-    @unittest.skip('Failed only in jenkins - Temporarily skipping')
     def test_should_show_warning_when_trying_to_leave_page_without_saving(self):
-        self.global_navigation = login(self.driver, VALID_CREDENTIALS)
         self.driver.go_to(ALL_USERS_URL)
         all_users_page = AllUsersPage(self.driver)
         all_users_page.select_user_with_username("rasitefa@mailinator.com")
         edit_user_page = all_users_page.select_edit_action()
         edit_user_page.select_role_as_administrator()
-        self.driver.refresh()
-        expected_msg = u'This page is asking you to confirm that you want to leave - data you have entered may not be saved.'
-
-        alert = self.driver.switch_to_alert()
-        self.assertEqual(alert.text, expected_msg)
+        self.edit_user_page.switch_language("en")
+        
+        expected_msg = """You have made changes to the form. These changes will be lost if you navigate away from this page.\n\nAre you sure you want to proceed?"""
+        alert_msg = self.edit_user_page.get_warning_dialog_message()
+        self.assertEqual(alert_msg, expected_msg)

@@ -68,6 +68,8 @@ REP6 = 'rep6'
 REP8 = 'rep8'
 REP3 = 'rep3'
 REP1 = 'rep1'
+REP35 = 'rep35'
+REP10 = 'rep10'
 
 VALID_PROJECT_DATA = {PROJECT_NAME: "clinic5 test project"}
 

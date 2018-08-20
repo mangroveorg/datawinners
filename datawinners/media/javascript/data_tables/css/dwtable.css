@@ -188,3 +188,19 @@ table.submission_table .select_all_message{
   left: 0px;
   text-align: center;
 }
+
+#failedsubmissions_table thead tr td:nth-child(1){
+    display: none;
+}
+
+#failedsubmissions_table tbody tr td:nth-child(1){
+    display: none;
+}
+
+#failedsubmissions_table tbody tr td:nth-child(5){
+    word-wrap: break-word; word-break: break-all; word-break: break-word;
+}
+
+#failedsubmissions_table tbody tr td:nth-child(6){
+    word-wrap: break-word; word-break: break-all; word-break: break-word;
+}

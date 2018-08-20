@@ -54,6 +54,7 @@ screenshots
 .project
 .pydevproject
 .settings
+datawinners/cover
 
 # gitflow specific files #
 ##########################
@@ -80,3 +81,6 @@ datawinners/celery
 # Generated css files
 datawinners/media/css/scss/*.css
 datawinners/media/css/scss/*.css.map
+
+node_modules
+

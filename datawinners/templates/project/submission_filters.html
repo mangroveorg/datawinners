@@ -12,6 +12,7 @@
                     {% include 'project/partials/filters/_filter_by_date_question.html' with date=first_filterable_field %}
                 {% endif %}
             {% endif %}
+            {% include 'project/partials/filters/_filter_base_for_duplicates.html' with duplicates_for=duplicates_filter_list %}
             {% if filterable_fields %}
                 <div id="show_filters">
                     <a>▼{% trans 'More Filters' %}</a>

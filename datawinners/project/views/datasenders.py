@@ -1,4 +1,5 @@
 import json
+import os
 from string import lower
 from urllib import unquote
 import unicodedata
@@ -31,7 +32,7 @@ from datawinners.search.datasender_index import update_datasender_index_by_id
 from datawinners.search.entity_search import DatasenderQueryResponseCreator, DATASENDER_DISPLAY_FIELD_ORDER
 from datawinners.utils import strip_accents, lowercase_and_strip_accents, get_organization
 from mangrove.form_model.project import Project
-from mangrove.transport.player.parser import XlsDatasenderParser
+from mangrove.transport.player.parser import XlsDatasenderParser, XlsxDataSenderParser
 from mangrove.utils.types import is_empty
 from datawinners.project.utils import is_quota_reached
 
@@ -138,9 +139,12 @@ def registered_datasenders(request, project_id):
                                    'user_dict': json.dumps(user_rep_id_name_dict)},
                                   context_instance=RequestContext(request))
     if request.method == 'POST':
+        parser_dict = {'.xls': XlsDatasenderParser, '.xlsx': XlsxDataSenderParser}
+        file_extension = os.path.splitext(request.GET["qqfile"])[1]
+        parser = parser_dict.get(file_extension, None)
         error_message, failure_imports, success_message, successful_imports = import_module.import_data(request,
                                                                                                         manager,
-                                                                                                        default_parser=XlsDatasenderParser,
+                                                                                                        default_parser=parser,
                                                                                                         is_datasender=True)
         imported_data_senders = parse_successful_imports(successful_imports)
 

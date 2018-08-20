@@ -1,0 +1,762 @@
+{
+   "survey": [
+      {
+         "type": "begin_group",
+         "name": "group1",
+         "label": "ការណែនាំ",
+         "required": "",
+         "required_message": "",
+         "relevant": "",
+         "appearance": "field-list",
+         "constraint": "",
+         "constraint_message": "",
+         "hint": "",
+         "calculation": "",
+         "choice_filter": "",
+         "isSupported": false
+      },
+      {
+         "type": "note",
+         "name": "title",
+         "label": "កម្រងសំណួរសម្រាប់បញ្ចូលទិន្នន័យកម្មករ/កម្មការនីដែល",
+         "required": "",
+         "required_message": "",
+         "relevant": "",
+         "appearance": "",
+         "constraint": "",
+         "constraint_message": "",
+         "hint": "",
+         "default": "",
+         "calculation": "",
+         "choice_filter": "",
+         "isSupported": true
+      },
+      {
+         "type": "note",
+         "name": "Intro",
+         "label": "សូមបញ្ចូលព័ត៌មានជាក់ស្តែង និងអោយបានត្រឹមត្រូវ",
+         "required": "",
+         "required_message": "",
+         "relevant": "",
+         "appearance": "",
+         "constraint": "",
+         "constraint_message": "",
+         "hint": "",
+         "calculation": "",
+         "choice_filter": "",
+         "isSupported": true
+      },
+      {
+         "type": "end_group",
+         "name": "group1",
+         "label": "",
+         "required": "",
+         "required_message": "",
+         "relevant": "",
+         "appearance": "",
+         "constraint": "",
+         "constraint_message": "",
+         "hint": "",
+         "calculation": "",
+         "choice_filter": "",
+         "isSupported": false
+      },
+      {
+         "type": "begin_group",
+         "name": "group2",
+         "label": "ព័ត៌មានអំពីការបញ្ជូន",
+         "required": "",
+         "required_message": "",
+         "relevant": "",
+         "appearance": "field-list",
+         "constraint": "",
+         "constraint_message": "",
+         "hint": "",
+         "default": "",
+         "calculation": "",
+         "choice_filter": "",
+         "isSupported": false
+      },
+      {
+         "type": "text",
+         "name": "q01",
+         "label": "Q01. Referral number on paper slip or system (លេខកូដអតិថិជនដែលបានបញ្ជូននៅលើប័ណ្ណឬប្រព័ន្ធបញ្ជូន)",
+         "required": "yes",
+         "required_message": "",
+         "relevant": "",
+         "appearance": "",
+         "constraint": "",
+         "constraint_message": "",
+         "hint": "",
+         "default": "",
+         "calculation": "",
+         "choice_filter": "",
+         "isSupported": true
+      },
+      {
+         "type": "text",
+         "name": "q02",
+         "label": "Q02. ID of worker (លេខកូដកម្មករ) ",
+         "required": "",
+         "required_message": "បើមានសូមបញ្ចូល",
+         "relevant": "",
+         "appearance": "",
+         "constraint": "",
+         "constraint_message": "",
+         "hint": "",
+         "default": "",
+         "calculation": "",
+         "choice_filter": "",
+         "isSupported": true
+      },
+      {
+         "type": "select_multiple c_q03",
+         "name": "q03",
+         "label": "Q03. Service uptake (សេវាដែលទទួល)",
+         "required": "yes",
+         "required_message": "",
+         "relevant": "",
+         "appearance": "",
+         "constraint": "",
+         "constraint_message": "",
+         "hint": "ចម្លើយអាចមានច្រើន",
+         "default": "",
+         "calculation": "",
+         "choice_filter": "",
+         "isSupported": true
+      },
+      {
+         "type": "text",
+         "name": "q03_other",
+         "label": "Q03_1. Other (ផ្សេងៗសូមបញ្ជាក់)",
+         "required": "yes",
+         "required_message": "",
+         "relevant": "selected(${q03},'other')",
+         "appearance": "",
+         "constraint": "",
+         "constraint_message": "",
+         "hint": "ចម្លើយអាចមានច្រើន",
+         "default": "",
+         "calculation": "",
+         "choice_filter": "",
+         "isSupported": true
+      },
+      {
+         "type": "select_one c_q05",
+         "name": "q4",
+         "label": "Q4. Referred from (បញ្ជូនពីកន្លែងណា) ",
+         "required": "yes",
+         "required_message": "សូមរើសយកមួយ",
+         "relevant": "",
+         "appearance": "horizontal",
+         "constraint": "",
+         "constraint_message": "",
+         "hint": "",
+         "default": "",
+         "calculation": "",
+         "choice_filter": "",
+         "isSupported": true
+      },
+      {
+         "type": "text",
+         "name": "q4_other",
+         "label": "Q4-1. From WH Champion (ជើងឯកសុខភាព-សូមសរសេរ) ",
+         "required": "yes",
+         "required_message": "សូមសរសេរឈ្មោះជើងឯកសុខភាព",
+         "relevant": "${q4} = 'other'",
+         "appearance": "",
+         "constraint": "",
+         "constraint_message": "",
+         "hint": "",
+         "default": "",
+         "calculation": "",
+         "choice_filter": "",
+         "isSupported": true
+      },
+      {
+         "type": "select_one c_q04",
+         "name": "q05",
+         "label": "Q5. Referred to (បញ្ជូនទៅកន្លែងណា) ",
+         "required": "yes",
+         "required_message": "សូមរើសយកមួយ",
+         "relevant": "",
+         "appearance": "horizontal",
+         "constraint": "",
+         "constraint_message": "",
+         "hint": "ចម្លើយមានតែមួយ",
+         "default": "",
+         "calculation": "",
+         "choice_filter": "",
+         "isSupported": true
+      },
+      {
+         "type": "date",
+         "name": "q6",
+         "label": "Q6. Referred date​ (ថ្ងៃខែបញ្ជូនក្នុងប័ណ្ណឬប្រព័ន្ធ)",
+         "required": "yes",
+         "required_message": "សូមរើសយកថ្ងៃខែដែលបានបញ្ជូន",
+         "relevant": "",
+         "appearance": "",
+         "constraint": "",
+         "constraint_message": "",
+         "hint": "សូមជ្រើសរើសថ្ងៃខែឆ្នាំដែលមាននៅក្នុងប្រព័ន្ធបញ្ជូន ឬក្នុងប័ណ្ណបញ្ជូន",
+         "default": "",
+         "calculation": "",
+         "choice_filter": "",
+         "isSupported": true
+      },
+      {
+         "type": "select_one c_q02",
+         "name": "q07",
+         "label": "Q07. Sex (ភេទ)",
+         "required": "",
+         "required_message": "សូមរើសយកមួយ",
+         "relevant": "",
+         "appearance": "",
+         "constraint": "",
+         "constraint_message": "",
+         "hint": "ចម្លើយមានតែមួយ",
+         "default": "",
+         "calculation": "",
+         "choice_filter": "",
+         "isSupported": true
+      },
+      {
+         "type": "text",
+         "name": "q08",
+         "label": "Q08. Client's phone number​ (លេខទូរស័ព្ទកម្មការនី)",
+         "required": "",
+         "required_message": "not be empty",
+         "relevant": "",
+         "appearance": "",
+         "constraint": "",
+         "constraint_message": "",
+         "hint": "សូមសរសេរលេខទូរស័ព្ទដែលមានដោយចាប់ផ្តើម 855XXXXXXXX(កុំដាក់លេខ០បន្ទាប់ពី855)",
+         "default": "",
+         "calculation": "",
+         "choice_filter": "",
+         "isSupported": true
+      },
+      {
+         "type": "end_group",
+         "name": "group2",
+         "label": "",
+         "required": "",
+         "required_message": "",
+         "relevant": "",
+         "appearance": "",
+         "constraint": "",
+         "constraint_message": "",
+         "hint": "",
+         "calculation": "",
+         "choice_filter": "",
+         "isSupported": false
+      },
+      {
+         "type": "begin_group",
+         "name": "group3",
+         "label": "ការបញ្ចប់",
+         "required": "",
+         "required_message": "",
+         "relevant": "",
+         "appearance": "",
+         "constraint": "",
+         "constraint_message": "",
+         "hint": "",
+         "default": "",
+         "calculation": "",
+         "choice_filter": "",
+         "isSupported": false
+      },
+      {
+         "type": "note",
+         "name": "Intro_2",
+         "label": "ការបញ្ចូលបានបញ្ចប់។​ សូមចុចប៊ូតុង \"Save Questionnaire and Exit\" បន្ទាប់មកសូមចាប់ផ្តើមបញ្ចូលមួយទៀត។ បើមិនមានការកែប្រែចម្លើយទេ ក្រោយពីបញ្ចប់សូមចុចបញ្ជូន \"Submit\" មួយឬច្រើនសំណួរ។",
+         "required": "",
+         "required_message": "",
+         "relevant": "",
+         "appearance": "",
+         "constraint": "",
+         "constraint_message": "",
+         "hint": "",
+         "default": "",
+         "calculation": "",
+         "choice_filter": "",
+         "isSupported": true
+      },
+      {
+         "type": "end_group",
+         "name": "group3",
+         "label": "",
+         "required": "",
+         "required_message": "",
+         "relevant": "",
+         "appearance": "",
+         "constraint": "",
+         "constraint_message": "",
+         "hint": "",
+         "default": "",
+         "calculation": "",
+         "choice_filter": "",
+         "isSupported": false
+      }
+   ],
+   "choices": [
+      {
+         "list_name": "c_q02",
+         "name": "sex_female",
+         "label": "Female",
+         "base_index": "0"
+      },
+      {
+         "list_name": "c_q02",
+         "name": "sex_male",
+         "label": "Male",
+         "base_index": "1"
+      },
+      {
+         "list_name": "c_q03",
+         "name": "counseling",
+         "label": "1. ការប្រឹក្សាយោបល់",
+         "base_index": "2"
+      },
+      {
+         "list_name": "c_q03",
+         "name": "pill",
+         "label": "2. ថ្នាំគ្រាប់",
+         "base_index": "3"
+      },
+      {
+         "list_name": "c_q03",
+         "name": "injectable",
+         "label": "3. ថ្នាំចាក់",
+         "base_index": "4"
+      },
+      {
+         "list_name": "c_q03",
+         "name": "implant",
+         "label": "4. ដាក់កងក្រោមស្បែក",
+         "base_index": "5"
+      },
+      {
+         "list_name": "c_q03",
+         "name": "iud",
+         "label": "5. ដាក់កងក្នុងស្បូន",
+         "base_index": "6"
+      },
+      {
+         "list_name": "c_q03",
+         "name": "emergency_c",
+         "label": "6. ការពន្យារកំណើតបន្ទាន់",
+         "base_index": "7"
+      },
+      {
+         "list_name": "c_q03",
+         "name": "permanent",
+         "label": "7. ការពន្យារកំណើតអចិន្ត្រៃយ៍",
+         "base_index": "8"
+      },
+      {
+         "list_name": "c_q03",
+         "name": "sti",
+         "label": "8. ការពិនិត្យនិងព្យាបាលជម្ងឺកាមរោគ",
+         "base_index": "9"
+      },
+      {
+         "list_name": "c_q03",
+         "name": "via",
+         "label": "9. ការពិនិត្យកោសិការមាត់ស្បូន",
+         "base_index": "10"
+      },
+      {
+         "list_name": "c_q03",
+         "name": "implant_remove",
+         "label": "10. ដកកងក្រោមស្បែក",
+         "base_index": "11"
+      },
+      {
+         "list_name": "c_q03",
+         "name": "iud_remove",
+         "label": "11. ដកកងក្នុងស្បូន",
+         "base_index": "12"
+      },
+      {
+         "list_name": "c_q03",
+         "name": "other",
+         "label": "12. ផ្សេង​ៗ(សូមបញ្ជាក់)",
+         "base_index": "13"
+      },
+      {
+         "list_name": "c_q04",
+         "name": "qanf_1",
+         "label": "Canadia cabinet",
+         "base_index": "14"
+      },
+      {
+         "list_name": "c_q04",
+         "name": "qanf_2",
+         "label": "Chumpou Vorn Maternity",
+         "base_index": "15"
+      },
+      {
+         "list_name": "c_q04",
+         "name": "qanf_3",
+         "label": "Hak Seng Danin Cabinet",
+         "base_index": "16"
+      },
+      {
+         "list_name": "c_q04",
+         "name": "qanf_4",
+         "label": "Has Sam Oeun clinic",
+         "base_index": "17"
+      },
+      {
+         "list_name": "c_q04",
+         "name": "qanf_5",
+         "label": "Lam Bun Than Clinic",
+         "base_index": "18"
+      },
+      {
+         "list_name": "c_q04",
+         "name": "qanf_6",
+         "label": "Mao Srean Cabinet",
+         "base_index": "19"
+      },
+      {
+         "list_name": "c_q04",
+         "name": "qanf_7",
+         "label": "Moul Mit Clinic",
+         "base_index": "20"
+      },
+      {
+         "list_name": "c_q04",
+         "name": "qanf_8",
+         "label": "Nath Boravuth Cabinet",
+         "base_index": "21"
+      },
+      {
+         "list_name": "c_q04",
+         "name": "qanf_9",
+         "label": "Ourp Ra Cabinet",
+         "base_index": "22"
+      },
+      {
+         "list_name": "c_q04",
+         "name": "qanf_10",
+         "label": "Peaceful Family Cabinet",
+         "base_index": "23"
+      },
+      {
+         "list_name": "c_q04",
+         "name": "qanf_11",
+         "label": "Penh Vong Clinic",
+         "base_index": "24"
+      },
+      {
+         "list_name": "c_q04",
+         "name": "qanf_12",
+         "label": "Phur Y Cabinet",
+         "base_index": "25"
+      },
+      {
+         "list_name": "c_q04",
+         "name": "qanf_13",
+         "label": "Reakmey Ney Sokhapheap Cabinet",
+         "base_index": "26"
+      },
+      {
+         "list_name": "c_q04",
+         "name": "qanf_14",
+         "label": "Sann Samnang Cabinet",
+         "base_index": "27"
+      },
+      {
+         "list_name": "c_q04",
+         "name": "qanf_15",
+         "label": "Sante Thmey Cabinet",
+         "base_index": "28"
+      },
+      {
+         "list_name": "c_q04",
+         "name": "qanf_16",
+         "label": "Serey Sophorn Cabinet",
+         "base_index": "29"
+      },
+      {
+         "list_name": "c_q04",
+         "name": "qanf_17",
+         "label": "Sin Channy",
+         "base_index": "30"
+      },
+      {
+         "list_name": "c_q04",
+         "name": "qanf_18",
+         "label": "Visal Sok II Clinic",
+         "base_index": "31"
+      },
+      {
+         "list_name": "c_q05",
+         "name": "gf_1",
+         "label": "Akeentex",
+         "base_index": "32"
+      },
+      {
+         "list_name": "c_q05",
+         "name": "gf_2",
+         "label": "Bodykids Fashion wear",
+         "base_index": "33"
+      },
+      {
+         "list_name": "c_q05",
+         "name": "gf_3",
+         "label": "Canteran Apparel (Cambodia)",
+         "base_index": "34"
+      },
+      {
+         "list_name": "c_q05",
+         "name": "gf_4",
+         "label": "CinKamp Apparel Coprp",
+         "base_index": "35"
+      },
+      {
+         "list_name": "c_q05",
+         "name": "gf_5",
+         "label": "Grand Textiles (Cambodia)",
+         "base_index": "36"
+      },
+      {
+         "list_name": "c_q05",
+         "name": "gf_6",
+         "label": "Guowoo (Cambodia)",
+         "base_index": "37"
+      },
+      {
+         "list_name": "c_q05",
+         "name": "gf_7",
+         "label": "Hulu Garment",
+         "base_index": "38"
+      },
+      {
+         "list_name": "c_q05",
+         "name": "gf_8",
+         "label": "JIE WEI Garment Factory",
+         "base_index": "39"
+      },
+      {
+         "list_name": "c_q05",
+         "name": "gf_9",
+         "label": "Makalot Garments (Cambodia) (B)",
+         "base_index": "40"
+      },
+      {
+         "list_name": "c_q05",
+         "name": "gf_10",
+         "label": "Makalot Garments (Cambodia) (E)",
+         "base_index": "41"
+      },
+      {
+         "list_name": "c_q05",
+         "name": "gf_11",
+         "label": "Makalot Garments (Cambodia) (H)",
+         "base_index": "42"
+      },
+      {
+         "list_name": "c_q05",
+         "name": "gf_12",
+         "label": "Meng Da",
+         "base_index": "43"
+      },
+      {
+         "list_name": "c_q05",
+         "name": "gf_13",
+         "label": "MT YEH's Garment Gactory",
+         "base_index": "44"
+      },
+      {
+         "list_name": "c_q05",
+         "name": "gf_14",
+         "label": "Nan Tai",
+         "base_index": "45"
+      },
+      {
+         "list_name": "c_q05",
+         "name": "gf_15",
+         "label": "New Wide (Cambodia) Garment",
+         "base_index": "46"
+      },
+      {
+         "list_name": "c_q05",
+         "name": "gf_16",
+         "label": "Peace Glory (Cambodia)",
+         "base_index": "47"
+      },
+      {
+         "list_name": "c_q05",
+         "name": "gf_17",
+         "label": "Quality Textile",
+         "base_index": "48"
+      },
+      {
+         "list_name": "c_q05",
+         "name": "gf_18",
+         "label": "Reliable Source Industrial (Cambodia)",
+         "base_index": "49"
+      },
+      {
+         "list_name": "c_q05",
+         "name": "gf_19",
+         "label": "Seo Rim (Cambodia)",
+         "base_index": "50"
+      },
+      {
+         "list_name": "c_q05",
+         "name": "gf_20",
+         "label": "Suntex Garment Factory",
+         "base_index": "51"
+      },
+      {
+         "list_name": "c_q05",
+         "name": "gf_21",
+         "label": "T&K Garment Industry",
+         "base_index": "52"
+      },
+      {
+         "list_name": "c_q05",
+         "name": "gf_22",
+         "label": "Top Center Manufacturing",
+         "base_index": "53"
+      },
+      {
+         "list_name": "c_q05",
+         "name": "gf_23",
+         "label": "Yu Da Garment Industry (Cambodia)",
+         "base_index": "54"
+      },
+      {
+         "list_name": "c_q05",
+         "name": "gf_24",
+         "label": "Yu Fa (Cambodia)",
+         "base_index": "55"
+      },
+      {
+         "list_name": "c_q05",
+         "name": "gf_25",
+         "label": "Eastex Gament Co.LTD",
+         "base_index": "56"
+      },
+      {
+         "list_name": "c_q05",
+         "name": "qan_1",
+         "label": "Canadia cabinet",
+         "base_index": "57"
+      },
+      {
+         "list_name": "c_q05",
+         "name": "qan_2",
+         "label": "Chumpou Vorn Maternity",
+         "base_index": "58"
+      },
+      {
+         "list_name": "c_q05",
+         "name": "qan_3",
+         "label": "Hak Seng Danin Cabinet",
+         "base_index": "59"
+      },
+      {
+         "list_name": "c_q05",
+         "name": "qan_4",
+         "label": "Has Sam Oeun clinic",
+         "base_index": "60"
+      },
+      {
+         "list_name": "c_q05",
+         "name": "qan_5",
+         "label": "Lam Bun Than Clinic",
+         "base_index": "61"
+      },
+      {
+         "list_name": "c_q05",
+         "name": "qan_6",
+         "label": "Mao Srean Cabinet",
+         "base_index": "62"
+      },
+      {
+         "list_name": "c_q05",
+         "name": "qan_7",
+         "label": "Moul Mit Clinic",
+         "base_index": "63"
+      },
+      {
+         "list_name": "c_q05",
+         "name": "qan_8",
+         "label": "Nath Boravuth Cabinet",
+         "base_index": "64"
+      },
+      {
+         "list_name": "c_q05",
+         "name": "qan_9",
+         "label": "Ourp Ra Cabinet",
+         "base_index": "65"
+      },
+      {
+         "list_name": "c_q05",
+         "name": "qan_10",
+         "label": "Peaceful Family Cabinet",
+         "base_index": "66"
+      },
+      {
+         "list_name": "c_q05",
+         "name": "qan_11",
+         "label": "Penh Vong Clinic",
+         "base_index": "67"
+      },
+      {
+         "list_name": "c_q05",
+         "name": "qan_12",
+         "label": "Phur Y Cabinet",
+         "base_index": "68"
+      },
+      {
+         "list_name": "c_q05",
+         "name": "qan_13",
+         "label": "Reakmey Ney Sokhapheap Cabinet",
+         "base_index": "69"
+      },
+      {
+         "list_name": "c_q05",
+         "name": "qan_14",
+         "label": "Sann Samnang Cabinet",
+         "base_index": "70"
+      },
+      {
+         "list_name": "c_q05",
+         "name": "qan_15",
+         "label": "Sante Thmey Cabinet",
+         "base_index": "71"
+      },
+      {
+         "list_name": "c_q05",
+         "name": "qan_16",
+         "label": "Serey Sophorn Cabinet",
+         "base_index": "72"
+      },
+      {
+         "list_name": "c_q05",
+         "name": "qan_17",
+         "label": "Sin Channy",
+         "base_index": "73"
+      },
+      {
+         "list_name": "c_q05",
+         "name": "qan_18",
+         "label": "Visal Sok II Clinic",
+         "base_index": "74"
+      },
+      {
+         "list_name": "c_q05",
+         "name": "other",
+         "label": "WH Champion",
+         "base_index": "75"
+      }
+   ]
+}

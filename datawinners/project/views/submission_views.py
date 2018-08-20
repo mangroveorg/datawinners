@@ -16,8 +16,7 @@ from django.core.urlresolvers import reverse
 from django.views.decorators.csrf import csrf_view_exempt
 from elasticutils import F
 import jsonpickle
-import resource
-from psycopg2._psycopg import Boolean
+import waffle
 
 from datawinners import settings
 from datawinners.accountmanagement.localized_time import get_country_time_delta, convert_utc_to_localized
@@ -37,11 +36,12 @@ from datawinners.monitor.metric_path import create_path
 from datawinners.project.submission.exporter import SubmissionExporter
 from datawinners.project.submission.submission_search import get_submissions_paginated, \
     get_all_submissions_ids_by_criteria, get_aggregations_for_choice_fields, get_submission_count, \
-    get_submissions_without_user_filters_count, get_submissions_paginated_simple
-from datawinners.search.index_utils import es_questionnaire_field_name
+    get_submissions_paginated_simple
+from datawinners.search.index_utils import es_questionnaire_field_name,\
+    lookup_entity
 from datawinners.search.submission_headers import HeaderFactory
 from datawinners.search.submission_index import get_code_from_es_field_name
-from datawinners.search.submission_query import SubmissionQueryResponseCreator, _format_values
+from datawinners.search.submission_query import SubmissionQueryResponseCreator
 from mangrove.form_model.field import SelectField, DateField, UniqueIdField, FieldSet, DateTimeField
 from mangrove.form_model.project import Project, get_project_by_code
 from mangrove.transport.player.new_players import WebPlayerV2
@@ -52,7 +52,7 @@ from mangrove.utils.json_codecs import encode_json
 from datawinners.project.data_sender_helper import get_data_sender
 from datawinners.project.helper import SUBMISSION_DATE_FORMAT_FOR_SUBMISSION, is_project_exist
 from datawinners.project.utils import project_info, is_quota_reached
-from datawinners.project.Header import SubmissionsPageHeader, AnalysisPageHeader
+from datawinners.project.Header import SubmissionsPageHeader
 from datawinners.activitylog.models import UserActivityLog
 from datawinners.common.constant import DELETED_DATA_SUBMISSION, EDITED_DATA_SUBMISSION
 from datawinners.project.views.utils import get_form_context, get_project_details_dict_for_feed, \
@@ -63,6 +63,10 @@ from mangrove.transport.repository.survey_responses import get_survey_response_b
 from mangrove.transport.contract.survey_response import SurveyResponse
 from mangrove.datastore.user_questionnaire_preference import get_analysis_field_preferences, \
     save_analysis_field_preferences, get_preferences
+from datawinners.project.views.views import questionnaire
+from datawinners.project.submission.export import export_to_new_excel
+from datawinners.project.submission.analysis_helper import convert_to_localized_date_time,\
+    enrich_analysis_data
 
 websubmission_logger = logging.getLogger("websubmission")
 logger = logging.getLogger("datawinners")
@@ -82,16 +86,18 @@ def headers(request, form_code):
         response.append({"sTitle": ugettext(header)})
     return HttpResponse(encode_json(response))
 
-
-@login_required
-@session_not_expired
-@is_datasender
-@is_not_expired
-def analysis_headers(request, form_code):
-    manager = get_database_manager(request.user)
-    questionnaire = get_project_by_code(manager, form_code)
-    headers = AnalysisPageHeader(questionnaire, manager, request.user.id).get_column_title()
-    return HttpResponse(encode_json(headers), content_type='application/json')
+#
+# Refactored Analysis page to reuse preferences to generate headers
+#
+# @login_required
+# @session_not_expired
+# @is_datasender
+# @is_not_expired
+# def analysis_headers(request, form_code):
+#     manager = get_database_manager(request.user)
+#     questionnaire = get_project_by_code(manager, form_code)
+#     headers = AnalysisPageHeader(questionnaire, manager, request.user.id).get_column_title()
+#     return HttpResponse(encode_json(headers), content_type='application/json')
 
 
 @login_required
@@ -134,6 +140,11 @@ def _field_code(field, parent_code):
         return parent_code + '----' + field.code
     return field.code
 
+def _get_field_code(field, parent_code):
+    if parent_code:
+        return parent_code + '-' + field.code
+    return field.code
+
 
 def get_filterable_field_details(field, filterable_fields, parent_code):
     if isinstance(field, DateField):
@@ -170,6 +181,39 @@ def get_filterable_fields(fields, filterable_fields, parent_code=None):
             filterable_fields = get_filterable_fields(field.fields, filterable_fields, field.code)
     return filterable_fields
 
+def get_unique_id_field_details(field, parent_code):
+    return {
+                'type': 'unique_id',
+                'code': _get_field_code(field, parent_code),
+                'entity_type': field.unique_id_type,
+                'label': field.label
+            }
+
+def get_duplicates_filterable_fields(fields, duplicates_filterable_fields, parent_code=None):
+    for field in fields:
+        if isinstance(field, UniqueIdField):
+            duplicates_filterable_fields.append(get_unique_id_field_details(field, parent_code))
+        if isinstance(field, FieldSet) and field.is_group():
+            duplicates_filterable_fields = get_duplicates_filterable_fields(field.fields, duplicates_filterable_fields, field.code)
+    return duplicates_filterable_fields
+
+
+def add_static_filterable_fields_for_duplicates(duplicates_filterable_fields):
+    exact_match_option = {
+        'entity_type': 'exactmatch',
+        'label': ugettext('Exact Match')
+    }
+    datasender_field = {
+        'entity_type': 'datasender',
+        'code': 'ds_id',
+        'label': ugettext('Data Sender')
+    }
+
+    duplicates_filterable_fields.append(exact_match_option)
+    duplicates_filterable_fields.append(datasender_field)
+
+    return duplicates_filterable_fields
+
 
 @login_required
 @session_not_expired
@@ -188,8 +232,13 @@ def index(request, project_id=None, questionnaire_code=None, tab=0):
             return HttpResponseRedirect(dashboard_page)
 
         filterable_fields = get_filterable_fields(questionnaire.fields, [])
+        duplicates_filter_list = add_static_filterable_fields_for_duplicates([])
+
+        duplicates_filter_list = get_duplicates_filterable_fields(questionnaire.fields, duplicates_filter_list)
         first_filterable_fields = filterable_fields.pop(0) if filterable_fields else None
         xform = questionnaire.xform
+        is_repeat_present = questionnaire.is_repeat_field_present
+
         result_dict = {
             "user_email": request.user.email,
             "tab": tab,
@@ -200,7 +249,9 @@ def index(request, project_id=None, questionnaire_code=None, tab=0):
             "is_quota_reached": is_quota_reached(request, org_id=org_id),
             "first_filterable_field": first_filterable_fields,
             "filterable_fields": filterable_fields,
-            "is_media_field_present": questionnaire.is_media_type_fields_present
+            "duplicates_filter_list": duplicates_filter_list,
+            "is_media_field_present": questionnaire.is_media_type_fields_present,
+            "is_repeat_field_present": is_repeat_present
         }
 
         result_dict.update(project_info(request, questionnaire, questionnaire_code))
@@ -228,6 +279,7 @@ def analysis(request, project_id, questionnaire_code=None):
         first_filterable_fields = filterable_fields.pop(0) if filterable_fields else None
         if questionnaire.is_void():
             return HttpResponseRedirect(dashboard_page)
+        is_repeat_present = questionnaire.is_repeat_field_present
 
         result_dict = {
             "xform": questionnaire.xform,
@@ -238,44 +290,11 @@ def analysis(request, project_id, questionnaire_code=None):
             'first_filterable_field': first_filterable_fields,
             "is_media_field_present": questionnaire.is_media_type_fields_present,
             'has_chart': (len(questionnaire.choice_fields) > 0) & (not bool(questionnaire.xform)),
+            "is_repeat_field_present": is_repeat_present
             # first 3 columns are additional submission data fields (ds_is, ds_name and submission_status
         }
         result_dict.update(project_info(request, questionnaire, questionnaire_code))
         return render_to_response('project/analysis.html', result_dict,
-                                  context_instance=RequestContext(request))
-
-
-@login_required
-@session_not_expired
-@is_datasender
-@is_not_expired
-@is_project_exist
-@restrict_access
-def analysis_results(request, project_id=None, questionnaire_code=None):
-    manager = get_database_manager(request.user)
-    org_id = helper.get_org_id_by_user(request.user)
-
-    if request.method == 'GET':
-        questionnaire = Project.get(manager, project_id)
-        dashboard_page = settings.HOME_PAGE + "?deleted=true"
-        if questionnaire.is_void():
-            return HttpResponseRedirect(dashboard_page)
-
-        filterable_fields = get_filterable_fields(questionnaire.fields, [])
-        first_filterable_fields = filterable_fields.pop(0) if filterable_fields else None
-
-        result_dict = {
-            "xform": questionnaire.xform,
-            "user_email": request.user.email,
-            "is_quota_reached": is_quota_reached(request, org_id=org_id),
-            "first_filterable_field": first_filterable_fields,
-            "filterable_fields": filterable_fields,
-            'is_pro_sms': get_organization(request).is_pro_sms,
-            "is_media_field_present": questionnaire.is_media_type_fields_present
-            # first 3 columns are additional submission data fields (ds_is, ds_name and submission_status
-        }
-        result_dict.update(project_info(request, questionnaire, questionnaire_code))
-        return render_to_response('project/analysis_results.html', result_dict,
                                   context_instance=RequestContext(request))
 
 
@@ -573,16 +592,16 @@ def export_count(request):
     return HttpResponse(mimetype='application/json', content=json.dumps({"count": submission_count}))
 
 
-def _advanced_questionnaire_export(current_language, form_model, is_media, local_time_delta, manager, project_name,
+def _advanced_questionnaire_export(current_language, form_model, is_media, is_single_sheet, local_time_delta, manager, project_name,
                                    query_params, submission_type, preferences):
+    xform_submission_exporter = XFormSubmissionExporter(form_model, project_name, manager, local_time_delta, current_language,
+                                       preferences, is_single_sheet)
     if not is_media:
-        return XFormSubmissionExporter(form_model, project_name, manager, local_time_delta, current_language,
-                                       preferences) \
+        return xform_submission_exporter \
             .create_excel_response(submission_type, query_params)
 
     else:
-        return XFormSubmissionExporter(form_model, project_name, manager, local_time_delta, current_language,
-                                       preferences) \
+        return xform_submission_exporter \
             .create_excel_response_with_media(submission_type, query_params)
 
 
@@ -600,8 +619,14 @@ def _create_export_artifact(form_model, manager, request, search_filters):
     query_params.update({"search_text": search_text})
     query_params.update({"filter": submission_type})
     is_media = False
+    is_single_sheet = False
+
     if request.POST.get('is_media') == u'true':
         is_media = True
+
+    if request.POST.get('is_single_sheet') == u'true' and waffle.flag_is_active(request, "single_sheet_export"):
+        is_single_sheet = True
+
     organization = get_organization(request)
     local_time_delta = get_country_time_delta(organization.country)
     project_name = request.POST.get(u"project_name")
@@ -609,13 +634,13 @@ def _create_export_artifact(form_model, manager, request, search_filters):
 
     preferences = get_preferences(manager, request.user.id, form_model, submission_type, ugettext)
     if form_model.xform:
-        return _advanced_questionnaire_export(current_language, form_model, is_media, local_time_delta, manager,
+        return _advanced_questionnaire_export(current_language, form_model, is_media, is_single_sheet, local_time_delta, manager,
                                               project_name, query_params, submission_type, preferences)
 
     return SubmissionExporter(form_model, project_name, manager, local_time_delta, current_language, preferences) \
         .create_excel_response(submission_type, query_params)
 
-
+    
 @login_required
 @session_not_expired
 @is_datasender
@@ -659,10 +684,10 @@ def _get_field_to_sort_on(post_dict, form_model, filter_type):
 def get_analysis_data(request, form_code):
     dbm, questionnaire, pagination_params, \
     local_time_delta, sort_params, search_parameters = _get_all_criterias_from_request(request, form_code)
-
+    
     search_results = get_submissions_paginated_simple(dbm, questionnaire, pagination_params, local_time_delta,
                                                       sort_params, search_parameters)
-    data = _create_analysis_response(local_time_delta, search_results, questionnaire)
+    data = _create_analysis_response(dbm, local_time_delta, search_results, questionnaire)
     return HttpResponse(
         jsonpickle.encode(
             {
@@ -673,6 +698,7 @@ def get_analysis_data(request, form_code):
             }, unpicklable=False), content_type='application/json')
 
 
+    
 def _get_search_params(request):
     search_parameters = {}
     search_parameters['data_sender_filter'] = request.POST.get('data_sender_filter')
@@ -701,80 +727,18 @@ def _get_pagination_params(request):
     return pagination_params
 
 
-def _create_analysis_response(local_time_delta, search_results, questionnaire):
+def _create_analysis_response(dbm, local_time_delta, search_results, questionnaire):
     data = []
     if search_results is not None:
-        data = [_transform_elastic_to_analysis_view(local_time_delta, result, questionnaire)._d_ for result in
+        data = [_transform_elastic_to_analysis_view(dbm, local_time_delta, result, questionnaire)._d_ for result in
                 search_results.hits]
     return data
 
-
-'''
-    Placeholder for all analysis data transformation from elastic
-    search to display
-'''
-
-
-def _transform_elastic_to_analysis_view(local_time_delta, record, questionnaire):
-    record.date = _convert_to_localized_date_time(record.date, local_time_delta)
-    for key, value in record.to_dict().iteritems():
-        if isinstance(value, basestring):
-            try:
-                value_obj = json.loads(value)
-                if isinstance(value_obj, list):
-                    _transform_nested_question_answer(key, value_obj, record, questionnaire)
-            except Exception as e:
-                continue
+def _transform_elastic_to_analysis_view(dbm, local_time_delta, record, questionnaire):
+    record.date = convert_to_localized_date_time(record.date, local_time_delta)
+    if questionnaire.is_repeat_field_present:
+        record = enrich_analysis_data(record, questionnaire, record.meta.id)
     return record
-
-
-def _transform_nested_question_answer(key, value_obj, record, questionnaire):
-    field_code = key.replace(record.meta.doc_type + '_', '')
-    target_fields = [nested_field for nested_field in questionnaire.has_nested_fields if
-                     nested_field.code == field_code]
-    updated_answers = ''
-    for repeat_question_answer in value_obj:
-        updated_answer = ''
-        for field in target_fields[0].fields:
-            field_value = repeat_question_answer[field.code] if repeat_question_answer[field.code] else ''
-            str_value = _handle_field_types(field, field_value, record.meta.id, repeat_question_answer)
-
-            updated_answer += '<div><span>' + field.label + '</span><div>' + str_value + '</div></div>'
-            updated_answer += ' '
-        updated_answers += updated_answer + ';<br/><br/>'
-
-    record[key] = updated_answers
-
-
-def _handle_field_types(field, field_value, submission_id, repeat_question_answer):
-    str_value = ''
-    if field.type == 'photo':
-        str_value = "<a href='/download/attachment/%s/%s'><img src='/download/attachment/%s/preview_%s' " \
-                    "alt=''/></a><br>" % (submission_id, field_value, submission_id, field_value)
-    elif field.type in ['audio', 'video']:
-        str_value = "<a href='/download/attachment/%s/%s'>%s</a>" % (submission_id, field_value, field_value)
-    elif isinstance(field_value, list) and not field.type == 'field_set':
-        str_value = ','.join(field_value)
-    elif field.type == 'field_set':
-        sub_question_answer = repeat_question_answer[field.code] if repeat_question_answer[field.code] else ''
-        for answer in sub_question_answer:
-            for f in field.fields:
-                field_value = answer[f.code] if answer[f.code] else None
-                try:
-                    if field_value:
-                        return _handle_field_types(f, field_value, submission_id, answer)
-                except Exception as e:
-                    pass
-    else:
-        str_value = field_value
-    return str_value
-
-
-def _convert_to_localized_date_time(submission_date, local_time_delta):
-    submission_date_time = datetime.datetime.strptime(submission_date, "%b. %d, %Y, %I:%M %p")
-    datetime_local = convert_utc_to_localized(local_time_delta, submission_date_time)
-    return datetime_local.strftime("%b. %d, %Y, %H:%M")
-
 
 @csrf_view_exempt
 @valid_web_user
@@ -796,18 +760,14 @@ def get_submissions(request, form_code):
     organization = get_organization(request)
     local_time_delta = get_country_time_delta(organization.country)
     search_results, query_fields = get_submissions_paginated(dbm, questionnaire, search_parameters, local_time_delta)
-    submission_count_with_filters = get_submission_count(dbm, questionnaire, search_parameters, local_time_delta)
-    submission_count_without_filters = get_submissions_without_user_filters_count(dbm, questionnaire, search_parameters)
-    submissions = SubmissionQueryResponseCreator(questionnaire, local_time_delta).create_response(query_fields,
-                                                                                                  search_results)
+    submissions, total = SubmissionQueryResponseCreator(questionnaire, local_time_delta).create_response(query_fields, search_results, search_parameters)
 
     return HttpResponse(
         jsonpickle.encode(
             {
                 'data': submissions,
-                'iTotalDisplayRecords': submission_count_with_filters,
+                'iTotalDisplayRecords': total,
                 'iDisplayStart': int(request.POST.get('iDisplayStart')),
-                "iTotalRecords": submission_count_without_filters,
                 'iDisplayLength': int(request.POST.get('iDisplayLength'))
             }, unpicklable=False), content_type='application/json')
 

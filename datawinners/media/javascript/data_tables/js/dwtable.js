@@ -1,6 +1,30 @@
 (function ($) {
     $.fn.dwTable = function (options) {
         function continue_dwtable_creation() {
+
+            var sliceGroups = function(data, start, length) {
+                var newData = [];
+                var groupKeys = Object.keys(data);
+                for (var count=start;count<start+length;count++) {
+                    if (count >= groupKeys.length) break;
+                    var rows = data[groupKeys[count]];
+                    newData = newData.concat(rows);
+                }
+                return newData;
+            };
+
+            var paginateGroups = function(oSettings, fnCallback) {
+                displayStart = oSettings._iDisplayStart;
+                displayLength = oSettings._iDisplayLength;
+                var paginatedResult = {
+                    "data": sliceGroups(defaults.result, displayStart, displayLength),
+                    "iDisplayStart": displayStart,
+                    "iDisplayLength": displayLength,
+                    "iTotalDisplayRecords": Object.keys(defaults.result).length
+                }
+                fnCallback(paginatedResult);
+            };
+
             var defaults = {
                 "concept": "Row",
                 "sDom": "ipfrtipl",
@@ -17,6 +41,7 @@
                 "fnServerData": function (sSource, aoData, fnCallback, oSettings) {
                     lastXHR = oSettings.jqXHR;
                     lastXHR && lastXHR.abort && lastXHR.abort();
+
                     aoData.push({"name": "disable_cache", "value": new Date().getTime()});
                     aoData.push({"name": "search_filters", "value": JSON.stringify(defaults.getFilter())});
 
@@ -30,6 +55,11 @@
                             $.each(result.data, function (i, data) {
                                 data.unshift('')
                             });
+                            if (result.data.length > 0 && defaults.paginateGroups) {
+                                defaults.result = _.groupBy(result.data, result.data[0].length - 1);
+                                paginateGroups(oSettings, fnCallback);
+                                return;
+                            }
                             fnCallback(result);
                         },
                         "error": function () {
@@ -42,7 +72,7 @@
             defaults["oLanguage"] = defaults["oLanguage"] || {};
             $.extend(defaults["oLanguage"], {
                 "sInfoFiltered": "",
-                "sLengthMenu": gettext("Show") + " _MENU_ " + gettext(defaults.concept),
+                "sLengthMenu": gettext("Show") + " _MENU_ " + gettext(defaults.concept)+ "s",
                 "sProcessing": "<img class=\"search-loader\"src=\"/media/images/ajax-loader.gif\"></img>",
                 "sInfo": interpolate(gettext("<b>%(start)s to %(end)s</b> of %(total)s %(subject_type)s(s)"),
                     {'start': '_START_', 'end': '_END_', 'total': '_TOTAL_', subject_type: gettext(defaults.concept)}, true),

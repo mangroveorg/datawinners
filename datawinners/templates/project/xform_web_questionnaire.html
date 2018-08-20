@@ -44,13 +44,20 @@
         var xform_xml = $('<div/>').html("{{ xform_xml }}").text();
         var dataStrToEdit = $('<div/>').html("{{ edit_model_str }}").text();
         var isQuotaReached = '{{ is_quota_reached }}';
+        var externalItemsetUrl = '{{  external_itemset_url }}';
         var questionnaire_code = '{{ questionnaire_code }}';
         DW.help_url = "https://www.datawinners.com/{% trans 'wp_language' %}/find-answers-app/category/websub/?template=help";
     </script>
 
     <script type="text/javascript" src="/media/javascript/common/form_edited_warning_dialog.js"></script>
     <script type="text/javascript" src="/media/javascript/xform_post_load_action.js"></script>
-    <script type="text/javascript" src="/media/javascript/app.js"></script>
+    <script type="text/javascript" src="/media/javascript/jquery_autocomplete/jquery_combobox.js"></script>
+    <script type="text/javascript" src="/media/javascript/combined.min.js"></script>
+    <script>
+        function resize_iframe(event) {
+            $("#help_iframe").height(event.data);
+        }
+    </script>
 
 {% endblock %}
 

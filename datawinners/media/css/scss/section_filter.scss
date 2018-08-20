@@ -161,6 +161,14 @@
       width: 175px
     }
   }
+
+  .duplicate_dropdown {
+    label {
+      text-overflow: initial;
+      overflow: initial;
+      width: auto;
+    }
+  }
   #dateRangePicker {
     padding: 0px 0px 0px 5px;
     margin-left: 0px;
@@ -199,6 +207,10 @@
   //width:80%;
   height: 22px;
   padding-left: 5px;
+}
+
+#duplicates-for-dropdown {
+  display: none;
 }
 
 #data-sender-filter {

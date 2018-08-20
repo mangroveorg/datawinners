@@ -129,7 +129,7 @@ class AllSubjectTypePage(Page):
         return AllSubjectsListPage(self.driver)
 
     def wait_for_table_data_to_load(self):
-        self.driver.wait_until_element_is_not_present(UI_TEST_TIMEOUT, by_id("subjects_table_processing"))
+        self.driver.wait_until_element_is_not_present(UI_TEST_TIMEOUT * 2, by_id("subjects_table_processing"))
 
     def search_with(self, search_text):
         self.driver.find_text_box(by_css("div#subjects_table_filter input")).enter_text(search_text)

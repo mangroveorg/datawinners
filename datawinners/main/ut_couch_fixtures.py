@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 from django.core.management import call_command
 from mock import patch
 from pytz import UTC
+from waffle.models import Flag
 
 from datawinners import initializer
 from datawinners.accountmanagement.models import OrganizationSetting, Organization, TEST_REPORTER_MOBILE_NUMBER, NGOUserProfile
@@ -1515,6 +1516,40 @@ def load_data():
     call_command("recreate_search_indexes", "hni_testorg_coj00001")
 
     grant_questionnaire_permissions_to_rasitefa()
+    # create feature subscriptions
+    questionnaire_builder_flags = Flag.objects.filter(name='questionnaire_builder')[:1]
+    if questionnaire_builder_flags:
+        questionnaire_builder_flag = questionnaire_builder_flags[0]
+    else:
+        questionnaire_builder_flag = Flag(name='questionnaire_builder')
+        questionnaire_builder_flag.save()
+
+    xlsform_edit_flags = Flag.objects.filter(name='xlsform_edit')[:1]
+    if xlsform_edit_flags:
+        xlsform_edit_flag = xlsform_edit_flags[0]
+    else:
+        xlsform_edit_flag = Flag(name='xlsform_edit')
+        xlsform_edit_flag.save()
+
+    reports_flags = Flag.objects.filter(name='reports')[:1]
+    if reports_flags:
+        reports_flag = reports_flags[0]
+    else:
+        reports_flag = Flag(name='reports')
+        reports_flag.save()
+
+    questionnaire_builder_flag.users.clear()
+    xlsform_edit_flag.users.clear()
+    reports_flag.users.clear()
+    user_ids = []
+    user_profiles = NGOUserProfile.objects.filter(org_id='SLX364903')
+    org_user_ids = [user_profile.user_id for user_profile in user_profiles]
+    user_ids.extend(org_user_ids)
+    for user_id in user_ids:
+        questionnaire_builder_flag.users.add(user_id)
+        xlsform_edit_flag.users.add(user_id)
+        reports_flag.users.add(user_id)
+
 
 def create_datasender_for_nigeria_test_organization():
     register_datasender_for_org("samuel@mailinator.com","Rasefo","26112345",

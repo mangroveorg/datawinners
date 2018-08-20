@@ -133,7 +133,7 @@ class TestAdvancedQuestionnaireSubmissionExport(HeadlessRunnerTest):
         return response['form_code']
 
     def _do_web_submission(self, project_temp_name, form_code, user, password):
-        credentials = {'user': user, 'password': password}
+        credentials = {'username': user, 'password': password}
         r = perform_submission('advanced_questionnaire_export_submission.xml',project_temp_name,form_code, credentials)
         self.assertEquals(r.status_code, 201)
         self.assertNotEqual(r._container[0].find('submission_uuid'), -1)

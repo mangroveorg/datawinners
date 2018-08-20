@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?><html:html xmlns="http://www.w3.org/2002/xforms" xmlns:html="http://www.w3.org/1999/xhtml">
+    <html:head>
+        <html:title>q1</html:title>
+        <model>
+            <itext>
+                <translation default="true()" lang="default"><text id="static_instance-districts-0">                                        <value>Klay</value>                                    </text><text id="static_instance-districts-1">                                        <value>Klay 3</value>                                    </text><text id="static_instance-counties-0">                                        <value>Bomy</value>                                    </text><text id="static_instance-counties-1">                                        <value>Bong</value>                                    </text></translation>
+            </itext>
+            <instance>
+                <tmpkWhV2m id="tmpkWhV2m">
+                    <group_outer>
+                        <repeat_outer><respondent_districts /><respondent_district_counties /></repeat_outer>
+                    </group_outer>
+                    <meta>
+                        <instanceID />
+                    </meta>
+                </tmpkWhV2m>
+            </instance>
+            <bind calculate="concat(''uuid:'', uuid())" nodeset="/tmpkWhV2m/meta/instanceID" readonly="true()" type="string" /><bind nodeset="/tmpkWhV2m/group_outer/repeat_outer/respondent_districts" required="true()" type="string" /><bind nodeset="/tmpkWhV2m/group_outer/repeat_outer/respondent_district_counties" required="true()" type="string" /><instance id="districts"><root><item>                                        <itextId>                                            static_instance-districts-0                                        </itextId>                                        <name>klay</name>                                        <counties>bomy</counties>                                    </item><item>                                        <itextId>                                            static_instance-districts-1                                        </itextId>                                        <name>klay_3</name>                                        <counties>bong</counties>                                    </item></root></instance><instance id="counties"><root><item>                                        <itextId>                                            static_instance-counties-0                                        </itextId>                                        <name>bomy</name>                                                                            </item><item>                                        <itextId>                                            static_instance-counties-1                                        </itextId>                                        <name>bong</name>                                                                            </item></root></instance></model>
+    </html:head>
+    <html:body>
+        <group ref="/tmpkWhV2m/group_outer">
+            <group ref="/tmpkWhV2m/repeat_outer">
+                <label>Enter the details you wanna repeat</label><select1 ref="/tmpkWhV2m/group_outer/repeat_outer/respondent_districts">            <label>Please select</label>            <itemset nodeset="instance('districts')/root/item[counties= /tmpkWhV2m/respondent_district_counties ]">                <value ref="name" />                <label ref="jr:itext(itextId)" />            </itemset>        </select1><select1 ref="/tmpkWhV2m/group_outer/repeat_outer/respondent_district_counties">            <label>Please select</label>            <itemset nodeset="instance('counties')/root/item">                <value ref="name" />                <label ref="jr:itext(itextId)" />            </itemset>        </select1></group>
+        </group>
+    </html:body>
+</html:html>

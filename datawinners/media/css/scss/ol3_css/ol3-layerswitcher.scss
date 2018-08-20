@@ -1,0 +1,74 @@
+.layer-switcher {
+    position: absolute;
+    top: 0.5em;
+    right: 0.5em;
+
+    .panel {
+        padding: 1em;
+        margin: 0;
+        border: 4px solid #eee;
+        border-radius: 4px;
+        background-color: white;
+        max-height: 100%;
+        overflow-y: auto;
+    }
+
+    ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    li.group > label {
+        font-weight: bold;
+        word-wrap: break-word;
+        max-width: 15em;
+        display: block;
+    }
+
+    li.group > ul {
+        padding-left: 0.2em;
+    }
+
+    li.layer {
+        label, svg, input{
+            display: inline;
+            vertical-align: middle;
+        }
+
+    }
+
+    input {
+        margin: 4px;
+    }
+
+    .touch ::-webkit-scrollbar {
+        width: 4px;
+    }
+
+    .touch ::-webkit-scrollbar-track {
+        -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+        border-radius: 10px;
+    }
+
+    .touch ::-webkit-scrollbar-thumb {
+        border-radius: 10px;
+        -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5);
+    }
+
+    button {
+        width: 232px;
+        height: 30px;
+        background-image: url('/media/images/map_hide_panel.png') /*logo.png*/;
+        background-repeat: no-repeat;
+        background-position: 2px;
+        background-color: transparent;
+        border: none;
+        &:hover,&:focus {
+            background-color : transparent!important;
+            outline: none;
+        }
+    }
+
+
+}

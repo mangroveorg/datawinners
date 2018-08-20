@@ -1,0 +1,59 @@
+.layer-switcher {
+    position: absolute;
+    top: 0.5em;
+    right: 0.5em;
+}
+
+.layer-switcher button {
+    display: none;
+}
+
+.layer-switcher .panel {
+    padding: 1em;
+    margin: 0;
+    border: 4px solid #eee;
+    border-radius: 4px;
+    background-color: white;
+    max-height: 100%;
+    overflow-y: auto;
+}
+
+.layer-switcher ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.layer-switcher li.group > label {
+    font-weight: bold;
+    word-wrap: break-word;
+    max-width: 15em;
+    display: block;
+}
+
+.layer-switcher li.group > ul {
+    padding-left: 1.5em;
+}
+
+.layer-switcher li.layer label, .layer-switcher li.layer svg, .layer-switcher li.layer input {
+    display: inline;
+    vertical-align: middle;
+}
+
+.layer-switcher input {
+    margin: 4px;
+}
+
+.layer-switcher.touch ::-webkit-scrollbar {
+    width: 4px;
+}
+
+.layer-switcher.touch ::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    border-radius: 10px;
+}
+
+.layer-switcher.touch ::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5);
+}

@@ -18,7 +18,7 @@ def import_template(request, form_code):
     filename = unquote(request.GET["filename"])
     if form_model.is_entity_registration_form():
         form_fields = form_model.form_fields
-        headers = get_subject_headers(form_fields)
+        headers = get_subject_headers(form_model)
         field_codes = _field_codes(form_fields)
         sheet_name = request.GET["filename"]
     else:

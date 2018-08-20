@@ -34,7 +34,7 @@
             <h3 class="title">{% trans "Add a User" %}</h3>
             <h6 class="section_description">{% trans "All fields are required unless marked optional." %}</h6>
         </div>
-        <div id="flash-message" class="success-message-box" data-bind="visible: addUserSuccess() == true && hasFormChanged() == false">
+        <div id="flash-message" data-bind="visible:showFlashMessage, text:flashMessage, css:classFlashMessage">
             {% trans "User has been added successfully" %}
         </div>
         <div class="tableRow">
@@ -72,15 +72,22 @@
                     {% trans "Project Manager" %}
                 </label>
 
+                <div class="margin_left_30" data-bind="visible: role()=='Project Managers' || role()=='No Delete PM'">
+                    <label style="font-weight: normal;"><input type="checkbox" name="deletePermission" id="has_permission_to_delete"
+                              data-bind="checked: deletePermission, value: 'Delete Permission'"/>
+                        {% trans "Permission to Delete Questionnaires" %}
+                    </label>
+                </div>
+
                 <p class="role_description">{% trans "role_project_manager_description" %}</p>
-                <div class="ajax-loader" data-bind="visible: role()=='Project Managers' && hasFetchedQuestionnaires() == false"><img src="/media/images/ajax-loader-horizontal-bar.gif"/></div>
+                <div class="ajax-loader" data-bind="visible: (role()=='Project Managers' || role()=='No Delete PM') && hasFetchedQuestionnaires() == false"><img src="/media/images/ajax-loader-horizontal-bar.gif"/></div>
 
                 <div class="italic_text grey-info"
-                     data-bind="visible: role()=='Project Managers' && hasFetchedQuestionnaires() == true && questionnaires().length < 1">
+                     data-bind="visible: (role()=='Project Managers' || role()=='No Delete PM') && hasFetchedQuestionnaires() == true && questionnaires().length < 1">
                     {% trans "questionnaire_access_placeholder_text" %}
                 </div>
                 <div class="questionnaire-list"
-                     data-bind="visible: role()=='Project Managers' && questionnaires().length >= 1">
+                     data-bind="visible: role()=='Project Managers' || role()=='No Delete PM'">
                     <ul data-bind="foreach: questionnaires">
                         <li>
                             <input type="checkbox"
@@ -106,6 +113,12 @@
                 <input type="text" name="title" data-bind="value: title"/>
 
                 <p class="black_italic grey-info">{% trans "Example: Program Director" %}</p>
+            </div>
+            <div class="tableCell"
+                 data-bind="css: { errorlist: title.error()  != null && title.error() != '' }">
+                <div class="error-box">
+                    <span data-bind="text: title.error"></span>
+                </div>
             </div>
         </div>
         <div class="tableRow">

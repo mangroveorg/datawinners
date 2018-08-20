@@ -1838,7 +1838,7 @@ msgid "We could not import your data ! You are using a document format we canʼt
 msgstr "Nous ne pouvons pas importer vos données! Vous utilisez un format de document nous reconnu. Veuillez utiliser le fichier modèle d'importation Excel (.xlsx)!"
 
 msgid "Register"
-msgstr "S'enregistrer"
+msgstr "Enregistrer"
 
 msgid "Register Changes"
 msgstr "Enregistrer"
@@ -2172,17 +2172,22 @@ msgstr "Tout le monde peut envoyer une réponse SMS"
 msgid "How Long Should the Poll be Active?"
 msgstr "Combien de temps le Sondage sera-t-il actif ?"
 
-msgid "Choose the number of days people can respond to this poll."
-msgstr "Choisissez le nombre de jours durant lequel les gens peuvent répondre au Sondage."
+msgid "Select an end date for your poll.The poll will be active from the moment you've create the poll.You can deactivate it before the end date if needed."
+msgstr "Sélectionnez une date de fin. Le sondage sera actif à compter du moment où vous le sauvegardez jusqu’à cette date."
 
 msgid "Active for"
 msgstr "Actif pour"
 
-msgid "From : "
-msgstr "Du : "
+msgid "Active from"
+msgstr "Actif du"
 
-msgid "To : "
-msgstr "Au : "
+
+
+msgid "From "
+msgstr "Du "
+
+msgid "to "
+msgstr "au "
 
 msgid "Poll is"
 msgstr "Le Sondage est"
@@ -2267,6 +2272,9 @@ msgstr "Supprimer le Sondage"
 
 msgid "Text:"
 msgstr "Texte:"
+
+msgid "To : "
+msgstr " Au: "
 
 msgid "To:"
 msgstr "Pour:"
@@ -2808,12 +2816,17 @@ msgstr "Paramètres des rappels enregistrés avec succès."
 msgid "Answer must be a word or phrase %d characters maximum"
 msgstr "La réponse doit être un mot de %d caractères au maximum"
 
+msgid "Answer must be a word %d characters maximum"
+msgstr "La réponse doit être un mot à %d caractères au maximum"
 
 msgid "Answer must be a word"
 msgstr "La réponse doit être un mot"
 
 msgid "Answer must be a word %s characters maximum"
 msgstr "La réponse doit être un mot à %s caractères au maximum"
+
+msgid "Answer must be a number."
+msgstr "La réponse doit être un nombre"
 
 msgid "Answer must be a number. The minimum is %s"
 msgstr "La réponse doit être un nombre. Le minimum est %s"
@@ -2825,7 +2838,7 @@ msgid "Enter the ID number of the Data Sender. Click on 'Data Senders' at the to
 msgstr "Entrez le numéro d'identification de l'Expéditeur de données. Cliquez sur 'Expéditeurs de données' en haut de cette page pour trouver ces numéros d'identification. Exemple: rep10"
 
 msgid "I want to submit this data on behalf of a registered Data Sender"
-msgstr "Je vous soumettre ces données pour le compte d'un Expéditeur de Données enregistré"
+msgstr "Je veux soumettre ces données pour le compte d'un Expéditeur de Données enregistré"
 
 msgid "I am submitting this data on behalf of"
 msgstr "Je soumets ces Données pour le compte de"
@@ -2895,6 +2908,15 @@ msgstr ""
 
 msgid "Between %d -- %d characters"
 msgstr "Entre %d -- %d caractères"
+
+msgid "Answer must be a number between %d-%d."
+msgstr "La réponse doit être un nombre entre %d et %d."
+
+msgid "Answer must be a number. The minimum is %d."
+msgstr "La réponse doit être un nombre. Le minimum est %d"
+
+msgid "Answer must be a number. The maximum is %d."
+msgstr "La réponse doit être un nombre. Le maximum est %d."
 
 msgid "Account Activation"
 msgstr "Activation de compte"
@@ -3036,6 +3058,15 @@ msgstr "Quel est le numéro d'identification unique du/de la %(entity_type)s ?"
 msgid "Enter the (%(entity_type)s)'s number with the country code and telephone number. Example: 261333745269"
 msgstr "Entrez le numéro du %(entity_type)s avec le code pays et numéro de téléphone. Exemple: 261333745269"
 
+msgid ""
+"Answer must be country code plus telephone number. Example: 261333745269"
+msgstr ""
+"La réponse doit être un numéro de téléphone précédé du code pays. Exemple : "
+"261333745269"
+
+msgid "Answer must be country code plus telephone number"
+msgstr "La réponse doit être un numéro de téléphone précédé du code pays"
+
 msgid "some default value"
 msgstr ""
 
@@ -3046,7 +3077,7 @@ msgid "Enter the Name"
 msgstr "Tapez le nom"
 
 msgid "Example: Person (Patient, Farmer), Place (Region, Village), Thing (Health center, School, Water pump, Retail shop), Event (Training, Public gathering)"
-msgstr "Exemple: Personne (Patient, Fermier), Place (Région, Village), Chose (Centre de santé, Pompe à eau, Magasin détaillant), Event (Formation, Rassmeblement public)"
+msgstr "Exemple: Personne (Patient, Fermier), Place (Région, Village), Chose (Centre de santé, Pompe à eau, Magasin détaillant), Événement (Formation, Rassemblement public)"
 
 msgid "Once you have registered a %(entity_type)s, it will appear here."
 msgstr "Une fois que vous avez enregistré un(e) %(entity_type)s, il(elle) apparaîtra ici"
@@ -3190,7 +3221,7 @@ msgid "Project"
 msgstr "Projet"
 
 msgid "You may be sharing this %(entity_type)s registration form with other questionnaire. If you make changes, the other questionnaire will have to use your new %(entity_type)s registration form as well."
-msgstr "Vous pouvez partager ce formulaire d’enregistrement de %(entity_type)s avec d'autres questionnaire. Si vous effectuez des modifications, les autres questionnaire devront également utiliser votre nouveau formulaire d'enregistrement de %(entity_type)s."
+msgstr "Vous pouvez partager ce formulaire d’enregistrement de %(entity_type)s avec d'autres questionnaires. Si vous effectuez des modifications, les autres questionnaires devront également utiliser votre nouveau formulaire d'enregistrement de %(entity_type)s."
 
 msgid "If you delete this question, any previously collected data will be lost."
 msgstr "Si vous supprimez cette question, toutes les données collectées auparavant seront perdues."
@@ -4206,7 +4237,7 @@ msgid "Deleted Data Submission(s)"
 msgstr "A supprimé une/des soumission(s) de données"
 
 msgid "Edited Data Submission(s)"
-msgstr "Soumission(s) de données modifiée(s)"
+msgstr "A modifié les Soumission(s)"
 
 msgid "Submission Received on"
 msgstr "Soumission reçue le"
@@ -4223,6 +4254,9 @@ msgstr "A activé les rappels"
 msgid "De-Activated Reminders"
 msgstr "A desactivé les rappels"
 
+msgid "Updated reminders"
+msgstr "A mis à jour les rappels"
+
 msgid "Set Deadline"
 msgstr "A fixé la date limite"
 
@@ -4238,8 +4272,32 @@ msgstr "Questions ajoutées"
 msgid "Answer type changed to %(answer_type)s for \"%(question_label)s\""
 msgstr "Type de réponse changé en %(answer_type)s pour \"%(question_label)s\""
 
-msgid "Question Labels Changed"
+msgid "Question Label Changed"
 msgstr "Questions reformulées"
+
+msgid "Question Hint Changed"
+msgstr "Hint modifié"
+
+msgid "Question Constraint message Changed"
+msgstr "Constraint message modifié"
+
+msgid "Question Constraint Changed"
+msgstr "Constraint modifié"
+
+msgid "Question Relevant Changed"
+msgstr "Relevant modifié"
+
+msgid "Question Required Changed"
+msgstr "Required modifié"
+
+msgid "Question Default Changed"
+msgstr "Default modifié"
+
+msgid "Question Appearance Changed"
+msgstr "Appearance modifié"
+
+msgid "Question Choice Changed"
+msgstr "Choice modifié"
 
 msgid "Untitled Project"
 msgstr "Projet sans titre"
@@ -4326,7 +4384,7 @@ msgid "Currently, registering a new %(subject_type)s via Smartphone is not possi
 msgstr "Pour l’instant, enregistrer un(e) %(subject_type)s avec le Smartphone n’est pas possible"
 
 msgid "Remind them to download the updated version of the Questionnaire"
-msgstr "Rappelez-leur de télécharger la version mise du Questionnaire"
+msgstr "Rappelez-leur de télécharger la version mise à jour du Questionnaire"
 
 msgid "No action needed. We will display the updated version of the Registration Form automatically"
 msgstr "Aucune action requise. Nous afficherons la version mise à jour du Questionnaire automatiquement"
@@ -4417,6 +4475,13 @@ msgstr "Exemple : Nairobi"
 
 msgid "Choose 1 or more answers from the list."
 msgstr "Choisissez 1 ou plusieurs réponses dans la liste."
+
+msgid "Choose 1 answer from the list. Example: a"
+msgstr "Choisissez une réponse à partir de la liste. Exemple: a"
+
+msgid "Choose 1 or more answers from the list. Example: a or ab "
+msgstr ""
+"Choisissez 1 ou plusieurs réponses dans la liste suivante. Exemple : a ou ab"
 
 msgid "Enter 1 answer from the list."
 msgstr "Choisissez 1 réponse dans la liste."
@@ -4552,6 +4617,9 @@ msgstr "Si vous avez besoin d’aide, contactez votre gestionnaire de projet ou 
 msgid "Minimum of 6 characters in length"
 msgstr "Au minimum 6 caratères"
 
+msgid "Example: Minimum of 6 characters in length"
+msgstr "Exemple: Au minimum 6 caratères"
+
 msgid "Thank you %(datasender)s. We received your SMS for %(subject_info)s"
 msgstr "Merci %(datasender)s. Nous avons recu votre SMS concernant %(subject_info)s"
 
@@ -4597,14 +4665,17 @@ msgstr "Votre compte DataWinners a été désactivé. "
 msgid "To reactivate it, subscribe to a monthly subscription by contacting your Project Manager or DW Support at <a href='mailto:support@datawinners.com'>support@datawinners.com</a>."
 msgstr "Pour le réactiver, veuillez adhérer à une souscription mensuelle en contactant votre Gestionnaire de Projet ou le support DW au <a href='mailto:support@datawinners.com'>support@datawinners.com</a>."
 
-msgid "Get the Most out of Datawinners!"
-msgstr "Tirez le meilleur parti de votre Compte Datawinners"
+msgid "Datawinners | Become a DataWinners Pro in Two Weeks"
+msgstr "Datawinners | Devenez un Expert DataWinners en deux semaines"
 
-msgid "Find Out What Datawinners Can Do For You!"
-msgstr "Découvrez ce que Datawinners peut faire pour vous!"
+msgid "Datawinners | Authorize your DataWinners Data Senders to Submit Data"
+msgstr "Datawinners | Autorisez vos Expéditeurs de Données à soumettre des Données"
 
-msgid "Datawinners | We're here to Help!"
-msgstr "DataWinners | Nous sommes là pour vous aider!"
+msgid "Datawinners | Collect and View Your Data with DataWinners"
+msgstr "DataWinners | Collectez et affichez vos Données"
+
+msgid "Datawinners | Use Advanced Logic and Collect Media Files with DataWinners"
+msgstr "Datawinners | Utilisez les logiques avancées et collectez des fichiers média"
 
 msgid "Datawinners | Join our Online Community!"
 msgstr "DataWinners | Rejoignez notre communauté en ligne!"
@@ -4619,13 +4690,13 @@ msgid "Datawinners | Why is Data Collection Important to You?"
 msgstr "DataWinners | Pourquoi la Collecte de données est importante pour vous?"
 
 msgid "Datawinners | Share Your Experience!"
-msgstr "DataWinners | Partagez Votre Experience!"
+msgstr "DataWinners | Partagez votre experience!"
 
 msgid "Your Datawinners Subscription is About to End!"
 msgstr "Votre abonnement DataWinners touche à sa fin…"
 
 msgid "Your Free Subscription to Datawinners Ends Tomorrow - Download Your Data!"
-msgstr "Votre abonnement gratuit à DataWinners sera expiré demain - Télécharger vos données!"
+msgstr "Votre abonnement gratuit à DataWinners expire demain - Télécharger vos données!"
 
 msgid "Datawinners | Your Account Has Expired!"
 msgstr "DataWinners | Votre Compte a expiré!"
@@ -4778,6 +4849,7 @@ msgstr "<div class='radio_title'>Pro</div>"
 msgid "pro_sms_subtitle"
 msgstr "<div class='radio_title'>Pro SMS</div>"
 "<div class='subtitle_for_radio_button pro_sms_account'>Collecter un nombre illimité de données en utilisant 3 canaux : SMS, Android (Smartphone et Tablette) et Web</div>"
+"<div class='pro_sms_selected_country_note'>* Pro SMS est disponible dans certains pays uniquement, contactez <a href=\"mailto:support@datawinners.com\">support@datawinners.com</a> pour plus d'informations.</div>"
 
 msgid "Account Type"
 msgstr "Type de compte"
@@ -5015,8 +5087,11 @@ msgstr "Instructions pour les Expéditeurs de Données"
 msgid "%s with Identification Number %s successfully registered."
 msgstr "Le/la %s portant le Numéro d'Identification %s a été enregistré avec succès."
 
-msgid "Choose a %(entity_type)s from this list."
-msgstr "Choisissez un %(entity_type)s dans la liste."
+msgid "Choose a %(entity_type)s from this list"
+msgstr "Choisissez un %(entity_type)s dans la liste"
+
+msgid "%(entity_type)s is an Identification Number"
+msgstr "%(entity_type)s est un numéro d’identification"
 
 msgid "Advanced Answer Types"
 msgstr "Types de réponse avancés"
@@ -5394,6 +5469,18 @@ msgstr "d’autres colonnes à part le colonne Default_Language sur la feuille S
 msgid "Export Submissions"
 msgstr "Exporter les Soumissions"
 
+msgid "Standard Export"
+msgstr "Exportation standard"
+
+msgid "All data merged into one sheet"
+msgstr "Tout sur une seule feuille"
+
+msgid "Submissions without Media Files (Excel only)"
+msgstr "Soumissions sans fichiers média (Excel uniquement)"
+
+msgid "Submissions with Media (.zip)"
+msgstr "Soumissions avec fichiers média (.zip)"
+
 msgid "The current version of DataWinners supports the export of Submissions to Excel with up to 256 columns per Excel sheet. Your Submissions will be exported to several Excel sheets."
 msgstr "La version actuelle de DataWinners permet l'exportation des Soumissions vers Excel, avec une limite de 256 colonnes par feuille de calcul Excel. Vos Soumissions seront ainsi exportées et réparties en plusieurs feuilles de calcul Excel."
 
@@ -5706,6 +5793,10 @@ msgstr "Personne autorisée à soumettre des données via SMS"
 msgid "Change"
 msgstr "Changement"
 
+msgid "Change_button"
+msgstr "Modifier"
+
+
 msgid "You decide who has permission to submit data using SMS for this Questionnaire:"
 msgstr "Vous décidez qui a la permission de soumettre des données via SMS pour ce Questionnaire :"
 
@@ -5902,7 +5993,7 @@ msgid "Add a Contact"
 msgstr "Ajouter un Contact"
 
 msgid "Add Contact"
-msgstr "Ajouter des Contacts"
+msgstr "Ajouter le Contact"
 
 msgid "ID Automatic"
 msgstr "ID automatique"
@@ -6137,6 +6228,9 @@ msgstr "Sondage désactivé"
 msgid "Activated Poll"
 msgstr "Sondage activé"
 
+msgid "Changed End Date"
+msgstr "A changé la date de fin"
+
 msgid "alert_message_for_project_manager"
 msgstr "Si vous retirez l’accès à un Questionnaire ou un Sondage, la personne sera également retirée de la liste des Expéditeurs de Données. Vous pouvez ajouter cette personne en tant qu’Expéditeur de Données à un Questionnaire ou un Sondage sur la page Contacts."
 
@@ -6167,5 +6261,137 @@ msgstr "Personnalisez l'affichage"
 msgid "analysis_table_empty_text3"
 msgstr "pour ajouter des colonnes."
 
+msgid "Add existing Contacts from the"
+msgstr "Ajouter des Contacts existants à partir de"
 
+msgid "All Contacts view"
+msgstr "Tous les Contacts"
 
+msgid "Import new Contacts"
+msgstr "Importer de nouveaux Contacts"
+
+msgid "Add a new Contact"
+msgstr "Ajouter un nouveau Contact"
+
+msgid "The template you are using is not correct, please use DataWinners template and try again"
+msgstr "Le modèle que vous utilisez n'est pas adapté, veuillez utiliser le modèle de DataWinners et réessayer."
+
+msgid "Answer must be a date in the following format: %s. Example: %s"
+msgstr "La réponse doit être une date suivant le format : %s. Exemple : %s"
+
+msgid "Show Duplicates For"
+msgstr "Afficher les doublons pour"
+
+msgid "Duplicates"
+msgstr "Doublons"
+
+msgid "Exact Match"
+msgstr "Concordance exacte"
+
+msgid "help_text_for_duplicates_oneliner"
+msgstr "Cette fonctionnalité identifiera les doublons possibles au niveau des Soumissions. Supprimer ou modifier les doubons vous permettra de nettoyer et d'améliorer la qualité des données collectées. Seules les Soumissions effectuées avec succès sont analysées pour identifier les doublons."
+
+msgid "help_text_for_duplicates_expand_header"
+msgstr "Comment ça marche"
+
+msgid "help_text_for_duplicates_expand_content_1"
+msgstr "1) Choisissez la période en utilisant le filtre \"Date de Soumission\""
+
+msgid "help_text_for_duplicates_expand_content_2"
+msgstr "2) Choisissez le cas de doublons que vous souhaitez afficher. Utilisez la liste déroulante \"Afficher les doublons pour\""
+
+msgid "help_text_for_duplicates_expand_content_2a"
+msgstr "a. Soumissions comportant les mêmes réponses pour chaque question"
+
+msgid "help_text_for_duplicates_expand_content_2b"
+msgstr "b. Soumissions comportant le même Numéro d'Identification (exactitude au niveau de la question sur le Numéro d'Identification)"
+
+msgid "help_text_for_duplicates_expand_content_2c"
+msgstr "c. Soumissions effectuées par le même Expéditeur de Données"
+
+msgid "help_text_for_duplicates_expand_content_3"
+msgstr "3) Supprimez ou modifiez la Soumission en utilisant la liste déroulante Actions"
+
+msgid "help_text_for_duplicates_expand_content_note"
+msgstr "Remarque: la répétition d'une série de questions n'est pas prise en compte dans cette version"
+
+msgid "help_text_for_duplicates_near_filter_header"
+msgstr "Choissez quel cas de doublon vous souhaitez afficher"
+
+msgid "help_text_for_duplicates_near_filter_content_1"
+msgstr "1) Soumissions comportant les mêmes réponses pour chaque question"
+
+msgid "help_text_for_duplicates_near_filter_content_2"
+msgstr "2) Soumissions comportant le même Numéro d'Identification (par question)"
+
+msgid "help_text_for_duplicates_near_filter_content_3"
+msgstr "3) Soumissions effectuées par le même Expéditeur de Données"
+
+msgid "Before-deadline reminder updated: %s Day(s)"
+msgstr "Rappel avant échéance mis à jour: %s Jour(s)"
+
+msgid "After-deadline reminder updated: %s Day(s)"
+msgstr "Rappel après échéance mis à jour: %s Jour(s)"
+
+msgid "Text updated for before-deadline reminder: %s"
+msgstr "Texte mis à jour pour le rappel avant l’échéance: %s"
+
+msgid "Text updated for on-deadline reminder: %s"
+msgstr "Texte mis à jour pour le rappel le jour de l’échéance: %s"
+
+msgid "Text updated for after-deadline reminder: %s"
+msgstr "Texte mis à jour pour le rappel après l’échéance: %s"
+
+msgid "Before-deadline reminder activated"
+msgstr "Rappel avant échéance activé"
+
+msgid "Before-deadline reminder deactivated"
+msgstr "Rappel avant échéance désactivé"
+
+msgid "On-deadline reminder activated"
+msgstr "Rappel le jour de l’échéance activé"
+
+msgid "On-deadline reminder deactivated"
+msgstr "Rappel le jour de l’échéance déactivé"
+
+msgid "After-deadline reminder activated"
+msgstr "Rappel après échéance activé"
+
+msgid "After-deadline reminder deactivated"
+msgstr "Rappel après échéance déactivé"
+
+msgid "Deadline updated: weekday"
+msgstr "Echéance mise à jour: jour de la semaine"
+
+msgid "Reminders updated to:  All My Data Senders"
+msgstr "Rappels mis à jour : Tous mes Expéditeurs de Données"
+
+msgid "Reminders updated to: My Data Senders who have not yet submitted for this deadline"
+msgstr "Rappels mis à jour à : Mes Expéditeurs de Données qui n’ont pas encore soumis pour cette échéance."
+
+msgid "Deadline updated: month"
+msgstr "Echéance mise à jour : Mois"
+
+msgid "Deadline updated: week"
+msgstr "Echéance mise à jour : Semaine"
+
+msgid "Edited Data Submission(s) for advanced questionnaire"
+msgstr "A modifié les Soumissions d’un Questionnaire avancé"
+
+msgid "Deadline updated: month day"
+msgstr "Echéance mise à jour: mois jour"
+
+msgid "Project Manager (Permission to Delete Questionnaire removed)"
+msgstr "Gestionnaire de projet (Suppression de Questionnaires non autorisée)"
+
+msgid "Permission to Delete Questionnaires"
+msgstr "Autoriser à supprimer des Questionnaires"
+
+msgid "Duplicate questionnaire name. All questionnaire (name) must be unique."
+msgstr "Doublon au niveau du nom de questionnaire. Toutes les questionnaires (noms) doivent être uniques."
+
+msgid "Use another questionnaire name and upload again."
+msgstr "Utiliser un autre nom de questionnaire et téléchargez une nouvelle fois."
+
+msgid "All code fields must be unique, please check %s field"
+msgstr "Tous les champs de code doivent être uniques, veuillez vérifier le champs %s "

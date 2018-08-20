@@ -11,7 +11,8 @@ from django.utils.translation import ugettext_lazy as _
 from datawinners.entity.fields import PhoneNumberField, DjangoDateField
 from datawinners.entity.import_data import load_all_entities_of_type
 from mangrove.form_model.validation import GeoCodeConstraint
-from mangrove.form_model.form_model import LOCATION_TYPE_FIELD_NAME
+from mangrove.form_model.form_model import LOCATION_TYPE_FIELD_NAME, FIRSTNAME_FIELD, NAME_FIELD, GEO_CODE_FIELD_NAME, MOBILE_NUMBER_FIELD, SHORT_CODE_FIELD
+
 from mangrove.form_model.field import SelectField, HierarchyField, TelephoneNumberField, IntegerField, GeoCodeField, DateField
 from mangrove.utils.types import is_empty
 from datawinners.utils import translate, get_text_language_by_instruction
@@ -177,7 +178,6 @@ class CharFormField(object):
             if constraint.max is not None: constraints["max_length"] = constraint.max
             if constraint.min is not None: constraints["min_length"] = constraint.min
         return constraints
-
 
 class EntityField(object):
     def __init__(self, dbm, project):

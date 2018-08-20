@@ -1,12 +1,15 @@
+import csv
 from datetime import datetime
 import itertools
 import os
 import re
+from tempfile import NamedTemporaryFile
 from xml.etree import ElementTree as ET
 
 from lxml import etree
 import unicodedata
 from openpyxl import load_workbook
+from pyxform.utils import has_external_choices
 from mangrove.datastore.entity_type import entity_type_already_defined
 from mangrove.datastore.queries import get_non_voided_entity_count_for_type
 from pyxform.xls2json import parse_file_to_json
@@ -50,6 +53,18 @@ START = 'start'
 END = 'end'
 SIMSERIAL = 'simserial'
 
+
+def encode_xls_value(value, value_type):
+    if value_type == float:
+        int_value = int(value)
+        if int_value == value:
+            return unicode(int_value)
+        else:
+            return unicode(value)
+    else:
+        return value.encode('utf-8')
+
+
 class XlsFormParser():
     type_dict = {'group': ['repeat', 'group'],
                  'field': ['text', 'integer', 'decimal', 'date', 'geopoint', 'calculate', 'cascading_select', BARCODE,
@@ -57,24 +72,28 @@ class XlsFormParser():
                  'auto_filled': ['note'],
                  'media': ['photo', 'audio', 'video'],
                  'select': ['select one', 'select all that apply', 'select one or specify other',
-                            'select all that apply or specify other']
+                            'select all that apply or specify other'],
+                 'select_external' : ['select one external']
     }
     recognised_types = list(itertools.chain(*type_dict.values()))
     supported_types = [type for type in recognised_types if type not in type_dict['auto_filled']]
     or_other_data_types = ['select all that apply or specify other', 'select one or specify other']
     select_without_list_name = ['select_one', 'select_multiple']
 
-    def __init__(self, path_or_file, questionnaire_name, dbm=None):
+    def __init__(self, path_or_file, questionnaire_name, dbm=None, excel_raw_stream=None, file_type=None):
         self.questionnaire_name = questionnaire_name
         self.dbm = dbm
-        if isinstance(path_or_file, basestring):
+        if excel_raw_stream is not None:
+          self._file_object = excel_raw_stream
+          self.path = 'questionnaire.'+file_type #Used only to deduct the extension internally in pyxform   
+        elif isinstance(path_or_file, basestring):
             self._file_object = None
             self.path = path_or_file
         else:
             self._file_object = path_or_file
             self.path = path_or_file.name
 
-        self.xform_dict = parse_file_to_json(self.path, file_object=path_or_file)
+        self.xform_dict = parse_file_to_json(self.path, file_object=self._file_object)
 
     def _validate_for_uppercase_names(self, field):
         if filter(lambda x: x.isupper(), field['name']):
@@ -139,6 +158,8 @@ class XlsFormParser():
             question = self._field(field, parent_field_code)
         elif field_type in self.type_dict['select']:
             question = self._select(field, parent_field_code)
+        elif field_type in self.type_dict['select_external']:
+            question = self._select_external(field, parent_field_code)
         elif field_type in self.type_dict['media']:
             question = self._media(field, parent_field_code)
         return question, errors, unique_id_errors
@@ -159,7 +180,7 @@ class XlsFormParser():
 
                         if question['type'] in ['select', 'select1'] and question['has_other']:
                             other_field = {u'type': u'text', u'name': question['code'] + "_other",
-                                           u'label': question['title'] + "_other"}
+                                           u'label': question['title'] + "_other", u'is_other': True}
                             other_question, other_field_errors, x = self._create_question(other_field,
                                                                                           parent_field_code)
                             questions.append(other_question)
@@ -270,7 +291,8 @@ class XlsFormParser():
                 errors.extend(self._validate_choice_names(field['children']))
             choices = field.get('choices')
             if choices:
-                name_list = [choice['name'].lower() for choice in choices]
+                # name_list = [choice['name'].lower() for choice in choices]
+                name_list = [choice['name'] for choice in choices]
                 name_set = set(name_list)
                 name_list_without_duplicates = list(name_set)
                 self._validate_default_value(errors, field, name_set)
@@ -299,11 +321,35 @@ class XlsFormParser():
             return XlsParserResponse(errors)
         _map_unique_id_question_to_select_one(self.xform_dict)
         survey = create_survey_element_from_dict(self.xform_dict)
+        itemsets_csv = None
+        if has_external_choices(self.xform_dict):
+            itemsets_csv = NamedTemporaryFile(delete=False, suffix=".csv")
+            choices_exported = self.sheet_to_csv(self.path, itemsets_csv.name, "external_choices")
+            if not choices_exported:
+                errors.add("Could not export itemsets.csv, perhaps the external choices sheet is missing.")
+            else:
+                print 'External choices csv is located at:', itemsets_csv
         xform = survey.to_xml()
         # encoding is added to support ie8
         xform = re.sub(r'<\?xml version="1.0"\?>', '<?xml version="1.0" encoding="utf-8"?>', xform)
         updated_xform = self.update_xform_with_questionnaire_name(xform)
-        return XlsParserResponse([], updated_xform, questions, info, self._is_multi_language())
+        return XlsParserResponse([], updated_xform, questions, info, self._is_multi_language(), itemsets_csv)
+
+    def sheet_to_csv(self, workbook_path, csv_path, sheet_name):
+        wb = xlrd.open_workbook(workbook_path)
+        try:
+            sheet = wb.sheet_by_name(sheet_name)
+        except xlrd.biffh.XLRDError:
+            return False
+        if not sheet or sheet.nrows < 2:
+            return False
+        with open(csv_path, 'wb') as f:
+            writer = csv.writer(f, quoting=csv.QUOTE_ALL)
+            mask = [v and len(v.strip()) > 0 for v in sheet.row_values(0)]
+            for r in range(sheet.nrows):
+                writer.writerow(
+                    [encode_xls_value(v, type(v)) for v, m in zip(sheet.row_values(r), mask) if m])
+        return True
 
 
     def update_xform_with_questionnaire_name(self, xform):
@@ -351,7 +397,10 @@ class XlsFormParser():
             "parent_field_code": parent_field_code,
             "instruction": "No answer required",
             "fieldset_type": fieldset_type,
-            "fields": questions
+            "fields": questions,
+            "appearance": self._get_appearance(field),
+            "default": field.get('default'),
+            "relevant": field.get("bind").get("relevant") if field.get("bind") else None
         }
         return question, errors, unique_id_errors
 
@@ -395,10 +444,16 @@ class XlsFormParser():
         name = self._get_label(field)
         code = field['name']
         type = field['type'].lower()
-
+        hint = field.get("hint")
+        constraint_message = field.get("bind").get("jr:constraintMsg") if field.get("bind") else None
+        appearance = self._get_appearance(field)
+        default = field.get('default')
+        xform_constraint = field.get("bind").get("constraint") if field.get("bind") else None
+        relevant = field.get("bind").get("relevant") if field.get("bind") else None
         question = {'title': name, 'type': xform_dw_type_dict.get(type, type), "is_entity_question": False,
-                    "code": code, "name": name, 'required': self.is_required(field),
-                    "parent_field_code": parent_field_code,
+                    "code": code, "name": name, 'required': self.is_required(field), "hint": hint,
+                    "constraint_message": constraint_message, "parent_field_code": parent_field_code, "appearance": appearance, "default": default,
+                    "xform_constraint": xform_constraint, "relevant": relevant,
                     "instruction": "Answer must be a %s" % help_dict.get(type, type)}  # todo help text need improvement
 
         if type in ['date', TODAY]:
@@ -412,6 +467,9 @@ class XlsFormParser():
         if type == CALCULATE:
             question.update({"is_calculated": True})
 
+        if field.get('is_other') is not None and field.get('is_other'):
+            question.update({"is_other": True})
+
         return question
 
     def _get_appearance(self, field):
@@ -423,6 +481,13 @@ class XlsFormParser():
             return
         name = self._get_label(field)
         code = field['name']
+        hint = field.get("hint")
+        constraint_message = field.get("bind").get("jr:constraintMsg") if field.get("bind") else None
+        appearance = self._get_appearance(field)
+        default = field.get('default')
+        relevant = field.get("bind").get("relevant") if field.get("bind") else None
+        xform_constraint = field.get("bind").get("constraint") if field.get("bind") else None
+
         if field.get('choices'):
             choices = [{'value': {'text': self._get_choice_label(f), 'val': f['name']}} for f in field.get('choices')]
         else:
@@ -430,14 +495,28 @@ class XlsFormParser():
             choices = [{'value': {'text': self._get_choice_label(f), 'val': f['name']}} for f in
                        self.xform_dict['choices'].get(field['itemset'])]
         question = {"title": name, "code": code, "type": "select", 'required': self.is_required(field),
-                    "parent_field_code": parent_field_code,
-                    "choices": choices, "is_entity_question": False}
+                    "hint": hint, "constraint_message": constraint_message, "parent_field_code": parent_field_code,
+                    "appearance": appearance, "default": default, "choices": choices, "is_entity_question": False,
+                    "xform_constraint": xform_constraint, "relevant": relevant, "is_cascade": field.get("itemset") is not None}
 
         question.update({"has_other": field['type'] in self.or_other_data_types})
 
         if field['type'] in ['select one', 'select one or specify other']:
             question.update({"type": "select1"})
 
+        return question
+
+    def _select_external(self, field, parent_field_code=None):
+        if self._get_appearance(field) == 'label':
+            return
+        name = self._get_label(field)
+        code = field['name']
+
+        query = field.get('query')
+        choice_filter = field.get('choice_filter')
+        question = {"title": name, "code": code, "type": "select one external", 'required': self.is_required(field),
+                    "parent_field_code": parent_field_code,
+                    "query": query, "choice_filter":choice_filter, "is_entity_question": False}
         return question
 
     def _get_choice_label(self, choice_field):
@@ -462,9 +541,15 @@ class XlsFormParser():
     def _media(self, field, parent_field_code=None):
         name = self._get_label(field)
         code = field['name']
+        hint = field.get("hint")
+        constraint_message = field.get("bind").get("jr:constraintMsg") if field.get("bind") else None
+        appearance = self._get_appearance(field)
+        default = field.get('default')
+        xform_constraint = field.get("bind").get("constraint") if field.get("bind") else None
+        relevant = field.get("bind").get("relevant") if field.get("bind") else None
         question = {"title": name, "code": code, "type": field['type'], 'required': self.is_required(field),
-                    "parent_field_code": parent_field_code,
-                    "is_entity_question": False}
+                    "parent_field_code": parent_field_code, "hint": hint, "constraint_message": constraint_message,
+                    "is_entity_question": False, "appearance": appearance, "default": default, "xform_constraint": xform_constraint, "relevant": relevant}
         return question
 
     def _validate_for_prefetch_csv(self, field):
@@ -516,6 +601,7 @@ class MangroveService():
         self.xform_with_form_code = self.add_form_code(self.questionnaire_code)
         self.json_xform_data = xls_parser_response.json_xform_data
         self.xls_form = xls_form
+        self.itemsets_csv = xls_parser_response.csv_path
 
     def _add_model_sub_element(self, root, name, value):
         generated_id = get_generated_xform_id_name(self.xform)
@@ -558,6 +644,8 @@ class MangroveService():
         else:
             extension = ".xls"
         questionnaire.add_attachments(self.xls_form, 'questionnaire%s' % extension)
+        if self.itemsets_csv:
+            questionnaire.add_attachments(self.itemsets_csv, "itemsets.csv")
         UserActivityLog().log(self.request, action=CREATED_QUESTIONNAIRE, project=questionnaire.name,
                               detail=questionnaire.name)
         return questionnaire.id, questionnaire.form_code
@@ -609,6 +697,8 @@ class XFormSubmissionProcessor():
                             other_selection.append(item)
                     answer_dict.update({field.code + "_other": ' '.join(other_selection)})
                     answer_dict.update({field.code: ' '.join(choice_selections)})
+            elif isinstance(field, SelectField)  and field.is_single_select:
+                answer_dict.update({field.code: answer if _is_choice_item_in_choice_list(answer, field.options) else ""})
             else:
                 answer_dict.update(self.get_dict(field, answer))
         return answer_dict
@@ -616,12 +706,42 @@ class XFormSubmissionProcessor():
     def get_model_edit_str(self, form_model_fields, submission_values, project_name, form_code):
         # todo instead of using form_model fields, use xform to find the fields
         answer_dict, edit_model_dict = {'form_code': form_code}, {}
-        answer_dict.update(self._format_field_answers_for(form_model_fields, submission_values))
+        formatted_field_values = convert_date_values(form_model_fields, self._format_field_answers_for(form_model_fields, submission_values))
+        answer_dict.update(formatted_field_values)
         edit_model_dict.update({project_name: answer_dict})
         return xmldict.dict_to_xml(edit_model_dict)
 
     def _format_date_time(self, value):
         return datetime.strptime(value, '%d.%m.%Y %H:%M:%S').strftime('%Y-%m-%dT%H:%M:%S')
+
+
+def convert_date_values(fields, value_dict):
+    for field in fields:
+        if type(field) is FieldSet:
+            dicts = []
+            for value in value_dict.get(field.code):
+                converted_dict = convert_date_values(field.fields, value)
+                dicts.append(converted_dict)
+            value_dict[field.code] = dicts
+        elif type(field) is DateField:
+            converted_value = convert_date_to_ymd(value_dict.get(field.code))
+            value_dict[field.code] = converted_value
+    return value_dict
+
+
+def convert_date_to_ymd(str_date):
+    if not str_date:
+        return str_date
+    
+    try:
+        date = datetime.strptime(str_date, "%Y-%m")
+    except ValueError:
+        try:
+            date = datetime.strptime(str_date, "%Y")
+        except ValueError:
+            date = datetime.strptime(str_date, "%Y-%m-%d")
+
+    return datetime.strftime(date, "%Y-%m-%d")
 
 
 class XFormImageProcessor():
@@ -766,7 +886,7 @@ class XlsProjectParser(XlsParser):
 
 
 class XlsParserResponse():
-    def __init__(self, errors=None, xform_as_string=None, json_xform_data=None, info=None, is_multiple_languages=False):
+    def __init__(self, errors=None, xform_as_string=None, json_xform_data=None, info=None, is_multiple_languages=False, csv_path=None):
         self.is_multiple_languages = is_multiple_languages
         self.xform_as_string = xform_as_string
         self.json_xform_data = json_xform_data
@@ -776,6 +896,7 @@ class XlsParserResponse():
             errors = []
         self.info = info
         self.errors = errors
+        self.csv_path = csv_path
 
     @property
     def xform_as_string(self):

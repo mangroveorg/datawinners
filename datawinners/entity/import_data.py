@@ -18,10 +18,10 @@ from datawinners.entity.datasender_search import datasender_count_with
 from datawinners.entity.subject_template_validator import SubjectTemplateValidator
 from datawinners.entity.helper import get_country_appended_location, entity_type_as_sequence, \
     get_organization_telephone_number
-
+from datawinners.entity.entity_exceptions import InvalidFileFormatException
 from datawinners.exceptions import InvalidEmailException, NameNotFoundException
 from datawinners.location.LocationTree import get_location_tree
-from datawinners.entity.entity_exceptions import InvalidFileFormatException
+from mangrove.errors.MangroveException import CodeSheetMissingException
 from mangrove.datastore.entity import get_all_entities, Entity
 from mangrove.errors.MangroveException import MangroveException, DataObjectAlreadyExists, EmptyRowException, \
     MultipleReportersForANumberException, MobileNumberMandatoryException
@@ -45,6 +45,7 @@ from datawinners.accountmanagement.models import NGOUserProfile, DataSenderOnTri
 from datawinners.settings import HNI_SUPPORT_EMAIL_ID, EMAIL_HOST_USER
 from datawinners.questionnaire.helper import get_location_field_code
 from mangrove.transport.player.parser import XlsxParser
+from datawinners.exceptions import ImportValidationError
 from django.db import transaction
 
 
@@ -111,8 +112,9 @@ class FilePlayer(Player):
 
     def _validate_duplicate_email_address(self, email):
         # registered_emails = self._get_registered_emails()
+        mail_filter = User.objects.filter(email=email)
         matching_email_count = datasender_count_with(email)
-        if matching_email_count > 0:
+        if matching_email_count > 0 or mail_filter.exists():
             raise DataObjectAlreadyExists(_("User"), _("email address"), email)
 
     def _import_data_sender(self, form_model, organization, values):
@@ -122,9 +124,13 @@ class FilePlayer(Player):
             if not mobile_number:
                 raise MobileNumberMandatoryException()
             if organization.in_trial_mode:
-                data_sender = DataSenderOnTrialAccount.objects.model(mobile_number=mobile_number,
+                from accountmanagement.helper import is_mobile_number_unique_for_trial_account
+                if not is_mobile_number_unique_for_trial_account(organization, mobile_number):
+                    raise MultipleReportersForANumberException(mobile_number)
+                else:
+                    data_sender = DataSenderOnTrialAccount.objects.model(mobile_number=mobile_number,
                                                                      organization=organization)
-                data_sender.save(force_insert=True)
+                    data_sender.save(force_insert=True)
         except IntegrityError:
             raise MultipleReportersForANumberException(mobile_number)
         except Exception as ex:
@@ -194,6 +200,10 @@ class FilePlayer(Player):
         except (InvalidEmailException, MangroveException, NameNotFoundException, ValidationError) as e:
             transaction.savepoint_rollback(sid)
             return self._appendFailedResponse(e.message, values=values)
+        except ImportValidationError as e:
+            raise
+
+
 
     def _get_registered_emails(self):
         if type(self.parser) in [XlsDatasenderParser, XlsxDataSenderParser]:
@@ -473,13 +483,16 @@ def import_data(request, manager, default_parser=None, form_code=None, is_datase
         failure_imports = tabulate_failures(failures, manager)
         total = len(failure_imports) + successful_import_count
         response_message = ugettext_lazy('%s of %s records uploaded') % (successful_import_count, total)
-
+    except CodeSheetMissingException:
+        error_message = _("The template you are using is not correct, please use DataWinners template and try again")
     except CSVParserInvalidHeaderFormatException or XlsParserInvalidHeaderFormatException as e:
         error_message = e.message
     except InvalidFileFormatException:
         error_message = _(
             u"We could not import your data ! You are using a document format we canʼt import. Please use the excel (.xlsx) template file!")
     except FormCodeDoesNotMatchException as e:
+        error_message = e.message
+    except ImportValidationError as e:
         error_message = e.message
 
     return error_message, failure_imports, response_message, imported_entities

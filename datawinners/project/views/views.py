@@ -17,6 +17,8 @@ from django.views.decorators.http import require_http_methods
 from datawinners.alldata import views
 from datawinners.common.authorization import is_data_sender, is_data_sender_for_project
 from datawinners.common.urlextension import append_query_strings_to_url
+from datawinners.entity.geo_data import get_first_geocode_field_for_entity_type, get_location_list_for_entities, \
+    get_location_list_for_datasenders
 from datawinners.monitor.carbon_pusher import send_to_carbon
 from datawinners.monitor.metric_path import create_path
 from datawinners.project.send_message import get_data_sender_phone_numbers
@@ -24,7 +26,7 @@ from datawinners.search.all_datasender_search import get_all_data_senders_count
 from datawinners.search.datasender_index import update_datasender_index_by_id
 from datawinners.search.submission_index import update_submission_search_for_subject_edition, \
     get_unregistered_datasenders
-from mangrove.datastore.entity import get_by_short_code
+from mangrove.datastore.entity import get_by_short_code, get_all_entities, by_short_codes
 from mangrove.datastore.entity_type import get_unique_id_types
 from mangrove.datastore.queries import get_entity_count_for_type, get_non_voided_entity_count_for_type
 from mangrove.errors.MangroveException import DataObjectAlreadyExists, DataObjectNotFound
@@ -39,7 +41,7 @@ from mangrove.transport.contract.transport_info import Channel
 from mangrove.transport.player.new_players import WebPlayerV2
 from datawinners import settings
 from datawinners.accountmanagement.decorators import is_datasender_allowed, is_datasender, session_not_expired, \
-    project_has_web_device, valid_web_user, restrict_access
+    project_has_web_device, valid_web_user, restrict_access, has_delete_permission
 from datawinners.feeds.database import get_feeds_database
 from datawinners.feeds.mail_client import mail_feed_errors
 from datawinners.main.database import get_database_manager
@@ -50,7 +52,7 @@ from datawinners.project.wizard_view import edit_project, get_preview_and_instru
 from datawinners.scheduler.smsclient import NoSMSCException
 from datawinners.alldata.helper import get_visibility_settings_for
 from datawinners.custom_report_router.report_router import ReportRouter
-from datawinners.entity.helper import process_create_data_sender_form, get_organization_telephone_number
+from datawinners.entity.helper import process_create_data_sender_form, get_organization_telephone_number, get_field_instruction
 from datawinners.entity import import_data as import_module
 from datawinners.submission.location import LocationBridge
 from datawinners.utils import get_organization, get_map_key
@@ -85,6 +87,7 @@ websubmission_logger = logging.getLogger("websubmission")
 @is_datasender
 @is_not_expired
 @is_project_exist
+@has_delete_permission
 def delete_project(request, project_id):
     manager = get_database_manager(request.user)
     questionnaire = Project.get(manager, project_id)
@@ -446,6 +449,8 @@ def _get_questions_for_datasenders_registration_for_wizard(questions):
 def questionnaire(request, project_id):
     manager = get_database_manager(request.user)
     if request.method == 'GET':
+        #TODO: on questionnaire edit page, this is loading twice, unnecessary. Need to investigate
+        #First as normal request, Second time as ajax request
         questionnaire = Project.get(manager, project_id)
         if questionnaire.is_poll:
          return HttpResponseRedirect('/project/'+ project_id + '/results/'+questionnaire.form_code)
@@ -464,7 +469,7 @@ def questionnaire(request, project_id):
         if "success" in [m.message for m in messages.get_messages(request)]:
             is_success = True
         if questionnaire.xform:
-            show_xls_download_link, attachment, file_extension = questionnaire.has_attachment()
+            show_xls_download_link, attachment, file_extension = questionnaire.has_questionnaire_attachment()
             return render_to_response('project/edit_xform.html',
                                   {"existing_questions": repr(existing_questions),
                                    'questionnaire_code': questionnaire.form_code,
@@ -479,6 +484,7 @@ def questionnaire(request, project_id):
                                    'file_extension':file_extension,
                                    'entity_types_with_no_registered_entities': entity_types_with_no_registered_entities,
                                    'post_url': reverse(edit_project, args=[project_id]),
+                                   'reload': request.GET.get('reload',False),
                                    'preview_links': get_preview_and_instruction_links()},
                                   context_instance=RequestContext(request))
 
@@ -752,6 +758,7 @@ class SurveyWebQuestionnaireRequest():
 @is_datasender_allowed
 @project_has_web_device
 @is_not_expired
+@restrict_access
 def survey_web_questionnaire(request, project_id):
     survey_request = SurveyWebQuestionnaireRequest(request, project_id)
     if request.method == 'GET':
@@ -792,6 +799,7 @@ def questionnaire_preview(request, project_id=None, sms_preview=False):
         questions = []
         fields = questionnaire.fields
         for field in fields:
+            field.set_instruction(get_field_instruction(field))
             question = helper.get_preview_for_field(field)
             questions.append(question)
         example_sms = "%s" % (
@@ -901,7 +909,11 @@ def edit_my_subject_questionnaire(request, project_id, entity_type=None):
                                'language': reg_form.activeLanguages[0],
                                'project_id': questionnaire.id,
                                'subject': subject,
-                               'post_url': reverse(subject_save_questionnaire)},
+                               'post_url': reverse(subject_save_questionnaire),
+                               'unique_id_types': json.dumps([{"name":unique_id_type.capitalize(),
+                                                              "value":unique_id_type} for unique_id_type in
+                                                             get_unique_id_types(manager) if unique_id_type != entity_type]),
+                              },
                               context_instance=RequestContext(request))
 
 
@@ -1019,3 +1031,33 @@ def change_ds_group(request):
     questionnaire.save()
     messages.success(request, ugettext("Changes saved successfully."))
     return HttpResponse(json.dumps({'success': True}))
+
+
+@valid_web_user
+def geo_json_for_project(request, project_id, entity_type=None):
+    dbm = get_database_manager(request.user)
+    location_list = []
+
+    try:
+        if entity_type:
+            entity_fields = dbm.view.registration_form_model_by_entity_type(key=[entity_type], include_docs=True)[0]["doc"]["json_fields"]
+            first_geocode_field = get_first_geocode_field_for_entity_type(entity_fields)
+            if first_geocode_field:
+                unique_ids = get_all_entities(dbm, [entity_type], limit=1000)
+                location_list.extend(get_location_list_for_entities(first_geocode_field, unique_ids))
+        else:
+            questionnaire = Project.get(dbm, project_id)
+            unique_ids = by_short_codes(dbm, questionnaire.data_senders, ["reporter"], limit=1000)
+            location_list.extend(get_location_list_for_datasenders(unique_ids))
+
+    except DataObjectNotFound:
+        pass
+
+    location_geojson = {"type": "FeatureCollection", "features": location_list}
+    return HttpResponse(json.dumps(location_geojson))
+
+
+def render_map(request):
+    map_api_key = get_map_key(request.META['HTTP_HOST'])
+    return render_to_response('maps/entity_map.html', {'map_api_key': map_api_key},
+                              context_instance=RequestContext(request))

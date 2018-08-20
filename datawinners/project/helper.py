@@ -18,7 +18,7 @@ from mangrove.datastore.documents import ProjectDocument
 from mangrove.errors.MangroveException import DataObjectNotFound
 from mangrove.errors.MangroveException import FormModelDoesNotExistsException
 from mangrove.form_model.field import TextField, IntegerField, DateField, GeoCodeField
-from mangrove.form_model.form_model import get_form_model_by_code
+from mangrove.form_model.form_model import get_form_model_by_code, EntityFormModel, EntityFormModelDocument
 from mangrove.form_model.project import Project
 from mangrove.utils.types import is_sequence, sequence_to_str
 from mangrove.transport.repository.survey_responses import get_survey_responses
@@ -124,7 +124,6 @@ def get_preview_for_field(field):
 def _get_instruction_text(field):
     return field.instruction
 
-
 def _update_survey_responses(manager, questionnaire, void):
     [survey_response.void(void) for survey_response in get_survey_responses(manager, questionnaire.id, None, None)]
 
@@ -221,7 +220,11 @@ def associate_account_users_to_project(manager, questionnaire):
 def get_projects_by_unique_id_type(dbm, unique_id_type):
     projects = []
     for row in dbm.load_all_rows_in_view('projects_by_subject_type', key=unique_id_type[0], include_docs=True):
-        projects.append(Project.new_from_doc(dbm, ProjectDocument.wrap(row['doc'])))
+        if row['doc']['is_registration_model']:
+            questionnaire = EntityFormModel.new_from_doc(dbm, EntityFormModelDocument.wrap(row['doc']))
+        else:
+            questionnaire = Project.new_from_doc(dbm, ProjectDocument.wrap(row['doc']))
+        projects.append(questionnaire)
     return projects
 
 

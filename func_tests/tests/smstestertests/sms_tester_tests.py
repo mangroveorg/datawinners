@@ -176,7 +176,9 @@ class TestSMSTester(HeadlessRunnerTest):
     @attr('functional_test')
     def test_should_check_with_right_order(self):
         test_data = MULTIPLE_WRONG_DATA.copy()
+        test_data['from'] = "4938429843743"
         paid_test_org = Organization.objects.get(org_id=DEFAULT_TEST_ORG_ID)
+        print test_data
         self.assertEqual(send_sms_with(test_data),
                          "Error. You are not registered as a Data Sender. Please contact your supervisor.")
 
@@ -187,6 +189,7 @@ class TestSMSTester(HeadlessRunnerTest):
 
         message = fetch_(SMS, from_(test_data))
         test_data.update({SMS: message.replace("wrcode", "cli002")})
+        test_data.update({SENDER: "1234567892"})
         count_before_submission = (self._get_test_paid_org_message_tracker(paid_test_org)).incoming_sms_count
         self.assertEqual(send_sms_with(test_data),
                          "Error. You are not authorized to submit data for this Questionnaire. Please contact your supervisor.")

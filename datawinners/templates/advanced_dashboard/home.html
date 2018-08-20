@@ -1,0 +1,26 @@
+{% extends 'layout_application.html' %}
+{% load i18n %}
+{% block page_title %}{% trans "Advanced Dashboard" %}{% endblock %}
+{% block section_title %}{% trans "Advanced Dashboard" %}
+    {% block section_help %}
+     &nbsp;
+    {% endblock %}
+{% endblock %}
+
+{% load dw_tabs %}
+{% block body %}
+{% activetab "main_nav" "advanced_dashboard" %}
+{{ block.super }}
+{% endblock %}
+
+{% block page_scss %}
+    {{ block.super }}
+    <link href="/media/css/scss/section_dashboard.css" rel="stylesheet" />
+    <link href="/media/css/scss/send-sms.css" rel="stylesheet" />
+{% endblock %}
+
+
+{% block content %}
+<img src="/media/images/support/sample_dashboard.png" style="height: inherit; width: inherit;" />
+
+{% endblock %}

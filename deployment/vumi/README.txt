@@ -57,4 +57,3 @@ To start vumi:
         * 'tail -f smpp_worker_1.log'
     c. to see running status, visit 'http://localhost:9010/'
 
-

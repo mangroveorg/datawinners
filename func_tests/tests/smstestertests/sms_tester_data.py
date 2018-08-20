@@ -147,11 +147,11 @@ UNREGISTER_ENTITY_ID_AND_SOME_INVALID_DATA = {SENDER: "1234567890",
                                               SMS: "cli002 cid0090 Mr.Dessy 20 17.12.2011 b ade 27.178057,-78.007789 a",
                                               ERROR_MSG: "Error. cid0090 is not registered. Check the Identification Number and resend entire SMS or contact your supervisor."}
 
-UNAUTHORIZED_DATASENDER = { SENDER: "2619876",
+UNAUTHORIZED_DATASENDER = { SENDER: "1234567892",
                             RECEIVER: "919880734937",
                             SMS: "cli002 cid005 Mr.Dessy 120 17.17.2011 b ade 27.178057,-78.007789 a",
                             ERROR_MSG: "Error. You are not authorized to submit data for this Questionnaire. Please contact your supervisor."}
 
-MULTIPLE_WRONG_DATA = {SENDER: "123445567",
+MULTIPLE_WRONG_DATA = {SENDER: "1234455678",
                             RECEIVER: "919880734937",
                             SMS: "wrcode CID00X5 name age 17.05.2011 b ade 27.178057,-78.007789 ac extradata"}

@@ -10,7 +10,7 @@ from tests.testsettings import UI_TEST_TIMEOUT
 from tests.websubmissiontests.web_submission_data import *
 
 
-class WebSubmissionPage(Page):
+class WebSubmissionPage(Page): 
 
     def __init__(self, driver):
         Page.__init__(self, driver)
@@ -46,7 +46,9 @@ class WebSubmissionPage(Page):
 
     def select_checkbox(self, data):
         for answer in data[ANSWER]:
-            self.driver.find(by_css("input[name='%s'][value='%s']" % (data[QCODE], answer))).click()
+            element = self.driver.find(by_css("input[name='%s'][value='%s']" % (data[QCODE], answer)))
+            if not element.get_attribute('checked') == 'true':
+                element.click()
 
     def type_text(self, data):
         self.driver.find_text_box(by_css("input#id_%s" % data[QCODE])).enter_text(data[ANSWER])
@@ -74,8 +76,10 @@ class WebSubmissionPage(Page):
         self.driver.find(SMARTPHONE_NAV).click()
         return SmartPhoneInstructionPage(self.driver)
 
-    def fill_and_submit_answer(self, answers):
+    def fill_and_submit_answer(self, answers, debug=False):
         self.fill_questionnaire_with(answers)
+        if debug:
+            self.driver.create_screenshot('debug-ft-fill-web-submission-page')
         self.submit_answers()
 
     def get_questions_and_instructions(self):
@@ -111,3 +115,13 @@ class WebSubmissionPage(Page):
 
     def save_change_datasender(self):
         self.driver.find(by_id('save_ds')).click()
+
+    def get_select_value(self, quest_code):
+        checkboxes = self.driver.execute_script("""
+        selected = [];
+        $("[name='%s']input:checked").each(function() {
+            selected.push($(this).attr('value'));
+        });
+        return selected.join(' ');
+        """ % quest_code)
+        return checkboxes.split(" ")

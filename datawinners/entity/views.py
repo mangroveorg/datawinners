@@ -1,70 +1,75 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
-from collections import OrderedDict
 import json
 import logging
+from operator import itemgetter
 
+import elasticutils
+import jsonpickle
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.template.defaultfilters import register, lower
-from django.utils import translation
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponseServerError
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
+from django.template.defaultfilters import register, lower
+from django.utils import translation
+from django.utils.translation import ugettext as _, ugettext, get_language
 from django.views.decorators.csrf import csrf_view_exempt, csrf_response_exempt
 from django.views.decorators.http import require_http_methods
-from django.utils.translation import ugettext as _, ugettext
-import elasticutils
-import jsonpickle
-from django.contrib import messages
+from waffle.decorators import waffle_flag
 
 from datawinners.accountmanagement.decorators import is_datasender, session_not_expired, is_not_expired, is_new_user, \
     valid_web_user
-from datawinners.accountmanagement.helper import create_web_users, validate_email_addresses, \
-    validate_and_create_web_users
-from datawinners.entity.entity_export_helper import get_subject_headers
+from datawinners.accountmanagement.helper import create_web_users, validate_email_addresses
+from datawinners.accountmanagement.localized_time import get_country_time_delta
+from datawinners.accountmanagement.models import Organization, OrganizationSetting
+from datawinners.activitylog.models import UserActivityLog
+from datawinners.alldata.helper import get_visibility_settings_for
+from datawinners.common.constant import ADDED_IDENTIFICATION_NUMBER_TYPE, REGISTERED_IDENTIFICATION_NUMBER, \
+    EDITED_REGISTRATION_FORM, IMPORTED_IDENTIFICATION_NUMBER, DELETED_IDENTIFICATION_NUMBER
+from datawinners.custom_report_router.report_router import ReportRouter
+from datawinners.entity import import_data as import_module
+from datawinners.entity.forms import EntityTypeForm
+from datawinners.entity.geo_data import geo_jsons, _transform_filters
 from datawinners.entity.group_helper import create_new_group
+from datawinners.entity.helper import create_registration_form, get_organization_telephone_number, set_email_for_contact
 from datawinners.entity.subjects import load_subject_type_with_projects, get_subjects_count
-from datawinners.main.database import get_database_manager
+from datawinners.location.LocationTree import get_location_tree, get_location_hierarchy
+from datawinners.main.database import get_database_manager, get_db_manager
 from datawinners.main.utils import get_database_name
+from datawinners.messageprovider.message_handler import get_exception_message_for
+from datawinners.messageprovider.messages import exception_messages, WEB
+from datawinners.project.helper import create_request
+from datawinners.project.submission.exporter import SubmissionExporter
+from datawinners.project.web_questionnaire_form import SubjectRegistrationForm
+from datawinners.public.views import _get_filters, _get_uniqueid_filters
+from datawinners.questionnaire.questionnaire_builder import QuestionnaireBuilder
 from datawinners.search.entity_search import SubjectQuery
 from datawinners.search.index_utils import delete_mapping, es_questionnaire_field_name
 from datawinners.search.submission_index import update_submission_search_for_subject_edition
 from datawinners.settings import ELASTIC_SEARCH_URL, ELASTIC_SEARCH_TIMEOUT
-from datawinners.workbook_utils import workbook_add_sheet, get_excel_sheet
+from datawinners.submission.location import LocationBridge
+from datawinners.utils import get_organization, get_organization_country, \
+    get_changed_questions, get_mapbox_api_key
+from datawinners.workbook_utils import workbook_add_sheet
 from mangrove.datastore.documents import EntityActionDocument, HARD_DELETE
-from mangrove.form_model.field import field_to_json, DateField
-from mangrove.transport import Channel
-from datawinners.alldata.helper import get_visibility_settings_for
-from datawinners.custom_report_router.report_router import ReportRouter
-from datawinners.entity.helper import create_registration_form, get_organization_telephone_number, set_email_for_contact
-from datawinners.location.LocationTree import get_location_tree, get_location_hierarchy
-from datawinners.messageprovider.message_handler import get_exception_message_for
-from datawinners.messageprovider.messages import exception_messages, WEB
-from mangrove.datastore.entity_type import define_type, delete_type, entity_type_already_defined
 from mangrove.datastore.entity import get_all_entities_include_voided, delete_data_record, contact_by_short_code
+from mangrove.datastore.entity import get_by_short_code
+from mangrove.datastore.entity_share import save_entity_preference, get_entity_preference
+from mangrove.datastore.entity_type import define_type, delete_type, entity_type_already_defined,\
+    get_unique_id_types
+from mangrove.datastore.report_config import get_report_config
 from mangrove.errors.MangroveException import EntityTypeAlreadyDefined, DataObjectAlreadyExists, \
     QuestionCodeAlreadyExistsException, EntityQuestionAlreadyExistsException, DataObjectNotFound, \
     QuestionAlreadyExistsException
-from datawinners.entity.forms import EntityTypeForm
+from mangrove.form_model.field import field_to_json, DateField
 from mangrove.form_model.form_model import LOCATION_TYPE_FIELD_NAME, REGISTRATION_FORM_CODE, REPORTER, \
     get_form_model_by_entity_type, get_form_model_by_code, GEO_CODE_FIELD_NAME, SHORT_CODE_FIELD, \
     header_fields, get_field_by_attribute_value
-from mangrove.transport.player.player import WebPlayer
-from datawinners.entity import import_data as import_module
-from mangrove.utils.types import is_empty
-from datawinners.submission.location import LocationBridge
-from datawinners.utils import get_organization, get_organization_country, \
-    get_changed_questions
-from datawinners.questionnaire.questionnaire_builder import QuestionnaireBuilder
-from mangrove.datastore.entity import get_by_short_code
+from mangrove.transport import Channel
 from mangrove.transport.player.parser import XlsOrderedParser
-from datawinners.activitylog.models import UserActivityLog
-from datawinners.common.constant import ADDED_IDENTIFICATION_NUMBER_TYPE, REGISTERED_IDENTIFICATION_NUMBER, \
-    EDITED_REGISTRATION_FORM, IMPORTED_IDENTIFICATION_NUMBER
-from datawinners.project.helper import create_request
-from datawinners.project.web_questionnaire_form import SubjectRegistrationForm
-from datawinners.project.submission.export import export_to_new_excel
-
+from mangrove.transport.player.player import WebPlayer
+from mangrove.utils.types import is_empty
 
 websubmission_logger = logging.getLogger("websubmission")
 datawinners_logger = logging.getLogger("datawinners")
@@ -96,7 +101,7 @@ def create_type(request):
             define_type(manager, entity_name)
             message = _("Entity definition successful")
             success = True
-            UserActivityLog().log(request, action=ADDED_IDENTIFICATION_NUMBER_TYPE, detail=entity_name[0].capitalize())
+            UserActivityLog().log(request, action=ADDED_IDENTIFICATION_NUMBER_TYPE, project=entity_name[0].capitalize())
         except EntityTypeAlreadyDefined:
             message = _("%s already exists.") % (entity_name[0].capitalize(),)
     else:
@@ -152,6 +157,7 @@ def delete_subject_types(request):
             manager._save_document(EntityActionDocument(form_model.entity_type[0], entity.short_code, HARD_DELETE))
             entity.delete()
         form_model.delete()
+        UserActivityLog().log(request, action=DELETED_IDENTIFICATION_NUMBER, project=form_model.entity_type[0].capitalize())
     messages.success(request, _("Identification Number Type(s) successfully deleted."))
     return HttpResponse(json.dumps({'success': True}))
 
@@ -239,7 +245,6 @@ def all_subjects_ajax(request, subject_type):
         datawinners_logger.error(request.POST)
         datawinners_logger.exception(e)
         raise
-
 
 
 @register.filter
@@ -462,6 +467,154 @@ def edit_subject(request, entity_type, entity_id, project_id=None):
 
 
 @valid_web_user
+@waffle_flag('idnr_map', None)
+def map_admin(request, entity_type=None):
+    form_model = get_form_model_by_entity_type(get_database_manager(request.user), [entity_type.lower()])
+    entity_preference = get_entity_preference(get_db_manager("public"), _get_organization_id(request), entity_type)
+
+    filters_in_entity_preference = []
+    details_in_entity_preference = []
+    specials_in_entity_preference = []
+
+    if entity_preference is not None:
+        filters_in_entity_preference = entity_preference.filters
+        details_in_entity_preference = entity_preference.details
+        specials_in_entity_preference = entity_preference.specials
+
+    filters = _build_filterable_fields(form_model.form_fields, filters_in_entity_preference)
+    details = _build_details(form_model.form_fields, details_in_entity_preference)
+    specials = _build_specials(form_model.form_fields, specials_in_entity_preference)
+    height_frame = len([flr for flr in filters if flr['visible']])
+    height_frame = 428 + height_frame * 80
+    return render_to_response('entity/map_edit.html',
+                              {
+                                  "entity_type": entity_type,
+                                  "form_code": form_model.form_code,
+                                  "filters": json.dumps(filters),
+                                  "details": json.dumps(details),
+                                  "specials": json.dumps(specials),
+                                  "height_frame": height_frame
+                                  
+                               },
+                              context_instance=RequestContext(request))
+
+
+@valid_web_user
+@waffle_flag('reports', None)
+def map_data_for_reports(request, entity_type=None, report_id=None):
+    return map_data(request, entity_type, get_report_config(get_database_manager(request.user), report_id),True)
+
+
+@valid_web_user
+@waffle_flag('idnr_map', None)
+def map_data(request, entity_type=None, entity_preference=None, map_view = False):
+    manager = get_database_manager(request.user)
+    form_model = get_form_model_by_entity_type(manager, [entity_type.lower()])
+    entity_preference = entity_preference or get_entity_preference(get_db_manager("public"), _get_organization_id(request), entity_type)
+    details = entity_preference.details if entity_preference is not None else []
+    specials = entity_preference.specials if entity_preference is not None else []
+    total_in_label = entity_preference.total_in_label if entity_preference is not None else False
+    entity_fields = manager.view.registration_form_model_by_entity_type(key=[entity_type], include_docs=True)[0]["doc"]["json_fields"]
+    forward_filters, reverse_filters = _transform_filters(dict(request.GET), entity_fields)
+    fallback_location = entity_preference.fallback_location if entity_preference is not None and not any(forward_filters) and not any(reverse_filters) else {}
+    return render_to_response('map.html',
+                              {
+                                  "entity_type": entity_type,
+                                  "fallback_location": fallback_location,
+                                  "filters": [] if entity_preference is None else _get_filters(form_model, entity_preference.filters, entity_preference.remove_options),
+                                  "idnr_filters": [] if entity_preference is None else _get_uniqueid_filters(form_model, entity_preference.filters, manager, entity_preference.remove_options),
+                                  "geo_jsons": geo_jsons(manager, entity_type, request.GET, details, specials, map_view, total_in_label),
+                                  "mapbox_api_key": get_mapbox_api_key(request.META['HTTP_HOST'])
+                               },
+                              context_instance=RequestContext(request))
+
+
+def _get_organization_id(request):
+    org_id = request.user.get_profile().org_id
+    organization = Organization.objects.get(org_id=org_id)
+    org_settings = OrganizationSetting.objects.get(organization=organization)
+    return org_settings.document_store
+
+
+def _build_filterable_fields(form_fields, filters_in_entity_preference):
+    filters = [
+        {'code': field['code'], 'label': field['label'], 'visible': field['code'] in filters_in_entity_preference}
+        for field in form_fields if field.get('type') in ['select', 'select1']
+    ]
+    return filters
+
+
+def _build_details(form_fields, details_in_entity_preference):
+    details = [
+        {'code': field['code'], 'label': field['label'], 'visible': field['code'] in details_in_entity_preference}
+        for field in form_fields if field['code'] not in ['q2']
+    ]
+    return details
+
+
+def _build_specials(form_fields, specials_in_entity_preference):
+    specials = [
+        {
+            'code': field['code'], 'label': field['label'],
+            'visible': field["code"] in specials_in_entity_preference,
+            'choices': map(
+                lambda c: {
+                    'visible': field["code"] in specials_in_entity_preference and any(choice["value"] == c['val'] for choice in specials_in_entity_preference[field["code"]]),
+                    'color': [choice['color'] for choice in specials_in_entity_preference[field["code"]] if choice["value"] == c['val']][0]
+                        if field["code"] in specials_in_entity_preference and any(choice["value"] == c['val'] for choice in specials_in_entity_preference[field["code"]]) else "rgb(0, 0, 0)",
+                    'choice': c
+                },
+                field["choices"]
+            )
+        }
+        for field in form_fields if field.get('type') == 'select1'
+    ]
+    return specials
+
+
+def _trim_empty_specials(specials):
+    if specials:
+        return dict(filter(itemgetter(1), specials.items()))
+    return specials
+
+
+@valid_web_user
+@waffle_flag('idnr_map', None)
+def save_preference(request, entity_type=None):
+    form_model = get_form_model_by_entity_type(get_database_manager(request.user), [entity_type.lower()])
+    if request.method == 'POST':
+        data = json.loads(request.POST['data'])
+        entity_preference = save_entity_preference(get_db_manager("public"),
+                               _get_organization_id(request),
+                               entity_type,
+                               data.get('filters'),
+                               data.get('details'),
+                               _trim_empty_specials(data.get('specials')),
+                               data.get('fallback_location'))
+        filters = _build_filterable_fields(form_model.form_fields, entity_preference.filters)
+        specials = _build_specials(form_model.form_fields, entity_preference.specials)
+        details = _build_details(form_model.form_fields, entity_preference.details)
+        return HttpResponse(json.dumps({
+            'success': True,
+            'filters': filters,
+            'specials': specials,
+            'details': details
+        }))
+
+
+@valid_web_user
+@waffle_flag('idnr_map', None)
+def share_token(request, entity_type):
+    manager = get_db_manager("public")
+    organization_id = _get_organization_id(request)
+    entity_preference = get_entity_preference(manager, organization_id, entity_type)
+    if entity_preference:
+        return HttpResponse(json.dumps({"token": entity_preference.share_token}))
+    entity_preference = save_entity_preference(manager, organization_id, entity_type)
+    return HttpResponse(json.dumps({"token": entity_preference.share_token}))
+
+
+@valid_web_user
 def create_subject(request, entity_type=None):
     manager = get_database_manager(request.user)
     form_model = get_form_model_by_entity_type(manager, [entity_type.lower()])
@@ -570,6 +723,7 @@ def edit_subject_questionnaire(request, entity_type=None):
     fields = form_model.fields
 
     existing_questions = json.dumps(fields, default=field_to_json)
+
     return render_to_response('entity/questionnaire.html',
                               {
                                   'existing_questions': repr(existing_questions),
@@ -577,7 +731,11 @@ def edit_subject_questionnaire(request, entity_type=None):
                                   'language': form_model.activeLanguages[0],
                                   'entity_type': entity_type,
                                   'is_pro_sms': get_organization(request).is_pro_sms,
-                                  'post_url': reverse(save_questionnaire)
+                                  'post_url': reverse(save_questionnaire),
+                                  'unique_id_types': json.dumps([{"name":unique_id_type.capitalize(),
+                                                                  "value":unique_id_type} for unique_id_type in
+                                                                 get_unique_id_types(manager) if unique_id_type != entity_type]),
+
                               },
                               context_instance=RequestContext(request))
 
@@ -593,6 +751,7 @@ def save_questionnaire(request):
         detail_dict = dict()
         if new_short_code != saved_short_code:
             try:
+                form_model.old_form_code = form_model.form_code
                 form_model.form_code = new_short_code
                 form_model.save()
                 detail_dict.update({"form_code": new_short_code})
@@ -644,28 +803,26 @@ def subject_autocomplete(request, entity_type):
             query[:min(query.count(), 50)]]
     return HttpResponse(json.dumps(resp))
 
-
 @valid_web_user
 def export_subject(request):
     manager = get_database_manager(request.user)
-    query_text = request.POST.get('query_text', '')
+    organization = get_organization(request)
+    local_time_delta = get_country_time_delta(organization.country)
+    current_language = get_language()
     subject_type = request.POST.get('subject_type', '').lower()
-    subject_list = SubjectQuery().query(request.user, subject_type, query_text)
+    project_name = subject_type
     form_model = get_form_model_by_entity_type(manager, [subject_type.lower()])
+    search_text = request.POST.get('query_text')
+    query_params = {
+                    "search_text" : search_text,
+                    "start_result_number": 0,
+                    "number_of_results": 4000,
+                    "order": "",
+                    "filter":'identification_number',
+                    }
 
-    response = HttpResponse(mimetype='application/vnd.ms-excel')
-    response['Content-Disposition'] = 'attachment; filename="%s.xls"' % (subject_type,)
-    field_codes = form_model.field_codes()
-    field_codes.insert(0, form_model.form_code)
-    labels = get_subject_headers(form_model.form_fields)
-    raw_data = []
-    headers = OrderedDict([(subject_type,labels), ("codes",field_codes)])
-
-    for subject in subject_list:
-        raw_data.append(subject)
-
-    return export_to_new_excel(headers, {subject_type:raw_data}, subject_type, hide_codes_sheet=True)
-
+    return SubmissionExporter(form_model, project_name, manager, local_time_delta, current_language, None) \
+        .create_excel_response('identification_number', query_params)
 
 def add_codes_sheet(wb, form_code, field_codes):
     codes = [form_code]
