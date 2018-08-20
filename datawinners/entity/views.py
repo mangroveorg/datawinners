@@ -319,7 +319,7 @@ def import_subjects_from_project_wizard(request, form_code):
     error_message, failure_imports, success_message, short_code_subject_details_dict = import_module.import_data(
         request, manager,
         default_parser=XlsOrderedParser,
-        form_code=form_code)
+        form_code=form_code, is_update=False)  #TODO: update is_update according the the user choice from the frontend
     subject_details = {}
 
     if len(short_code_subject_details_dict) != 0:
