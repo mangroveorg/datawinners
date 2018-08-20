@@ -32,17 +32,26 @@ class TestCreatePollQuestionnaire(HeadlessRunnerTest):
 
     @classmethod
     def setUpClass(cls):
-        HeadlessRunnerTest.setUpClass()
+        HeadlessRunnerTest.setUpClassFirefox()
         cls.global_navigation = login(cls.driver)
 
     def setUp(self):
         dashboard_page = self.global_navigation.navigate_to_dashboard_page()
         create_questionnaire_options_page = dashboard_page.navigate_to_create_project_page()
-        self.create_Questionnaire_page = create_questionnaire_options_page.select_poll_questionnaire_option()
         self.poll_Questionnaire_page = PollQuestionnairePage(driver=self.driver)
+        try:
+            self.create_Questionnaire_page = create_questionnaire_options_page.select_poll_questionnaire_option()
+        except:
+            self.driver.find(ACTIVE_POLL_NAME).click()
+            self.poll_Questionnaire_page.deactivate_poll()
+            create_questionnaire_options_page = dashboard_page.navigate_to_create_project_page()
+            self.create_Questionnaire_page = create_questionnaire_options_page.select_poll_questionnaire_option()
 
     def tearDown(self):
-        self.poll_Questionnaire_page.delete_the_poll()
+        try:
+            self.poll_Questionnaire_page.delete_the_poll()
+        except:
+            pass
 
     @attr('functional_test')
     def test_should_create_a_poll_questionnaire_with_sms_option_with_group(self):
