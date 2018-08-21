@@ -521,7 +521,7 @@ class TestAdvancedQuestionnaireEndToEnd(HeadlessRunnerTest):
     @attr('functional_test')
     def test_edit_submisssion(self):
         self.project_name = random_string()
-        self._setUp()
+        self.setUpFirefox()
 
         form_code = self._verify_questionnaire_creation(self.project_name, 'multiple-choices.xlsx')
         project_temp_name, web_submission_page = navigate_and_verify_web_submission_page_is_loaded(self.driver,

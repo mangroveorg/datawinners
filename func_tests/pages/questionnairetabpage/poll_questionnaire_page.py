@@ -133,11 +133,13 @@ class PollQuestionnairePage(Page):
             return False
 
     def has_DS_received_sms(self, recipent, row, column, debug=False):
-        self.select_element(POLL_TAB)
-        time.sleep(3)
-        self.select_element(POLL_SMS_ACCORDIAN)
-        self.driver.wait_for_element(UI_TEST_TIMEOUT, by_css("#poll_sms_table"), True)
-        self.driver.wait_until_modal_dismissed()
+        if not self.driver.find(by_id("poll_sms_table")).is_displayed():
+            self.select_element(POLL_TAB)
+            time.sleep(3)
+            self.select_element(POLL_SMS_ACCORDIAN)
+            self.driver.wait_for_element(UI_TEST_TIMEOUT, by_css("#poll_sms_table"), True)
+            self.driver.wait_until_modal_dismissed()
+            
         if debug:
             time.sleep(2)
             self.driver.create_screenshot("debug-ft-before-checking-that-ds-received-sms")
@@ -165,14 +167,19 @@ class PollQuestionnairePage(Page):
         time.sleep(1)
         self.driver.find(ACTIVATE_BTN).click()
 
-    def select_send_sms(self):
+    def select_send_sms(self, debug=False):
         self.select_element(POLL_TAB)
         time.sleep(3)
-        self.click_send_sms_link()
+        self.click_send_sms_link(debug)
 
-    def click_send_sms_link(self):
+    def click_send_sms_link(self, debug=False):
         self.select_element(SEND_SMS_LINK)
-        self.driver.wait_for_element(UI_TEST_TIMEOUT, SEND_SMS_DIALOG, True)
+        try:
+            self.driver.wait_for_element(UI_TEST_TIMEOUT, SEND_SMS_DIALOG, True)
+        except Exception as e:
+            if debug:
+                self.driver.create_screenshot("debug-ft-click-send-sms-not-found")
+            raise e
 
     def send_sms_to(self, recipient_type, recipient_name, debug=False):
         self.select_recipient_type(RECIPIENT_DROPDOWN, recipient_type)
@@ -212,10 +219,13 @@ class PollQuestionnairePage(Page):
 
     def select_element(self, element):
         try:
-            self.driver.wait_for_element(UI_TEST_TIMEOUT, element, True)
+            time.sleep(5)
+            self.driver.wait_for_element(UI_TEST_TIMEOUT * 2, element, True)
             self.driver.find(element).click()
+            time.sleep(5)
         except Exception as e:
             self.driver.create_screenshot("debug-ft-select-element-failed")
+            raise e
 
     def get_cell_value(self, column, row):
         cell = by_xpath(".//*[@id='datasender_table']/tbody/tr[%s]/td[%s]" % (row + 1, column + 1))
