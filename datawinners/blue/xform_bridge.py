@@ -392,18 +392,26 @@ class XlsFormParser():
             very_stripped_relevant = re.sub('[^A-Za-z]+', ' ', very_stripped_relevant)
             vanilla_pattern = r"^\$\{\w+\}(>|>=|=|<=|<)(\d+|'\w+')$"
             selected_pattern = r"^selected\(\$\{\w+\},( |)(\d+|'\w+'|'\d+')\)$"
+            string_pattern = r"^string-length\(\$\{\w+\}\)(>|>=|=|<=|<)(\d+|'\w+')$"
             if ' and ' in very_stripped_relevant or ' or ' in very_stripped_relevant:
                 statements = re.split('and|or', stripped_relevant)
                 for phrase in statements:
-                    if 'selected' in phrase:
+                    stripped_phrase = phrase.replace(' ', '')
+                    stripped_phrase = re.sub('{\w+\}', '', stripped_phrase)
+                    stripped_phrase = re.sub('[^A-Za-z]+', ' ', stripped_phrase)
+                    if 'selected' in stripped_phrase:
                         pattern = selected_pattern
+                    elif 'string length' in stripped_phrase:
+                        pattern = string_pattern
                     else:
                         pattern = vanilla_pattern
                     if not re.match(pattern, phrase):
                         raise ErrorSyntaxInRelevantException(question=name, field_name=relevant, specific=phrase)
             else:
-                if 'selected' in stripped_relevant:
+                if 'selected' in very_stripped_relevant:
                     pattern = selected_pattern
+                elif 'string length' in very_stripped_relevant:
+                    pattern = string_pattern
                 else:
                     pattern = vanilla_pattern
                 if not re.match(pattern, stripped_relevant):
