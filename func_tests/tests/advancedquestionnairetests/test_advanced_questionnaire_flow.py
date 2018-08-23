@@ -298,7 +298,13 @@ class TestAdvancedQuestionnaireEndToEnd(HeadlessRunnerTest):
         self.assertEqual(len(form_code), 3)
         all_project_page = self.global_navigation_page.navigate_to_view_all_project_page()
         all_project_page.navigate_to_project_overview_page(self.project_name)
-        self.assertEqual(self.driver.get_title(), u'Questionnaires - Overview')
+        page_title = self.driver.get_title()
+        self.cleanup_by_deleting_created_questionnaire(self.project_name)
+        self.assertEqual(page_title, u'Questionnaires - Overview')
+
+    def cleanup_by_deleting_created_questionnaire(self, project_name):
+        all_project_page = self.global_navigation_page.navigate_to_view_all_project_page()
+        all_project_page.delete_project(project_name)
 
     @attr('functional_test')
     def test_should_delete_submission_when_editflag_is_false(self):
@@ -318,7 +324,9 @@ class TestAdvancedQuestionnaireEndToEnd(HeadlessRunnerTest):
         submission_log_page = self.global_navigation_page.navigate_to_all_data_page()\
         .navigate_to_submission_log_page(self.project_name).wait_for_table_data_to_load()
         self.assertTrue(submission_log_page.get_total_number_of_records() == 0)
-        self.assertEquals("Text widget", submission_log_page.get_header_text(6))
+        header_6 = submission_log_page.get_header_text(6)
+        self.cleanup_by_deleting_created_questionnaire(self.project_name)
+        self.assertEquals("Text widget", header_6)
 
     #@attr('functional_test')
     #TODO: This can't be fixed without a fix from mangrove side, skip it for the moment

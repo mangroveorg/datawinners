@@ -17,7 +17,7 @@ import time
 class TestPollOptions(HeadlessRunnerTest):
     @classmethod
     def setUpClass(cls):
-        HeadlessRunnerTest.setUpClass()
+        HeadlessRunnerTest.setUpClassFirefox()
         cls.global_navigation = login(cls.driver)
 
     def setUp(self):
@@ -87,10 +87,10 @@ class TestPollOptions(HeadlessRunnerTest):
         self.poll_questionnaire_page.select_sms_option()
         self.poll_questionnaire_page.enter_sms_text()
         self.poll_questionnaire_page.select_receipient(GROUP, group_name)
-        self.poll_questionnaire_page.click_create_poll()
+        self.poll_questionnaire_page.click_create_poll(True, "-line-90")
 
         self.poll_questionnaire_page.select_send_sms()
-        self.poll_questionnaire_page.send_sms_to(GROUP, group_name)
+        self.poll_questionnaire_page.send_sms_to(GROUP, group_name, True)
         sleep(2)
         self.assertTrue(self.poll_questionnaire_page.has_DS_received_sms(unique_id, SECOND_ROW, THIRD_COLUMN))
         self.poll_questionnaire_page.click_send_sms_link()
