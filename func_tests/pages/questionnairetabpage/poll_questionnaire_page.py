@@ -35,6 +35,9 @@ class PollQuestionnairePage(Page):
 
     def click_create_poll(self, debug=False, page=""):
         self.driver.wait_for_element(UI_TEST_TIMEOUT, CREATE_POLL_BUTTON, True)
+        if debug:
+            self.driver.create_screenshot("debug-ft-create-poll-page-line-39")
+
         self.driver.find(CREATE_POLL_BUTTON).click()
         self.driver.wait_until_modal_dismissed()
         if debug:
@@ -188,9 +191,11 @@ class PollQuestionnairePage(Page):
         self.select_element(SEND_BUTTON)
         self.driver.wait_for_element(UI_TEST_TIMEOUT, SUCCESS_MSG_SENDIND_SMS)
         if debug:
-            self.driver.create_screenshot("debug-ft-sms-sent-via-poll")
+            self.driver.create_screenshot("debug-ft-poll-page-line-191")
         self.select_element(CANCEL_SMS)
         self.driver.wait_for_page_load()
+        if debug:
+            self.driver.create_screenshot("debug-ft-poll_page-line-195")
 
     def send_sms_to_my_poll_recipients(self):
         self.select_recipient_type(RECIPIENT_DROPDOWN, MY_POLL_RECIPIENTS)

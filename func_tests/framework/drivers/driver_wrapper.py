@@ -240,8 +240,8 @@ class DriverWrapper(object):
                 return title
             else:
                 current_time = datetime.datetime.now()
-                if debug:
-                    self.driver.create_screenshot("debug-ft-page-title-yet-%s" % self.title)
+                #if debug:
+                #    self.driver.create_screenshot("debug-ft-page-title-yet-%s" % self.title)
                 if current_time >= end_time:
                     raise CouldNotLocatePageException(
                         "Could not locate page with title %s after %s seconds" % (title, time_out_in_seconds))
