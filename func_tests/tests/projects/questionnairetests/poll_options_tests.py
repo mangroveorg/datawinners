@@ -17,7 +17,7 @@ import time
 class TestPollOptions(HeadlessRunnerTest):
     @classmethod
     def setUpClass(cls):
-        HeadlessRunnerTest.setUpClassFirefox()
+        HeadlessRunnerTest.setUpClass()
         cls.global_navigation = login(cls.driver)
 
     def setUp(self):
@@ -81,21 +81,7 @@ class TestPollOptions(HeadlessRunnerTest):
         self.assertTrue(self.poll_questionnaire_page.has_DS_received_sms(recipients, FIRST_ROW, THIRD_COLUMN))
         self.assertTrue(self.poll_questionnaire_page.has_DS_received_sms(recipients, FIRST_ROW, THIRD_COLUMN))
 
-    @attr('functional_test')
-    def test_should_send_sms_to_people_from_selected_groups(self):
-        group_name, unique_id = self.create_group_with_one_contact()
-        self.poll_questionnaire_page.select_sms_option()
-        self.poll_questionnaire_page.enter_sms_text()
-        self.poll_questionnaire_page.select_receipient(GROUP, group_name)
-        self.poll_questionnaire_page.click_create_poll(True, "-line-90")
 
-        self.poll_questionnaire_page.select_send_sms()
-        self.poll_questionnaire_page.send_sms_to(GROUP, group_name, True)
-        sleep(2)
-        self.assertTrue(self.poll_questionnaire_page.has_DS_received_sms(unique_id, SECOND_ROW, THIRD_COLUMN))
-        self.poll_questionnaire_page.click_send_sms_link()
-        self.poll_questionnaire_page.send_sms_to(GROUP, group_name)
-        self.assertTrue(self.poll_questionnaire_page.has_DS_received_sms(unique_id, THIRD_ROW, THIRD_COLUMN))
 
     @attr('functional_test')
     def test_should_send_sms_to_own_poll_recipients(self):
@@ -203,3 +189,29 @@ class TestPollOptions(HeadlessRunnerTest):
         self.create_questionnaire_page = create_questionnaire_options_page.select_poll_questionnaire_option()
         self.create_questionnaire_page.set_poll_questionnaire_title("poll_questionnaire", generate_random=True)
         return group_name, unique_id
+
+
+
+
+class  TestPollOptionsFirefox(TestPollOptions):
+
+    @classmethod
+    def setUpClass(cls):
+        HeadlessRunnerTest.setUpClass()
+        cls.global_navigation = login(cls.driver)
+
+    @attr('functional_test')
+    def test_should_send_sms_to_people_from_selected_groups(self):
+        group_name, unique_id = self.create_group_with_one_contact()
+        self.poll_questionnaire_page.select_sms_option()
+        self.poll_questionnaire_page.enter_sms_text()
+        self.poll_questionnaire_page.select_receipient(GROUP, group_name)
+        self.poll_questionnaire_page.click_create_poll(True, "-line-90")
+
+        self.poll_questionnaire_page.select_send_sms()
+        self.poll_questionnaire_page.send_sms_to(GROUP, group_name, True)
+        sleep(2)
+        self.assertTrue(self.poll_questionnaire_page.has_DS_received_sms(unique_id, SECOND_ROW, THIRD_COLUMN))
+        self.poll_questionnaire_page.click_send_sms_link()
+        self.poll_questionnaire_page.send_sms_to(GROUP, group_name)
+        self.assertTrue(self.poll_questionnaire_page.has_DS_received_sms(unique_id, THIRD_ROW, THIRD_COLUMN))
