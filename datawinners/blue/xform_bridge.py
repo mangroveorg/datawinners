@@ -414,9 +414,8 @@ class XlsFormParser():
                     pattern = string_pattern
                 else:
                     pattern = vanilla_pattern
-                #TODO: to be fixed by Mariot
-                #if not re.match(pattern, stripped_relevant):
-                #    raise ErrorSyntaxInRelevantException(question=name, field_name=relevant, specific=None)
+                if not re.match(pattern, stripped_relevant):
+                    raise ErrorSyntaxInRelevantException(question=name, field_name=relevant, specific=None)
         return relevant
 
     def _group(self, field, parent_field_code=None):
