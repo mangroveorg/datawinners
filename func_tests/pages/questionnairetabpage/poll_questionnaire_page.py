@@ -136,7 +136,11 @@ class PollQuestionnairePage(Page):
             return False
 
     def has_DS_received_sms(self, recipent, row, column, debug=False):
-        sms_table_element = self.driver.find(by_id("poll_sms_table"))
+        try:
+            sms_table_element = self.driver.find(by_id("poll_sms_table"))
+        except Exception as e:
+            sms_table_element = None
+            
         if not sms_table_element or not sms_table_element.is_displayed():
             self.select_element(POLL_TAB)
             time.sleep(3)

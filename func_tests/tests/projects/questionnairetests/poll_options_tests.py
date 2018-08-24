@@ -197,7 +197,7 @@ class TestPollOptions(HeadlessRunnerTest):
 
 
 
-class  TestPollOptionsFirefox(TestPollOptions):
+class  TestPollOptionsFirefox(HeadlessRunnerTest):
 
     @classmethod
     def setUpClass(cls):
@@ -213,6 +213,36 @@ class  TestPollOptionsFirefox(TestPollOptions):
         except Exception as e:
             cls.driver.create_screenshot("debug-ft-unable-to-tear-down-poll-option-firefox-test")
             raise e
+
+    def setUp(self):
+        dashboard_page = self.global_navigation.navigate_to_dashboard_page()
+        create_questionnaire_options_page = dashboard_page.navigate_to_create_project_page()
+        self.create_questionnaire_page = create_questionnaire_options_page.select_poll_questionnaire_option()
+        self.create_questionnaire_page.set_poll_questionnaire_title("poll_questionnaire", generate_random=True)
+        self.poll_questionnaire_page = PollQuestionnairePage(driver=self.driver)
+
+    def tearDown(self):
+        self.driver.wait_for_page_load()
+        self.poll_questionnaire_page.delete_the_poll()
+
+
+    def create_group_with_one_contact(self):
+        all_contacts_page = self.global_navigation.navigate_to_all_data_sender_page()
+        unique_id = "pollcontc" + random_number(2)
+        add_datasender_page = all_contacts_page.navigate_to_add_a_data_sender_page()
+        add_datasender_page.create_contact(unique_id)
+        add_group_page = all_contacts_page.go_to_add_group_page()
+        group_name = "group" + random_number(3)
+        add_group_page.enter_group_name(group_name)
+        add_group_page.click_on_add_group_button()
+        all_contacts_page.add_contact_to_group(unique_id, group_name)
+        sleep(2)
+        self.driver.wait_for_element(UI_TEST_TIMEOUT, DASHBOARD_PAGE_LINK, True)
+        create_questionnaire_options_page = self.global_navigation.navigate_to_dashboard_page().navigate_to_create_project_page()
+        self.assertEqual(self.driver.get_title(), "Create Questionnaire")
+        self.create_questionnaire_page = create_questionnaire_options_page.select_poll_questionnaire_option()
+        self.create_questionnaire_page.set_poll_questionnaire_title("poll_questionnaire", generate_random=True)
+        return group_name, unique_id
 
     @attr('functional_test')
     def test_should_send_sms_to_people_from_selected_groups(self):
