@@ -136,7 +136,8 @@ class PollQuestionnairePage(Page):
             return False
 
     def has_DS_received_sms(self, recipent, row, column, debug=False):
-        if not self.driver.find(by_id("poll_sms_table")).is_displayed():
+        sms_table_element = self.driver.find(by_id("poll_sms_table"))
+        if not sms_table_element or not sms_table_element.is_displayed():
             self.select_element(POLL_TAB)
             time.sleep(3)
             self.select_element(POLL_SMS_ACCORDIAN)

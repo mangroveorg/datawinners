@@ -197,7 +197,7 @@ class  TestPollOptionsFirefox(TestPollOptions):
 
     @classmethod
     def setUpClass(cls):
-        HeadlessRunnerTest.setUpClass()
+        HeadlessRunnerTest.setUpClassFirefox()
         cls.global_navigation = login(cls.driver)
 
     @attr('functional_test')

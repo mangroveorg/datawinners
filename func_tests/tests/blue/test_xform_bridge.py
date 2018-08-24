@@ -44,12 +44,12 @@ class TestXFormBridge(unittest.TestCase):
     @attr('functional_test')
     def test_should_throw_error_for_unsupported_valid_field_type(self):
         xls_parser_response = XlsFormParser(self.UNSUPPORTED_FIELDS, u"My questionnairé").parse()
-        self.assertEqual(xls_parser_response.errors, set(["geoshape as a datatype"]))
+        self.assertEqual(xls_parser_response.errors, ["geoshape as a datatype"])
 
     @attr('functional_test')
     def test_should_throw_error_for_invalid_field_type(self):
         xls_parser_response = XlsFormParser(self.INVALID_FIELDS, u"My questionnairé").parse()
-        self.assertEqual(xls_parser_response.errors, set(["dfdfd as a datatype"]))
+        self.assertEqual(xls_parser_response.errors, ["dfdfd as a datatype"])
 
     @attr('functional_test')
     def test_should_convert_cascaded_select_field(self):
