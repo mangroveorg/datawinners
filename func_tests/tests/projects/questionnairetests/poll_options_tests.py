@@ -204,6 +204,16 @@ class  TestPollOptionsFirefox(TestPollOptions):
         HeadlessRunnerTest.setUpClassFirefox()
         cls.global_navigation = login(cls.driver)
 
+
+    @classmethod
+    def tearDownClass(cls):
+        try:
+            cls.global_navigation.sign_out()
+            HeadlessRunnerTest.tearDownClass()
+        except Exception as e:
+            cls.driver.create_screenshot("debug-ft-unable-to-tear-down-poll-option-firefox-test")
+            raise e
+
     @attr('functional_test')
     def test_should_send_sms_to_people_from_selected_groups(self):
         group_name, unique_id = self.create_group_with_one_contact()
