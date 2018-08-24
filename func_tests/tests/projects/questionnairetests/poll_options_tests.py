@@ -34,8 +34,12 @@ class TestPollOptions(HeadlessRunnerTest):
 
     @classmethod
     def tearDownClass(cls):
-        cls.global_navigation.sign_out()
-        HeadlessRunnerTest.tearDownClass()
+        try:
+            cls.global_navigation.sign_out()
+            HeadlessRunnerTest.tearDownClass()
+        except Exception as e:
+            cls.driver.create_screenshot("debug-ft-unable-totear-down-poll-option-test")
+            raise e
 
     @attr('functional_test')
     def test_should_change_automatic_reply_sms_language_for_poll_with_linked_contacts(self):
