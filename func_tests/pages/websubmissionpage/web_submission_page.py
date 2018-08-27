@@ -95,7 +95,7 @@ class WebSubmissionPage(Page):
         try:
             self.driver.wait_for_element(UI_TEST_TIMEOUT * 4, by_id('submission_log_link'), True).click()
         except Exception as e:
-            self.driver.create_screenshot("ft-debug-navigate-to-sub-log-failing")
+            self.driver.create_screenshot("debug-ft-navigate-to-sub-log-failing")
             raise e
         return SubmissionLogPage(self.driver)
 

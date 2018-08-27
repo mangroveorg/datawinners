@@ -569,6 +569,7 @@ class TestAdvancedQuestionnaireEndToEnd(HeadlessRunnerTest):
         self.assertTrue(web_submission_page.is_success_message_tip_shown())
 
         web_submission_page.update_text_input(text_answer_locator, "b")
+        sleep(5)
         web_submission_page.navigate_to_submission_log()
         sleep(1)
         self.assertTrue(web_submission_page.is_warning_dialog_displayed())
