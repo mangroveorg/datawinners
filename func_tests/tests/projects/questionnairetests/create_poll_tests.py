@@ -15,9 +15,9 @@ import time
 
 class TestCreatePollQuestionnaire(HeadlessRunnerTest):
 
-    def create_group_with_a_contact(self):
+    def create_group_with_a_contact(self, line_number=""):
         all_contacts_page = self.global_navigation.navigate_to_all_data_sender_page()
-        unique_id = "pollcontc" + random_number(2)
+        unique_id = "pc" + random_number(2) + line_number
         add_datasender_page = all_contacts_page.navigate_to_add_a_data_sender_page()
         add_datasender_page.create_contact(unique_id)
         add_group_page = all_contacts_page.go_to_add_group_page()
@@ -50,7 +50,7 @@ class TestCreatePollQuestionnaire(HeadlessRunnerTest):
 
     @attr('functional_test')
     def test_should_create_a_poll_questionnaire_with_sms_option_with_group(self):
-        group_name, contact_id = self.create_group_with_a_contact()
+        group_name, contact_id = self.create_group_with_a_contact("l53")
         poll_title = self.create_Questionnaire_page.set_poll_questionnaire_title("poll_questionnaire", generate_random=True)
         self.poll_Questionnaire_page.select_sms_option()
         self.poll_Questionnaire_page.enter_sms_text()
@@ -80,7 +80,7 @@ class TestCreatePollQuestionnaire(HeadlessRunnerTest):
 
     @attr('functional_test')
     def test_poll_should_have_data_senders_of_group_as_poll_recipient(self):
-        group_name, contact_id = self.create_group_with_a_contact()
+        group_name, contact_id = self.create_group_with_a_contact("l83")
         self.create_Questionnaire_page.set_poll_questionnaire_title("poll_questionnaire", generate_random=True)
         self.poll_Questionnaire_page.select_sms_option()
         self.poll_Questionnaire_page.enter_sms_text()
@@ -119,9 +119,63 @@ class TestCreatePollQuestionnaire(HeadlessRunnerTest):
         self.poll_Questionnaire_page.select_element(poll_info_accordian)
         self.assertEquals(self.poll_Questionnaire_page.get_poll_status(), 'active')
 
+
+
+
+    @attr('functional_test')
+    def test_a_poll_cannot_be_created_when_another_poll_is_active(self):
+        poll_title = self.create_Questionnaire_page.set_poll_questionnaire_title("poll_questionnaire", generate_random=True)
+        self.poll_Questionnaire_page.select_broadcast_option()
+        self.poll_Questionnaire_page.click_create_poll()
+
+        time.sleep(1)
+        dashboard_page = self.global_navigation.navigate_to_dashboard_page()
+        dashboard_page.navigate_to_create_project_page()
+        self.assertEquals(self.poll_Questionnaire_page.get_already_active_poll_name(), poll_title)
+
+        self.driver.find(ACTIVE_POLL_NAME).click()
+        self.poll_Questionnaire_page.deactivate_poll()
+        time.sleep(2)
+
+
+class TestCreatePollQuestionnaire(HeadlessRunnerTest):
+
+    def create_group_with_a_contact(self, line_number=""):
+        all_contacts_page = self.global_navigation.navigate_to_all_data_sender_page()
+        unique_id = "pc" + random_number(2) + line_number
+        add_datasender_page = all_contacts_page.navigate_to_add_a_data_sender_page()
+        add_datasender_page.create_contact(unique_id)
+        add_group_page = all_contacts_page.go_to_add_group_page()
+        group_name = "group" + random_number(3)
+        add_group_page.enter_group_name(group_name)
+        add_group_page.click_on_add_group_button()
+        all_contacts_page.add_contact_to_group(unique_id, group_name)
+        time.sleep(3)
+        self.driver.wait_for_element(UI_TEST_TIMEOUT, DASHBOARD_PAGE_LINK, True)
+        dashboard_page = self.global_navigation.navigate_to_dashboard_page()
+        self.assertEqual(self.driver.get_title(), "Dashboard")
+        create_questionnaire_options_page = dashboard_page.navigate_to_create_project_page()
+        self.create_Questionnaire_page = create_questionnaire_options_page.select_poll_questionnaire_option()
+        self.assertEqual(self.driver.get_title(), "Create Questionnaire")
+        return group_name, unique_id
+
+    @classmethod
+    def setUpClass(cls):
+        HeadlessRunnerTest.setUpClassFirefox()
+        cls.global_navigation = login(cls.driver)
+
+    def setUp(self):
+        dashboard_page = self.global_navigation.navigate_to_dashboard_page()
+        create_questionnaire_options_page = dashboard_page.navigate_to_create_project_page()
+        self.create_Questionnaire_page = create_questionnaire_options_page.select_poll_questionnaire_option()
+        self.poll_Questionnaire_page = PollQuestionnairePage(driver=self.driver)
+
+    def tearDown(self):
+        self.poll_Questionnaire_page.delete_the_poll()
+
     @attr('functional_test')
     def test_after_poll_creation_with_group_the_group_should_receive_sms_and_appear_in_sent_sms_table(self):
-        group_name, contact_id = self.create_group_with_a_contact()
+        group_name, contact_id = self.create_group_with_a_contact("l124")
         self.create_Questionnaire_page.set_poll_questionnaire_title("poll_questionnaire", generate_random=True)
         self.poll_Questionnaire_page.select_sms_option()
         self.poll_Questionnaire_page.enter_sms_text()
@@ -147,21 +201,7 @@ class TestCreatePollQuestionnaire(HeadlessRunnerTest):
             raise Exception()
         self.assertTrue(result)
         time.sleep(1)
+
         #self.assertEquals(self.poll_Questionnaire_page.has_DS_received_sms(recipient, FIRST_ROW, THIRD_COLUMN), True)
         #self.assertEquals(self.poll_Questionnaire_page.has_DS_received_sms(recipient, FIRST_ROW, THIRD_COLUMN), True)
         #self.assertEquals(self.poll_Questionnaire_page.has_DS_received_sms(recipient, FIRST_ROW, THIRD_COLUMN), True)
-
-    @attr('functional_test')
-    def test_a_poll_cannot_be_created_when_another_poll_is_active(self):
-        poll_title = self.create_Questionnaire_page.set_poll_questionnaire_title("poll_questionnaire", generate_random=True)
-        self.poll_Questionnaire_page.select_broadcast_option()
-        self.poll_Questionnaire_page.click_create_poll()
-
-        time.sleep(1)
-        dashboard_page = self.global_navigation.navigate_to_dashboard_page()
-        dashboard_page.navigate_to_create_project_page()
-        self.assertEquals(self.poll_Questionnaire_page.get_already_active_poll_name(), poll_title)
-
-        self.driver.find(ACTIVE_POLL_NAME).click()
-        self.poll_Questionnaire_page.deactivate_poll()
-        time.sleep(2)

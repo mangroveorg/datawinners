@@ -88,18 +88,6 @@ class TestPollOptions(HeadlessRunnerTest):
 
 
     @attr('functional_test')
-    def test_should_send_sms_to_own_poll_recipients(self):
-        self.poll_questionnaire_page.select_sms_option()
-        self.poll_questionnaire_page.enter_sms_text()
-        self.poll_questionnaire_page.select_receipient(LINKED_CONTACTS, CLINIC_ALL_DS)
-        self.poll_questionnaire_page.click_create_poll(True, "poll-option-test")
-        self.poll_questionnaire_page.select_send_sms()
-        self.poll_questionnaire_page.send_sms_to(MY_POLL_RECIPIENTS, REP7, True)
-        sleep(2)
-        self.driver.create_screenshot("debug-ft-sms-sent-or-not")
-        self.assertTrue(self.poll_questionnaire_page.has_DS_received_sms(REP7, SECOND_ROW, THIRD_COLUMN, True))
-
-    @attr('functional_test')
     def test_send_sms_to_people_should_add_linked_contact_recipients_to_my_data_senders_of_poll(self):
         self.poll_questionnaire_page.select_sms_option()
         self.poll_questionnaire_page.enter_sms_text()
@@ -121,7 +109,7 @@ class TestPollOptions(HeadlessRunnerTest):
 
     @attr('functional_test')
     def test_send_sms_to_people_should_add_group_recipients_to_my_data_senders_of_poll(self):
-        group_name, unique_id = self.create_group_with_one_contact()
+        group_name, unique_id = self.create_group_with_one_contact("l124")
         self.poll_questionnaire_page.select_sms_option()
         self.poll_questionnaire_page.enter_sms_text()
         self.poll_questionnaire_page.select_receipient(LINKED_CONTACTS, CLINIC_ALL_DS)
@@ -176,9 +164,9 @@ class TestPollOptions(HeadlessRunnerTest):
         sleep(3)
         self.assertEquals(self.poll_questionnaire_page.get_poll_status(), 'active')
 
-    def create_group_with_one_contact(self):
+    def create_group_with_one_contact(self, line_number=""):
         all_contacts_page = self.global_navigation.navigate_to_all_data_sender_page()
-        unique_id = "pollcontc" + random_number(2)
+        unique_id = "pc" + random_number(2) + "o" + line_number
         add_datasender_page = all_contacts_page.navigate_to_add_a_data_sender_page()
         add_datasender_page.create_contact(unique_id)
         add_group_page = all_contacts_page.go_to_add_group_page()
@@ -226,9 +214,9 @@ class  TestPollOptionsFirefox(HeadlessRunnerTest):
         self.poll_questionnaire_page.delete_the_poll()
 
 
-    def create_group_with_one_contact(self):
+    def create_group_with_one_contact(self, line_number=""):
         all_contacts_page = self.global_navigation.navigate_to_all_data_sender_page()
-        unique_id = "pollcontc" + random_number(2)
+        unique_id = "pc" + random_number(2)+"o"+line_number
         add_datasender_page = all_contacts_page.navigate_to_add_a_data_sender_page()
         add_datasender_page.create_contact(unique_id)
         add_group_page = all_contacts_page.go_to_add_group_page()
@@ -246,7 +234,7 @@ class  TestPollOptionsFirefox(HeadlessRunnerTest):
 
     @attr('functional_test')
     def test_should_send_sms_to_people_from_selected_groups(self):
-        group_name, unique_id = self.create_group_with_one_contact()
+        group_name, unique_id = self.create_group_with_one_contact("l249")
         self.poll_questionnaire_page.select_sms_option()
         self.poll_questionnaire_page.enter_sms_text()
         self.poll_questionnaire_page.select_receipient(GROUP, group_name)
@@ -259,3 +247,18 @@ class  TestPollOptionsFirefox(HeadlessRunnerTest):
         self.poll_questionnaire_page.click_send_sms_link()
         self.poll_questionnaire_page.send_sms_to(GROUP, group_name)
         self.assertTrue(self.poll_questionnaire_page.has_DS_received_sms(unique_id, THIRD_ROW, THIRD_COLUMN))
+
+
+
+
+    @attr('functional_test')
+    def test_should_send_sms_to_own_poll_recipients(self):
+        self.poll_questionnaire_page.select_sms_option()
+        self.poll_questionnaire_page.enter_sms_text()
+        self.poll_questionnaire_page.select_receipient(LINKED_CONTACTS, CLINIC_ALL_DS)
+        self.poll_questionnaire_page.click_create_poll(True, "poll-option-test")
+        self.poll_questionnaire_page.select_send_sms()
+        self.poll_questionnaire_page.send_sms_to(MY_POLL_RECIPIENTS, REP7, True)
+        sleep(2)
+        self.driver.create_screenshot("debug-ft-sms-sent-or-not")
+        self.assertTrue(self.poll_questionnaire_page.has_DS_received_sms(REP7, SECOND_ROW, THIRD_COLUMN, True))
