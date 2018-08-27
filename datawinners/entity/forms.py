@@ -192,6 +192,8 @@ class ReporterRegistrationForm(Form):
 class EditReporterRegistrationForm(ReporterRegistrationForm):
     def __init__(self, org_id=None, existing_email=None, *args, **kwargs):
         super(EditReporterRegistrationForm, self).__init__(org_id, *args, **kwargs)
+        if existing_email:
+            existing_email = existing_email.strip()
         self.existing_email = existing_email
 
     def clean(self):
