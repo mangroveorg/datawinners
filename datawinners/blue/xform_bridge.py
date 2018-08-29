@@ -394,7 +394,9 @@ class XlsFormParser():
             selected_pattern = r"^selected\(\$\{\w+\},( |)(\d+|'\w+'|'\d+')\)$"
             string_pattern = r"^string-length\(\$\{\w+\}\)(>|>=|=|<=|<)(\d+|'\w+')$"
             if ' and ' in very_stripped_relevant or ' or ' in very_stripped_relevant:
-                statements = re.split('and|or', stripped_relevant)
+                no_fail_relevant = re.sub(r'{\w+\}', '{aww}', stripped_relevant)
+                no_fail_relevant = re.sub(r"'\w+\'", "'aww'", no_fail_relevant)
+                statements = re.split('and|or', no_fail_relevant)
                 for phrase in statements:
                     stripped_phrase = phrase.replace(' ', '')
                     stripped_phrase = re.sub('{\w+\}', '', stripped_phrase)
