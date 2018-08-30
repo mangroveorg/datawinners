@@ -6416,3 +6416,6 @@ msgstr "Tous les champs de code doivent être uniques, veuillez vérifier le cha
 
 msgid "Failed Submission"
 msgstr "Erreurs d'envoi"
+
+msgid "batch_update_existing_idnr"
+msgstr "Modifier les existants"
