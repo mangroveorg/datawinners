@@ -1197,6 +1197,8 @@ qq.extend(qq.UploadHandlerXhr.prototype, {
         // build query string
         params = params || {};
         params['qqfile'] = name;
+        params['is_update'] = $("#is_update").is(':checked');
+        
         var queryString = qq.obj2url(params, this._options.action);
 
         xhr.open("POST", queryString, true);
