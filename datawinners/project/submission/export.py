@@ -92,7 +92,10 @@ def create_multi_sheet_entries(raw_data, workbook, excel_headers, row_count_dict
                     ws.write(row_number + 1, column, val.date.replace(tzinfo=None), date_formats.get(val.date_format))
 
                 elif isinstance(val, float):
-                    ws.write_number(row_number + 1, column, val)
+                    try:
+                        ws.write_number(row_number + 1, column, val)
+                    except TypeError:
+                        ws.write_formula(row_number + 1, column, '1/0', None, '#DIV/0!')
                 else:
                     ws.write(row_number + 1, column, val)
             row_count_dict[sheet_name] += 1
