@@ -343,6 +343,15 @@ class OrganizationAdmin(DatawinnerAdmin):
             return self.readonly_fields + ('status',)
         return self.readonly_fields
 
+    def payment_period(self, obj):
+        payment_period_label = {"pay_monthly":"1 month","half_yearly":"6 months","yearly":"12 months"}
+        organization = obj
+        payment_period = PaymentDetails.objects.filter(organization=organization)
+        if not is_empty(payment_period):
+            return payment_period_label[payment_period[0].invoice_period] + ' / ' + payment_period[0].preferred_payment
+
+        return "--"
+
 
 class NullAdmin:
     def __init__(self):
