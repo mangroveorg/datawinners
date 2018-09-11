@@ -6418,4 +6418,4 @@ msgid "Failed Submission"
 msgstr "Erreurs d'envoi"
 
 msgid "batch_update_existing_idnr"
-msgstr "Modifier les existants"
+msgstr "Modifier les Numéros d’identification existants"
