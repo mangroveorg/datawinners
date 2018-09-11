@@ -5089,4 +5089,4 @@ msgid "Failed Submission"
 msgstr ""
 
 msgid "batch_update_existing_idnr"
-msgstr "Update the existing ones"
+msgstr "Update the existing Identification Numbers"
