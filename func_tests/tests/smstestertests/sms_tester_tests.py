@@ -97,7 +97,7 @@ class TestSMSTester(HeadlessRunnerTest):
         message_tracker_before.save()
         response = send_sms_with(REGISTER_NEW_SUBJECT_TRIAL_ACCOUNT)
         message_tracker_after = self.trial_organization._get_message_tracker(datetime.today())
-        self.assertEqual(message_tracker_before.incoming_sms_count, message_tracker_after.incoming_sms_count)
+        self.assertEqual(message_tracker_before.incoming_sms_count + 1, message_tracker_after.incoming_sms_count)
         self.assertEqual(message_tracker_before.sms_registration_count, message_tracker_after.sms_registration_count)
 
     @attr('functional_test')
@@ -119,7 +119,7 @@ class TestSMSTester(HeadlessRunnerTest):
         message_tracker_before.save()
         response = send_sms_with(NEW_SUBMISSION_TRIAL_ACCOUNT)
         message_tracker_after = self.trial_organization._get_message_tracker(datetime.today())
-        self.assertEqual(message_tracker_before.incoming_sms_count, message_tracker_after.incoming_sms_count)
+        self.assertEqual(message_tracker_before.incoming_sms_count + 1, message_tracker_after.incoming_sms_count)
 
     @attr('functional_test')
     def test_counters_for_trail_org_for_new_submission_when_sms_limit_not_reached_and_total_submission_limit_reached(
@@ -129,7 +129,7 @@ class TestSMSTester(HeadlessRunnerTest):
         message_tracker_before.save()
         response = send_sms_with(NEW_SUBMISSION_TRIAL_ACCOUNT)
         message_tracker_after = self.trial_organization._get_message_tracker(datetime.today())
-        self.assertEqual(message_tracker_before.incoming_sms_count, message_tracker_after.incoming_sms_count)
+        self.assertEqual(message_tracker_before.incoming_sms_count + 1, message_tracker_after.incoming_sms_count)
 
     @attr('functional_test')
     def test_counters_for_trail_org_for_new_submission_when_neither_sms_limit_nor_total_submission_limit_is_reached(
