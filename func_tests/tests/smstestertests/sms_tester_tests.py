@@ -80,7 +80,7 @@ class TestSMSTester(HeadlessRunnerTest):
         self.assertTrue(
             fetch_(SUCCESS_MESSAGE, from_(REGISTER_NEW_SUBJECT)) in response)
         message_tracker_after = organization._get_message_tracker(datetime.today())
-        self.assertEqual(message_tracker_before.incoming_sms_count + 1, message_tracker_after.incoming_sms_count)
+        self.assertEqual(message_tracker_before.incoming_sms_count + 2, message_tracker_after.incoming_sms_count)
         self.assertEqual(message_tracker_before.sms_registration_count + 1,
                          message_tracker_after.sms_registration_count)
         code = response.split(" ")[-1].rstrip(".")
@@ -107,7 +107,7 @@ class TestSMSTester(HeadlessRunnerTest):
         message_tracker_before.save()
         response = send_sms_with(REGISTER_NEW_SUBJECT_TRIAL_ACCOUNT)
         message_tracker_after = self.trial_organization._get_message_tracker(datetime.today())
-        self.assertEqual(message_tracker_before.incoming_sms_count + 1, message_tracker_after.incoming_sms_count)
+        self.assertEqual(message_tracker_before.incoming_sms_count + 2, message_tracker_after.incoming_sms_count)
         self.assertEqual(message_tracker_before.sms_registration_count + 1,
                          message_tracker_after.sms_registration_count)
 
@@ -138,7 +138,7 @@ class TestSMSTester(HeadlessRunnerTest):
         message_tracker_before.save()
         response = send_sms_with(NEW_SUBMISSION_TRIAL_ACCOUNT)
         message_tracker_after = self.trial_organization._get_message_tracker(datetime.today())
-        self.assertEqual(message_tracker_before.incoming_sms_count + 1, message_tracker_after.incoming_sms_count)
+        self.assertEqual(message_tracker_before.incoming_sms_count + 2, message_tracker_after.incoming_sms_count)
 
     @attr('functional_test')
     def test_sms_player_for_registration_of_existing_subject_short_code(self):
@@ -193,7 +193,7 @@ class TestSMSTester(HeadlessRunnerTest):
         count_before_submission = (self._get_test_paid_org_message_tracker(paid_test_org)).incoming_sms_count
         self.assertEqual(send_sms_with(test_data),
                          "Error. You are not authorized to submit data for this Questionnaire. Please contact your supervisor.")
-        self.assertEqual(count_before_submission + 1,
+        self.assertEqual(count_before_submission + 2,
                          self._get_test_paid_org_message_tracker(paid_test_org).incoming_sms_count)
 
         test_data.update({SENDER: "1234567890"})
