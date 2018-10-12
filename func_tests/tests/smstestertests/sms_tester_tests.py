@@ -200,7 +200,7 @@ class TestSMSTester(HeadlessRunnerTest):
         count_before_submission = (self._get_test_paid_org_message_tracker(paid_test_org)).incoming_sms_count
         self.assertEqual(send_sms_with(test_data),
                          "Error. Incorrect number of responses. Please review printed Questionnaire and resend entire SMS.")
-        self.assertEqual(count_before_submission + 1,
+        self.assertEqual(count_before_submission + 2,
                          self._get_test_paid_org_message_tracker(paid_test_org).incoming_sms_count)
 
         message = fetch_(SMS, from_(test_data))
