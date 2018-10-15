@@ -220,7 +220,7 @@ class TestSMSTester(HeadlessRunnerTest):
         count_before_submission = (self._get_test_paid_org_message_tracker(paid_test_org)).incoming_sms_count
         self.assertEqual(send_sms_with(test_data),
                          "Thank you Shweta. We received your SMS.")
-        self.assertEqual(count_before_submission + 1,
+        self.assertEqual(count_before_submission + 2,
                          self._get_test_paid_org_message_tracker(paid_test_org).incoming_sms_count)
 
         self._delete_unique_id(code, 'clinic')
