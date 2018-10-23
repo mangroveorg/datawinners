@@ -93,8 +93,9 @@ class AllDataSendersView(TemplateView):
         manager = get_database_manager(request.user)
         file_extension = os.path.splitext(request.GET["qqfile"])[1]
         parser = parser_dict.get(file_extension, None)
+        is_update = request.GET.get('is_update') == 'true'
         error_message, failure_imports, success_message, successful_imports = import_module.import_data(
-            request, manager, default_parser=parser)
+            request, manager, default_parser=parser, is_update=is_update)
 
         imported_data_senders = parse_successful_imports(successful_imports)
         self._convert_anonymous_submissions_to_registered(imported_data_senders, manager)

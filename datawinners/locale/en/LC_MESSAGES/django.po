@@ -5090,3 +5090,9 @@ msgstr ""
 
 msgid "batch_update_existing_idnr"
 msgstr "Update the existing Identification Numbers"
+
+msgid "batch_update_existing_contacts"
+msgstr "Update the existing Contacts"
+
+msgid "batch_update_existing_datasenders"
+msgstr "Update the existing datasenders"

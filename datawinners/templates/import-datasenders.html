@@ -15,6 +15,15 @@
                 <li>{% trans "Save the template on your computer." %}</li>
                 <li>{% trans "Click the gold Upload a file button and select the saved template." %}</li>
             </ul>
+            <br/>
+            <div >
+            {% if project %}
+                <input type="checkbox" id="is_update"/> {% trans "batch_update_existing_datasenders" %}
+            {% else %}
+                <input type="checkbox" id="is_update"/> {% trans "batch_update_existing_contacts" %}
+            {% endif %}
+            </div>
+            <br/>
             <div id="file-uploader" class="grid file_import">
                 <noscript>
                     <p>{% trans "Please enable JavaScript to use file uploader." %}</p>

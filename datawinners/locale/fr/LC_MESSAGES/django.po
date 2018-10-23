@@ -6419,3 +6419,9 @@ msgstr "Erreurs d'envoi"
 
 msgid "batch_update_existing_idnr"
 msgstr "Modifier les Numéros d’identification existants"
+
+msgid "batch_update_existing_contacts"
+msgstr "Modifier les contacts existants"
+
+msgid "batch_update_existing_datasenders"
+msgstr "Modifier les Expéditeurs de Données existants"
