@@ -127,7 +127,13 @@ class TestAllDataSendersImport(HeadlessRunnerTest):
         worksheet['C2'] = workbook_row5['ds_location']
         worksheet['D2'] = workbook_row5['gps_coordinates']
         worksheet['E2'] = workbook_row5['ds_email']
- 
+
+        worksheet['A3'] = workbook_row4['ds_name']
+        worksheet['B3'] = workbook_row4['ds_number']
+        worksheet['C3'] = workbook_row4['ds_location']
+        worksheet['D3'] = workbook_row4['gps_coordinates']
+        worksheet['E3'] = workbook_row4['ds_email']
+
         return file_name, file_path, workbook
 
 
