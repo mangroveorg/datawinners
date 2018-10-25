@@ -127,6 +127,8 @@ class TestAllDataSendersImport(HeadlessRunnerTest):
         worksheet['C2'] = workbook_row5['ds_location']
         worksheet['D2'] = workbook_row5['gps_coordinates']
         worksheet['E2'] = workbook_row5['ds_email']
+ 
+        return file_name, file_path, workbook
 
 
     @attr('functional_test')
