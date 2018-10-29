@@ -176,6 +176,8 @@ class TestAllDataSendersImport(HeadlessRunnerTest):
         workbook.save(file_path)
         global_navigation = GlobalNavigationPage(self.driver)
         all_datasender_page = global_navigation.navigate_to_all_data_sender_page()
+        current_ds = all_datasender_page.get_datasenders_count()
         self._upload_imported_datasender(file_name, file_path)
-        self.assertEqual(all_datasender_page.get_empty_table_result, True)
+        self.assertEqual(all_datasender_page.get_datasenders_count(),
+                         current_ds)
 
