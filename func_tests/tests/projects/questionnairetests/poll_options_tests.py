@@ -185,7 +185,7 @@ class TestPollOptions(HeadlessRunnerTest):
 
 
 
-class  TestPollOptionsFirefox(HeadlessRunnerTest):
+class TestPollOptionsFirefox(HeadlessRunnerTest):
 
     @classmethod
     def setUpClass(cls):

@@ -140,14 +140,14 @@ class PollQuestionnairePage(Page):
             sms_table_element = self.driver.find(by_id("poll_sms_table"))
         except Exception as e:
             sms_table_element = None
-            
+
         if not sms_table_element or not sms_table_element.is_displayed():
             self.select_element(POLL_TAB)
             time.sleep(3)
             self.select_element(POLL_SMS_ACCORDIAN)
             self.driver.wait_for_element(UI_TEST_TIMEOUT, by_css("#poll_sms_table"), True)
             self.driver.wait_until_modal_dismissed()
-            
+
         if debug:
             time.sleep(2)
             self.driver.create_screenshot("debug-ft-before-checking-that-ds-received-sms")

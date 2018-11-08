@@ -15,15 +15,15 @@ from collections import OrderedDict
 class TestImportData(unittest.TestCase):
 
     def test_should_not_append_country_to_if_location_field_is_empty_in_imported_excel(self):
-            mock_dbm = Mock(spec=DatabaseManager)
-            file_player = FilePlayer(mock_dbm, Mock, 'csv')
-            form_model = Mock(spec=FormModel)
-            with patch('datawinners.entity.import_data.get_location_field_code') as get_location_field_code:
-                with patch('datawinners.entity.import_data.get_country_appended_location') as get_country_appended_location:
-                    get_location_field_code.return_value = 'q2'
-                    get_country_appended_location.return_value = 'loc,Madagascar'
-                    result = file_player._append_country_for_location_field(form_model, {'q1': 'val1', 'q2': ''},Mock(spec=Organization))
-                    self.assertEquals(result,{'q1': 'val1', 'q2': ''})
+        mock_dbm = Mock(spec=DatabaseManager)
+        file_player = FilePlayer(mock_dbm, Mock, 'csv')
+        form_model = Mock(spec=FormModel)
+        with patch('datawinners.entity.import_data.get_location_field_code') as get_location_field_code:
+            with patch('datawinners.entity.import_data.get_country_appended_location') as get_country_appended_location:
+                get_location_field_code.return_value = 'q2'
+                get_country_appended_location.return_value = 'loc,Madagascar'
+                result = file_player._append_country_for_location_field(form_model, {'q1': 'val1', 'q2': ''},Mock(spec=Organization))
+                self.assertEquals(result,{'q1': 'val1', 'q2': ''})
 
     def test_should_append_country_to_if_location_present_in_imported_excel(self):
             mock_dbm = Mock(spec=DatabaseManager)
