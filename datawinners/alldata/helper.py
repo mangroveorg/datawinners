@@ -7,20 +7,30 @@ from datawinners.utils import get_organization
 from mangrove.datastore.user_permission import get_questionnaires_for_user
 
 
-def get_all_project_for_user(user):
+def default_get_project_info(dbm, x):
+    return x
+
+
+def get_all_project_for_user(user, get_project_info_function=default_get_project_info, dbm=None):
     if user.get_profile().reporter:
-        questionnaires = [row['value'] for row in get_all_projects(get_database_manager(user), user.get_profile().reporter_id)]
-        return remove_poll_questionnaires(questionnaires)
+        return [get_project_info_function(dbm, row['value'])
+                          for row in get_all_projects(get_database_manager(user), user.get_profile().reporter_id)
+                          if row['value'].get('is_poll',False) is False]
+
+    
     if user.is_ngo_admin() or user.is_extended_user():
-        questionnaires = [row['value'] for row in get_all_projects(get_database_manager(user))]
+        questionnaires = [get_project_info_function(dbm, row['value']) for row in get_all_projects(get_database_manager(user))]
         return questionnaires
-    questionnaires_as_datasender = [row['value'] for row in get_all_projects(get_database_manager(user), user.get_profile().reporter_id)]
+
+    questionnaires_as_datasender = [get_project_info_function(dbm, row['value']) for row in get_all_projects(get_database_manager(user), user.get_profile().reporter_id)]
     questionnaires_as_pm = get_questionnaires_for_user(user.id, get_database_manager(user))
     for q_ds in questionnaires_as_datasender:
         already_exists = [True for q_pm in questionnaires_as_pm if q_pm.get('_id') == q_ds.get('_id')]
         if True not in already_exists:
-           questionnaires_as_pm.append(q_ds)
+           questionnaires_as_pm.append(get_project_info_function(dbm, q_ds))
     return questionnaires_as_pm
+
+
 
 def get_visibility_settings_for(user):
     if user.get_profile().reporter:
