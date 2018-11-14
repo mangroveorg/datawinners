@@ -18,10 +18,13 @@ class TestHelper(unittest.TestCase):
     @patch('datawinners.alldata.helper.get_all_projects')
     def test_should_return_all_projects_for_user_as_reporter(self, mock_get_all_projects, mock_remove_poll_questionnaires):
         user = get_reporter_user()
-        all_projects = {}
-        all_projects_for_user = [{'_id':'d3456cc', 'name':'test questionnaire'}]
+        all_projects_for_user = [{'_id': 'd3456cc', 'name': 'test questionnaire'}]
+        all_projects = [{'value': {'_id':'d3456cc', 'name':'test questionnaire'}},
+                {'value': {'_id':'d3456ccxyx', 'name':'test questionnaire', 'is_poll': True}}]
+
         mock_get_all_projects.return_value = all_projects
         mock_remove_poll_questionnaires.return_value = all_projects_for_user
+        self.assertEqual(helper.get_all_project_for_user(user), all_projects_for_user)
         assert helper.get_all_project_for_user(user) == all_projects_for_user
     
     @patch('datawinners.alldata.helper.get_questionnaires_for_user')

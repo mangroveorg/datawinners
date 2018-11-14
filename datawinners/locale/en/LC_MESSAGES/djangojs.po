@@ -1247,3 +1247,24 @@ msgstr ""
 
 msgid " To: "
 msgstr ""
+
+msgid "Analyze Data"
+msgstr ""
+
+msgid "Delete Poll"
+msgstr ""
+
+msgid "View Submissions"
+msgstr ""
+
+msgid "Make a Submission"
+msgstr ""
+
+msgid "Import a List of Submissions"
+msgstr ""
+
+msgid "Register a new "
+msgstr ""
+
+msgid "Delete Questionnaire"
+msgstr ""

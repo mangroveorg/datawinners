@@ -96,10 +96,8 @@ def get_project_info(manager, project):
 
 
 def get_project_list(request):
-    questionnaires = get_all_project_for_user(request.user)
     manager = get_database_manager(request.user)
-    return [get_project_info(manager, questionnaire) for questionnaire in questionnaires]
-
+    return get_all_project_for_user(request.user, get_project_info_function=get_project_info, dbm=manager)
 
 def projects_index(request):
     disable_link_class, hide_link_class = get_visibility_settings_for(request.user)
@@ -156,13 +154,8 @@ def index(request):
     organization = get_organization(request)
     page_heading = get_page_heading(request)
     hide_for_data_sender = 'none' if request.user.get_profile().reporter else ''
-    rows = get_project_list(request)
     project_list = []
     smart_phone_instruction_link = reverse("smart_phone_instruction")
-    local_time_delta = get_country_time_delta(organization.country)
-    for project in rows:
-        project_list.append(_construct_project_dict(request.user, local_time_delta, project))
-    project_list.sort(key=itemgetter('name'))
 
     activation_success = request.GET.get('activation', False)
 
@@ -195,8 +188,34 @@ def index(request):
                                    'activation_success': activation_success,
                                    'hide_for_data_sender':hide_for_data_sender,
                                    'hide_link_class': hide_for_data_sender,
+                                   'user_group': request.user.groups.all()[0].name,
                                    'current_lang': get_language()},
                                   context_instance=RequestContext(request))
+
+
+def json_serial(obj):
+    from datetime import datetime, date
+    """JSON serializer for objects not serializable by default json code"""
+
+    if isinstance(obj, (datetime, date)):
+        return obj.isoformat()
+    raise TypeError ("Type %s not serializable" % type(obj))
+
+@login_required
+@session_not_expired
+@is_new_user
+@is_not_expired
+def projects_ajax(request):
+    organization = get_organization(request)
+    project_list = []
+    rows = get_project_list(request)
+    smart_phone_instruction_link = reverse("smart_phone_instruction")
+    local_time_delta = get_country_time_delta(organization.country)
+    for project in rows:
+        project_list.append(_construct_project_dict(request.user, local_time_delta, project))
+    project_list.sort(key=itemgetter('name'))
+    
+    return HttpResponse(mimetype='application/json', content=json.dumps(project_list, default=json_serial))
 
 
 def _get_failed_entries(organization, display_start=0, display_length=25, sort_col=2, sort_dir='asc'):

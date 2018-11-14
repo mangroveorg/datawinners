@@ -1682,3 +1682,24 @@ msgstr " ainsi que "
 
 msgid " first."
 msgstr "."
+
+msgid "Analyze Data"
+msgstr "Analyser des données"
+
+msgid "Delete Poll"
+msgstr "Supprimer le Sondage"
+
+msgid "View Submissions"
+msgstr "Voir les Soumisssions"
+
+msgid "Make a Submission"
+msgstr "Faire une Soumission"
+
+msgid "Import a List of Submissions"
+msgstr "Importer une liste de Soumissions"
+
+msgid "Register a new "
+msgstr "Enregistrer un(e) "
+
+msgid "Delete Questionnaire"
+msgstr "Supprimer le Questionnaire"

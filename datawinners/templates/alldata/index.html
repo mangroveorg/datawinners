@@ -20,6 +20,8 @@
         var import_template_url = "{% url import_template 'form_code' %}?filename=<project_name>";
         var import_submission_url = "{% url import_submissions 'form_code'%}";
         var is_poll="";
+        var hide_for_data_sender = "{{ hide_for_data_sender }}";
+        var user_group = '{{ user_group }}';
     </script>
 {% endblock %}
 
@@ -66,12 +68,13 @@
                 <a id="create_project_link" href="{% url create_project %}?prev=ques" class="button">{% trans "Create Questionnaires" %}</a>
             {% endif %}
         </span>
-        <table class="styled_table margin_top_20">
+        <table class="styled_table margin_top_20" id="all_projects">
             <thead>
             <th>{% trans "Name" %}</th>
             <th class="{{ hide_for_data_sender }}"> {% trans "Created On" %}</th>
             <th> {% trans "What Do You Want to Do?" %}</th>
             </thead>
+            <tbody>
             {% for project in projects %}
 
                 {% if project.is_poll %}
@@ -141,6 +144,7 @@
                 </tr>
                 {% endif %}
             {% endfor %}
+            </tbody>
         </table>
         <div id="delete_project_block">
             <p class="warning_message">{% trans "Export all Submissions prior to deleting your Questionnaire." %}</p>
