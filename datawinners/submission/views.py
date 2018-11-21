@@ -221,7 +221,11 @@ def post_player_handler(incoming_request, message):
                     increment_dict.update({'outgoing_sms_charged_count':1})
 
             organization.increment_message_count_for(**increment_dict)
-        organization.increment_incoming_message_count()
+
+        if incoming_request.get('is_registration', False):
+           organization.increment_incoming_message_count()
+        #import IPython
+        #IPython.embed()
         log_sms(message=message,
                 message_id=incoming_request['message_id'],
                 organization=incoming_request['organization'],
