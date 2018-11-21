@@ -224,8 +224,6 @@ def post_player_handler(incoming_request, message):
 
         if incoming_request.get('is_registration', False):
            organization.increment_incoming_message_count()
-        #import IPython
-        #IPython.embed()
         log_sms(message=message,
                 message_id=incoming_request['message_id'],
                 organization=incoming_request['organization'],
