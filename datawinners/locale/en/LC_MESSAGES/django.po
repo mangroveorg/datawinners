@@ -4364,6 +4364,9 @@ msgstr ""
 msgid "Total"
 msgstr ""
 
+msgid "ID Number SMS Submissions"
+msgstr ""
+
 msgid "Your SMS Usage This Month"
 msgstr ""
 
