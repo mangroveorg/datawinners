@@ -252,7 +252,7 @@ class Organization(models.Model):
         counter_dict['total_sp_submission'] = total_sp_submission
         counter_dict['total_web_submission'] = total_web_submission
 
-        counter_dict['sms_registration_count'] = sum_dict["sms_registration_count"]
+        counter_dict['sms_registration_count'] = sum_dict["sms_registration_count__sum"]
 
         total_submission = sms_submission_count + total_web_submission + total_sp_submission
         counter_dict['combined_total_submissions'] = total_submission
