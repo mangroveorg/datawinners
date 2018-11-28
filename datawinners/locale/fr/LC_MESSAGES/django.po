@@ -4770,6 +4770,9 @@ msgstr "Ce mois"
 msgid "Total"
 msgstr "Total"
 
+msgid "ID Number SMS Submissions"
+msgstr "Soumissions SMS - Numéros d'identification"
+
 msgid "Your SMS Usage This Month"
 msgstr "Vos SMS de ce mois"
 
@@ -6416,3 +6419,12 @@ msgstr "Tous les champs de code doivent être uniques, veuillez vérifier le cha
 
 msgid "Failed Submission"
 msgstr "Erreurs d'envoi"
+
+msgid "batch_update_existing_idnr"
+msgstr "Modifier les Numéros d’identification existants"
+
+msgid "batch_update_existing_contacts"
+msgstr "Modifier les contacts existants"
+
+msgid "batch_update_existing_datasenders"
+msgstr "Modifier les Expéditeurs de Données existants"
