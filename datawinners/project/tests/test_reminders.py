@@ -6,7 +6,7 @@ from datawinners.project.models import Reminder, ReminderMode, RemindTo, Reminde
 from mangrove.datastore.database import DatabaseManager
 from datawinners.project.forms import ReminderForm
 from decimal import Decimal
-from mangrove.form_model.deadline import Deadline, Week
+from mangrove.form_model.deadline import Deadline, Week, Month
 from mangrove.form_model.project import Project
 
 
@@ -166,6 +166,21 @@ class TestReminders(unittest.TestCase):
         log = reminder.log(dbm_mock, 'test_project', datetime.now(),to_number = 'ads', number_of_sms=10)
         self.assertTrue(isinstance(log, ReminderLog))
         dbm_mock._save_document.assert_called_once()
+
+
+
+    def test_should_return_true_if_deadline_is_last_day_of_the_month_and_today_is_last_day_of_month(self):
+        today = date(2018, 11, 30)
+        reminder = Reminder(reminder_mode=ReminderMode.ON_DEADLINE)
+        deadline = Deadline(frequency=Month(0),mode="That")
+        self.assertTrue(reminder.should_be_send_on(deadline, today))
+
+
+    def test_should_return_true_if_deadline_is_last_day_of_the_month_and_today_28th_of_february(self):
+        today = date(2018, 2, 28)
+        reminder = Reminder(reminder_mode=ReminderMode.ON_DEADLINE)
+        deadline = Deadline(frequency=Month(0),mode="That")
+        self.assertTrue(reminder.should_be_send_on(deadline, today))
 
 #move to jasmine tests
 # class TestReminderForm(unittest.TestCase):
