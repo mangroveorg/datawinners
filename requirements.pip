@@ -60,5 +60,5 @@ pyexcel==0.2.0
 pyexcel-xls==0.1.0
 pyexcel-xlsx==0.1.0
 pyexcel-io==0.1.0
--e git+https://github.com/mangroveorg/mangrove.git@prod_release_45#egg=mangrove
+-e git+https://github.com/mangroveorg/mangrove.git@prod_release_46#egg=mangrove
 -e git+https://github.com/mangroveorg/pyxform.git@master#egg=pyxform
