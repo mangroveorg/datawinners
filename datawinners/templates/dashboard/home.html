@@ -212,7 +212,12 @@
             <tr><td>{% trans "Smartphone" %}</td><td>{{ counters.sp_submission_current_month }}</td><td>{{ counters.total_sp_submission }}</td></tr>
             <tr><td>{% trans "Web" %}</td><td>{{ counters.web_submission_current_month }}</td><td>{{ counters.total_web_submission }}</td></tr>
             <tr><td><b>{% trans "Total" %}</b></td><td><b>{{ counters.total_submission_current_month }}</b></td><td><b>{{ counters.combined_total_submissions }}</b></td></tr>
-            <tr><td colspan="3">&nbsp;</td></tr>
+
+	    <tr><td colspan="3">&nbsp;</td></tr>
+	    <tr style="line-height: initial;"><td colspan="3"><h6>{% trans "ID Number SMS Submissions" %}</h6></td></tr>
+            <tr style="line-height: initial;"><td>{% trans "ID Number SMS Submissions" %}</td><td>{{ counters.sms_registration_count }}</td><td>&nbsp;</td></tr>
+
+	    <tr><td colspan="3">&nbsp;</td></tr>
             <tr><td colspan="3"><h6>{% trans "Your SMS Usage This Month" %}</h6></td></tr>
             <tr><td>{% trans "Reply SMS" %}</td><td>{{ counters.sms_reply}}</td><td>&nbsp;</td></tr>
             <tr><td>{% trans "Reminders" %}</td><td>{{ counters.reminders }}</td><td>&nbsp;</td></tr>
