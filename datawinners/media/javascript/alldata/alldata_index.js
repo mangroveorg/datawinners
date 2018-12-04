@@ -15,7 +15,7 @@ $(function(){
                 };
      new DW.Dialog(reminderAddDialogOptions).init().initializeLinkBindings();
 
-     $.blockUI();
+     DW.loading();
      $.ajax({
         type: 'GETT',
         url: "/ajax/project/",
