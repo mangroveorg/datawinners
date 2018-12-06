@@ -109,7 +109,7 @@ class Organization(models.Model):
         if self.in_trial_mode and submission_count == LIMIT_TRIAL_ORG_SUBMISSION_COUNT:
             self.send_mail_to_organization_creator(email_type='reached_submission_limit')
 
-        return self.has_exceeded_submission_limit()
+        return self.has_exceeded_submission_limit() 
 
     def increment_sms_api_usage_count(self):
         current_month = datetime.date(datetime.datetime.now().year, datetime.datetime.now().month, 1)
@@ -238,6 +238,14 @@ class Organization(models.Model):
             counter_dict['send_a_msg_current_month'] = message_trackers.send_message_charged_count
             counter_dict['sent_via_api_current_month'] = message_trackers.sms_api_usage_charged_count
 
+    def _get_registration_count(self):
+        now = datetime.datetime.now()
+        message_trackers = MessageTracker.objects.filter(organization=self, month__year=now.year, month__month=now.month)
+        if len(message_trackers):
+            return message_trackers[0].sms_registration_count
+        return 0
+
+
     def get_counters(self):
         counter_dict = defaultdict(lambda: 0)
 
@@ -252,7 +260,7 @@ class Organization(models.Model):
         counter_dict['total_sp_submission'] = total_sp_submission
         counter_dict['total_web_submission'] = total_web_submission
 
-        counter_dict['sms_registration_count'] = sum_dict["sms_registration_count__sum"]
+        counter_dict['sms_registration_count'] = self._get_registration_count()
 
         total_submission = sms_submission_count + total_web_submission + total_sp_submission
         counter_dict['combined_total_submissions'] = total_submission
