@@ -4367,6 +4367,9 @@ msgstr ""
 msgid "ID Number SMS Submissions"
 msgstr ""
 
+msgid "ID Number Registrations"
+msgstr ""
+
 msgid "Your SMS Usage This Month"
 msgstr ""
 

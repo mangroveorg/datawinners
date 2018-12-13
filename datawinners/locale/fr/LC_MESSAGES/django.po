@@ -4773,6 +4773,9 @@ msgstr "Total"
 msgid "ID Number SMS Submissions"
 msgstr "Soumissions SMS - Numéros d'identification"
 
+msgid "ID Number Registrations"
+msgstr "Enregistrements de Numéros d'identification"
+
 msgid "Your SMS Usage This Month"
 msgstr "Vos SMS de ce mois"
 
