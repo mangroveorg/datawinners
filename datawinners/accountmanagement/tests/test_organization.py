@@ -114,7 +114,8 @@ class TestOrganization(TestCase):
                     'sp_submission_current_month': 5,
                     'total_sent_sms': 53, 'total_sms_current_month': 66, 'total_sms_submission': 33,
                     'total_sp_submission': 22, 'total_submission_current_month': 23, 'total_web_submission': 20,
-                    'web_submission_current_month': 7}
+                    'web_submission_current_month': 7,
+                    'sms_registration_count': 2}
 
         counters = self.organization.get_counters()
         self.maxDiff=None
