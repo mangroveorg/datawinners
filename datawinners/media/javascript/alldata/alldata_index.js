@@ -85,6 +85,7 @@ $(function(){
                 }
 
                 $("#all_projects tbody").append(str);
+                DW.bind_project_links();
             }
 
         }
