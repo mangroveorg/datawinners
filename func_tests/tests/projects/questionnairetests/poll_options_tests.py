@@ -35,6 +35,7 @@ class TestPollOptions(HeadlessRunnerTest):
     @classmethod
     def tearDownClass(cls):
         try:
+            cls.driver.wait_until_modal_dismissed()
             cls.global_navigation.sign_out()
             HeadlessRunnerTest.tearDownClass()
         except Exception as e:
@@ -79,11 +80,7 @@ class TestPollOptions(HeadlessRunnerTest):
         recipients = [REP8, REP3, REP1, REP5, REP6, REP35, REP10]
         result = self.poll_questionnaire_page.has_DS_received_sms(recipients, FIRST_ROW, THIRD_COLUMN)
 
-        self.assertTrue(self.poll_questionnaire_page.has_DS_received_sms(recipients, FIRST_ROW, THIRD_COLUMN))
-        self.assertTrue(self.poll_questionnaire_page.has_DS_received_sms(recipients, FIRST_ROW, THIRD_COLUMN))
-        self.assertTrue(self.poll_questionnaire_page.has_DS_received_sms(recipients, FIRST_ROW, THIRD_COLUMN))
-        self.assertTrue(self.poll_questionnaire_page.has_DS_received_sms(recipients, FIRST_ROW, THIRD_COLUMN))
-        self.assertTrue(self.poll_questionnaire_page.has_DS_received_sms(recipients, FIRST_ROW, THIRD_COLUMN))
+        self.assertTrue(result)
 
 
 

@@ -7,6 +7,7 @@ from pages.projectoverviewpage.project_overview_page import ProjectOverviewPage
 from pages.projectspage.projects_locator import *
 from pages.page import Page
 from tests.testsettings import UI_TEST_TIMEOUT
+from framework.exception import CouldNotLocateElementException
 
 
 class ProjectsPage(Page):
