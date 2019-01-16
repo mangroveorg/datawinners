@@ -154,6 +154,8 @@ class PollQuestionnairePage(Page):
         try:
             recipient_name = self.driver.find(by_css(
                 '#poll_sms_table>tbody>tr:nth-of-type(%s)>td:nth-of-type(%s)>span:nth-of-type(2)' % (row, column))).text
+            if debug and not recipient_name in recipent:
+                self.driver.create_screenshot("debug-ft-1st-poll-recipient-is-not-in-the-list")
             return recipient_name in recipent
         except Exception as e:
             self.driver.create_screenshot("debug-ft-has-ds-received-sms-element-not-found")
