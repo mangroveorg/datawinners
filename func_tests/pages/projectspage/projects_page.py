@@ -42,13 +42,15 @@ class ProjectsPage(Page):
         all_project_names = [element.text for element in all_project_elements]
         return project_name in all_project_names
 
-    def delete_project(self, project_name):
+    def delete_project(self, project_name, debug=False):
+        self.wait_until_modal_dismissed()
         project_rows = self.driver.find_elements_(by_css(".styled_table tbody tr"))
         for row in project_rows:
             if project_name == row.find_element_by_class_name('project-id-class ').text:
                 row.find_element_by_class_name('delete_project').click()
                 self.driver.find(by_css('a#confirm_delete')).click()
                 return
+        self.driver.create_screenshot("debug-ft-project-not-found-after-attempt-to-delete")
         raise CouldNotLocateElementException(['.styled_table tbody tr', 'project-id-class', 'delete_project'], 'by_css')
 
 

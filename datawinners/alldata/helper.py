@@ -23,11 +23,12 @@ def get_all_project_for_user(user, get_project_info_function=default_get_project
         return questionnaires
 
     questionnaires_as_datasender = [get_project_info_function(dbm, row['value']) for row in get_all_projects(get_database_manager(user), user.get_profile().reporter_id)]
-    questionnaires_as_pm = get_questionnaires_for_user(user.id, get_database_manager(user))
+    questionnaires_as_pm = get_questionnaires_for_user(user.id, get_database_manager(user),
+                                                       project_info_function=get_project_info_function)
     for q_ds in questionnaires_as_datasender:
-        already_exists = [True for q_pm in questionnaires_as_pm if q_pm.get('_id') == q_ds.get('_id')]
+        already_exists = [True for q_pm in questionnaires_as_pm if q_pm.get('_id') == q_ds.get('project_id')]
         if True not in already_exists:
-           questionnaires_as_pm.append(get_project_info_function(dbm, q_ds))
+           questionnaires_as_pm.append(q_ds)
     return questionnaires_as_pm
 
 

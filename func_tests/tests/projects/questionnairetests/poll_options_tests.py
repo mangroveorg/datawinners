@@ -73,7 +73,7 @@ class TestPollOptions(HeadlessRunnerTest):
         self.poll_questionnaire_page.select_send_sms()
         self.poll_questionnaire_page.send_sms_to(LINKED_CONTACTS, CLINIC_TEST_PROJECT)
         recipients = [REP8, REP3, REP1, REP5, REP6, REP35, REP10]
-        result = self.poll_questionnaire_page.has_DS_received_sms(recipients, FIRST_ROW, THIRD_COLUMN)
+        result = self.poll_questionnaire_page.has_DS_received_sms(recipients, FIRST_ROW, THIRD_COLUMN, True)
 
         self.assertTrue(self.poll_questionnaire_page.has_DS_received_sms(recipients, FIRST_ROW, THIRD_COLUMN))
         self.assertTrue(self.poll_questionnaire_page.has_DS_received_sms(recipients, FIRST_ROW, THIRD_COLUMN))
