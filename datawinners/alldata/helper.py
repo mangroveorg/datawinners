@@ -26,7 +26,7 @@ def get_all_project_for_user(user, get_project_info_function=default_get_project
     questionnaires_as_pm = get_questionnaires_for_user(user.id, get_database_manager(user),
                                                        project_info_function=get_project_info_function)
     for q_ds in questionnaires_as_datasender:
-        already_exists = [True for q_pm in questionnaires_as_pm if q_pm.get('_id') == q_ds.get('project_id')]
+        already_exists = [True for q_pm in questionnaires_as_pm if q_pm.get('_id') == q_ds.get('project_id', q_ds.get('_id'))]
         if True not in already_exists:
            questionnaires_as_pm.append(q_ds)
     return questionnaires_as_pm
