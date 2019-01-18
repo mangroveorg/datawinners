@@ -280,10 +280,25 @@ class TestAdvancedQuestionnaireEndToEnd(HeadlessRunnerTest):
         self._verify_edit_of_questionnaire(file_name)
         self._verify_datawinners_university()
 
-    def _verify_datawinners_university(self):
+    def _verify_datawinners_university(self, debug=False):
+        self.driver.wait_until_modal_dismissed()
+
         dw_university_page = Page(self.driver)
-        self.assertTrue(dw_university_page.is_help_content_available())
+        
+        try:
+            help_available = dw_university_page.is_help_content_available()
+        except Exception as e:
+            self.driver.create_screenshot("debug-ft-dw-university-not-available")
+            try:
+                loading = self.driver.find(by_css(".loading"))
+                if loading.is_displayed():
+                    self.driver.create_screenshot("debug-ft-mbola-mipoitra-ny-loading")
+            except Exception as a:
+                pass
+            raise e
+        self.assertTrue(help_available)
         dw_university_page.close_help()
+
 
     @attr('functional_test')
     def test_should_create_project_and_its_accessible_by_the_creator(self):
