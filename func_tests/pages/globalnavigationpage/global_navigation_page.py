@@ -86,6 +86,7 @@ class GlobalNavigationPage(Page):
          """
         self.driver.wait_for_element(UI_TEST_TIMEOUT, PROJECT_LINK, True)
         self.driver.find(PROJECT_LINK).click()
+        self.driver.wait_until_modal_dismissed()
         return AllDataPage(self.driver)
 
     def sign_out(self):
