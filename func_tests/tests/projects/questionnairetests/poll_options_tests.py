@@ -77,10 +77,10 @@ class TestPollOptions(HeadlessRunnerTest):
         self.poll_questionnaire_page.click_create_poll()
         self.poll_questionnaire_page.select_send_sms(True)
         self.poll_questionnaire_page.send_sms_to(LINKED_CONTACTS, CLINIC_TEST_PROJECT)
-        recipients = [REP8, REP3, REP1, REP5, REP6, REP7, REP35, REP10]
-        result = self.poll_questionnaire_page.has_DS_received_sms(recipients, FIRST_ROW, THIRD_COLUMN, True)
+        recipients = [REP5, REP6, REP7]
+        result = self.poll_questionnaire_page.has_DS_received_sms(recipients, FIRST_ROW, THIRD_COLUMN)
 
-        self.assertTrue(result)
+        self.assertEqual(True)
 
 
 
@@ -208,7 +208,11 @@ class TestPollOptionsFirefox(HeadlessRunnerTest):
 
     def tearDown(self):
         self.driver.wait_for_page_load()
-        self.poll_questionnaire_page.delete_the_poll()
+        try:
+            self.poll_questionnaire_page.delete_the_poll()
+        except Exception as e:
+            self.driver.create_screenshot("debug-ft-error-when-deleting-poll")
+            raise e
 
 
     def create_group_with_one_contact(self, line_number=""):
@@ -240,10 +244,11 @@ class TestPollOptionsFirefox(HeadlessRunnerTest):
         self.poll_questionnaire_page.select_send_sms()
         self.poll_questionnaire_page.send_sms_to(GROUP, group_name, True)
         sleep(2)
-        self.assertTrue(self.poll_questionnaire_page.has_DS_received_sms(unique_id, SECOND_ROW, THIRD_COLUMN))
+        res = self.poll_questionnaire_page.has_DS_received_sms([unique_id], SECOND_ROW, THIRD_COLUMN)
+        self.assertTrue(res)
         self.poll_questionnaire_page.click_send_sms_link()
         self.poll_questionnaire_page.send_sms_to(GROUP, group_name)
-        self.assertTrue(self.poll_questionnaire_page.has_DS_received_sms(unique_id, THIRD_ROW, THIRD_COLUMN))
+        self.assertTrue(self.poll_questionnaire_page.has_DS_received_sms([unique_id], THIRD_ROW, THIRD_COLUMN))
 
 
 
@@ -258,4 +263,4 @@ class TestPollOptionsFirefox(HeadlessRunnerTest):
         self.poll_questionnaire_page.send_sms_to(MY_POLL_RECIPIENTS, REP7, True)
         sleep(2)
         self.driver.create_screenshot("debug-ft-sms-sent-or-not")
-        self.assertTrue(self.poll_questionnaire_page.has_DS_received_sms(REP7, SECOND_ROW, THIRD_COLUMN, True))
+        self.assertTrue(self.poll_questionnaire_page.has_DS_received_sms(REP7, SECOND_ROW, THIRD_COLUMN))

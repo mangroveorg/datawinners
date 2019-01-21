@@ -148,15 +148,20 @@ class PollQuestionnairePage(Page):
             self.driver.wait_for_element(UI_TEST_TIMEOUT, by_css("#poll_sms_table"), True)
             self.driver.wait_until_modal_dismissed()
 
-        if debug:
-            time.sleep(2)
-            self.driver.create_screenshot("debug-ft-before-checking-that-ds-received-sms")
         try:
-            recipient_name = self.driver.find(by_css(
-                '#poll_sms_table>tbody>tr:nth-of-type(%s)>td:nth-of-type(%s)>span:nth-of-type(2)' % (row, column))).text
-            if debug and not recipient_name in recipent:
-                self.driver.create_screenshot("debug-ft-1st-poll-recipient-is-not-in-the-list")
-            return recipient_name in recipent
+            elements = self.driver.find_elements_by_css_selector(
+                '#poll_sms_table>tbody>tr:nth-of-type(%s)>td:nth-of-type(%s)>span.small_grey' % (row, column))
+            recipient_name = [element.text for element in elements]
+
+
+            for rep_id in recipent:
+                if rep_id not in recipient_name:
+                    if debug:
+                        self.driver.create_screenshot("debug-ft-ds-didn-receive-poll-sms")
+                        raise Exception("%s not in [%s]" % (rep_id, ", ".join(recipient_name)))
+                    return False
+            return True
+            
         except Exception as e:
             self.driver.create_screenshot("debug-ft-has-ds-received-sms-element-not-found")
             raise e

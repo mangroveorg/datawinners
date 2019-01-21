@@ -182,7 +182,8 @@ class TestCreatePollQuestionnaire(HeadlessRunnerTest):
         self.poll_Questionnaire_page.select_receipient(GROUP, group_name)
         self.poll_Questionnaire_page.click_create_poll()
         time.sleep(1)
-        self.assertTrue(self.poll_Questionnaire_page.has_DS_received_sms(contact_id, FIRST_ROW, THIRD_COLUMN))
+        result = self.poll_Questionnaire_page.has_DS_received_sms([contact_id], FIRST_ROW, THIRD_COLUMN)
+        self.assertTrue(result)
 
     @attr('functional_test')
     def test_after_poll_creation_with_linked_contacts_the_recipients_should_receive_sms_and_appear_in_sent_sms_table(self):
@@ -193,15 +194,7 @@ class TestCreatePollQuestionnaire(HeadlessRunnerTest):
         self.poll_Questionnaire_page.click_create_poll(True, "create-poll-test")
         self.driver.wait_for_element(UI_TEST_TIMEOUT, DATA_SENDER_TAB, True)
         self.poll_Questionnaire_page.select_element(DATA_SENDER_TAB)
-        recipient = [REP5, REP6, REP7, REP35]
+        recipient = [REP5, REP6, REP7]
         self.driver.create_screenshot("debug-ft-before-check-ds-received-sms")
         result = self.poll_Questionnaire_page.has_DS_received_sms(recipient, FIRST_ROW, THIRD_COLUMN)
-        if not result:
-            self.driver.create_screenshot("debug-ft-after-poll-creation")
-            raise Exception()
         self.assertTrue(result)
-        time.sleep(1)
-
-        #self.assertEquals(self.poll_Questionnaire_page.has_DS_received_sms(recipient, FIRST_ROW, THIRD_COLUMN), True)
-        #self.assertEquals(self.poll_Questionnaire_page.has_DS_received_sms(recipient, FIRST_ROW, THIRD_COLUMN), True)
-        #self.assertEquals(self.poll_Questionnaire_page.has_DS_received_sms(recipient, FIRST_ROW, THIRD_COLUMN), True)
