@@ -80,7 +80,7 @@ class TestPollOptions(HeadlessRunnerTest):
         recipients = [REP5, REP6, REP7]
         result = self.poll_questionnaire_page.has_DS_received_sms(recipients, FIRST_ROW, THIRD_COLUMN, True)
 
-        self.assertEqual(result)
+        self.assertTrue(result)
 
 
 
