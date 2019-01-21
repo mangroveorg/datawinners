@@ -77,7 +77,7 @@ class TestPollOptions(HeadlessRunnerTest):
         self.poll_questionnaire_page.click_create_poll()
         self.poll_questionnaire_page.select_send_sms(True)
         self.poll_questionnaire_page.send_sms_to(LINKED_CONTACTS, CLINIC_TEST_PROJECT)
-        recipients = [REP5, REP6, REP7]
+        recipients = [REP5, REP6]
         result = self.poll_questionnaire_page.has_DS_received_sms(recipients, FIRST_ROW, THIRD_COLUMN, True)
 
         self.assertTrue(result)
@@ -263,4 +263,4 @@ class TestPollOptionsFirefox(HeadlessRunnerTest):
         self.poll_questionnaire_page.send_sms_to(MY_POLL_RECIPIENTS, REP7, True)
         sleep(2)
         self.driver.create_screenshot("debug-ft-sms-sent-or-not")
-        self.assertTrue(self.poll_questionnaire_page.has_DS_received_sms(REP7, SECOND_ROW, THIRD_COLUMN))
+        self.assertTrue(self.poll_questionnaire_page.has_DS_received_sms([REP7], SECOND_ROW, THIRD_COLUMN, True))
