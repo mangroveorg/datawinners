@@ -123,6 +123,9 @@ class TestAddUser(HeadlessRunnerTest):
         role_for_user = self.all_users_page.get_role_for(self.username)
         self.assertEqual('Project Manager', role_for_user,
                          'Expected role to be Project Manager but was %s' % role_for_user)
+        if not questionnaires[0] in questionnaire_list_for_user:
+            self.driver.create_screenshot("debug-ft-qre-not-in-list")
+            raise Exception("%s not in [%s] for user %s" % (questionnaires[0], ", ".join(questionnaire_list_for_user), self.username))
         self.assertTrue(questionnaires[0] in questionnaire_list_for_user)
         self.assertTrue(questionnaires[1] in questionnaire_list_for_user)
         self.assertEqual(2, len(questionnaire_list_for_user),
