@@ -68,7 +68,7 @@ class TestEditUser(HeadlessRunnerTest):
         self.create_user_and_open_it_on_edit_page(False, [2,4])
         self.assertTrue(self.edit_user_page.is_user_name_is_prefetched(self.username))
         self.assertTrue(self.edit_user_page.is_role_project_manager())
-        self.assertTrue(self.edit_user_page.are_questionnaires_preselected(self.user_questionnaire_list))
+        self.assertTrue(self.edit_user_page.are_questionnaires_preselected(self.user_questionnaire_list, True))
         selected_questionnaires = self.edit_user_page.select_questionnaires(3)
         self.edit_user_page.save_changes({
             "mobile_phone": random_number(9),

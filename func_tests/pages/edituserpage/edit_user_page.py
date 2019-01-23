@@ -63,10 +63,14 @@ class EditUserPage(Page):
         project_manager_checked = self.driver.find(by_css("input[id=option_project_manager]")).get_attribute('checked')
         return True if project_manager_checked is not None else False
 
-    def are_questionnaires_preselected(self, questionnaires):
+    def are_questionnaires_preselected(self, questionnaires, debug=False):
         elements = self.driver.find_elements_by_css_selector('.questionnaire-list ul li input:checked + span')
         preselected_questionnaires = [element.text for element in elements]
-        return True if set(questionnaires) == set(preselected_questionnaires) else False
+        if set(questionnaires) == set(preselected_questionnaires):
+            return True
+        if debug:
+            self.driver.create_screenshot("debug-ft-qre-not-preselected")
+        return False
 
     def _uncheck_all_questionnaires(self):
         selected_questionnaires = self.driver.find_elements_by_css_selector('.questionnaire-list ul li input:checked')
