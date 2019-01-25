@@ -14,11 +14,13 @@ from tests.alluserstests.all_users_data import ALL_USERS_URL
 from tests.submissionlogtests.submission_log_tests import send_sms_with
 import time
 from framework.utils.common_utils import random_string, random_number
+from tests.testsettings import UI_TEST_TIMEOUT
 
 
 class TestEditUser(HeadlessRunnerTest):
     def setUp(self):
         self.global_navigation = login(self.driver, VALID_CREDENTIALS)
+        self.driver.wait_for_page_with_title(UI_TEST_TIMEOUT, "Dashboard")
         self.edit_user_page = EditUserPage(self.driver)
             
 
@@ -109,6 +111,8 @@ class TestEditUser(HeadlessRunnerTest):
 
         # Login with extended user and create project manager
         login(self.driver, extended_user_credentials)
+        self.driver.wait_for_page_with_title(UI_TEST_TIMEOUT, "Dashboard")
+        self.assertEqual("Dashboard", self.driver.get_title())
         self.driver.go_to(ALL_USERS_URL)
 
         self.all_users_page = AllUsersPage(self.driver)
@@ -132,7 +136,8 @@ class TestEditUser(HeadlessRunnerTest):
         edit_user_page = self.all_users_page.select_edit_action()
         self.assertTrue(edit_user_page.is_user_name_is_prefetched(username))
         self.assertTrue(edit_user_page.is_role_project_manager())
-        self.assertTrue(edit_user_page.are_questionnaires_preselected(questionnaire_list_for_user))
+        qre_pre_selected = edit_user_page.are_questionnaires_preselected(questionnaire_list_for_user, True)
+        self.assertTrue(qre_pre_selected)
         selected_questionnaires = edit_user_page.select_questionnaires(3)
         edit_user_page.save_changes({
             "mobile_phone": random_number(9),
