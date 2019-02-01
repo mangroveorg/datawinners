@@ -43,16 +43,28 @@ class SubmissionFormatter(object):
     def get_visible_columns(self):
         return self.visible_columns
         
-    def format_header_data(self):
+    def format_header_data(self, form_code=''):
         headers = []
+        codes = [form_code]
         for col_def in self.get_visible_columns().values():
+            if col_def.get('code'):
+                codes.append(col_def['code'])
+            else:
+                code = codes.pop()
+                codes.extend(['', code])
+                
             if col_def.get('type', '') == GEOCODE_FIELD_CODE:
                 headers.append(col_def['label'] + " Latitude")
                 headers.append(col_def['label'] + " Longitude")
             else:
                 if col_def['label'] != "Phone number":
                     headers.append(col_def['label'])
-        return headers
+
+        header_dict  = OrderedDict()
+        header_dict['sheet1'] = headers
+        if form_code:
+            header_dict['codes'] = codes
+        return header_dict
 
     def _convert_to_localized_date_time(self, submission_date):
         submission_date_time = datetime.strptime(submission_date, SUBMISSION_DATE_FORMAT_FOR_SUBMISSION)
