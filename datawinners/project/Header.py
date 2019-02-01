@@ -184,7 +184,7 @@ class SubmissionExcelHeader:
                 field_name = es_questionnaire_field_name(field.code, self._form_model.id, parent_field_name)
 
                 if field_name in result.keys():
-                    result.get(field_name).update({"type": field.type})
+                    result.get(field_name).update({"type": field.type, "code": field.code})
                     if field.type == "date":
                         result.get(field_name).update({"format": field.date_format})
                     if field.type == "field_set":

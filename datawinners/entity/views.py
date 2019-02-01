@@ -40,7 +40,7 @@ from datawinners.main.utils import get_database_name
 from datawinners.messageprovider.message_handler import get_exception_message_for
 from datawinners.messageprovider.messages import exception_messages, WEB
 from datawinners.project.helper import create_request
-from datawinners.project.submission.exporter import SubmissionExporter
+from datawinners.project.submission.exporter import IdnrExporter
 from datawinners.project.web_questionnaire_form import SubjectRegistrationForm
 from datawinners.public.views import _get_filters, _get_uniqueid_filters
 from datawinners.questionnaire.questionnaire_builder import QuestionnaireBuilder
@@ -821,8 +821,8 @@ def export_subject(request):
                     "filter":'identification_number',
                     }
 
-    return SubmissionExporter(form_model, project_name, manager, local_time_delta, current_language, None) \
-        .create_excel_response('identification_number', query_params)
+    return IdnrExporter(form_model, project_name, manager, local_time_delta, current_language, None) \
+        .create_excel_response('identification_number', query_params, hide_codes_sheet=True)
 
 def add_codes_sheet(wb, form_code, field_codes):
     codes = [form_code]

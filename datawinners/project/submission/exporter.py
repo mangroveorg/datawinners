@@ -35,6 +35,14 @@ class SubmissionExporter:
                                    submission_formatter, hide_codes_sheet, questionnaire=self.form_model)
 
 
+class IdnrExporter(SubmissionExporter):
+
+    def _get_header_list(self, columns):
+        submission_formatter = SubmissionFormatter(columns, self.local_time_delta, self.preferences)
+        header_list = submission_formatter.format_header_data(form_code=self.form_model.form_code)
+        return header_list, submission_formatter
+
+
 class FailedSubmissionExporter:
     def __init__(self, filename, columns, logs):
         self.filename = filename
