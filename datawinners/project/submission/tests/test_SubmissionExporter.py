@@ -211,7 +211,7 @@ class TestIdnrSubmissionExporter(TestCase):
                 response = IdnrExporter(form_model, "project_name", Mock(spec=DatabaseManager), ('+', 0, 0,), "en", None).\
                                 create_excel_response('identification_number', query_params, hide_codes_sheet=True)
                 #format_header_mock.assert_called()
-                expected = OrderedDict([('sheet1', ['question one', 'question two', 'question three', 'geo Latitude', 'geo Longitude', 'date']),
+                expected = OrderedDict([('sheet1', ['question one', 'question two', 'question three', 'geo', 'date']),
                     ('codes', ['test_form_code', 'q1', 'q2', 'q3', 'GEO', 'DATE'])])
                 self.assertEqual(response, expected)
 
