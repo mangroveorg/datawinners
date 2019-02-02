@@ -70,6 +70,7 @@ class EditUserPage(Page):
             return True
         if debug:
             self.driver.create_screenshot("debug-ft-qre-not-preselected")
+            raise Exception("[%s] != [%s]" % (", ".join(set(questionnaires)), ", ".join(set(preselected_questionnaires))))
         return False
 
     def _uncheck_all_questionnaires(self):
