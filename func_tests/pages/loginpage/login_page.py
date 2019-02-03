@@ -13,7 +13,12 @@ def login(driver, credential=VALID_CREDENTIALS, landing_page=None):
 
     LoginPage(driver).load(landing_page).login_with(credential)
     if not landing_page:
-        driver.wait_for_page_with_title(UI_TEST_TIMEOUT, "Dashboard")
+        try:
+            driver.wait_for_page_with_title(UI_TEST_TIMEOUT, "Dashboard")
+        except Exception as e:
+            if not driver.get_title() == "Data Submission":
+                raise e
+            
     return GlobalNavigationPage(driver)
 
 class LoginPage(Page):
