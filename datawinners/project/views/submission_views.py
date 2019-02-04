@@ -732,6 +732,11 @@ def _create_analysis_response(dbm, local_time_delta, search_results, questionnai
     if search_results is not None:
         data = [_transform_elastic_to_analysis_view(dbm, local_time_delta, result, questionnaire)._d_ for result in
                 search_results.hits]
+    for k, v in data[0].items():
+        try:
+            data[0][k] = '{0:g}'.format(float(v))
+        except:
+            pass
     return data
 
 def _transform_elastic_to_analysis_view(dbm, local_time_delta, record, questionnaire):
