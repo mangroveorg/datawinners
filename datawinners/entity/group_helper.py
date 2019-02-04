@@ -32,6 +32,9 @@ def get_group_by_name(dbm, group_name):
 
 
 def create_new_group(dbm, group_name):
+    if group_name.lower() in ["all contacts", "tous les contacts"]:
+        return False, _("Group with same name already exits.")
+    
     is_unique = check_uniqueness_of_group(dbm, group_name)
     if is_empty_string(group_name):
         return False, _('Group name is empty')
