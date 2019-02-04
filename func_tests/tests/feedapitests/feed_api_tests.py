@@ -47,9 +47,16 @@ class TestFeeds(HeadlessRunnerTest):
     def tearDownClass(cls):
         teardown_driver(cls.driver)
 
+    def tearDown(self):
+        try:
+            teardown_driver(self.driver)
+        except Exception as e:
+            pass
+
     @classmethod
     def _create_project(cls):
         cls.dashboard_page = DashboardPage(cls.driver)
+        cls.driver.create_screenshot("debug-ft-before-click-create-qre")
         create_questionnaire_options_page = cls.dashboard_page.navigate_to_create_project_page()
         create_questionnaire_page = create_questionnaire_options_page.select_blank_questionnaire_creation_option()
         create_questionnaire_page.create_questionnaire_with(WATERPOINT_PROJECT_DATA, WATERPOINT_QUESTIONNAIRE_DATA)
@@ -58,6 +65,7 @@ class TestFeeds(HeadlessRunnerTest):
     def _submit_success_data(self, project_name):
         self.driver.go_to(DATA_WINNER_DASHBOARD_PAGE)
         view_all_project_page = self.navigation_page.navigate_to_view_all_project_page()
+        self.driver.create_screenshot("debug-ft-before-click-overview-page")
         project_overview_page = view_all_project_page.navigate_to_project_overview_page(project_name)
 
         submission_page = project_overview_page.navigate_to_web_questionnaire_page()
@@ -95,7 +103,10 @@ class TestFeeds(HeadlessRunnerTest):
         page = SMSTesterPage(self.driver)
         sms_data = get_errorred_sms_data_with_questionnaire_code(questionnaire_code)
         page.send_sms_with(sms_data)
-        self.assertTrue(fetch_(MESSAGE, from_(sms_data)) in page.get_response_message())
+        result = fetch_(MESSAGE, from_(sms_data)) in page.get_response_message()
+        if not result:
+            self.driver.create_screenshot("debug-ft-msg-not-in-response")
+        self.assertTrue(result)
 
 
     def delete_submission(self):

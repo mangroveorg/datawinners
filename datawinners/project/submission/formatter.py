@@ -42,17 +42,31 @@ class SubmissionFormatter(object):
         
     def get_visible_columns(self):
         return self.visible_columns
-        
-    def format_header_data(self):
+
+    def _header_for_gps(self, col_def):
+        return [col_def['label'] + " Latitude", col_def['label'] + " Longitude"]
+
+    def format_header_data(self, form_code=''):
         headers = []
+        codes = [form_code]
         for col_def in self.get_visible_columns().values():
+            if col_def.get('code'):
+                codes.append(col_def['code'])
+            else:
+                code = codes.pop()
+                codes.extend(['', code])
+
             if col_def.get('type', '') == GEOCODE_FIELD_CODE:
-                headers.append(col_def['label'] + " Latitude")
-                headers.append(col_def['label'] + " Longitude")
+                headers.extend(self._header_for_gps(col_def))
             else:
                 if col_def['label'] != "Phone number":
                     headers.append(col_def['label'])
-        return headers
+
+        header_dict  = OrderedDict()
+        header_dict['sheet1'] = headers
+        if form_code:
+            header_dict['codes'] = codes
+        return header_dict
 
     def _convert_to_localized_date_time(self, submission_date):
         submission_date_time = datetime.strptime(submission_date, SUBMISSION_DATE_FORMAT_FOR_SUBMISSION)
@@ -87,7 +101,7 @@ class SubmissionFormatter(object):
     def format_row(self, row):
         result = []
         row = AccessFriendlyDict(row)
-        
+
         for field_code in self.get_visible_columns().keys():
             try:
                 field_value = getattr(row, field_code)
@@ -157,6 +171,13 @@ class SubmissionFormatter(object):
 
 
 
+class IdnrSubmissionFormatter(SubmissionFormatter):
+    def _format_gps_field(self, value, result):
+        if not value:
+            result.append('')
+            return
+        result.append(value)
 
-
+    def _header_for_gps(self, col_def):
+        return [col_def['label']]
 

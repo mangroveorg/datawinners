@@ -37,16 +37,15 @@ class TestSubjectExport(HeadlessRunnerTest):
             [u"What is the clinic's first name?",
              u"What is the clinic's last name?",
              u"What is the clinic's location?",
-             u"What is the clinic's GPS co-ordinates? Latitude",
-             u"What is the clinic's GPS co-ordinates? Longitude",
+             u"What is the clinic's GPS co-ordinates?",
              u"What is the clinic's mobile telephone number?",
              u"What is the clinic's Unique ID Number?"],
             sheet.row_values(0, 0, 7))
         total_rows = sheet.nrows
-        self.assertEqual([u'firstname', u'lastname', u'location', 3.0, 3.0, unicode(self.mobile_number)],
-                         sheet.row_values(total_rows-2, 0, 6))
-        self.assertEqual([u'firstname2', u'lastname2', u'location2', 4.0, 4.0, unicode(self.mobile_number2)],
-                         sheet.row_values(total_rows-1, 0, 6))
+        self.assertEqual([u'firstname', u'lastname', u'location', '3.0, 3.0', unicode(self.mobile_number)],
+                         sheet.row_values(total_rows-2, 0, 6)[:-1])
+        self.assertEqual([u'firstname2', u'lastname2', u'location2', '4.0, 4.0', unicode(self.mobile_number2)],
+                         sheet.row_values(total_rows-1, 0, 6)[:-1])
         self.assertEqual([], sheet.row_values(total_rows-1, 7))
 
     def create_subject(self):

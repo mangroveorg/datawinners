@@ -638,7 +638,7 @@ def _create_export_artifact(form_model, manager, request, search_filters):
                                               project_name, query_params, submission_type, preferences)
 
     return SubmissionExporter(form_model, project_name, manager, local_time_delta, current_language, preferences) \
-        .create_excel_response(submission_type, query_params)
+        .create_excel_response(submission_type, query_params, hide_codes_sheet=True)
 
     
 @login_required

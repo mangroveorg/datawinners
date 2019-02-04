@@ -9,6 +9,10 @@ import datetime
 import StringIO
 from openpyxl import load_workbook
 from collections import OrderedDict
+from mangrove.form_model.form_model import EntityFormModel
+from mangrove.datastore.database import DatabaseManager
+from mangrove.form_model.field import TextField, IntegerField, SelectField, GeoCodeField, DateField
+
 
 
 class TestSubmissionExporter(TestCase):
@@ -166,3 +170,55 @@ class TestSubmissionExporter(TestCase):
         self.assertEqual(row_values, expected_row_values)
         self.assertEqual(column_values, expected_column_values)
         f.close()
+
+class TestIdnrSubmissionExporter(TestCase):
+
+    def test_should_export_with_hidden_code_sheet(self):
+        with patch("datawinners.project.submission.exporter.get_scrolling_submissions_query") as get_query:
+            with patch("datawinners.project.submission.exporter.export_to_new_excel") as export_mock:
+                def export_mock_function(headers, raw_data, file_name, formatter=None, hide_codes_sheet=False,
+                                         browser=None, questionnaire=None):
+                    return headers
+                
+                export_mock.side_effect = export_mock_function
+                get_query.return_value = {}, {}
+                #with patch.object(SubmissionFormatter, "format_header_data") as format_header_mock:
+
+                query_params = {
+                        "search_text" : "signature",
+                        "start_result_number": 0,
+                        "number_of_results": 4000,
+                        "order": "",
+                        "filter":'identification_number',
+                        }
+
+
+                int_field = IntegerField(name='question one', code='q1', label='question one')
+                text_field = TextField(name='question two', code='q2', label='question two')
+                single_choice_field = SelectField(name='question three', code='q3', label='question three',
+                                                  options=[("one", "a"), ("two", "b"), ("three", "c"), ("four", "d")],
+                                                  single_select_flag=True)
+                geo_field = GeoCodeField(name='geo', code='GEO', label='geo')
+                date_field = DateField(name='date', code='DATE', label='date', date_format='dd.mm.yyyy')
+                form_model = Mock(spec=EntityFormModel)
+                form_model.form_code = 'test_form_code'
+                form_model.fields = [int_field, text_field, single_choice_field, geo_field, date_field]
+
+                form_model.base_entity_questions = []
+
+
+                from datawinners.project.submission.exporter import IdnrExporter
+                response = IdnrExporter(form_model, "project_name", Mock(spec=DatabaseManager), ('+', 0, 0,), "en", None).\
+                                create_excel_response('identification_number', query_params, hide_codes_sheet=True)
+                #format_header_mock.assert_called()
+                expected = OrderedDict([('sheet1', ['question one', 'question two', 'question three', 'geo', 'date']),
+                    ('codes', ['test_form_code', 'q1', 'q2', 'q3', 'GEO', 'DATE'])])
+                self.assertEqual(response, expected)
+
+
+                header = SubmissionExporter(form_model, "project_name", Mock(spec=DatabaseManager), ('+', 0, 0,), "en", None).\
+                                create_excel_response('identification_number', query_params, hide_codes_sheet=True)
+                expected_header_for_submission =  OrderedDict([('sheet1',
+                                                                ['question one', 'question two', 'question three',
+                                                                 'geo Latitude', 'geo Longitude', 'date'])])
+                self.assertEqual(header, expected_header_for_submission)

@@ -1,6 +1,6 @@
 from datawinners.project.Header import SubmissionExcelHeader
 from datawinners.project.submission.export import export_filename, export_to_new_excel, failed_export_to_new_excel
-from datawinners.project.submission.formatter import SubmissionFormatter
+from datawinners.project.submission.formatter import SubmissionFormatter, IdnrSubmissionFormatter
 from datawinners.project.submission.submission_search import get_scrolling_submissions_query
 from collections import OrderedDict
 
@@ -33,6 +33,14 @@ class SubmissionExporter:
         header_list, submission_formatter = self._get_header_list(columns)
         return export_to_new_excel(header_list, submission_list, export_filename(submission_type, self.project_name),
                                    submission_formatter, hide_codes_sheet, questionnaire=self.form_model)
+
+
+class IdnrExporter(SubmissionExporter):
+
+    def _get_header_list(self, columns):
+        submission_formatter = IdnrSubmissionFormatter(columns, self.local_time_delta, self.preferences)
+        header_list = submission_formatter.format_header_data(form_code=self.form_model.form_code)
+        return header_list, submission_formatter
 
 
 class FailedSubmissionExporter:

@@ -186,14 +186,25 @@ def export_to_new_excel(headers, raw_data, file_name, formatter=None, hide_codes
     output = tempfile.TemporaryFile()
     workbook = xlsxwriter.Workbook(output, {'constant_memory': True})
     if isinstance(headers, dict):
+
         for sheet_name, header_row in headers.items():
-            add_sheet_with_data(raw_data.get(sheet_name, []), header_row, workbook, formatter, sheet_name, browser, questionnaire=questionnaire)
+            if not isinstance(raw_data, dict):
+                if sheet_name == 'codes':
+                    add_sheet_with_data([], header_row, workbook, formatter, sheet_name, browser,
+                                          questionnaire=questionnaire)
+                else:
+                    add_sheet_with_data(raw_data, header_row, workbook, formatter,
+                                        sheet_name, browser, questionnaire=questionnaire)
+            else:
+                add_sheet_with_data(raw_data.get(sheet_name, []), header_row, workbook, formatter, sheet_name, browser, questionnaire=questionnaire)
     else:
         add_sheet_with_data(raw_data, headers, workbook, formatter, questionnaire=questionnaire)
     if hide_codes_sheet:
-        worksheets = workbook.worksheets()
-        codes_sheet = worksheets[workbook._get_sheet_index('codes')]
-        codes_sheet.hide()
+        code_sheet_index = workbook._get_sheet_index('codes')
+        if code_sheet_index:
+            worksheets = workbook.worksheets()
+            codes_sheet = worksheets[code_sheet_index]
+            codes_sheet.hide()
     workbook.close()
     output.seek(0)
     response = HttpResponse(FileWrapper(output), mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")

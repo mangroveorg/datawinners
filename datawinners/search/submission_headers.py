@@ -153,6 +153,29 @@ class AllSubmissionHeader(SubmissionHeader):
         return header_dict
 
 class IdentificationNumberHeader(SubmissionHeader):
+
+    def get_header_dict(self):
+        header_dict = OrderedDict()
+        header_dict.update(self.update_static_header_info())
+
+        def key_attribute(field):
+            return field.code
+
+        if isinstance(self.form_model, EntityFormModel):
+            entity_questions = self.form_model.base_entity_questions
+        else:
+            entity_questions = self.form_model.entity_questions
+        entity_question_dict = dict((self._get_entity_question_path(field), field) for field in entity_questions)
+        headers = header_fields(self.form_model, key_attribute)
+        for field_code, val in headers.items():
+            if field_code in entity_question_dict.keys():
+                self.add_unique_id_field(entity_question_dict.get(field_code), header_dict)
+            else:
+                key = es_questionnaire_field_name(field_code.replace(".", " "), self.form_model.id)
+                header_dict.update({key: val})
+
+        return header_dict
+
     def update_static_header_info(self):
         return OrderedDict()
 
