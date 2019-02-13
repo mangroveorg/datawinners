@@ -10,4 +10,4 @@ class CreateGroupTest(unittest.TestCase):
         for group in group_names:
             success, msg = create_new_group(dbm, group)
             self.assertFalse(success)
-            self.assertEqual(u'Group with same name already exits.', msg)
+            self.assertEqual(u'Group with same name already exists.', msg)
