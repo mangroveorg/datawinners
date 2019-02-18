@@ -77,7 +77,7 @@ def get_project_info(manager, project):
     else:
         project_link = reverse('project-overview', args=[project_id])
 
-    project_info = dict(project_id=project_id,
+    project_info = dict(project_id=project_id, _id=project_id,
                         name=project['name'],
                         qid=questionnaire_code,
                         created=project['created'],
