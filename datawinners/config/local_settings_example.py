@@ -1,5 +1,6 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 import os
+import uuid
 
 SITE_ID = 1
 DATABASES = {
@@ -56,3 +57,7 @@ ENVIRONMENT = 'dev'
 CARBON_HOST = '127.0.0.1'
 SMSC_WITHOUT_STATUS_REPORT = ["telma"]
 CARBON_PORT = 2003
+
+# After upgrading from ubuntu 12.04 to ubuntu 16.04
+uuid._uuid_generate_random = None
+POSTGIS_VERSION = (2, 2)
