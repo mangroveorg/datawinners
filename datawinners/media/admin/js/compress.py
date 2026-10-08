@@ -36,10 +36,10 @@ Compiler library and Java version 6 or later."""
         to_compress = os.path.expanduser(arg)
         if os.path.exists(to_compress):
             to_compress_min = "%s.min.js" % "".join(arg.rsplit(".js"))
-            cmd = "java -jar %s --js %s --js_output_file %s" % (compiler, to_compress, to_compress_min)
+            cmd = ["java", "-jar", compiler, "--js", to_compress, "--js_output_file", to_compress_min]
             if options.verbose:
-                sys.stdout.write("Running: %s\n" % cmd)
-            subprocess.call(cmd.split())
+                sys.stdout.write("Running: %s\n" % " ".join(cmd))
+            subprocess.call(cmd)
         else:
             sys.stdout.write("File %s not found. Sure it exists?\n" % to_compress)
 
